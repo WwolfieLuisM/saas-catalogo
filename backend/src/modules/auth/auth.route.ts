@@ -3,6 +3,7 @@ import { rateLimit } from 'express-rate-limit';
 import { getEnv } from '../../config/env.js';
 import { authenticate } from '../../middleware/auth.js';
 import { AppError } from '../../utils/appError.js';
+import { requestMeta } from '../../utils/requestMeta.js';
 import { clearRefreshCookie, REFRESH_COOKIE, setRefreshCookie } from './auth.cookies.js';
 import { loginSchema } from './auth.schemas.js';
 import * as authService from './auth.service.js';
@@ -36,7 +37,7 @@ export function createAuthRouter(): Router {
 
   router.post('/login', loginLimiter, async (req: Request, res: Response) => {
     const body = loginSchema.parse(req.body);
-    const result = await authService.login({ ...body, ...authService.requestMeta(req) });
+    const result = await authService.login({ ...body, ...requestMeta(req) });
 
     setRefreshCookie(res, result.refreshToken);
     res.json({ success: true, data: authResponse(result) });
@@ -45,7 +46,7 @@ export function createAuthRouter(): Router {
   router.post('/refresh', async (req: Request, res: Response) => {
     const result = await authService.refresh({
       refreshToken: readRefreshCookie(req),
-      ...authService.requestMeta(req),
+      ...requestMeta(req),
     });
 
     setRefreshCookie(res, result.refreshToken);

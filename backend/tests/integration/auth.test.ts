@@ -6,122 +6,12 @@ import { signAccessToken } from '../../src/modules/auth/auth.tokens.js';
 
 process.env.LOGIN_RATE_LIMIT_MAX = '1000';
 
-interface FakeAdminUser {
-  id: string;
-  username: string;
-  passwordHash: string;
-  role: 'SUPER_ADMIN' | 'ADMIN';
-  tenantId: string | null;
-  isActive: boolean;
-  lastLoginAt: Date | null;
-  createdAt: Date;
-  updatedAt: Date;
-}
-
-interface FakeSession {
-  id: string;
-  adminId: string;
-  tokenHash: string;
-  expiresAt: Date;
-  revokedAt: Date | null;
-  createdAt: Date;
-  lastUsedAt: Date | null;
-  userAgent: string | null;
-  ipAddress: string | null;
-}
-
-const fake = vi.hoisted(() => {
-  const users = new Map<string, FakeAdminUser>();
-  const sessions = new Map<string, FakeSession>();
-
-  const fakeDb = {
-    adminUser: {
-      findUnique: async (args: { where: { id?: string; username?: string } }) => {
-        if (args.where.username !== undefined) {
-          for (const user of users.values()) {
-            if (user.username === args.where.username) return user;
-          }
-          return null;
-        }
-        if (args.where.id !== undefined) return users.get(args.where.id) ?? null;
-        return null;
-      },
-      update: async (args: { where: { id: string }; data: Partial<FakeAdminUser> }) => {
-        const user = users.get(args.where.id);
-        if (!user) throw new Error('user not found');
-        Object.assign(user, args.data);
-        return user;
-      },
-    },
-    adminSession: {
-      create: async (args: {
-        data: Omit<FakeSession, 'id' | 'createdAt' | 'revokedAt' | 'lastUsedAt'>;
-      }) => {
-        const session: FakeSession = {
-          id: crypto.randomUUID(),
-          createdAt: new Date(),
-          revokedAt: null,
-          lastUsedAt: null,
-          ...args.data,
-        };
-        sessions.set(session.id, session);
-        return session;
-      },
-      findUnique: async (args: { where: { tokenHash: string }; include?: { admin?: boolean } }) => {
-        for (const session of sessions.values()) {
-          if (session.tokenHash !== args.where.tokenHash) continue;
-          if (args.include?.admin) {
-            const admin = users.get(session.adminId);
-            return admin ? { ...session, admin } : null;
-          }
-          return session;
-        }
-        return null;
-      },
-      update: async (args: { where: { id: string }; data: Partial<FakeSession> }) => {
-        const session = sessions.get(args.where.id);
-        if (!session) throw new Error('session not found');
-        Object.assign(session, args.data);
-        return session;
-      },
-      updateMany: async (args: {
-        where: { adminId?: string; tokenHash?: string; revokedAt?: null };
-        data: Partial<FakeSession>;
-      }) => {
-        let count = 0;
-        for (const session of sessions.values()) {
-          if (args.where.adminId !== undefined && session.adminId !== args.where.adminId) continue;
-          if (args.where.tokenHash !== undefined && session.tokenHash !== args.where.tokenHash)
-            continue;
-          if (args.where.revokedAt === null && session.revokedAt !== null) continue;
-          Object.assign(session, args.data);
-          count += 1;
-        }
-        return { count };
-      },
-    },
-    $transaction: async (ops: Promise<unknown>[]) => Promise.all(ops),
-  };
-
-  return {
-    fakeDb,
-    users,
-    sessions,
-    reset() {
-      users.clear();
-      sessions.clear();
-    },
-    addUser(user: FakeAdminUser) {
-      users.set(user.id, user);
-      return user;
-    },
-  };
+vi.mock('../../src/config/database.js', async () => {
+  const { fakeDb } = await import('../helpers/fakeDb.js');
+  return { getPrisma: () => fakeDb, closePrisma: async () => undefined };
 });
 
-vi.mock('../../src/config/database.js', () => ({
-  getPrisma: () => fake.fakeDb,
-  closePrisma: async () => undefined,
-}));
+import { addFakeUser, resetFakeDb, state, type FakeAdminUser } from '../helpers/fakeDb.js';
 
 const PASSWORD = 'Sup3rSecret!Pass';
 
@@ -179,10 +69,10 @@ afterAll(async () => {
 });
 
 beforeEach(() => {
-  fake.reset();
-  fake.addUser(userRow());
-  fake.addUser(userRow({ id: 'u-super', username: 'root', role: 'SUPER_ADMIN', tenantId: null }));
-  fake.addUser(userRow({ id: 'u-disabled', username: 'disabled-admin', isActive: false }));
+  resetFakeDb();
+  addFakeUser(userRow());
+  addFakeUser(userRow({ id: 'u-super', username: 'root', role: 'SUPER_ADMIN', tenantId: null }));
+  addFakeUser(userRow({ id: 'u-disabled', username: 'disabled-admin', isActive: false }));
 });
 
 describe('POST /api/v1/auth/login', () => {
@@ -259,7 +149,7 @@ describe('POST /api/v1/auth/login', () => {
   it('actualiza lastLoginAt tras login exitoso', async () => {
     await login('javier-admin', PASSWORD);
 
-    const user = fake.users.get('u-admin');
+    const user = state.users.get('u-admin');
     expect(user?.lastLoginAt).toBeInstanceOf(Date);
   });
 });
@@ -282,7 +172,7 @@ describe('POST /api/v1/auth/refresh', () => {
     expect(rotated).toBeTruthy();
     expect(rotated).not.toBe(first.cookie);
 
-    const previous = [...fake.sessions.values()].find((session) => session.revokedAt !== null);
+    const previous = [...state.sessions.values()].find((session) => session.revokedAt !== null);
     expect(previous).toBeDefined();
   });
 
@@ -328,12 +218,12 @@ describe('POST /api/v1/auth/refresh', () => {
       headers: { cookie: `refresh_token=${rotatedCookie}` },
     });
     expect(afterReuse.status).toBe(401);
-    expect([...fake.sessions.values()].every((session) => session.revokedAt !== null)).toBe(true);
+    expect([...state.sessions.values()].every((session) => session.revokedAt !== null)).toBe(true);
   });
 
   it('devuelve 401 si la cuenta fue desactivada', async () => {
     const { cookie } = await login('javier-admin', PASSWORD);
-    const user = fake.users.get('u-admin');
+    const user = state.users.get('u-admin');
     if (user) user.isActive = false;
 
     const response = await fetch(`${baseUrl}/api/v1/auth/refresh`, {
@@ -359,7 +249,7 @@ describe('POST /api/v1/auth/logout', () => {
     expect(response.status).toBe(200);
     expect(body.success).toBe(true);
     expect(response.headers.get('set-cookie') ?? '').toContain('refresh_token=;');
-    expect([...fake.sessions.values()].every((session) => session.revokedAt !== null)).toBe(true);
+    expect([...state.sessions.values()].every((session) => session.revokedAt !== null)).toBe(true);
 
     const afterLogout = await fetch(`${baseUrl}/api/v1/auth/refresh`, {
       method: 'POST',
@@ -434,7 +324,7 @@ describe('GET /api/v1/auth/me', () => {
   it('devuelve 401 si el usuario de la sesión fue desactivado', async () => {
     const { body: loginBody } = await login('javier-admin', PASSWORD);
     const accessToken = loginBody.data?.accessToken ?? '';
-    const user = fake.users.get('u-admin');
+    const user = state.users.get('u-admin');
     if (user) user.isActive = false;
 
     const response = await fetch(`${baseUrl}/api/v1/auth/me`, {

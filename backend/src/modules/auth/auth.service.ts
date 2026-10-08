@@ -1,19 +1,14 @@
 import argon2 from 'argon2';
-import type { Request } from 'express';
 import { getPrisma } from '../../config/database.js';
 import { getEnv } from '../../config/env.js';
 import type { Role } from '../../generated/client.js';
 import { AppError } from '../../utils/appError.js';
 import { parseDurationToSeconds } from '../../utils/duration.js';
+import type { RequestMeta } from '../../utils/requestMeta.js';
 import { generateRefreshToken, hashToken, signAccessToken } from './auth.tokens.js';
 
 const DUMMY_PASSWORD_HASH =
   '$argon2id$v=19$m=65536,p=4,t=3$NC0S/NqFK8QWu9GcqNgflg$/2pqXE5i9Tu5acAMA6unk+/xwnL/LS1XdWBQprc/qoQ';
-
-export interface RequestMeta {
-  userAgent: string | null;
-  ipAddress: string | null;
-}
 
 export interface UserPayload {
   id: string;
@@ -58,13 +53,6 @@ async function buildResult(user: AdminRow, refreshToken: string): Promise<AuthRe
     accessTokenExpiresIn: parseDurationToSeconds(env.ACCESS_TOKEN_EXPIRES_IN),
     refreshToken,
     user: profile(user),
-  };
-}
-
-export function requestMeta(req: Request): RequestMeta {
-  return {
-    userAgent: req.get('user-agent') ?? null,
-    ipAddress: req.ip ?? null,
   };
 }
 

@@ -65,3 +65,22 @@ model AdminSession {
   @@index([adminId])
   @@index([expiresAt])
 }
+
+model AuditLog {
+  id        String   @id @default(uuid())
+  actorId   String?
+  actorRole Role?
+  tenantId  String?
+  action    String
+  entity    String
+  entityId  String?
+  metadata  Json?
+  ipAddress String?
+  userAgent String?
+  timestamp DateTime @default(now())
+
+  @@index([tenantId])
+  @@index([actorId])
+  @@index([entity, entityId])
+  @@index([timestamp])
+}

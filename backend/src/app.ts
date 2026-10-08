@@ -6,8 +6,10 @@ import helmet from 'helmet';
 import { getEnv } from './config/env.js';
 import { errorHandler, notFoundHandler } from './middleware/errorHandler.js';
 import { requestLogger } from './middleware/requestLogger.js';
+import { createAdministratorsRouter } from './modules/administrators/administrators.route.js';
 import { createAuthRouter } from './modules/auth/auth.route.js';
 import { healthRouter } from './modules/health/health.route.js';
+import { createTenantsRouter } from './modules/tenants/tenants.route.js';
 import { AppError } from './utils/appError.js';
 
 export function createApp() {
@@ -42,6 +44,8 @@ export function createApp() {
 
   app.use('/api/v1/health', healthRouter);
   app.use('/api/v1/auth', createAuthRouter());
+  app.use('/api/v1/admin/tenants', createTenantsRouter());
+  app.use('/api/v1/admin/administrators', createAdministratorsRouter());
 
   app.use(notFoundHandler);
   app.use(errorHandler);
