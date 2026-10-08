@@ -22,8 +22,11 @@ export const envSchema = z.object({
   CLOUDINARY_FOLDER: z.string().default('game-catalog'),
   RATE_LIMIT_WINDOW_MS: z.coerce.number().int().positive().default(900000),
   RATE_LIMIT_MAX: z.coerce.number().int().positive().default(100),
+  LOGIN_RATE_LIMIT_MAX: z.coerce.number().int().positive().default(10),
   SEED_ADMIN_USERNAME: z.string().optional(),
   SEED_ADMIN_PASSWORD: z.string().optional(),
+  SEED_JAVIER_ADMIN_USERNAME: z.string().min(1).optional(),
+  SEED_JAVIER_ADMIN_PASSWORD: z.string().min(1).optional(),
 });
 
 export type Env = z.infer<typeof envSchema>;
