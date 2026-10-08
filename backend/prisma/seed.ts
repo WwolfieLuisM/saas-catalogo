@@ -18,6 +18,12 @@ async function main() {
     create: { name: 'Javier', slug: 'javier' },
   });
 
+  await prisma.tenantSettings.upsert({
+    where: { tenantId: tenant.id },
+    update: {},
+    create: { tenantId: tenant.id },
+  });
+
   const superAdminHash = await argon2.hash(env.SEED_ADMIN_PASSWORD, { type: argon2.argon2id });
   const superAdmin = await prisma.adminUser.upsert({
     where: { username: env.SEED_ADMIN_USERNAME },
