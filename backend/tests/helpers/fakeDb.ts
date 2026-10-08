@@ -54,7 +54,7 @@ export interface FakeAuditLog {
 
 export interface FakeTaxonomy {
   id: string;
-  tenantId: string;
+  tenantId: string | null;
   name: string;
   slug: string;
   description: string | null;
@@ -64,6 +64,54 @@ export interface FakeTaxonomy {
   deletedBy: string | null;
   createdAt: Date;
   updatedAt: Date;
+}
+
+export interface FakeBaseGame {
+  id: string;
+  title: string;
+  slug: string;
+  description: string | null;
+  sizeValue: number;
+  sizeUnit: 'MB' | 'GB' | 'TB';
+  releaseYear: number | null;
+  categoryId: string | null;
+  minimumRequirements: unknown;
+  recommendedRequirements: unknown;
+  deletedAt: Date | null;
+  createdBy: string | null;
+  updatedBy: string | null;
+  deletedBy: string | null;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface FakeTenantGame {
+  id: string;
+  tenantId: string;
+  baseGameId: string | null;
+  origin: 'BIBLIOTECA' | 'PERSONALIZADO';
+  title: string;
+  slug: string;
+  description: string | null;
+  priceMode: 'RULE' | 'MANUAL';
+  price: number | null;
+  availability: boolean;
+  sizeValue: number;
+  sizeUnit: 'MB' | 'GB' | 'TB';
+  releaseYear: number | null;
+  categoryId: string | null;
+  minimumRequirements: unknown;
+  recommendedRequirements: unknown;
+  createdBy: string | null;
+  updatedBy: string | null;
+  deletedBy: string | null;
+  createdAt: Date;
+  updatedAt: Date;
+  deletedAt: Date | null;
+}
+
+export interface FakeBridge {
+  [key: string]: string;
 }
 
 type Where = Record<string, unknown>;
@@ -101,6 +149,9 @@ function matches(row: Record<string, unknown>, where: Where | undefined): boolea
             ? target.toLowerCase().includes(needle.toLowerCase())
             : target.includes(needle);
         if (!hit) return false;
+      } else if ('in' in operator) {
+        const list = operator.in;
+        if (!Array.isArray(list) || !list.includes(value)) return false;
       } else if ('not' in operator) {
         if (value === operator.not) return false;
       } else {
@@ -157,6 +208,12 @@ const auditLogs = new Map<string, FakeAuditLog>();
 const categories = new Map<string, FakeTaxonomy>();
 const genres = new Map<string, FakeTaxonomy>();
 const platforms = new Map<string, FakeTaxonomy>();
+const baseGames = new Map<string, FakeBaseGame>();
+const tenantGames = new Map<string, FakeTenantGame>();
+const baseGameGenres = new Map<string, FakeBridge>();
+const baseGamePlatforms = new Map<string, FakeBridge>();
+const tenantGameGenres = new Map<string, FakeBridge>();
+const gamePlatforms = new Map<string, FakeBridge>();
 
 function createTaxonomyDelegate(store: Map<string, FakeTaxonomy>) {
   return {
@@ -177,7 +234,12 @@ function createTaxonomyDelegate(store: Map<string, FakeTaxonomy>) {
       return null;
     },
     create: async (args: {
-      data: Partial<FakeTaxonomy> & { id: string; tenantId: string; name: string; slug: string };
+      data: Partial<FakeTaxonomy> & {
+        id: string;
+        tenantId: string | null;
+        name: string;
+        slug: string;
+      };
     }) => {
       const row = defaults<FakeTaxonomy>(
         { ...args.data, description: args.data.description ?? null },
@@ -191,6 +253,74 @@ function createTaxonomyDelegate(store: Map<string, FakeTaxonomy>) {
       if (!row) throw new Error('taxonomy not found');
       Object.assign(row, args.data, { updatedAt: new Date() });
       return row;
+    },
+  };
+}
+
+function createRowDelegate<T extends { id: string }>(
+  store: Map<string, T>,
+  extraDefaults: Partial<T>,
+) {
+  const asRow = (row: T) => row as unknown as Record<string, unknown>;
+  return {
+    findMany: async (args: FindManyArgs = {}) => {
+      const matched = queryRows([...store.values()].map(asRow), args);
+      return matched as unknown as T[];
+    },
+    count: async (args: { where?: Where } = {}) => {
+      return [...store.values()].filter((row) => matches(asRow(row), args.where)).length;
+    },
+    findFirst: async (args: { where?: Where } = {}) => {
+      for (const row of store.values()) {
+        if (matches(asRow(row), args.where)) return row;
+      }
+      return null;
+    },
+    create: async (args: { data: Partial<T> & { id: string } }) => {
+      const row = defaults<T>(args.data, extraDefaults);
+      store.set(row.id, row);
+      return row;
+    },
+    update: async (args: { where: { id: string }; data: Partial<T> }) => {
+      const row = store.get(args.where.id);
+      if (!row) throw new Error('row not found');
+      Object.assign(row, args.data, { updatedAt: new Date() });
+      return row;
+    },
+  };
+}
+
+function createBridgeDelegate(store: Map<string, FakeBridge>, key1: string, key2: string) {
+  const asRow = (row: FakeBridge) => row as unknown as Record<string, unknown>;
+  return {
+    findMany: async (args: FindManyArgs = {}) => {
+      const matched = queryRows([...store.values()].map(asRow), args);
+      return matched as unknown as FakeBridge[];
+    },
+    count: async (args: { where?: Where } = {}) => {
+      return [...store.values()].filter((row) => matches(asRow(row), args.where)).length;
+    },
+    findFirst: async (args: { where?: Where } = {}) => {
+      for (const row of store.values()) {
+        if (matches(asRow(row), args.where)) return row;
+      }
+      return null;
+    },
+    createMany: async (args: { data: Record<string, string>[] }) => {
+      for (const data of args.data) {
+        store.set(`${data[key1]}:${data[key2]}`, data);
+      }
+      return { count: args.data.length };
+    },
+    deleteMany: async (args: { where?: Where } = {}) => {
+      let count = 0;
+      for (const [key, row] of [...store.entries()]) {
+        if (matches(asRow(row), args.where)) {
+          store.delete(key);
+          count += 1;
+        }
+      }
+      return { count };
     },
   };
 }
@@ -355,6 +485,28 @@ export const fakeDb = {
   category: createTaxonomyDelegate(categories),
   genre: createTaxonomyDelegate(genres),
   platform: createTaxonomyDelegate(platforms),
+  baseGame: createRowDelegate<FakeBaseGame>(baseGames, {
+    deletedAt: null,
+    createdBy: null,
+    updatedBy: null,
+    deletedBy: null,
+  }),
+  tenantGame: createRowDelegate<FakeTenantGame>(tenantGames, {
+    baseGameId: null,
+    origin: 'PERSONALIZADO',
+    priceMode: 'RULE',
+    price: null,
+    availability: true,
+    categoryId: null,
+    createdBy: null,
+    updatedBy: null,
+    deletedBy: null,
+    deletedAt: null,
+  }),
+  baseGameGenre: createBridgeDelegate(baseGameGenres, 'baseGameId', 'genreId'),
+  baseGamePlatform: createBridgeDelegate(baseGamePlatforms, 'baseGameId', 'platformId'),
+  tenantGameGenre: createBridgeDelegate(tenantGameGenres, 'tenantGameId', 'genreId'),
+  gamePlatform: createBridgeDelegate(gamePlatforms, 'tenantGameId', 'platformId'),
 
   $transaction: async (ops: Promise<unknown>[]) => Promise.all(ops),
 };
@@ -368,6 +520,12 @@ export const state = {
   categories,
   genres,
   platforms,
+  baseGames,
+  tenantGames,
+  baseGameGenres,
+  baseGamePlatforms,
+  tenantGameGenres,
+  gamePlatforms,
 };
 
 export function resetFakeDb(): void {
@@ -379,6 +537,12 @@ export function resetFakeDb(): void {
   categories.clear();
   genres.clear();
   platforms.clear();
+  baseGames.clear();
+  tenantGames.clear();
+  baseGameGenres.clear();
+  baseGamePlatforms.clear();
+  tenantGameGenres.clear();
+  gamePlatforms.clear();
 }
 
 export function addFakeUser(
@@ -421,7 +585,7 @@ export function addFakeSession(
 
 type TaxonomyInput = Partial<FakeTaxonomy> & {
   id: string;
-  tenantId: string;
+  tenantId: string | null;
   name: string;
   slug: string;
 };
@@ -460,4 +624,64 @@ export function addFakePlatform(input: TaxonomyInput): FakeTaxonomy {
   });
   platforms.set(row.id, row);
   return row;
+}
+
+export function addFakeBaseGame(
+  input: Partial<FakeBaseGame> & { id: string; title: string; slug: string },
+): FakeBaseGame {
+  const row = defaults<FakeBaseGame>(input, {
+    description: null,
+    releaseYear: null,
+    categoryId: null,
+    minimumRequirements: null,
+    recommendedRequirements: null,
+    deletedAt: null,
+    createdBy: null,
+    updatedBy: null,
+    deletedBy: null,
+  });
+  baseGames.set(row.id, row);
+  return row;
+}
+
+export function addFakeTenantGame(
+  input: Partial<FakeTenantGame> & {
+    id: string;
+    tenantId: string;
+    title: string;
+    slug: string;
+  },
+): FakeTenantGame {
+  const row = defaults<FakeTenantGame>(input, {
+    baseGameId: null,
+    origin: 'PERSONALIZADO',
+    priceMode: 'RULE',
+    price: null,
+    availability: true,
+    categoryId: null,
+    minimumRequirements: null,
+    recommendedRequirements: null,
+    createdBy: null,
+    updatedBy: null,
+    deletedBy: null,
+    deletedAt: null,
+  });
+  tenantGames.set(row.id, row);
+  return row;
+}
+
+export function addFakeBaseGameGenre(baseGameId: string, genreId: string): void {
+  baseGameGenres.set(`${baseGameId}:${genreId}`, { baseGameId, genreId });
+}
+
+export function addFakeBaseGamePlatform(baseGameId: string, platformId: string): void {
+  baseGamePlatforms.set(`${baseGameId}:${platformId}`, { baseGameId, platformId });
+}
+
+export function addFakeTenantGameGenre(tenantGameId: string, genreId: string): void {
+  tenantGameGenres.set(`${tenantGameId}:${genreId}`, { tenantGameId, genreId });
+}
+
+export function addFakeGamePlatform(tenantGameId: string, platformId: string): void {
+  gamePlatforms.set(`${tenantGameId}:${platformId}`, { tenantGameId, platformId });
 }

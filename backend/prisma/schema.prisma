@@ -12,6 +12,22 @@ enum Role {
   ADMIN
 }
 
+enum SizeUnit {
+  MB
+  GB
+  TB
+}
+
+enum Origin {
+  BIBLIOTECA
+  PERSONALIZADO
+}
+
+enum PriceMode {
+  RULE
+  MANUAL
+}
+
 model Tenant {
   id         String          @id @default(uuid())
   name       String
@@ -24,6 +40,7 @@ model Tenant {
   categories Category[]
   genres     Genre[]
   platforms  Platform[]
+  games      TenantGame[]
 
   @@index([isActive])
 }
@@ -69,10 +86,69 @@ model AdminSession {
   @@index([expiresAt])
 }
 
+model BaseGame {
+  id                     String    @id @default(uuid())
+  title                  String
+  slug                   String    @unique
+  description            String?
+  sizeValue              Float
+  sizeUnit               SizeUnit
+  releaseYear            Int?
+  categoryId             String?
+  category               Category? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  minimumRequirements    Json?
+  recommendedRequirements Json?
+  deletedAt              DateTime?
+  createdBy              String?
+  updatedBy              String?
+  deletedBy              String?
+  createdAt              DateTime  @default(now())
+  updatedAt              DateTime  @updatedAt
+  genres                 BaseGameGenre[]
+  platforms              BaseGamePlatform[]
+  publications           TenantGame[]
+
+  @@index([deletedAt])
+}
+
+model TenantGame {
+  id                     String     @id @default(uuid())
+  tenantId               String
+  tenant                 Tenant     @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  baseGameId             String?
+  baseGame               BaseGame?  @relation(fields: [baseGameId], references: [id], onDelete: Restrict)
+  origin                 Origin
+  title                  String
+  slug                   String
+  description            String?
+  priceMode              PriceMode  @default(RULE)
+  price                  Decimal?
+  availability           Boolean    @default(true)
+  sizeValue              Float
+  sizeUnit               SizeUnit
+  releaseYear            Int?
+  categoryId             String?
+  category               Category?  @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  minimumRequirements    Json?
+  recommendedRequirements Json?
+  createdBy              String?
+  updatedBy              String?
+  deletedBy              String?
+  createdAt              DateTime   @default(now())
+  updatedAt              DateTime   @updatedAt
+  deletedAt              DateTime?
+  genres                 TenantGameGenre[]
+  platforms              GamePlatform[]
+
+  @@unique([tenantId, slug])
+  @@unique([tenantId, baseGameId])
+  @@index([tenantId, deletedAt])
+}
+
 model Category {
-  id          String    @id @default(uuid())
-  tenantId    String
-  tenant      Tenant    @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  id          String       @id @default(uuid())
+  tenantId    String?
+  tenant      Tenant?      @relation(fields: [tenantId], references: [id], onDelete: Cascade)
   name        String
   slug        String
   description String?
@@ -80,17 +156,19 @@ model Category {
   createdBy   String?
   updatedBy   String?
   deletedBy   String?
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  baseGames   BaseGame[]
+  games       TenantGame[]
 
   @@unique([tenantId, slug])
   @@index([tenantId, deletedAt])
 }
 
 model Genre {
-  id          String    @id @default(uuid())
-  tenantId    String
-  tenant      Tenant    @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  id          String             @id @default(uuid())
+  tenantId    String?
+  tenant      Tenant?            @relation(fields: [tenantId], references: [id], onDelete: Cascade)
   name        String
   slug        String
   description String?
@@ -98,17 +176,19 @@ model Genre {
   createdBy   String?
   updatedBy   String?
   deletedBy   String?
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  createdAt   DateTime           @default(now())
+  updatedAt   DateTime           @updatedAt
+  baseGames   BaseGameGenre[]
+  games       TenantGameGenre[]
 
   @@unique([tenantId, slug])
   @@index([tenantId, deletedAt])
 }
 
 model Platform {
-  id          String    @id @default(uuid())
-  tenantId    String
-  tenant      Tenant    @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  id          String             @id @default(uuid())
+  tenantId    String?
+  tenant      Tenant?            @relation(fields: [tenantId], references: [id], onDelete: Cascade)
   name        String
   slug        String
   description String?
@@ -116,11 +196,49 @@ model Platform {
   createdBy   String?
   updatedBy   String?
   deletedBy   String?
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  createdAt   DateTime           @default(now())
+  updatedAt   DateTime           @updatedAt
+  baseGames   BaseGamePlatform[]
+  games       GamePlatform[]
 
   @@unique([tenantId, slug])
   @@index([tenantId, deletedAt])
+}
+
+model BaseGameGenre {
+  baseGameId String
+  genreId    String
+  baseGame   BaseGame @relation(fields: [baseGameId], references: [id], onDelete: Cascade)
+  genre      Genre    @relation(fields: [genreId], references: [id], onDelete: Cascade)
+
+  @@id([baseGameId, genreId])
+}
+
+model BaseGamePlatform {
+  baseGameId String
+  platformId String
+  baseGame   BaseGame @relation(fields: [baseGameId], references: [id], onDelete: Cascade)
+  platform   Platform @relation(fields: [platformId], references: [id], onDelete: Cascade)
+
+  @@id([baseGameId, platformId])
+}
+
+model TenantGameGenre {
+  tenantGameId String
+  genreId      String
+  tenantGame   TenantGame @relation(fields: [tenantGameId], references: [id], onDelete: Cascade)
+  genre        Genre      @relation(fields: [genreId], references: [id], onDelete: Cascade)
+
+  @@id([tenantGameId, genreId])
+}
+
+model GamePlatform {
+  tenantGameId String
+  platformId   String
+  tenantGame   TenantGame @relation(fields: [tenantGameId], references: [id], onDelete: Cascade)
+  platform     Platform   @relation(fields: [platformId], references: [id], onDelete: Cascade)
+
+  @@id([tenantGameId, platformId])
 }
 
 model AuditLog {

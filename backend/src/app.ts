@@ -8,6 +8,8 @@ import { errorHandler, notFoundHandler } from './middleware/errorHandler.js';
 import { requestLogger } from './middleware/requestLogger.js';
 import { createAdministratorsRouter } from './modules/administrators/administrators.route.js';
 import { createAuthRouter } from './modules/auth/auth.route.js';
+import { createBaseGamesRouter } from './modules/base-games/base-games.route.js';
+import { createGamesRouter } from './modules/games/games.route.js';
 import { healthRouter } from './modules/health/health.route.js';
 import { createTenantsRouter } from './modules/tenants/tenants.route.js';
 import {
@@ -55,6 +57,8 @@ export function createApp() {
   app.use('/api/v1/admin/categories', createTaxonomyRouter(categoryTaxonomy));
   app.use('/api/v1/admin/genres', createTaxonomyRouter(genreTaxonomy));
   app.use('/api/v1/admin/platforms', createTaxonomyRouter(platformTaxonomy));
+  app.use('/api/v1/admin/base-games', createBaseGamesRouter());
+  app.use('/api/v1/admin/games', createGamesRouter());
 
   app.use(notFoundHandler);
   app.use(errorHandler);
