@@ -114,6 +114,20 @@ export interface FakeBridge {
   [key: string]: string;
 }
 
+export interface FakeGameMedia {
+  id: string;
+  tenantId: string;
+  gameId: string;
+  kind: 'COVER' | 'SHOT';
+  url: string | null;
+  publicId: string | null;
+  sortOrder: number;
+  status: 'OK' | 'PENDING' | 'ERROR' | 'ORPHAN';
+  createdBy: string | null;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
 type Where = Record<string, unknown>;
 
 function matches(row: Record<string, unknown>, where: Where | undefined): boolean {
@@ -167,7 +181,7 @@ function matches(row: Record<string, unknown>, where: Where | undefined): boolea
 
 interface FindManyArgs {
   where?: Where;
-  orderBy?: Record<string, 'asc' | 'desc'>;
+  orderBy?: Record<string, 'asc' | 'desc'> | Record<string, 'asc' | 'desc'>[];
   skip?: number;
   take?: number;
 }
@@ -176,13 +190,18 @@ function queryRows<T extends Record<string, unknown>>(rows: T[], args: FindManyA
   let result = rows.filter((row) => matches(row, args.where));
 
   if (args.orderBy) {
-    const [field, direction] = Object.entries(args.orderBy)[0] as [string, 'asc' | 'desc'];
+    const orders = Array.isArray(args.orderBy)
+      ? args.orderBy.flatMap((entry) => Object.entries(entry))
+      : Object.entries(args.orderBy);
     result = [...result].sort((a, b) => {
-      const left = a[field] instanceof Date ? (a[field] as Date).getTime() : a[field];
-      const right = b[field] instanceof Date ? (b[field] as Date).getTime() : b[field];
-      if (left === right) return 0;
-      const cmp = (left ?? 0) < (right ?? 0) ? -1 : 1;
-      return direction === 'asc' ? cmp : -cmp;
+      for (const [field, direction] of orders) {
+        const left = a[field] instanceof Date ? (a[field] as Date).getTime() : a[field];
+        const right = b[field] instanceof Date ? (b[field] as Date).getTime() : b[field];
+        if (left === right) continue;
+        const cmp = (left ?? 0) < (right ?? 0) ? -1 : 1;
+        return direction === 'asc' ? cmp : -cmp;
+      }
+      return 0;
     });
   }
 
@@ -214,6 +233,7 @@ const baseGameGenres = new Map<string, FakeBridge>();
 const baseGamePlatforms = new Map<string, FakeBridge>();
 const tenantGameGenres = new Map<string, FakeBridge>();
 const gamePlatforms = new Map<string, FakeBridge>();
+const gameMedia = new Map<string, FakeGameMedia>();
 
 function createTaxonomyDelegate(store: Map<string, FakeTaxonomy>) {
   return {
@@ -281,11 +301,34 @@ function createRowDelegate<T extends { id: string }>(
       store.set(row.id, row);
       return row;
     },
+    createMany: async (args: { data: (Partial<T> & { id: string })[] }) => {
+      for (const data of args.data) {
+        const row = defaults<T>(data, extraDefaults);
+        store.set(row.id, row);
+      }
+      return { count: args.data.length };
+    },
     update: async (args: { where: { id: string }; data: Partial<T> }) => {
       const row = store.get(args.where.id);
       if (!row) throw new Error('row not found');
       Object.assign(row, args.data, { updatedAt: new Date() });
       return row;
+    },
+    delete: async (args: { where: { id: string } }) => {
+      const row = store.get(args.where.id);
+      if (!row) throw new Error('row not found');
+      store.delete(args.where.id);
+      return row;
+    },
+    deleteMany: async (args: { where?: Where } = {}) => {
+      let count = 0;
+      for (const [key, row] of [...store.entries()]) {
+        if (matches(asRow(row), args.where)) {
+          store.delete(key);
+          count += 1;
+        }
+      }
+      return { count };
     },
   };
 }
@@ -507,6 +550,13 @@ export const fakeDb = {
   baseGamePlatform: createBridgeDelegate(baseGamePlatforms, 'baseGameId', 'platformId'),
   tenantGameGenre: createBridgeDelegate(tenantGameGenres, 'tenantGameId', 'genreId'),
   gamePlatform: createBridgeDelegate(gamePlatforms, 'tenantGameId', 'platformId'),
+  gameMedia: createRowDelegate<FakeGameMedia>(gameMedia, {
+    url: null,
+    publicId: null,
+    sortOrder: 0,
+    status: 'OK',
+    createdBy: null,
+  }),
 
   $transaction: async (ops: Promise<unknown>[]) => Promise.all(ops),
 };
@@ -526,6 +576,7 @@ export const state = {
   baseGamePlatforms,
   tenantGameGenres,
   gamePlatforms,
+  gameMedia,
 };
 
 export function resetFakeDb(): void {
@@ -543,6 +594,7 @@ export function resetFakeDb(): void {
   baseGamePlatforms.clear();
   tenantGameGenres.clear();
   gamePlatforms.clear();
+  gameMedia.clear();
 }
 
 export function addFakeUser(
@@ -684,4 +736,23 @@ export function addFakeTenantGameGenre(tenantGameId: string, genreId: string): v
 
 export function addFakeGamePlatform(tenantGameId: string, platformId: string): void {
   gamePlatforms.set(`${tenantGameId}:${platformId}`, { tenantGameId, platformId });
+}
+
+export function addFakeGameMedia(
+  input: Partial<FakeGameMedia> & {
+    id: string;
+    tenantId: string;
+    gameId: string;
+    kind: 'COVER' | 'SHOT';
+  },
+): FakeGameMedia {
+  const row = defaults<FakeGameMedia>(input, {
+    url: null,
+    publicId: null,
+    sortOrder: 0,
+    status: 'OK',
+    createdBy: null,
+  });
+  gameMedia.set(row.id, row);
+  return row;
 }

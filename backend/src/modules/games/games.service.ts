@@ -27,7 +27,7 @@ function summary(
   return row ? { id: row.id, name: row.name, slug: row.slug } : null;
 }
 
-function resolveTenantId(auth: AuthContext | null, requested: string | undefined): string {
+export function resolveTenantId(auth: AuthContext | null, requested: string | undefined): string {
   if (!auth) {
     throw new AppError(401, 'UNAUTHENTICATED', 'Autenticación requerida');
   }

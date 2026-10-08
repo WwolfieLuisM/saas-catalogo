@@ -11,6 +11,7 @@ import { createAuthRouter } from './modules/auth/auth.route.js';
 import { createBaseGamesRouter } from './modules/base-games/base-games.route.js';
 import { createGamesRouter } from './modules/games/games.route.js';
 import { healthRouter } from './modules/health/health.route.js';
+import { createGameMediaRouter, createMediaRouter } from './modules/media/media.route.js';
 import { createTenantsRouter } from './modules/tenants/tenants.route.js';
 import {
   categoryTaxonomy,
@@ -59,6 +60,8 @@ export function createApp() {
   app.use('/api/v1/admin/platforms', createTaxonomyRouter(platformTaxonomy));
   app.use('/api/v1/admin/base-games', createBaseGamesRouter());
   app.use('/api/v1/admin/games', createGamesRouter());
+  app.use('/api/v1/admin/games', createGameMediaRouter());
+  app.use('/api/v1/admin/media', createMediaRouter());
 
   app.use(notFoundHandler);
   app.use(errorHandler);
