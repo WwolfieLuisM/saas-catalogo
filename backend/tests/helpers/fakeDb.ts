@@ -128,6 +128,25 @@ export interface FakeGameMedia {
   updatedAt: Date;
 }
 
+export interface FakePricingRule {
+  id: string;
+  tenantId: string;
+  minSize: number;
+  maxSize: number | null;
+  price: number;
+  active: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface FakeCatalogMetadata {
+  id: string;
+  tenantId: string;
+  version: number;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
 type Where = Record<string, unknown>;
 
 function matches(row: Record<string, unknown>, where: Where | undefined): boolean {
@@ -234,6 +253,8 @@ const baseGamePlatforms = new Map<string, FakeBridge>();
 const tenantGameGenres = new Map<string, FakeBridge>();
 const gamePlatforms = new Map<string, FakeBridge>();
 const gameMedia = new Map<string, FakeGameMedia>();
+const pricingRules = new Map<string, FakePricingRule>();
+const catalogMetadata = new Map<string, FakeCatalogMetadata>();
 
 function createTaxonomyDelegate(store: Map<string, FakeTaxonomy>) {
   return {
@@ -557,6 +578,13 @@ export const fakeDb = {
     status: 'OK',
     createdBy: null,
   }),
+  pricingRule: createRowDelegate<FakePricingRule>(pricingRules, {
+    maxSize: null,
+    active: true,
+  }),
+  catalogMetadata: createRowDelegate<FakeCatalogMetadata>(catalogMetadata, {
+    version: 1,
+  }),
 
   $transaction: async (ops: Promise<unknown>[]) => Promise.all(ops),
 };
@@ -577,6 +605,8 @@ export const state = {
   tenantGameGenres,
   gamePlatforms,
   gameMedia,
+  pricingRules,
+  catalogMetadata,
 };
 
 export function resetFakeDb(): void {
@@ -595,6 +625,8 @@ export function resetFakeDb(): void {
   tenantGameGenres.clear();
   gamePlatforms.clear();
   gameMedia.clear();
+  pricingRules.clear();
+  catalogMetadata.clear();
 }
 
 export function addFakeUser(
@@ -754,5 +786,16 @@ export function addFakeGameMedia(
     createdBy: null,
   });
   gameMedia.set(row.id, row);
+  return row;
+}
+
+export function addFakePricingRule(
+  input: Partial<FakePricingRule> & { id: string; tenantId: string; minSize: number },
+): FakePricingRule {
+  const row = defaults<FakePricingRule>(input, {
+    maxSize: null,
+    active: true,
+  });
+  pricingRules.set(row.id, row);
   return row;
 }

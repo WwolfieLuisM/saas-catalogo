@@ -54,6 +54,8 @@ model Tenant {
   platforms  Platform[]
   games      TenantGame[]
   media      GameMedia[]
+  pricingRules PricingRule[]
+  catalog     CatalogMetadata?
 
   @@index([isActive])
 }
@@ -271,6 +273,29 @@ model GameMedia {
   updatedAt DateTime    @updatedAt
 
   @@index([tenantId, gameId])
+}
+
+model PricingRule {
+  id        String   @id @default(uuid())
+  tenantId  String
+  tenant    Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  minSize   Float
+  maxSize   Float?
+  price     Decimal
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([tenantId])
+}
+
+model CatalogMetadata {
+  id        String   @id @default(uuid())
+  tenantId  String   @unique
+  tenant    Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  version   Int      @default(1)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model AuditLog {

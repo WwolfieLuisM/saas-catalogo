@@ -163,7 +163,7 @@ async function main() {
     slug: string;
     description: string;
     priceMode: 'RULE' | 'MANUAL';
-    price: number;
+    price: number | null;
     availability: boolean;
     sizeValue: number;
     sizeUnit: 'MB' | 'GB' | 'TB';
@@ -248,8 +248,8 @@ async function main() {
     title: 'Pack Mods Javier',
     slug: 'pack-mods-javier',
     description: 'Colección de mods personalizados del tenant',
-    priceMode: 'MANUAL',
-    price: 4.99,
+    priceMode: 'RULE',
+    price: null,
     availability: true,
     sizeValue: 500,
     sizeUnit: 'MB',
@@ -260,6 +260,40 @@ async function main() {
     minimumRequirements: baseRequirements,
     recommendedRequirements,
   });
+
+  interface PricingRuleInput {
+    minSize: number;
+    maxSize: number | null;
+    price: number;
+  }
+
+  async function ensurePricingRule(input: PricingRuleInput): Promise<void> {
+    const existing = await prisma.pricingRule.findFirst({
+      where: { tenantId: tenant.id, minSize: input.minSize },
+    });
+
+    if (existing) {
+      await prisma.pricingRule.update({
+        where: { id: existing.id },
+        data: { maxSize: input.maxSize, price: input.price, active: true },
+      });
+    } else {
+      await prisma.pricingRule.create({
+        data: {
+          id: crypto.randomUUID(),
+          tenantId: tenant.id,
+          minSize: input.minSize,
+          maxSize: input.maxSize,
+          price: input.price,
+        },
+      });
+    }
+  }
+
+  await ensurePricingRule({ minSize: 1, maxSize: 10, price: 40 });
+  await ensurePricingRule({ minSize: 10.01, maxSize: 50, price: 50 });
+  await ensurePricingRule({ minSize: 50.01, maxSize: 100, price: 70 });
+  await ensurePricingRule({ minSize: 100.01, maxSize: null, price: 100 });
 
   const superAdminHash = await argon2.hash(env.SEED_ADMIN_PASSWORD, { type: argon2.argon2id });
   const superAdmin = await prisma.adminUser.upsert({
@@ -307,6 +341,7 @@ async function main() {
 
   console.log(`admin de Javier: ${javierAdmin.username}`);
   console.log('juegos de ejemplo: hades (biblioteca), pack-mods-javier (personalizado)');
+  console.log('reglas de precio: 4 rangos (1-10, 10.01-50, 50.01-100, 100.01+)');
 }
 
 main()
