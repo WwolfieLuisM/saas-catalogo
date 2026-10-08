@@ -1,0 +1,1456 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#07080c">
+<title>Javier PC · Catálogo de juegos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@800;900&family=Manrope:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#07080c;
+  --panel:#0e1016;
+  --panel2:#151821;
+  --line:#232735;
+  --text:#eceae4;
+  --muted:#979aa6;
+  --gold:#d9b872;
+  --gold-ink:#1a1306;
+  --ok:#6fd6a3;
+  --display:"Big Shoulders Display","Arial Narrow",Impact,sans-serif;
+  --body:"Manrope",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --grain:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E");
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--ink);color:var(--text);font:15px/1.55 var(--body);-webkit-font-smoothing:antialiased}
+button,input,select{font:inherit;color:inherit}
+button{cursor:pointer}
+h1,h2,h3,p{margin:0}
+:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+.wrap{max-width:1320px;margin:0 auto;padding:0 16px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* ---------- Botones ---------- */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:12px;padding:12px 20px;font-weight:700;border:1px solid var(--line);background:var(--panel2);transition:border-color .2s,background .2s,filter .2s}
+.btn:hover{border-color:#3a4054}
+.btn.gold{background:var(--gold);border-color:var(--gold);color:var(--gold-ink)}
+.btn.gold:hover{filter:brightness(1.07)}
+.btn.gold[aria-pressed="true"]{background:transparent;color:var(--gold)}
+.btn.ghost{background:transparent}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+
+
+/* ---------- v8: Favoritos ---------- */
+.card .mini[aria-pressed="true"]{background:var(--gold);border-color:var(--gold);color:var(--gold-ink)}
+.fav-note{color:var(--muted);font-size:12px;margin-top:4px}
+@media(max-width:699px){.card .mini{padding:8px 10px}.dock .btn{min-height:44px}}
+
+/* ---------- Menú de opciones del detalle ---------- */
+.status-chip{display:inline-flex;width:max-content;margin-top:7px;padding:3px 9px;border-radius:99px;border:1px solid var(--gold);color:var(--gold);font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.06em}
+.favorite-detail.is-favorite{background:var(--gold);border-color:var(--gold);color:var(--gold-ink)}
+
+/* ---------- Sidebar móvil ---------- */
+.sidebar-overlay{position:fixed;inset:0;background:rgba(0,0,0,.58);backdrop-filter:blur(3px);z-index:70;opacity:0;pointer-events:none;transition:opacity .22s}
+.sidebar-overlay.open{opacity:1;pointer-events:auto}
+.sidebar{display:none;position:fixed;left:0;top:0;bottom:0;width:min(310px,86vw);z-index:71;background:var(--panel);border-right:1px solid var(--line);box-shadow:18px 0 50px rgba(0,0,0,.5);transform:translateX(-102%);transition:transform .28s cubic-bezier(.2,.8,.2,1);display:block}
+.sidebar.open{transform:none}
+.sidebar-head{height:74px;display:flex;align-items:center;justify-content:space-between;padding:0 18px;border-bottom:1px solid var(--line)}
+.sidebar-head b{font:900 26px/1 var(--display);text-transform:uppercase}.sidebar-head i{font-style:normal;color:var(--gold)}
+.sidebar-close{width:40px;height:40px;border-radius:50%;border:1px solid var(--line);background:var(--panel2);font-size:24px}
+.sidebar-nav{padding:16px 12px;display:grid;gap:5px}
+.sidebar-nav button{border:0;background:transparent;color:var(--text);text-align:left;border-radius:12px;padding:14px 14px;font:800 15px/1.2 var(--body);display:flex;justify-content:space-between;align-items:center}
+.sidebar-nav button:hover{background:var(--panel2);color:var(--gold)}
+.sidebar-nav span{color:var(--gold);font-size:12px}
+/* ---------- Póster generado ---------- */
+.art{position:relative;display:block;width:100%;aspect-ratio:3/4;border-radius:16px;overflow:hidden;background:var(--c);isolation:isolate;container-type:inline-size;text-align:left}
+.art::before{content:"";position:absolute;inset:0;background-image:var(--grain);opacity:.22;mix-blend-mode:overlay;z-index:0}
+.art::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.85),rgba(0,0,0,0) 58%);z-index:1}
+.mark{position:absolute;right:-4%;top:-3%;z-index:1;font:900 120px/.8 var(--display);font-size:62cqw;color:transparent;-webkit-text-stroke:1.5px rgba(255,255,255,.38);opacity:.75;user-select:none;pointer-events:none}
+.sheen{position:absolute;inset:0;z-index:2;opacity:0;transition:opacity .25s;background:radial-gradient(240px circle at var(--mx,50%) var(--my,30%),rgba(255,255,255,.2),transparent 62%);pointer-events:none}
+.ptitle{position:absolute;left:6%;right:6%;bottom:6%;z-index:3;display:block;font:900 30px/.9 var(--display);font-size:15cqw;text-transform:uppercase;letter-spacing:.01em;text-shadow:0 2px 14px rgba(0,0,0,.45)}
+.soldout{position:absolute;left:10px;top:10px;z-index:3;background:rgba(0,0,0,.65);border:1px solid var(--line);border-radius:99px;padding:3px 10px;font-size:12px;font-weight:700}
+
+/* ---------- Hero (PC) ---------- */
+.hero-wrap{padding-top:22px}
+.hero{position:relative;border:1px solid var(--line);border-radius:28px;overflow:hidden;background:var(--panel);transition:opacity .18s}
+.hero.out{opacity:0}
+.hero::before{content:"";position:absolute;inset:0;background:radial-gradient(70% 90% at 88% 30%,var(--glow),transparent 70%);opacity:.38;pointer-events:none}
+.hero::after{content:"";position:absolute;inset:0;background-image:var(--grain);opacity:.06;pointer-events:none}
+.hero-main{position:relative;z-index:1;display:grid;gap:22px;padding:22px 20px 8px}
+.hero-art{width:46%;max-width:190px;justify-self:center;order:-1;transform:rotate(-3deg);box-shadow:0 24px 60px -18px var(--glow)}
+.hero-meta{color:var(--muted);font-size:14px}
+.hero-title{font:900 clamp(44px,12vw,92px)/.9 var(--display);text-transform:uppercase;margin:8px 0 14px;letter-spacing:.005em}
+.hero-desc{color:#c9c9cf;max-width:52ch}
+.hero-buy{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin:20px 0 16px}
+.hero-price{font:800 34px/1 var(--body);color:var(--gold)}
+.hero-price small{font-size:14px;font-weight:700;margin-left:4px}
+.hero-disk{color:var(--muted)}
+.hero-actions{display:flex;flex-wrap:wrap;gap:10px}
+.thumbs{position:relative;z-index:1;display:flex;gap:10px;overflow-x:auto;padding:16px 20px 20px;scrollbar-width:none}
+.thumbs::-webkit-scrollbar{display:none}
+.thumb{flex:none;display:flex;align-items:center;gap:10px;background:rgba(7,8,12,.5);border:1px solid var(--line);border-radius:14px;padding:6px 14px 6px 6px;text-align:left}
+.thumb .art{width:36px;border-radius:8px}
+.thumb .mark,.thumb .ptitle,.thumb .sheen{display:none}
+.thumb span.t{font-size:13px;font-weight:700;white-space:nowrap}
+.thumb[aria-pressed="true"]{border-color:var(--gold)}
+
+/* ---------- Carrusel destacado (solo móvil) ---------- */
+.rail-wrap{display:none}
+
+/* ---------- Catálogo ---------- */
+.catalog{padding-top:44px}
+.cat-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:6px}
+.cat-head h2{font:900 36px/1 var(--display);text-transform:uppercase}
+.count{color:var(--muted)}
+.tabs{display:flex;gap:22px;overflow-x:auto;border-bottom:1px solid var(--line);scrollbar-width:none;margin:0 -16px;padding:0 16px}
+.tabs::-webkit-scrollbar{display:none}
+.tab{flex:none;background:none;border:0;border-bottom:2px solid transparent;padding:14px 0;color:var(--muted);font-weight:700}
+.tab small{margin-left:5px;font-weight:500}
+.tab:hover{color:var(--text)}
+.tab[aria-pressed="true"]{color:var(--text);border-bottom-color:var(--gold)}
+.tools{display:flex;flex-wrap:wrap;gap:12px 22px;align-items:center;padding:16px 0 22px}
+.tools label{display:flex;align-items:center;gap:10px;color:var(--muted);font-size:14px}
+.tools output{color:var(--text);font-weight:700;min-width:8ch}
+.tools input[type=range]{width:120px;accent-color:var(--gold)}
+.tools select{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:8px 12px}
+.more{display:contents}
+#filtersBtn{display:none}
+.switch input{appearance:none;-webkit-appearance:none;width:40px;height:23px;border-radius:99px;background:var(--panel2);border:1px solid var(--line);position:relative;transition:background .2s;margin:0}
+.switch input::after{content:"";position:absolute;top:2px;left:2px;width:17px;height:17px;border-radius:50%;background:var(--muted);transition:transform .2s,background .2s}
+.switch input:checked{background:var(--gold);border-color:var(--gold)}
+.switch input:checked::after{transform:translateX(17px);background:var(--gold-ink)}
+
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px 12px;padding-bottom:40px}
+.card{min-width:0}
+.poster-btn{display:block;width:100%;padding:0;border:1px solid var(--line);border-radius:17px;background:none;transition:border-color .2s,transform .2s}
+.poster-btn:hover{border-color:var(--gold);transform:translateY(-3px)}
+.poster-btn .art{border-radius:15px}
+.card .info{padding:12px 2px 0}
+.card h3{font-size:15px;line-height:1.3;font-weight:800}
+.sub{color:var(--muted);font-size:13px;margin-top:2px}
+.foot{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:10px}
+.price{font-weight:800;color:var(--gold);font-size:17px}
+.price small{font-size:11px;font-weight:700;margin-left:3px}
+.mini{border:1px solid var(--line);background:var(--panel2);border-radius:10px;padding:7px 11px;font-size:13px;font-weight:700;transition:border-color .2s,background .2s}
+.mini:hover{border-color:var(--gold)}
+.mini[aria-pressed="true"]{background:var(--gold);border-color:var(--gold);color:var(--gold-ink)}
+.mini:disabled{opacity:.4;cursor:not-allowed}
+
+.empty{grid-column:1/-1;text-align:center;padding:56px 18px;border:1px dashed var(--line);border-radius:20px}
+.empty b{display:block;font-size:19px;margin-bottom:6px}
+.empty p{color:var(--muted);margin-bottom:18px}
+
+.contact{display:flex;flex-wrap:wrap;gap:16px;align-items:center;justify-content:space-between;background:var(--panel);border:1px solid var(--line);border-radius:22px;padding:24px;margin-bottom:44px}
+.contact b{display:block;font:900 28px/1 var(--display);text-transform:uppercase;margin-bottom:4px}
+.contact span{color:var(--muted)}
+footer{border-top:1px solid var(--line);padding:22px 0 40px;color:var(--muted);font-size:13px}
+footer .wrap{display:flex;flex-wrap:wrap;gap:6px 24px;justify-content:space-between}
+
+/* ---------- Barra flotante de la lista (solo móvil) ---------- */
+.dock{display:none}
+
+/* ---------- Sidebar móvil ---------- */
+.sidebar-overlay{display:none}
+.sidebar{display:none}
+/* ---------- Mi colección ---------- */
+.collection-tabs{display:flex;gap:6px;overflow:auto;padding:0 22px 12px;border-bottom:1px solid var(--line);scrollbar-width:none}
+.collection-tabs::-webkit-scrollbar{display:none}
+.collection-tab{flex:none;border:1px solid var(--line);background:rgba(255,255,255,.025);color:var(--muted);border-radius:999px;padding:8px 12px;font:800 12px/1 var(--body)}
+.collection-tab[aria-pressed="true"]{background:rgba(217,184,114,.12);border-color:rgba(217,184,114,.38);color:var(--gold)}
+.collection-tab span{margin-left:3px;opacity:.8}
+.collection-count{color:var(--muted);font-size:12px}
+.collection-list{flex:1;min-height:0;overflow:auto;padding:8px 22px;list-style:none;margin:0}
+.collection-empty{padding:44px 22px;text-align:center;color:var(--muted);line-height:1.6}
+.collection-empty b{display:block;color:var(--text);font-size:18px;margin-bottom:6px}
+
+/* ---------- Diálogos ---------- */
+dialog{border:1px solid var(--line);padding:0;background:var(--panel);color:var(--text);border-radius:24px;max-width:min(880px,calc(100% - 24px));width:100%;max-height:calc(100dvh - 24px);overflow:hidden}
+dialog::backdrop{background:rgba(0,0,0,.72);backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px)}
+dialog[open]{animation:pop .22s ease}
+@keyframes pop{from{opacity:0;transform:translateY(14px) scale(.98)}to{opacity:1;transform:none}}
+.close{position:absolute;right:12px;top:12px;z-index:5;width:40px;height:40px;border-radius:50%;border:1px solid var(--line);background:rgba(7,8,12,.7);font-size:20px;line-height:1}
+.close:hover{border-color:var(--gold)}
+.detail{display:grid;grid-template-columns:1fr;max-height:calc(100dvh - 26px);overflow:auto;position:relative}
+.detail-art{padding:20px 20px 0;display:grid;place-items:center}
+.detail-art .art{width:min(52%,210px);box-shadow:0 24px 60px -20px var(--glow)}
+.detail-body{padding:20px 22px 24px}
+.detail-body h2{font:900 clamp(34px,9vw,54px)/.92 var(--display);text-transform:uppercase}
+.detail-body .sub{margin-top:8px;font-size:14px}
+.detail-body .desc{color:#c9c9cf;margin:14px 0 18px}
+.specs{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.specs div{background:var(--panel2);padding:12px}
+.specs span{display:block;color:var(--muted);font-size:12px}
+.specs b{font-size:16px}
+.requirements{margin-top:18px;border:1px solid var(--line);border-radius:16px;overflow:hidden;background:var(--panel)}
+.req-head{padding:13px 15px;border-bottom:1px solid var(--line);font-weight:900;text-transform:uppercase;letter-spacing:.06em;font-size:12px;color:var(--muted)}
+.req-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line)}
+.req{background:var(--panel2);padding:14px 15px;min-width:0}
+.req h4{margin:0 0 8px;font-size:14px}
+.req p{margin:0;color:#c9c9cf;font-size:13px;line-height:1.55;white-space:pre-line}
+.req.missing{grid-column:1/-1}
+.req.missing p{color:var(--muted)}
+.meter{height:6px;background:var(--panel2);border-radius:4px;margin:16px 0 4px;overflow:hidden}
+.meter i{display:block;height:100%;background:var(--gold);border-radius:4px}
+.meter-note{color:var(--muted);font-size:12px}
+.detail-buy{display:flex;align-items:baseline;justify-content:space-between;margin:20px 0 14px}
+.detail-buy .big{font:800 32px/1 var(--body);color:var(--gold)}
+.detail-buy .big small{font-size:14px;margin-left:4px}
+.detail-actions{display:grid;gap:10px}
+
+dialog.drawer{margin:0 0 0 auto;height:100dvh;max-height:none;max-width:min(440px,100%);border-radius:24px 0 0 24px;border-right:0}
+dialog.drawer[open]{animation:slide .25s ease}
+@keyframes slide{from{transform:translateX(30px);opacity:0}to{transform:none;opacity:1}}
+.drawer-in{display:flex;flex-direction:column;height:100%}
+.drawer-head{padding:20px 22px;border-bottom:1px solid var(--line)}
+.drawer-head h2{font:900 32px/1 var(--display);text-transform:uppercase}
+.drawer-list{flex:1;min-height:0;overflow:auto;padding:8px 22px;list-style:none;margin:0}
+.item{display:flex;align-items:center;gap:12px;padding:14px 0;border-bottom:1px solid var(--line)}
+.item .art{width:46px;border-radius:9px;flex:none}
+.item .mark,.item .ptitle,.item .sheen,.item .soldout{display:none}
+.item .meta{flex:1;min-width:0}
+.item .meta b{display:block;font-size:14px;line-height:1.3}
+.item .meta span{color:var(--muted);font-size:12px}
+.item .p{font-weight:800;color:var(--gold);font-size:14px;white-space:nowrap}
+.item .rm{background:none;border:0;color:var(--muted);font-size:13px;padding:6px}
+.item .rm:hover{color:var(--text)}
+.drawer-empty{padding:50px 22px;text-align:center;color:var(--muted)}
+.drawer-foot{padding:18px 22px calc(18px + env(safe-area-inset-bottom));border-top:1px solid var(--line);display:grid;gap:10px}
+.totals{display:flex;justify-content:space-between;align-items:baseline}
+.totals b{font:800 24px/1 var(--body);color:var(--gold)}
+.totals span{color:var(--muted);font-size:13px}
+
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom));z-index:60;transform:translate(-50%,20px);background:var(--text);color:var(--ink);padding:12px 18px;border-radius:12px;font-weight:700;font-size:14px;opacity:0;pointer-events:none;transition:.2s;max-width:90vw;text-align:center}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+
+/* ---------- Pantallas grandes (sin cambios) ---------- */
+@media(min-width:700px){
+  .wrap{padding:0 28px}
+  .tabs{margin:0;padding:0}
+  .grid{grid-template-columns:repeat(3,1fr);gap:26px 18px}
+  .hero-main{grid-template-columns:1.25fr .75fr;align-items:center;padding:44px 44px 12px;gap:30px}
+  .hero-art{order:0;width:100%;max-width:300px;justify-self:end;margin-right:6%}
+  .thumbs{padding:20px 44px 28px}
+  .detail{grid-template-columns:300px 1fr;align-items:center}
+  .detail-art{padding:30px}
+  .detail-art .art{width:100%}
+  .detail-body{padding:36px 36px 36px 8px}
+  .detail-actions{grid-template-columns:1fr 1fr}
+}
+@media(min-width:1020px){ .grid{grid-template-columns:repeat(4,1fr)} }
+@media(min-width:1280px){ .grid{grid-template-columns:repeat(5,1fr)} }
+@media(hover:none){ .sheen{display:none} }
+
+/* =========================================================
+   MÓVIL (menos de 700px): diseño propio tipo app
+   ========================================================= */
+@media(max-width:699px){
+  body.has-dock{padding-bottom:92px}
+
+  .sidebar{display:block}
+  .sidebar-overlay{display:block}
+  body.sidebar-open{overflow:hidden}
+
+  /* En móvil también se conserva el gran destacado: mismo concepto que PC, adaptado a pantalla vertical */
+  .hero-wrap{display:block;padding:14px 16px 0}
+  .hero-wrap + .rail-wrap{display:none}
+  .hero{border-radius:24px;box-shadow:0 24px 60px -32px var(--glow)}
+  .hero-main{grid-template-columns:1fr;gap:16px;padding:20px 18px 16px}
+  .hero-art{order:-1;width:62%;max-width:230px;justify-self:center;margin:0 auto;transform:rotate(-2deg);box-shadow:0 22px 50px -20px var(--glow)}
+  .hero-meta{font-size:12px}
+  .hero-title{font-size:clamp(40px,12vw,62px);line-height:.88;margin:7px 0 12px}
+  .hero-desc{font-size:14px;line-height:1.5;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+  .hero-buy{margin:16px 0 14px}
+  .hero-price{font-size:29px}
+  .hero-actions{gap:8px}
+  .hero-actions .btn{min-height:44px}
+  .thumbs{display:flex;padding:12px 14px 14px;gap:8px}
+  .thumb{padding:5px 10px 5px 5px}
+  .thumb .art{width:30px}
+  .thumb span.t{font-size:12px}
+  .rail-wrap{display:none}
+
+  /* El antiguo carrusel móvil queda como fallback visual si algún contenido externo lo utiliza */
+  .feat{position:relative}
+  .fopen{position:absolute}
+  .fbody{position:relative}
+  .dots{display:none}
+  .dot{width:6px;height:6px;border-radius:99px;background:var(--line);transition:width .2s,background .2s}
+  .dot.on{width:20px;background:var(--gold)}
+
+  /* Catálogo */
+  .catalog{padding-top:22px}
+  .cat-head h2{font-size:30px}
+  .tabs{gap:8px;border-bottom:0;padding:6px 16px 8px;margin:0 -16px}
+  .tab{border:1px solid var(--line);border-radius:999px;padding:9px 15px;background:var(--panel);color:var(--text)}
+  .tab small{color:var(--muted)}
+  .tab[aria-pressed="true"]{background:var(--gold);border-color:var(--gold);color:var(--gold-ink)}
+  .tab[aria-pressed="true"] small{color:var(--gold-ink)}
+
+  /* Filtros plegables */
+  .tools{padding:8px 0 6px;gap:10px}
+  #filtersBtn{display:inline-flex;order:1;padding:10px 16px;min-height:44px}
+  #filtersBtn[aria-expanded="true"]{border-color:var(--gold)}
+  .tools select{order:2;margin-left:auto;height:44px;padding:0 12px}
+  .more{display:none;order:3;flex:1 1 100%;flex-direction:column;gap:16px;background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:16px}
+  .more.open{display:flex}
+  .more label{justify-content:space-between}
+  .more .switch{color:var(--text)}
+  .more .range-label{display:grid;grid-template-columns:auto 1fr auto;gap:12px}
+  .tools input[type=range]{width:100%}
+
+  /* Lista en filas */
+  .grid{grid-template-columns:1fr;gap:0;padding-bottom:30px}
+  .card{display:grid;grid-template-columns:96px 1fr;gap:14px;padding:14px 0;border-bottom:1px solid var(--line);align-items:stretch}
+  .card:last-child{border-bottom:0}
+  .poster-btn{align-self:start;border-radius:15px}
+  .poster-btn .art{border-radius:14px}
+  .card .info{padding:0;display:flex;flex-direction:column;min-width:0}
+  .card h3{font-size:16px}
+  .foot{margin-top:auto;padding-top:10px}
+  .mini{padding:9px 14px;min-height:40px;font-size:13px}
+
+  .contact{padding:20px;margin-bottom:30px}
+  .contact b{font-size:26px}
+  .contact .btn{width:100%}
+
+  /* Barra flotante */
+  .dock.show{display:block;position:fixed;left:12px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom));z-index:30;background:rgba(21,24,33,.96);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid #33384a;border-radius:20px;padding:10px 10px 10px 18px;box-shadow:0 16px 44px rgba(0,0,0,.55);animation:up .25s ease}
+  @keyframes up{from{transform:translateY(24px);opacity:0}to{transform:none;opacity:1}}
+  .dock-in{display:flex;align-items:center;justify-content:space-between;gap:12px}
+  .dock b{display:block;font-size:15px;line-height:1.2}
+  .dock span{color:var(--muted);font-size:12px}
+  .dock .btn{padding:12px 20px}
+  .toast{bottom:calc(96px + env(safe-area-inset-bottom))}
+
+  /* Diálogos como hojas inferiores */
+  dialog{max-width:100%;width:100%;margin:auto 0 0;border-radius:28px 28px 0 0;border-bottom:0;max-height:92dvh}
+  dialog[open]{animation:sheet .3s cubic-bezier(.2,.8,.2,1)}
+  @keyframes sheet{from{transform:translateY(60px);opacity:0}to{transform:none;opacity:1}}
+  dialog.drawer{margin:auto 0 0;height:auto;max-height:88dvh;max-width:100%;border-radius:28px 28px 0 0;border-right:1px solid var(--line)}
+  dialog.drawer[open]{animation:sheet .3s cubic-bezier(.2,.8,.2,1)}
+  .drawer-in{height:auto;max-height:88dvh}
+  .drawer-head{padding:22px 20px 16px}
+  .drawer-list{padding:0 20px}
+  .drawer-foot{padding:16px 20px calc(16px + env(safe-area-inset-bottom))}
+
+  .detail{max-height:92dvh}
+  .detail-art{padding:0}
+  .detail-art .art{aspect-ratio:16/9;border-radius:0;box-shadow:none;width:100%}
+  .detail-art .art .ptitle{display:none}
+  .detail-art .art .mark{font-size:70cqw;right:-2%;top:-14%}
+  .detail-body{padding:18px 20px 0}
+  .detail-body h2{font-size:40px}
+  .detail-buy{margin:18px 0 6px}
+  .detail-actions{position:sticky;bottom:0;grid-template-columns:1.15fr 1fr;background:var(--panel);padding:12px 0 calc(14px + env(safe-area-inset-bottom));margin-top:8px}
+  .detail-actions .btn{padding:14px 8px;font-size:14px;min-height:48px}
+  .close{background:rgba(7,8,12,.6)}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{transition:none!important;animation:none!important}
+}
+
+/* ===== HYBRID OVERRIDES ===== */
+.art{position:relative}
+.art>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0}
+.art-shade{position:absolute;inset:0;z-index:1;background:linear-gradient(to top,rgba(0,0,0,.88),rgba(0,0,0,.04) 65%)}
+.art .mark,.art .sheen,.art .soldout,.art .ptitle{z-index:3}
+.art .sheen{opacity:0}
+#notice{padding-top:10px}
+#notice:empty{display:none}
+.nt{margin:10px 0;padding:10px 14px;border:1px solid var(--line);border-radius:12px;background:var(--panel);color:var(--muted)}
+.more-wrap{display:flex;justify-content:center;padding:4px 0 34px}
+.more-wrap[hidden]{display:none}
+#moreFilters{align-items:stretch}
+#moreFilters label{display:flex;align-items:center;gap:10px}
+#moreFilters select{min-width:150px}
+#moreFilters .range-label{display:grid;grid-template-columns:auto minmax(120px,1fr) auto;gap:10px;align-items:center}
+#moreFilters input[type=range]{accent-color:var(--gold)}
+#moreFilters output{color:var(--text);font-weight:700}
+@media(min-width:700px){
+  #moreFilters{flex-direction:row;flex-wrap:wrap;align-items:center}
+  #moreFilters .btn{margin-left:auto}
+}
+@media(max-width:699px){
+  #moreFilters label{justify-content:space-between}
+  #moreFilters select{flex:1;max-width:220px}
+  #moreFilters .range-label{grid-template-columns:auto 1fr auto}
+}
+
+/* ===== PRÓXIMAMENTE ===== */
+.soon-tag{position:absolute;left:10px;top:10px;z-index:3;background:var(--gold);color:var(--gold-ink);border-radius:99px;padding:3px 10px;font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase}
+.thumb .soon-tag,.item .soon-tag{display:none}
+.hero-flag{display:inline-flex;align-items:center;gap:8px;background:var(--gold);color:var(--gold-ink);border-radius:99px;padding:5px 12px;font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;margin-bottom:12px}
+.hero-flag::before{content:"";width:8px;height:8px;border-radius:50%;background:currentColor;animation:soonPulse 1.6s ease-in-out infinite}
+@keyframes soonPulse{50%{opacity:.25}}
+.hero-soon{font:900 46px/1 var(--display);color:var(--gold);text-transform:uppercase}
+.hero-soon b{font-size:1.3em;margin-right:4px}
+.soon-price{font-size:12px;letter-spacing:.05em;text-transform:uppercase}
+.soon-big{font-size:26px}
+@media(max-width:699px){ .hero-soon{font-size:38px} .poster-btn .soon-tag{left:6px;top:6px;font-size:8px;padding:2px 7px;letter-spacing:.04em} }
+
+/* ===== CAPTURAS EN EL DETALLE (antes sin estilos: se dibujaban a tamaño original y rompían el ancho) ===== */
+.detail>*{min-width:0}
+.detail-body{min-width:0}
+.shots{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:20px}
+.shot{display:block;aspect-ratio:16/9;border-radius:10px;overflow:hidden;border:1px solid var(--line);background:var(--panel2)}
+.shot img{display:block;width:100%;height:100%;object-fit:cover;transition:transform .25s}
+.shot:hover img{transform:scale(1.04)}
+
+
+
+
+
+
+
+/* =========================================================
+   v14 FIX — COLECCIÓN + CONTENCIÓN RESPONSIVE
+   ========================================================= */
+.collection-list{min-width:0;overflow-x:hidden}
+.collection-list .item{display:grid;grid-template-columns:46px minmax(0,1fr);align-items:center;min-width:0;width:100%;max-width:100%;box-sizing:border-box;overflow:hidden}
+.collection-list .poster-btn{display:block;width:46px;min-width:46px;max-width:46px;height:62px;flex:0 0 46px;padding:0;border:0;border-radius:9px;align-self:center;overflow:hidden}
+.collection-list .poster-btn:hover{transform:none}
+.collection-list .poster-btn .art{width:46px;height:auto;aspect-ratio:3/4;border-radius:9px}
+.collection-list .meta{min-width:0;max-width:100%;overflow:hidden}
+.collection-list .meta b,.collection-list .meta span{display:block;min-width:0;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.collection-list .item{gap:12px}
+@media(max-width:699px){
+  dialog.drawer{width:100%;max-width:100%;overflow:hidden}
+  .drawer-in{min-width:0;width:100%;overflow:hidden}
+  .drawer-head{min-width:0}
+  .drawer-head h2{padding-right:52px}
+  .collection-tabs{max-width:100%;overflow-x:auto}
+  .collection-list{padding-left:20px;padding-right:20px}
+  .collection-list .item{min-height:82px}
+}
+/* Keep the main catalog from ever creating a horizontal page overflow. */
+html,body{max-width:100%}html{overflow-x:hidden}body{overflow-x:clip}
+
+
+
+/* =========================================================
+   HEADER v16 — barra de navegación solo texto (sin SVG)
+   Móvil: [Javier PC | ☰] [buscador]
+   PC:    [Javier PC | ☰] [buscador] ........ Favoritos  Colección  Lista  Contacto
+   ========================================================= */
+.site-header{position:sticky;top:0;z-index:20;width:100%;background:linear-gradient(180deg,rgba(10,12,18,.78),rgba(10,12,18,.58));border-bottom:1px solid rgba(255,255,255,.075);box-shadow:0 10px 34px rgba(0,0,0,.16);backdrop-filter:blur(22px) saturate(125%);-webkit-backdrop-filter:blur(22px) saturate(125%);transition:background .22s,box-shadow .22s}
+.site-header::before{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,rgba(217,184,114,.035),transparent 28%,transparent 72%,rgba(255,255,255,.018))}
+body.scrolled-down .site-header{background:rgba(7,9,14,.90);box-shadow:0 12px 34px rgba(0,0,0,.28)}
+.site-header .bar{position:relative;box-sizing:border-box;min-width:0;display:grid;grid-template-columns:auto minmax(0,1fr);grid-template-areas:"brand search";align-items:center;gap:12px;min-height:58px;padding-top:8px;padding-bottom:8px}
+
+/* Marca: "Javier PC" y la ☰ ocupan la misma celda y al bajar solo hay fundido (nada se mueve) */
+.brand{grid-area:brand;position:relative;z-index:1;display:grid;align-items:center;justify-items:start;height:42px;width:var(--brand-w,auto);overflow:hidden;transition:width .28s cubic-bezier(.2,.8,.2,1);margin:0;padding:0;border:0;background:transparent;color:inherit;cursor:pointer}
+.brand-word{grid-area:1/1;display:block;font:900 26px/1 var(--display);letter-spacing:.03em;text-transform:uppercase;white-space:nowrap;color:var(--text);transition:opacity .2s}
+.brand-word i{font-style:normal;color:var(--gold)}
+.hamburger{grid-area:1/1;display:flex;flex-direction:column;justify-content:space-between;width:24px;height:18px;opacity:0;pointer-events:none;transition:opacity .2s}
+.hamburger span{display:block;height:2px;width:100%;border-radius:2px;background:currentColor}
+body.scrolled-down .brand{width:34px}
+body.scrolled-down .brand-word{opacity:0}
+body.scrolled-down .hamburger{opacity:1}
+
+/* Buscador (siempre visible) */
+.search{grid-area:search;display:block;position:relative;width:100%;min-width:0;margin:0}
+.search input{display:block;width:100%;height:42px;margin:0;appearance:none;-webkit-appearance:none;border:1px solid rgba(255,255,255,.09);border-radius:14px;background:rgba(14,16,22,.62);box-shadow:inset 0 1px 0 rgba(255,255,255,.025),0 8px 24px rgba(0,0,0,.10);color:var(--text);padding:0 44px 0 16px;font:500 14px/1 var(--body);text-align:left;text-overflow:ellipsis;outline:none}
+.search input:focus{border-color:rgba(217,184,114,.65);box-shadow:0 0 0 3px rgba(217,184,114,.08),inset 0 1px 0 rgba(255,255,255,.035)}
+.search input::placeholder{color:var(--muted);opacity:1}
+.search input::-webkit-search-cancel-button,.search input::-webkit-search-decoration{-webkit-appearance:none;display:none}
+.search-clear{position:absolute;right:8px;top:50%;transform:translateY(-50%);width:28px;height:28px;padding:0;border:0;border-radius:50%;background:rgba(255,255,255,.08);color:var(--text);font:400 20px/1 var(--body);display:grid;place-items:center}
+.search-clear[hidden]{display:none}
+.search kbd{display:none;position:absolute;right:12px;top:50%;transform:translateY(-50%);font:700 11px/1 var(--body);color:var(--muted);border:1px solid var(--line);border-radius:6px;padding:4px 7px;pointer-events:none}
+.search-clear:not([hidden]) ~ kbd{display:none!important}
+
+/* Barra de navegación: solo PC / tablet; en móvil todo vive en el menú ☰ */
+.desktop-nav{grid-area:nav;display:none;justify-self:end;align-items:center;gap:22px;min-width:0}
+.nav-link{position:relative;display:inline-flex;align-items:baseline;gap:6px;height:42px;padding:0;border:0;border-radius:0;background:transparent;color:var(--text);font:700 14px/42px var(--body);white-space:nowrap;cursor:pointer;opacity:.82;transition:opacity .15s,color .15s}
+.nav-link::after{content:"";position:absolute;left:0;right:0;bottom:6px;height:2px;border-radius:2px;background:var(--gold);transform:scaleX(0);transform-origin:left;transition:transform .2s}
+.nav-link:hover,.nav-link:focus-visible{opacity:1;color:var(--gold)}
+.nav-link:hover::after,.nav-link:focus-visible::after{transform:scaleX(1)}
+.nav-link .badge{color:var(--gold);font:800 12px/1 var(--body)}
+.nav-link .badge[hidden]{display:none}
+
+@media(min-width:700px){
+  .site-header .bar{grid-template-columns:auto minmax(150px,1fr) auto;grid-template-areas:"brand search nav";gap:16px}
+  .search{max-width:420px}
+  .desktop-nav{display:flex}
+  .brand-word{font-size:29px}
+}
+@media(min-width:700px) and (max-width:899px){ .desktop-nav{gap:16px} .nav-link{font-size:13px} }
+@media(min-width:880px){ .search kbd{display:block} }
+@media(max-width:699px){
+  .site-header .bar{gap:10px;padding-left:14px;padding-right:14px}
+  .brand-word{font-size:24px}
+}
+
+/* =========================================================
+   v16 — Botones suaves · Lista destacada · Bienvenida · Dinamismo
+   ========================================================= */
+/* Botones más suaves (píldora, borde tenue, elevación sutil) */
+.btn{border-radius:999px;padding:12px 22px;border-color:rgba(255,255,255,.10);background:rgba(255,255,255,.045);transition:transform .18s,box-shadow .2s,border-color .2s,background .2s}
+.btn:hover{border-color:rgba(255,255,255,.18);background:rgba(255,255,255,.08);transform:translateY(-1px)}
+.btn:active{transform:scale(.985)}
+.btn.ghost{background:transparent}
+.btn.gold{background:linear-gradient(180deg,#e6c987,#d4b066);border-color:transparent;color:var(--gold-ink);box-shadow:0 10px 24px -12px rgba(217,184,114,.7)}
+.btn.gold:hover{filter:none;background:linear-gradient(180deg,#ecd291,#d9b872);box-shadow:0 14px 28px -12px rgba(217,184,114,.85)}
+.btn.gold[aria-pressed="true"]{background:rgba(217,184,114,.10);border:1px solid rgba(217,184,114,.4);color:var(--gold);box-shadow:none}
+.mini{border-radius:999px;padding:7px 14px;border-color:rgba(255,255,255,.10);background:rgba(255,255,255,.05);transition:border-color .2s,background .2s,transform .18s}
+.mini:hover{border-color:rgba(217,184,114,.55);background:rgba(217,184,114,.08)}
+.mini[aria-pressed="true"]{background:linear-gradient(180deg,#e6c987,#d4b066);border-color:transparent}
+.tools select{border-radius:999px;padding:8px 16px;border-color:rgba(255,255,255,.10)}
+.search input{border-radius:999px;padding-left:18px}
+
+/* Lista destacada en PC: píldora dorada con contador y pequeño "rebote" al agregar */
+.nav-link.nav-list{align-items:center;height:38px;padding:0 8px 0 18px;line-height:1;border-radius:999px;color:var(--gold-ink);font-weight:800;opacity:1;background:linear-gradient(180deg,#e6c987,#d4b066);box-shadow:0 10px 24px -12px rgba(217,184,114,.75);transition:transform .18s,box-shadow .2s}
+.nav-link.nav-list::after{display:none}
+.nav-link.nav-list:hover,.nav-link.nav-list:focus-visible{color:var(--gold-ink);transform:translateY(-1px);box-shadow:0 14px 28px -12px rgba(217,184,114,.9)}
+.nav-link.nav-list:not(:has(.badge:not([hidden]))){padding-right:18px}
+.nav-list .badge{display:inline-grid;place-items:center;min-width:22px;height:22px;padding:0 7px;border-radius:99px;background:var(--gold-ink);color:var(--gold);font:800 12px/1 var(--body)}
+.nav-list .badge[hidden]{display:none}
+@keyframes bump{0%{transform:scale(1)}40%{transform:scale(1.1)}100%{transform:scale(1)}}
+.nav-list.bump{animation:bump .45s ease}
+
+.catalog{scroll-margin-top:72px}
+@media(max-width:699px){.search input{height:44px;padding-left:18px}}
+
+/* Las tarjetas del catálogo aparecen suavemente al entrar en pantalla (sin JS) */
+@supports (animation-timeline:view()){
+  @keyframes cardIn{from{opacity:0;translate:0 22px}to{opacity:1;translate:0 0}}
+  .grid .card{animation:cardIn linear both;animation-timeline:view();animation-range:entry 0% entry 38%}
+}
+@media(prefers-reduced-motion:reduce){
+  .grid .card{animation:none!important}
+}
+
+/* Tarjeta de bienvenida (se abre sola la primera vez) */
+dialog.welcome-card{margin:auto;width:min(520px,calc(100% - 28px));max-width:none;max-height:calc(100dvh - 28px);border-radius:28px;border:1px solid rgba(255,255,255,.10);background:radial-gradient(90% 60% at 50% -10%,rgba(217,184,114,.16),transparent 65%),var(--panel);box-shadow:0 40px 90px -30px rgba(0,0,0,.8)}
+dialog.welcome-card[open]{animation:wcIn .4s cubic-bezier(.2,.8,.2,1)}
+@keyframes wcIn{from{opacity:0;transform:translateY(20px) scale(.97)}to{opacity:1;transform:none}}
+.wc-in{display:flex;flex-direction:column;max-height:calc(100dvh - 28px)}
+.wc-body{overflow:auto;min-height:0;padding:28px 26px 8px;-webkit-overflow-scrolling:touch}
+.wc-eyebrow{display:inline-flex;align-items:center;gap:9px;font:800 12px/1 var(--body);letter-spacing:.14em;text-transform:uppercase;color:var(--gold)}
+.wc-eyebrow::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--gold);animation:wcPulse 2.4s ease-out infinite}
+@keyframes wcPulse{0%{box-shadow:0 0 0 0 rgba(217,184,114,.6)}70%,100%{box-shadow:0 0 0 9px rgba(217,184,114,0)}}
+.wc-title{margin:12px 0 8px;font:900 clamp(34px,8vw,44px)/.98 var(--display);text-transform:uppercase}
+.wc-title em{font-style:normal;color:var(--gold)}
+.wc-intro{color:var(--muted);font-size:15px}
+.wc-steps{list-style:none;margin:20px 0 6px;padding:0;display:grid;gap:14px;counter-reset:wc}
+.wc-steps li{display:grid;grid-template-columns:30px 1fr;gap:12px;align-items:start;counter-increment:wc;animation:wcStep .5s cubic-bezier(.2,.8,.2,1) both}
+.wc-steps li::before{content:counter(wc);display:grid;place-items:center;width:30px;height:30px;border-radius:50%;background:rgba(217,184,114,.12);border:1px solid rgba(217,184,114,.28);color:var(--gold);font:800 13px/1 var(--body)}
+.wc-steps b{display:block;font-size:15px;line-height:1.3}
+.wc-steps span{display:block;color:var(--muted);font-size:13.5px;line-height:1.45;margin-top:2px}
+dialog[open] .wc-steps li:nth-child(1){animation-delay:.12s}dialog[open] .wc-steps li:nth-child(2){animation-delay:.18s}dialog[open] .wc-steps li:nth-child(3){animation-delay:.24s}dialog[open] .wc-steps li:nth-child(4){animation-delay:.30s}dialog[open] .wc-steps li:nth-child(5){animation-delay:.36s}dialog[open] .wc-steps li:nth-child(6){animation-delay:.42s}
+@keyframes wcStep{from{opacity:0;translate:0 10px}to{opacity:1;translate:0 0}}
+.wc-note{margin-top:14px;color:var(--muted);font-size:12px;opacity:.85}
+.wc-foot{padding:16px 26px calc(20px + env(safe-area-inset-bottom));background:linear-gradient(180deg,transparent,rgba(0,0,0,.18))}
+.wc-foot .btn{width:100%;min-height:48px;font-size:15px}
+.linklike{background:none;border:0;padding:0;color:var(--gold);font:700 13px/1 var(--body);cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+@media(prefers-reduced-motion:reduce){dialog.welcome-card[open],.wc-steps li,.wc-eyebrow::before{animation:none!important}}
+
+/* Check dibujado con CSS (sin SVG ni caracteres) */
+[data-toggle][aria-pressed="true"]::before,[data-favorite][aria-pressed="true"]::before,.detail-menu button[aria-pressed="true"]::before{content:"";display:inline-block;flex:none;width:5px;height:10px;margin:0 9px 3px 1px;border:solid currentColor;border-width:0 2px 2px 0;border-radius:1px;transform:rotate(45deg)}
+/* Favorito activado: dorado suave con texto dorado (antes quedaba texto oscuro sobre fondo oscuro) */
+.btn.favorite-detail.is-favorite,.btn.favorite-detail.is-favorite:hover{background:rgba(217,184,114,.12);border-color:rgba(217,184,114,.5);color:var(--gold);box-shadow:none}
+
+
+/* Barra superior del detalle: Volver (izquierda) · tres puntos (derecha) */
+.detail-top{position:sticky;top:0;z-index:8;grid-column:1/-1;height:0}
+.detail-back{position:absolute;left:14px;top:14px;width:42px;height:42px;padding:0;display:grid;place-items:center;border-radius:50%;border:1px solid rgba(255,255,255,.12);background:rgba(10,12,18,.62);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);color:var(--text);cursor:pointer;transition:border-color .2s,background .2s,color .2s,transform .2s}.detail-back svg{width:21px;height:21px;display:block;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}.detail-back:hover{border-color:rgba(217,184,114,.55);background:rgba(10,12,18,.78);color:var(--gold)}
+.detail-back:hover,.detail-back:focus-visible{border-color:rgba(217,184,114,.5);color:var(--gold)}
+.detail-back .chev{width:8px;height:8px;margin:0 2px 0 4px;border:solid currentColor;border-width:0 0 2px 2px;transform:rotate(45deg)}
+.detail-menu-wrap{position:absolute;right:14px;top:14px}
+.detail-menu-btn{display:grid;place-items:center;width:40px;height:40px;padding:0;border-radius:50%;border:1px solid rgba(255,255,255,.12);background:rgba(10,12,18,.62);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);color:var(--text);cursor:pointer;transition:border-color .2s,color .2s}
+.detail-menu-btn:hover,.detail-menu-btn:focus-visible,.detail-menu-btn[aria-expanded="true"]{border-color:rgba(217,184,114,.5);color:var(--gold)}
+.dots{display:grid;gap:3px}
+.dots i{display:block;width:4px;height:4px;border-radius:50%;background:currentColor}
+.detail-menu{position:absolute;right:0;top:48px;min-width:196px;padding:7px;border:1px solid rgba(255,255,255,.12);border-radius:18px;background:rgba(15,18,25,.92);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);box-shadow:0 22px 55px rgba(0,0,0,.55);display:grid;gap:2px;animation:pop .16s ease}
+.detail-menu[hidden]{display:none}
+.detail-menu button{display:flex;align-items:center;border:0;background:transparent;color:var(--text);padding:11px 14px;text-align:left;border-radius:12px;font:700 13.5px/1.2 var(--body);cursor:pointer}
+.detail-menu button:hover{background:rgba(255,255,255,.07);color:var(--gold)}
+.detail-menu button[aria-pressed="true"]{color:var(--gold);background:rgba(217,184,114,.09)}
+.dm-sep{height:1px;margin:5px 8px;background:rgba(255,255,255,.08)}
+.dm-label{padding:6px 14px 4px;color:var(--muted);font:800 10.5px/1 var(--body);letter-spacing:.12em;text-transform:uppercase}
+
+/* ---------- Botón flotante de la lista (circular, dorado, movible) ---------- */
+.list-fab{position:fixed;left:16px;bottom:calc(20px + env(safe-area-inset-bottom));z-index:40;width:58px;height:58px;padding:0;border:0;border-radius:50%;display:none;place-items:center;background:linear-gradient(180deg,#e6c987,#d4b066);color:var(--gold-ink);box-shadow:0 14px 30px -10px rgba(217,184,114,.75),0 6px 16px rgba(0,0,0,.45);touch-action:none;cursor:grab;user-select:none;-webkit-user-select:none;-webkit-tap-highlight-color:transparent;transition:box-shadow .2s,scale .18s}
+.list-fab.show{display:grid;animation:fabIn .28s cubic-bezier(.2,.8,.2,1)}
+.list-fab.dragging{cursor:grabbing;scale:1.08;box-shadow:0 20px 38px -10px rgba(217,184,114,.85),0 10px 22px rgba(0,0,0,.55)}
+.list-fab.bump{animation:bump .45s ease}
+.list-fab svg{width:26px;height:26px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;pointer-events:none}
+.list-fab .fab-badge{position:absolute;top:-5px;right:-5px;min-width:22px;height:22px;padding:0 6px;border-radius:99px;display:grid;place-items:center;background:var(--gold-ink);color:var(--gold);border:1px solid var(--gold);font:800 12px/1 var(--body);pointer-events:none}
+@keyframes fabIn{from{opacity:0;transform:scale(.6)}to{opacity:1;transform:none}}
+@media(prefers-reduced-motion:reduce){.list-fab.show,.list-fab.bump{animation:none}}
+</style>
+<body>
+
+
+<header class="site-header">
+  <div class="wrap bar">
+    <button class="brand" id="brandMenu" type="button" aria-label="Abrir menú" aria-expanded="false">
+      <span class="brand-word">Javier <i>PC</i></span>
+      <span class="hamburger" aria-hidden="true"><span></span><span></span><span></span></span>
+    </button>
+
+    <label class="search">
+      <input id="q" type="search" placeholder="Buscar…" autocomplete="off" aria-label="Buscar juegos">
+      <button class="search-clear" id="clearSearch" type="button" aria-label="Limpiar búsqueda" hidden>×</button>
+      <kbd aria-hidden="true">/</kbd>
+    </label>
+
+    <nav class="desktop-nav" aria-label="Navegación">
+      <button class="nav-link" id="openFavorites" type="button">Favoritos<span class="badge" id="favBadge" hidden>0</span></button>
+      <button class="nav-link" id="openCollectionBtn" type="button">Colección<span class="badge" id="collBadge" hidden>0</span></button>
+      <button class="nav-link nav-list" id="openCart" type="button">Lista<span class="badge" id="badge" hidden>0</span></button>
+      <button class="nav-link" id="openContact" type="button">Contacto</button>
+    </nav>
+  </div>
+</header>
+
+<aside class="sidebar" id="sidebar" aria-hidden="true">
+  <div class="sidebar-head"><b>Javier <i>PC</i></b><button class="sidebar-close" id="sidebarClose" type="button" aria-label="Cerrar menú">×</button></div>
+  <nav class="sidebar-nav" aria-label="Navegación principal">
+    <button type="button" data-nav="home">Inicio</button>
+    <button type="button" data-nav="games">Juegos</button>
+    <button type="button" data-nav="favorites">Favoritos <span id="sideFavBadge" hidden>0</span></button>
+    <button type="button" data-nav="collection">Colección <span id="sideCollectionBadge" hidden>0</span></button>
+    <button type="button" data-nav="list">Lista <span id="sideListBadge" hidden>0</span></button>
+    <button type="button" data-nav="contact">Contacto</button>
+    <button type="button" data-nav="help">¿Cómo funciona?</button>
+  </nav>
+</aside>
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+<main>
+  <div class="container" id="notice" aria-live="polite"></div><h1 class="sr">Javier PC: catálogo de juegos</h1>
+
+  <div class="wrap hero-wrap">
+    <section class="hero" id="hero" aria-label="Juego destacado"></section>
+  </div>
+
+  <section class="rail-wrap" aria-label="Juegos destacados">
+    <div class="rail" id="rail"></div>
+    <div class="dots" id="dots" aria-hidden="true"></div>
+  </section>
+
+  <div class="wrap catalog">
+    <div class="cat-head">
+      <h2>Catálogo</h2>
+      <span class="count" id="count" aria-live="polite"></span>
+    </div>
+    <div class="tabs" id="tabs" role="group" aria-label="Categorías"></div>
+    <div class="tools">
+      <button class="btn ghost" id="filtersBtn" type="button" aria-expanded="false" aria-controls="moreFilters">Filtros</button>
+      <div class="more" id="moreFilters"></div>
+      <select id="sort" aria-label="Ordenar">
+        <option value="new">Más recientes</option>
+        <option value="priceAsc">Precio menor</option>
+        <option value="priceDesc">Precio mayor</option>
+        <option value="sizeAsc">Menor tamaño</option>
+        <option value="az">A–Z</option>
+      </select>
+    </div>
+    <section class="grid" id="grid"></section><div class="more-wrap" id="moreWrap"><button class="btn" id="moreBtn" type="button">Mostrar más juegos</button></div>
+
+    <div class="contact" id="contact">
+      <div><b>¿No ves tu juego?</b><span>Dinos cuál es y lo conseguimos para ti.</span></div>
+      <button class="btn gold" id="contactBtn" type="button">Escribir a Javier</button>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <b>Javier PC</b>
+    <span>Catálogo de juegos de Javier · © 2026</span>
+    <span id="ver">Catálogo sin cargar</span>
+    <button class="linklike" id="openHelp" type="button">¿Cómo funciona?</button>
+  </div>
+</footer>
+
+
+
+<dialog id="detailDlg" aria-label="Detalle del juego"></dialog>
+<dialog id="cartDlg" class="drawer" aria-label="Mi lista"></dialog>
+<dialog id="favDlg" class="drawer" aria-label="Favoritos"></dialog>
+<dialog id="collectionDlg" class="drawer" aria-label="Mi colección"></dialog>
+<dialog id="welcomeDlg" class="welcome-card" aria-labelledby="wcTitle">
+  <div class="wc-in">
+    <div class="wc-body">
+      <span class="wc-eyebrow" id="wcGreet">Bienvenido</span>
+      <h2 class="wc-title" id="wcTitle">Bienvenido a <em>Javier PC</em></h2>
+      <p class="wc-intro">Catálogo de juegos de Javier. Así lo aprovechas al máximo:</p>
+          <ol class="wc-steps">
+        <li><div><b>Explora y busca</b><span>Usa el buscador o los filtros de género, plataforma y precio para encontrar lo que quieres.</span></div></li>
+        <li><div><b>Mira los detalles</b><span>Toca cualquier juego para ver su descripción, tamaño y precio.</span></div></li>
+        <li><div><b>Guarda tus favoritos</b><span>Marca un juego como Favorito y lo encuentras después en Favoritos.</span></div></li>
+        <li><div><b>Arma tu lista y pídela</b><span>Agrega juegos a tu Lista y envíala a Javier por mensaje con un toque.</span></div></li>
+        <li><div><b>Lleva tu colección</b><span>Dentro de cada juego márcalo como Pendiente, Jugado o Ganado; todo queda en Colección.</span></div></li>
+        <li><div><b>¿Aún no sale o no lo ves?</b><span>En los próximos lanzamientos toca Avísame, y si falta un juego escribe desde Contacto.</span></div></li>
+      </ol>
+      <p class="wc-note">Tus favoritos, lista y colección se guardan en este dispositivo.</p>
+    </div>
+    <div class="wc-foot"><button class="btn gold" id="wcOk" type="button">Entendido</button></div>
+  </div>
+</dialog>
+<div class="toast" id="toast" role="status"></div>
+<button class="list-fab" id="listFab" type="button" aria-label="Ver mi lista" title="Mi lista (arrástralo para moverlo)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 6h12M8 12h12M8 18h12"/><circle cx="4" cy="6" r="1" fill="currentColor"/><circle cx="4" cy="12" r="1" fill="currentColor"/><circle cx="4" cy="18" r="1" fill="currentColor"/></svg><span class="fab-badge" id="fabBadge">0</span></button>
+
+<script>
+
+"use strict";
+
+/* =========================================================
+   V8 ROUTE INTENT (Next.js): /feed · /juegos · /juegos/[slug] · /favoritos
+   JAVIER PC · HYBRID PREMIUM v13
+   Favoritos + catálogo + cache-first
+   ========================================================= */
+
+const CONFIG = {
+  API_BASE: "",
+  VERSION_PATH: "/catalog/version",
+  CATALOG_PATH: "/catalog",
+  POLL_MS: 60000,
+  REQUEST_TIMEOUT_MS: 8000,
+  CACHE_KEY: "javierpc:catalog",
+  SCHEMA_VERSION: 1,
+  CACHE_TTL_MS: 24 * 60 * 60 * 1000,
+  CLOUD_NAME: "",
+  IMG_PROXY: "https://wsrv.nl/?url={url}&w={w}&h={h}&fit=cover&output=webp&q=75", // reduce imágenes externas pesadas (Minecraft). "" = desactivar
+  LOCAL_IMG_DIR: "",   // opcional: pon "img" para que CADA juego busque primero img/<id>.jpg (fotos propias)
+  WHATSAPP: "",
+  PAGE_SIZE: 24,
+  DEFAULT_AVAILABILITY: "available"
+};
+
+const DEMO = {
+  version: 5,
+  updatedAt: "2026-10-06T15:00:00Z",
+  games: [
+    {id:"gta6", name:"Grand Theft Auto VI", category:"Acción", genres:["Mundo abierto"], platforms:["PS5"], size:0, year:2026, price:0, available:true, soon:true, releaseDate:"2026-11-19", hue:322, addedAt:"2026-10-05", cover:"img/gta6.jpg",
+     keywords:"gta 6 gta6 gta vi vice city rockstar lucia jason",
+     description:"La nueva entrega de Rockstar regresa a Vice City con Lucia y Jason como protagonistas. Sale el 19 de noviembre de 2026 en PS5 y Xbox Series X|S; la versión de PC todavía no se ha anunciado.",
+     minRequirements:"Aún no anunciados.", recommendedRequirements:"Aún no anunciados."},
+    {id:"fc27", name:"EA SPORTS FC 27", category:"Deportes", genres:["Fútbol"], platforms:["PC"], size:100, year:2026, price:3500, available:true, addedAt:"2026-10-05",
+     cover:"https://cdn.akamai.steamstatic.com/steam/apps/4080220/library_600x900.jpg", banner:"https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/4080220/ff6a3779f1ca83aae8ad3878454f6c11008ea24d/header.jpg?t=1790973254",
+     keywords:"fc 27 fc27 fifa 27 fifa27 futbol",
+     description:"La nueva temporada del fútbol de EA: estrena The Grounds, un espacio donde la calle se junta con el estadio, y más control en cada modo de juego.",
+     minRequirements:"Windows 10/11 de 64 bits (última actualización) · AMD Ryzen 5 1600 o Intel Core i5-6600K · 8 GB RAM DDR4 en doble canal · AMD RX 570 o NVIDIA GTX 1050 Ti · DirectX 12 · 100 GB · Internet de banda ancha · 720p/60 FPS en Bajo, SSD recomendado", recommendedRequirements:"Windows 10/11 de 64 bits (última actualización) · AMD Ryzen 7 2700X o Intel Core i7-6700 · 12 GB RAM en doble canal · AMD RX 5600 XT o NVIDIA GTX 1660 · DirectX 12 · 100 GB · Internet de banda ancha · 1080p/60 FPS en Medio, SSD requerido"},
+    {id:"fc26", name:"EA SPORTS FC 26", category:"Deportes", genres:["Fútbol"], platforms:["PC"], size:100, year:2025, price:3000, available:true, addedAt:"2026-09-28",
+     cover:"https://cdn.akamai.steamstatic.com/steam/apps/3405690/library_600x900.jpg", banner:"https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3405690/64d362e71693f1ec7023f52ab94026f9a0d4fbed/header.jpg?t=1780657408", description:"Fútbol con licencias, modos de temporada y clubes para armar tu equipo. Ideal para partidos rápidos o carreras largas.",
+     minRequirements:'Windows 10/11 de 64 bits (última actualización) · Intel Core i5-6600K o AMD Ryzen 5 1600 · 8 GB RAM · NVIDIA GTX 1050 Ti 4 GB o AMD RX 570 4 GB · DirectX 12 · 100 GB · Internet de banda ancha', recommendedRequirements:'Windows 10/11 de 64 bits (última actualización) · Intel Core i7-6700 o AMD Ryzen 7 2700X · 12 GB RAM · NVIDIA GTX 1660 6 GB o AMD RX 5600 XT 6 GB · DirectX 12 · 100 GB · Internet de banda ancha'},
+    {id:"re4", name:"Resident Evil 4 Remake", category:"Terror", genres:["Supervivencia"], platforms:["PC"], size:67, year:2023, price:3000, available:true, addedAt:"2026-09-20",
+     cover:"https://cdn.akamai.steamstatic.com/steam/apps/2050650/library_600x900.jpg", description:"Terror y acción en un pueblo hostil. Rehecho con mejor control y atmósfera, para jugar con la luz baja.",
+     minRequirements:'Windows 10 (64 bits) · AMD Ryzen 3 1200 o Intel Core i5-7500 · 8 GB RAM · AMD RX 560 4 GB o NVIDIA GTX 1050 Ti 4 GB · DirectX 12 · 1080p/45 FPS aprox. en Priorizar rendimiento', recommendedRequirements:'Windows 10/11 (64 bits) · AMD Ryzen 5 3600 o Intel Core i7-8700 · 16 GB RAM · AMD RX 5700 o NVIDIA GTX 1070 · DirectX 12 · 1080p/60 FPS aprox.'},
+    {id:"cp77", name:"Cyberpunk 2077", category:"RPG", genres:["Ciencia ficción","Mundo abierto"], platforms:["PC"], size:70, year:2020, price:3000, available:true, addedAt:"2026-09-12",
+     cover:"https://cdn.akamai.steamstatic.com/steam/apps/1091500/library_600x900.jpg", description:"Rol de acción en Night City, una ciudad futurista con misiones, implantes y finales distintos según lo que decidas.",
+     minRequirements:'Windows 10 de 64 bits · Intel Core i7-6700 o AMD Ryzen 5 1600 · 12 GB RAM · NVIDIA GTX 1060 6 GB, AMD RX 580 8 GB o Intel Arc A380 · DirectX 12 · SSD 70 GB · 1080p/30 FPS, Bajo', recommendedRequirements:'Windows 10 de 64 bits · Intel Core i7-12700 o AMD Ryzen 7 7800X3D · 16 GB RAM · NVIDIA RTX 2060 SUPER, AMD RX 5700 XT o Intel Arc A770 · DirectX 12 · SSD 70 GB · 1080p/60 FPS, Alto'},
+    {id:"fh5", name:"Forza Horizon 5", category:"Carreras", genres:["Conducción","Mundo abierto"], platforms:["PC"], size:110, year:2021, price:3500, available:true, addedAt:"2026-09-05",
+     cover:"https://cdn.akamai.steamstatic.com/steam/apps/1551360/library_600x900.jpg", description:"Carreras en un México abierto: cientos de autos, eventos de todo tipo y paisajes que cambian con las estaciones.",
+     minRequirements:'Windows 10 versión 18362.0 o posterior · Intel Core i5-4460 o AMD Ryzen 3 1200 · 8 GB RAM · NVIDIA GTX 970, AMD RX 470 o Intel Arc A380 · DirectX 12 · 110 GB', recommendedRequirements:'Windows 10 versión 18362.0 o posterior · Intel Core i5-8400 o AMD Ryzen 5 1500X · 16 GB RAM · NVIDIA GTX 1070, AMD RX 590 o Intel Arc A750 · DirectX 12 · 110 GB'},
+    {id:"rdr2", name:"Red Dead Redemption 2", category:"Acción", genres:["Western","Mundo abierto"], platforms:["PC","PS4","PS5"], size:150, year:2018, price:4000, available:true, addedAt:"2026-08-30",
+     cover:"https://cdn.akamai.steamstatic.com/steam/apps/1174180/library_600x900.jpg", description:"Una historia del Oeste con ritmo pausado y un mundo que se siente vivo. Caza, cabalga y sigue a una banda en fuga.",
+     minRequirements:'Windows 10 de 64 bits · Intel Core i5-2500K o AMD FX-6300 · 8 GB RAM · NVIDIA GTX 770 2 GB o AMD R9 280 3 GB · DirectX compatible · 150 GB', recommendedRequirements:'Windows 10 de 64 bits · Intel Core i7-4770K o AMD Ryzen 5 1500X · 12 GB RAM · NVIDIA GTX 1060 6 GB o AMD RX 480 4 GB · DirectX compatible · 150 GB'},
+    {id:"tw3", name:"The Witcher 3", category:"RPG", genres:["Fantasía","Mundo abierto"], platforms:["PC"], size:70, year:2015, price:2000, available:true, addedAt:"2026-08-22",
+     cover:"https://cdn.akamai.steamstatic.com/steam/apps/292030/library_600x900.jpg", description:"Rol profundo con decisiones que pesan. Caza monstruos, resuelve contratos y recorre un mapa enorme con historias propias.",
+     minRequirements:'Windows 11 de 64 bits · Intel Core i5-8400 o AMD Ryzen 5 2600 · 12 GB RAM · NVIDIA GTX 1660 6 GB, AMD RX 5500 XT 8 GB o Intel Arc A580 · 6 GB VRAM · SSD 60–70 GB · 1080p/30 FPS, Bajo', recommendedRequirements:'Windows 11 de 64 bits · Intel Core i7-8700K o AMD Ryzen 5 3600X · 16 GB RAM · NVIDIA RTX 2060 SUPER, AMD RX 6600 XT o Intel Arc B580 · 8 GB VRAM · SSD 60–70 GB · 1080p/60 FPS, Alto'},
+    {id:"gta5", name:"Grand Theft Auto V", category:"Acción", genres:["Mundo abierto"], platforms:["PC"], size:105, year:2013, price:2500, available:true, addedAt:"2026-08-15",
+     cover:"https://cdn.akamai.steamstatic.com/steam/apps/3240220/library_600x900.jpg", description:"Tres protagonistas y un mapa enorme: robos, persecuciones y mucho que hacer en Los Santos, solo o en línea.",
+     minRequirements:'Windows 10 (última actualización) · Intel Core i7-4770 o AMD FX-9590 · 8 GB RAM · NVIDIA GTX 1630 4 GB o AMD RX 6400 4 GB · 105 GB · SSD requerido', recommendedRequirements:'Windows 11 · Intel Core i5-9600K o AMD Ryzen 5 3600 · 16 GB RAM en doble canal · NVIDIA RTX 3060 8 GB o AMD RX 6600 XT 8 GB · 105 GB · SSD compatible con DirectStorage'},
+    {id:"mc", name:"Minecraft", category:"Aventura", genres:["Sandbox","Supervivencia"], platforms:["PC"], size:4, year:2011, price:1500, available:true, addedAt:"2026-08-01",
+     cover:"https://www.minecraft.net/content/dam/minecraftnet/games/minecraft/screenshots/PDP-US-Bundle-Screenshot-2.png", screenshots:["https://www.minecraft.net/content/dam/minecraftnet/games/minecraft/screenshots/PDP-US-Bundle-Screenshot-2.png","https://www.minecraft.net/content/dam/minecraftnet/games/minecraft/screenshots/PDP-US-Bundle-Screenshot-3.png","https://www.minecraft.net/content/dam/minecraftnet/games/minecraft/screenshots/PDP-US-Bundle-Screenshot-4.png","https://www.minecraft.net/content/dam/minecraftnet/games/minecraft/screenshots/PDP-US-Bundle-Screenshot-5.png"],
+     description:"Construye, explora y sobrevive en mundos infinitos. Java y Bedrock para PC.",
+     minRequirements:'Java: Windows 10 64 bits (también Windows on ARM/macOS/Linux) · Intel Core i3-10100 o Ryzen 3 3100 · 8 GB RAM con GPU dedicada o 12 GB con iGPU · GPU Vulkan 1.3 con 2 GB VRAM (GTX 950/RX 460/Arc A310 o iGPU Intel i5-6400+) · 1080p/30 FPS, Rápido', recommendedRequirements:'Java: Windows 11 64 bits · Intel Core i5-12400 o Ryzen 5 5600 · 16 GB RAM · NVIDIA RTX 2060, AMD RX 5600 XT o Intel Arc A580 · 6 GB VRAM · 1080p/60 FPS, Detallado'},
+    {id:"er", name:"Elden Ring", category:"RPG", genres:["Fantasía","Mundo abierto"], platforms:["PC"], size:60, year:2022, price:3000, available:true, addedAt:"2026-10-04",
+     cover:"https://cdn.akamai.steamstatic.com/steam/apps/1245620/library_600x900.jpg", description:"Recorre las Tierras Intermedias en un mundo abierto lleno de jefes enormes, mazmorras ocultas y combates exigentes.",
+     minRequirements:"Windows 10 de 64 bits · Intel Core i5-8400 o AMD Ryzen 3 3300X · 12 GB RAM · NVIDIA GTX 1060 3 GB o AMD RX 580 4 GB · DirectX 12 · 60 GB", recommendedRequirements:"Windows 10/11 de 64 bits · Intel Core i7-8700K o AMD Ryzen 5 3600X · 16 GB RAM · NVIDIA GTX 1070 8 GB o AMD RX Vega 56 8 GB · DirectX 12 · 60 GB"},
+    {id:"bg3", name:"Baldur's Gate 3", category:"RPG", genres:["Fantasía","Por turnos"], platforms:["PC"], size:150, year:2023, price:4000, available:true, addedAt:"2026-10-04",
+     cover:"https://cdn.akamai.steamstatic.com/steam/apps/1086940/library_600x900.jpg", description:"Rol por turnos con decisiones que cambian la historia. Arma tu grupo, explora y juega solo o en cooperativo.",
+     minRequirements:"Windows 10 de 64 bits · Intel Core i5-4690 o AMD FX 4350 · 8 GB RAM · NVIDIA GTX 970 o AMD RX 480 (4 GB) · DirectX 11 · 150 GB", recommendedRequirements:"Windows 10 de 64 bits · Intel Core i7-8700K o AMD Ryzen 5 3600 · 16 GB RAM · NVIDIA RTX 2060 Super o AMD RX 5700 XT (8 GB) · DirectX 12 · 150 GB en SSD"},
+    {id:"gow", name:"God of War", category:"Acción", genres:["Aventura","Mitología"], platforms:["PC"], size:70, year:2022, price:3000, available:true, addedAt:"2026-10-03",
+     cover:"https://cdn.akamai.steamstatic.com/steam/apps/1593500/library_600x900.jpg", description:"Kratos y su hijo Atreus viajan por los reinos nórdicos en una aventura de combate brutal y mucha historia.",
+     minRequirements:"Windows 10 de 64 bits · Intel Core i5-2500K o AMD Ryzen 3 1200 · 8 GB RAM · NVIDIA GTX 960 4 GB o AMD R9 290X 4 GB · DirectX 11 · 70 GB", recommendedRequirements:"Windows 10 de 64 bits · Intel Core i5-6600K o AMD Ryzen 5 2400G · 8 GB RAM · NVIDIA GTX 1060 6 GB o AMD RX 570 4 GB · DirectX 11 · 70 GB en SSD"},
+    {id:"hogwarts", name:"Hogwarts Legacy", category:"RPG", genres:["Fantasía","Mundo abierto"], platforms:["PC"], size:85, year:2023, price:3500, available:true, addedAt:"2026-10-03",
+     cover:"https://cdn.akamai.steamstatic.com/steam/apps/990080/library_600x900.jpg", description:"Vive tu propia historia en Hogwarts: aprende hechizos, prepara pociones y explora el castillo y sus alrededores.",
+     minRequirements:"Windows 10 de 64 bits · Intel Core i5-6600 o AMD Ryzen 5 1400 · 16 GB RAM · NVIDIA GTX 960 4 GB o AMD RX 470 4 GB · DirectX 12 · 85 GB en SSD", recommendedRequirements:"Windows 10 de 64 bits · Intel Core i7-8700 o AMD Ryzen 5 3600 · 16 GB RAM · NVIDIA GTX 1080 Ti o AMD RX 5700 XT · DirectX 12 · 85 GB en SSD"},
+    {id:"spiderman", name:"Marvel's Spider-Man Remastered", category:"Acción", genres:["Aventura","Mundo abierto"], platforms:["PC"], size:75, year:2022, price:3000, available:true, addedAt:"2026-10-02",
+     cover:"https://cdn.akamai.steamstatic.com/steam/apps/1817070/library_600x900.jpg", description:"Columpíate por Nueva York, combate con acrobacias y sigue una historia de superhéroes muy bien contada.",
+     minRequirements:"Windows 10 de 64 bits · Intel Core i3-4160 o AMD Ryzen 3 1200 · 8 GB RAM · NVIDIA GTX 950 o AMD RX 460 · DirectX 12 · 75 GB en SSD", recommendedRequirements:"Windows 10 de 64 bits · Intel Core i5-4670 o AMD Ryzen 5 1600 · 16 GB RAM · NVIDIA GTX 1060 6 GB o AMD RX 580 8 GB · DirectX 12 · 75 GB en SSD"},
+    {id:"fo4", name:"Fallout 4", category:"RPG", genres:["Postapocalíptico","Mundo abierto"], platforms:["PC"], size:30, year:2015, price:2000, available:true, addedAt:"2026-10-02",
+     cover:"https://cdn.akamai.steamstatic.com/steam/apps/377160/library_600x900.jpg", description:"Sal del refugio y reconstruye el yermo: explora, construye asentamientos y personaliza armas y armaduras.",
+     minRequirements:"Windows 7/8/10 de 64 bits · Intel Core i5-2300 o AMD Phenom II X4 945 · 8 GB RAM · NVIDIA GTX 550 Ti 2 GB o AMD R7 260X 2 GB · 30 GB", recommendedRequirements:"Windows 7/8/10 de 64 bits · Intel Core i7-4790 o AMD FX-9590 · 8 GB RAM · NVIDIA GTX 780 3 GB o AMD R9 290X 4 GB · 30 GB"},
+    {id:"skyrim", name:"Skyrim Special Edition", category:"RPG", genres:["Fantasía","Mundo abierto"], platforms:["PC"], size:12, year:2016, price:1500, available:true, addedAt:"2026-10-01",
+     cover:"https://cdn.akamai.steamstatic.com/steam/apps/489830/library_600x900.jpg", description:"Dragones, mazmorras y una libertad enorme. Un clásico del rol con una comunidad de mods gigante.",
+     minRequirements:"Windows 7/8.1/10 de 64 bits · Intel Core i5-750 o AMD Phenom II X4 945 · 8 GB RAM · NVIDIA GTX 470 1 GB o AMD HD 7870 2 GB · 12 GB", recommendedRequirements:"Windows 7/8.1/10 de 64 bits · Intel Core i5-2400 o AMD FX-8320 · 8 GB RAM · NVIDIA GTX 780 3 GB o AMD R9 290 4 GB · 12 GB"},
+    {id:"ets2", name:"Euro Truck Simulator 2", category:"Simulación", genres:["Conducción","Mundo abierto"], platforms:["PC"], size:25, year:2012, price:1500, available:true, addedAt:"2026-10-01",
+     cover:"https://cdn.akamai.steamstatic.com/steam/apps/227300/library_600x900.jpg", description:"Maneja camiones por Europa, entrega cargas y haz crecer tu empresa de transporte. Relajado y muy adictivo.",
+     minRequirements:"Windows 7 o superior · CPU de doble núcleo a 2.4 GHz · 4 GB RAM · Tarjeta tipo GTS 450 con 1 GB de VRAM · 25 GB", recommendedRequirements:"Windows 7 o superior · CPU de cuatro núcleos a 3.0 GHz · 6 GB RAM · Tarjeta tipo GTX 760 con 2 GB de VRAM · 25 GB"},
+    {id:"cities", name:"Cities: Skylines", category:"Simulación", genres:["Construcción","Estrategia"], platforms:["PC"], size:4, year:2015, price:1500, available:true, addedAt:"2026-09-30",
+     cover:"https://cdn.akamai.steamstatic.com/steam/apps/255710/library_600x900.jpg", description:"Diseña y administra tu propia ciudad: calles, servicios, transporte y tráfico. Ideal para pasar horas planeando.",
+     minRequirements:"Windows 7 o superior de 64 bits · Intel Core 2 Duo 3.0 GHz o AMD Athlon 64 X2 6400+ · 4 GB RAM · NVIDIA GTX 260 512 MB o AMD R7 260 · 4 GB", recommendedRequirements:"Windows 7 o superior de 64 bits · Intel Core i5-3470 o AMD FX-6300 · 6 GB RAM · NVIDIA GTX 660 2 GB o AMD R9 270 · 4 GB"},
+    {id:"stardew", name:"Stardew Valley", category:"Simulación", genres:["Granja","Relajante"], platforms:["PC"], size:1, year:2016, price:1500, available:true, addedAt:"2026-09-30",
+     cover:"https://cdn.akamai.steamstatic.com/steam/apps/413150/library_600x900.jpg", description:"Hereda una granja, cultiva, pesca, explora minas y haz amigos en el pueblo. Perfecto para jugar tranquilo.",
+     minRequirements:"Windows Vista o superior · Procesador a 2 GHz · 2 GB RAM · 256 MB de VRAM compatible con Shader Model 3.0 · 500 MB", recommendedRequirements:"Igual que los mínimos."}
+  ]
+};
+
+/* =====================================================================
+   UTILIDADES
+   ===================================================================== */
+
+/* Fallback de imágenes: prueba la siguiente fuente (data-alt) y, si todas fallan,
+   quita la <img> para que se vea el póster generado en vez de un hueco roto. */
+document.addEventListener("error", e => {
+  const img = e.target;
+  if(!img || img.tagName !== "IMG") return;
+  let alt = [];
+  try{ alt = JSON.parse(img.dataset.alt || "[]"); }catch(_){}
+  const next = alt.shift();
+  if(next){
+    img.dataset.alt = JSON.stringify(alt);
+    img.removeAttribute("srcset");
+    img.src = next;
+    return;
+  }
+  (img.closest("a.shot") || img).remove();
+}, true);
+
+const $ = id => document.getElementById(id);
+const wait = ms => new Promise(r => setTimeout(r, ms));
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const norm = s => String(s ?? "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+const fmt = n => Number(n).toLocaleString("en-US");
+const gb = n => (Math.round(n * 10) / 10).toLocaleString("en-US");
+const plural = (n, a, b) => `${n} ${n === 1 ? a : b}`;
+const safeUrl = u => (typeof u === "string" && /^(https?:\/\/|\/)/i.test(u.trim())) ? u.trim() : "";
+const hue = id => { let h = 0; for (const ch of String(id)) h = (h * 31 + ch.charCodeAt(0)) >>> 0; return h % 360; };
+
+/* Cloudinary: inserta una transformación ligera en la URL */
+const isCloud = u => /^https:\/\/res\.cloudinary\.com\/[^/]+\/image\/upload\//.test(u);
+function cdn(u, w, h){
+  if(!isCloud(u)) return u;
+  return u.replace("/image/upload/", `/image/upload/f_auto,q_auto,c_fill,w_${w},h_${h}/`);
+}
+function resolveImg(v){
+  if(!v) return "";
+  if(/^(https?:\/\/|\/)/i.test(v)) return safeUrl(v);
+  return CONFIG.CLOUD_NAME ? `https://res.cloudinary.com/${CONFIG.CLOUD_NAME}/image/upload/${encodeURIComponent(v)}` : "";
+}
+function imgTag(src, w, h, o = {}){
+  const ss = isCloud(src) ? ` srcset="${esc(cdn(src,w,h))} ${w}w, ${esc(cdn(src,w*2,h*2))} ${w*2}w" sizes="${esc(o.sizes || "100vw")}"` : "";
+  const load = o.priority ? ' fetchpriority="high"' : (o.eager ? "" : ' loading="lazy"');
+  const ph = o.gameId ? ` data-ph="${esc(o.gameId)}"` : "";
+  return `<img referrerpolicy="no-referrer" src="${esc(cdn(src,w,h))}"${ss} width="${w}" height="${h}" alt="${esc(o.alt || "")}"${load} decoding="async"${ph}>`;
+}
+/* Imágenes externas grandes (PNG de varios MB): se piden ya redimensionadas; si el servicio falla se usa la original */
+const isExternal = u => /^https:\/\//i.test(u) && !/steamstatic\.com|res\.cloudinary\.com/i.test(u);
+function sized(u, w, h){
+  if(isCloud(u)) return cdn(u, w, h);
+  if(CONFIG.IMG_PROXY && isExternal(u)) return CONFIG.IMG_PROXY.replace("{url}", encodeURIComponent(u)).replace("{w}", w).replace("{h}", h);
+  return u;
+}
+const GTA6_SVG=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 900" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="a" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#150a33"/><stop offset=".42" stop-color="#9c2a78"/><stop offset=".68" stop-color="#ff6b45"/><stop offset="1" stop-color="#ffc15a"/></linearGradient><linearGradient id="b" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffe27a"/><stop offset="1" stop-color="#ff3f8e"/></linearGradient><linearGradient id="c" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ff6b8f"/><stop offset="1" stop-color="#2a0f4d"/></linearGradient><mask id="m"><rect width="600" height="900" fill="#fff"/><rect y="500" width="600" height="5" fill="#000"/><rect y="525" width="600" height="8" fill="#000"/><rect y="552" width="600" height="11" fill="#000"/></mask></defs><rect width="600" height="900" fill="url(#a)"/><circle cx="300" cy="470" r="170" fill="url(#b)" mask="url(#m)"/><rect y="600" width="600" height="300" fill="url(#c)"/><path d="M150 625H450M190 650H410M230 675H370M260 700H340" stroke="#ffd1a0" stroke-opacity=".55" stroke-width="3"/><g id="p"><path d="M70 900C90 720 110 570 150 430" stroke="#12072b" stroke-width="14" fill="none" stroke-linecap="round"/><g fill="#12072b"><path d="M150 430Q95 385 25 420Q95 405 150 430Z"/><path d="M150 430Q120 360 70 330Q135 365 150 430Z"/><path d="M150 430Q185 365 215 318Q185 380 150 430Z"/><path d="M150 430Q215 390 285 412Q215 408 150 430Z"/><path d="M150 430Q75 440 40 505Q95 455 150 430Z"/></g></g><use href="#p" transform="translate(600 40) scale(-.85 .85)"/></svg>`;
+const LOCAL_ART={ gta6:"data:image/svg+xml;charset=utf-8,"+encodeURIComponent(GTA6_SVG) };
+/* Portadas oficiales para juegos sin imagen en Steam (se prueban en orden tras la local img/<id>.jpg).
+   GTA VI: cover art oficial revelado por Rockstar el 18-jun-2026. Para no depender de un sitio ajeno,
+   descarga la imagen y guárdala como img/gta6.jpg junto a este HTML: tendrá prioridad. */
+const OFFICIAL_ART={
+  gta6:["https://www.gtabase.com/igallery/gta-6-covers/gta-6-cover-art-official-1920.jpg"]
+};
+
+/* Steam movió las imágenes nuevas a store_item_assets (a veces con hash). Se prueban varias rutas y hosts. */
+const STEAM_BASES=[
+  "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps",
+  "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps",
+  "https://cdn.akamai.steamstatic.com/steam/apps"
+];
+const steamIdOf = g => (/\/steam\/apps\/(\d+)\//.exec(g.cover||"")||[])[1] || "";
+function imgCandidates(g, kind){
+  const out=[], id=steamIdOf(g);
+  const add=u=>{ u=String(u||"").trim(); if(u && /^(https?:\/\/|\/|img\/|data:image\/)/i.test(u) && !out.includes(u)) out.push(u); };
+  if(CONFIG.LOCAL_IMG_DIR) add(`${CONFIG.LOCAL_IMG_DIR}/${g.id}.jpg`);
+  add(g.banner);                                   // URL exacta (juegos nuevos de Steam con hash)
+  const poster = id ? STEAM_BASES.map(b=>`${b}/${id}/library_600x900.jpg`) : [];
+  const header = id ? STEAM_BASES.map(b=>`${b}/${id}/header.jpg`) : [];
+  (kind==="banner" ? [...header,...poster] : [...poster,...header]).forEach(add);
+  if(!id) add(/^img\//i.test(g.cover||"") ? g.cover : resolveImg(g.cover));                // portadas que no son de Steam (Cloudinary, Minecraft...)
+  (OFFICIAL_ART[g.id]||[]).forEach(add);           // portada oficial remota
+  add(LOCAL_ART[g.id]);                            // último recurso: arte generado
+  return out;
+}
+function imgHTML(g, kind, w, h, attrs=""){
+  const c=imgCandidates(g,kind).flatMap(u=>{ const x=sized(u,w,h); return x!==u ? [x,u] : [u]; });
+  if(!c.length) return "";
+  const rest=c.slice(1);
+  return `<img referrerpolicy="no-referrer" src="${esc(c[0])}"${rest.length?` data-alt="${esc(JSON.stringify(rest))}"`:""} alt="${esc(g.name)}" decoding="async" ${attrs}>`;
+}
+const placeholder = g => `<div class="ph" style="--h:${g._h}" aria-hidden="true"><span>${esc(g.name)}</span></div>`;
+
+/* =====================================================================
+   NORMALIZACIÓN: acepta nombres de campo habituales del backend
+   ===================================================================== */
+function normalizeGame(g){
+  const list = v => [].concat(v ?? []).filter(Boolean).map(String);
+  return {
+    id: String(g.id ?? g.slug ?? g._id ?? ""),
+    name: String(g.name ?? g.title ?? "").trim(),
+    category: String(g.category ?? "").trim(),
+    genres: list(g.genres ?? g.genre),
+    platforms: list(g.platforms ?? g.platform).length ? list(g.platforms ?? g.platform) : ["PC"],
+    size: Number(g.size_gb ?? g.sizeGb ?? g.size) || 0,
+    year: Number(g.year) || null,
+    price: Number(g.price) || 0,
+    available: true,
+    cover: String(g.cover ?? g.coverUrl ?? g.image ?? ""),
+    screenshots: list(g.screenshots).slice(0, 4),
+    description: String(g.description ?? ""),
+    requirements: g.requirements ?? g.systemRequirements ?? {},
+    minRequirements: g.minRequirements ?? g.minimumRequirements ?? g.requirements?.minimum ?? g.systemRequirements?.minimum ?? "",
+    recommendedRequirements: g.recommendedRequirements ?? g.requirements?.recommended ?? g.systemRequirements?.recommended ?? "",
+    addedAt: String(g.addedAt ?? g.createdAt ?? ""),
+    soon: Boolean(g.soon ?? g.comingSoon),
+    releaseDate: String(g.releaseDate ?? ""),
+    hue: (g.hue != null && Number.isFinite(Number(g.hue))) ? Number(g.hue) : null,
+    keywords: String(g.keywords ?? ""),
+    banner: String(g.banner ?? g.bannerUrl ?? "")
+  };
+}
+function normalizeCatalog(p){
+  const games = p?.games ?? p?.data?.games;
+  const version = Number(p?.version ?? p?.catalogVersion);
+  if(!Array.isArray(games) || !Number.isFinite(version)) throw new Error("Formato de catálogo inválido");
+  return { catalogVersion: version, updatedAt: String(p.updatedAt ?? ""), games: games.map(normalizeGame).filter(g => g.id && g.name) };
+}
+const decorate = g => ({ ...g, _h: g.hue ?? hue(g.id), _s: norm([g.name, g.keywords, g.category, ...g.genres, ...g.platforms].join(" ")) });
+
+/* =====================================================================
+   API
+   ===================================================================== */
+async function getJSON(path, noStore){
+  const ctrl = new AbortController();
+  const t = setTimeout(() => ctrl.abort(), CONFIG.REQUEST_TIMEOUT_MS);
+  try{
+    const r = await fetch(CONFIG.API_BASE + path, { signal: ctrl.signal, cache: noStore ? "no-store" : "default", headers: { Accept: "application/json" } });
+    if(!r.ok) throw new Error("HTTP " + r.status);
+    return await r.json();
+  } finally { clearTimeout(t); }
+}
+const api = {
+  async version(){
+    if(!CONFIG.API_BASE){ await wait(120); return { version: DEMO.version, updatedAt: DEMO.updatedAt }; }
+    return getJSON(CONFIG.VERSION_PATH, true);
+  },
+  async catalog(){
+    if(!CONFIG.API_BASE){ await wait(500); return DEMO; }
+    return getJSON(CONFIG.CATALOG_PATH, false);
+  }
+};
+
+/* =====================================================================
+   CACHE LOCAL
+   ===================================================================== */
+function readCache(){
+  let raw;
+  try{ raw = localStorage.getItem(CONFIG.CACHE_KEY); }catch(e){ return null; }
+  if(!raw) return null;
+  try{
+    const c = JSON.parse(raw);
+    const ok = c && c.schemaVersion === CONFIG.SCHEMA_VERSION && Number.isFinite(c.catalogVersion) &&
+      c.data && Array.isArray(c.data.games) && c.data.games.every(g => g && g.id && g.name);
+    if(!ok) throw new Error("cache inválido");
+    return c;
+  }catch(e){
+    try{ localStorage.removeItem(CONFIG.CACHE_KEY); }catch(_){}
+    return null;
+  }
+}
+function writeCache(cat){
+  const now = Date.now();
+  const entry = {
+    schemaVersion: CONFIG.SCHEMA_VERSION,
+    catalogVersion: cat.catalogVersion,
+    updatedAt: cat.updatedAt,
+    cachedAt: new Date(now).toISOString(),
+    expiresAt: new Date(now + CONFIG.CACHE_TTL_MS).toISOString(),
+    data: { games: cat.games }
+  };
+  try{ localStorage.setItem(CONFIG.CACHE_KEY, JSON.stringify(entry)); }catch(e){}
+  return entry.expiresAt;
+}
+
+/* ---------- Estado ---------- */
+const state = {
+  games: [], ready:false, error:"", catalogVersion:null, updatedAt:"", expiresAt:"",
+  q:"", cat:"", genre:"", platform:"", avail:CONFIG.DEFAULT_AVAILABILITY,
+  maxPrice:0, maxPriceAll:0, priceTouched:false, sort:"recent", shown:CONFIG.PAGE_SIZE,
+  facets:{cats:[],genres:[],platforms:[]},
+  hero:"", list:new Set(), favorites:new Set(), status:new Map(), detail:null
+};
+
+const $id = id => document.getElementById(id);
+const maxPrice = () => state.maxPriceAll;
+
+function listGames(){ return state.games.filter(g=>state.list.has(g.id)); }
+function persist(){
+  try{
+    localStorage.setItem("javierpc:list",JSON.stringify([...state.list]));
+    localStorage.setItem("javierpc:favorites",JSON.stringify([...state.favorites]));
+    localStorage.setItem("javierpc:game-status",JSON.stringify(Object.fromEntries(state.status)));
+  }catch(e){}
+}
+try {
+  const savedList=JSON.parse(localStorage.getItem("javierpc:list")||"[]");
+  savedList.forEach(id=>state.list.add(String(id)));
+  const savedFavorites=JSON.parse(localStorage.getItem("javierpc:favorites")||"[]");
+  savedFavorites.forEach(id=>state.favorites.add(String(id)));
+  const savedStatus=JSON.parse(localStorage.getItem("javierpc:game-status")||"{}");
+  Object.entries(savedStatus).forEach(([id,status])=>{if(["pending","played","won"].includes(status))state.status.set(String(id),status);});
+} catch(e) {}
+
+function countBy(fn){
+  const m=new Map();
+  state.games.forEach(g=>fn(g).forEach(v=>m.set(v,(m.get(v)||0)+1)));
+  return [...m.entries()].sort((a,b)=>b[1]-a[1]||a[0].localeCompare(b[0],"es"));
+}
+function buildFacets(){
+  state.facets.cats=countBy(g=>g.category?[g.category]:[]);
+  state.facets.genres=countBy(g=>g.genres);
+  state.facets.platforms=countBy(g=>g.platforms);
+  const top=Math.max(500,...state.games.map(g=>g.price||0));
+  state.maxPriceAll=Math.ceil(top/500)*500;
+  if(!state.priceTouched||state.maxPrice>state.maxPriceAll) state.maxPrice=state.maxPriceAll;
+  if(state.cat && !state.facets.cats.some(x=>x[0]===state.cat)) state.cat="";
+  if(state.genre && !state.facets.genres.some(x=>x[0]===state.genre)) state.genre="";
+  if(state.platform && !state.facets.platforms.some(x=>x[0]===state.platform)) state.platform="";
+}
+
+const SORTS={
+  recent:(a,b)=>(b.addedAt||"").localeCompare(a.addedAt||"")||(b.year||0)-(a.year||0),
+  az:(a,b)=>a.name.localeCompare(b.name,"es"),
+  priceAsc:(a,b)=>a.price-b.price,
+  priceDesc:(a,b)=>b.price-a.price
+};
+function filtered(){
+  const tokens=norm(state.q).split(/\s+/).filter(Boolean);
+  return state.games.filter(g=>
+    (!state.cat||g.category===state.cat) &&
+    (!state.genre||g.genres.includes(state.genre)) &&
+    (!state.platform||g.platforms.includes(state.platform)) &&
+    g.price<=state.maxPrice &&
+    tokens.every(t=>g._s.includes(t))
+  ).sort(SORTS[state.sort]);
+}
+
+function gradientFor(g){
+  const h=g._h||hue(g.id);
+  return `linear-gradient(160deg,hsl(${h} 35% 10%),hsl(${(h+28)%360} 55% 28%) 55%,hsl(${(h+52)%360} 70% 42%))`;
+}
+function markFor(g){
+  const words=g.name.replace(/[^A-Za-z0-9ÁÉÍÓÚÜÑ0-9 ]/gi," ").trim().split(/\s+/);
+  const nums=(g.name.match(/\d+/)||[""])[0];
+  return nums || (words.at(-1)||"PC").slice(0,3).toUpperCase();
+}
+function art(g, cls=""){
+  const media=imgHTML(g,"poster",720,960,'loading="lazy"');
+  return `<span class="art ${cls}" style="--c:${gradientFor(g)};--glow:hsl(${g._h||0} 70% 55%)">
+    ${media}
+    <span class="art-shade"></span>
+    <span class="mark" aria-hidden="true">${esc(markFor(g))}</span>
+    <span class="sheen"></span>
+    ${g.available?"":'<span class="soldout">No disponible</span>'}${g.soon?'<span class="soon-tag">Próximamente</span>':""}
+    <span class="ptitle">${esc(g.name)}</span>
+  </span>`;
+}
+function toggleFavoriteBtn(g, cls="btn ghost favorite-detail"){
+  const on=state.favorites.has(g.id);
+  return `<button class="${cls}${on?" is-favorite":""}" type="button" data-favorite="${esc(g.id)}" aria-pressed="${on}" aria-label="${on?"Quitar de favoritos":"Añadir a favoritos"}">Favorito</button>`;
+}
+function toggleListBtn(g, cls="mini"){
+  if(g.soon) return `<button class="${cls}" type="button" data-notify="${esc(g.id)}">Avísame</button>`;
+  const on=state.list.has(g.id);
+  return `<button class="${cls}" type="button" data-toggle="${esc(g.id)}" data-off="+ Añadir" data-on="En lista" aria-pressed="${on}" ${g.available?"":"disabled"}>${on?"En lista":"+ Añadir"}</button>`;
+}
+function toggleBtn(g, cls="mini"){ return toggleListBtn(g, cls); }
+/* ---------- Próximamente ---------- */
+function releaseInfo(g){
+  if(!g.soon) return null;
+  const d=g.releaseDate?new Date(g.releaseDate+"T00:00:00"):null;
+  if(!d||isNaN(d)) return {date:"",days:null};
+  return {date:d.toLocaleDateString("es",{day:"numeric",month:"long",year:"numeric"}),days:Math.ceil((d-new Date())/864e5)};
+}
+const priceTag=g=>g.soon?`<span class="price soon-price">Próximamente</span>`:`<span class="price">${fmt(g.price)}<small>CUP</small></span>`;
+function heroBuy(g){
+  if(!g.soon) return `<div class="hero-buy"><span class="hero-price">${fmt(g.price)}<small>CUP</small></span><span class="hero-disk">${g.size?gb(g.size)+" GB en disco":"Tamaño no indicado"}</span></div>`;
+  const ri=releaseInfo(g), n=ri.days;
+  return `<div class="hero-buy"><span class="hero-soon">${n>0?`<b>${n}</b> ${n===1?"día":"días"}`:"Muy pronto"}</span><span class="hero-disk">${ri.date?"Sale el "+esc(ri.date):"Fecha por confirmar"}</span></div>`;
+}
+
+/* ---------- Hero Premium ---------- */
+function featured(){
+  const ok=state.games.filter(g=>g.available);
+  const hot=[...ok.filter(g=>g.soon),...ok.filter(g=>!g.soon)].slice(0,6);
+  return hot.length?hot:state.games.slice(0,6);
+}
+function renderHero(){
+  const hs=featured(); if(!hs.length){ $id("hero").innerHTML=""; return; }
+  if(!state.hero || !hs.some(g=>g.id===state.hero)) state.hero=hs[0].id;
+  const g=state.games.find(x=>x.id===state.hero)||hs[0];
+  const hero=$id("hero"); hero.style.setProperty("--glow",`hsl(${g._h} 70% 55%)`); hero.classList.toggle("soon",!!g.soon);
+  hero.innerHTML=`<div class="hero-main">
+    <div>
+      ${g.soon?'<p class="hero-flag">Próximamente</p>':""}
+      <p class="hero-meta">${esc([g.category,...g.genres].filter(Boolean).join(" · "))} · ${g.year||"PC"}</p>
+      <h2 class="hero-title">${esc(g.name)}</h2>
+      <p class="hero-desc">${esc(g.description||"Consulta disponibilidad, precio y detalles de este juego en el catálogo.")}</p>
+      ${heroBuy(g)}
+      <div class="hero-actions">${toggleBtn(g,"btn gold")}<button class="btn ghost" type="button" data-open="${esc(g.id)}">Ver detalles</button></div>
+    </div>
+    <div class="hero-art">${art(g)}</div>
+  </div>
+  <div class="thumbs" role="group" aria-label="Más destacados">${hs.map(h=>`<button class="thumb" type="button" data-hero="${esc(h.id)}" aria-pressed="${h.id===g.id}">${art(h)}<span class="t">${esc(h.name)}</span></button>`).join("")}</div>`;
+}
+function setHero(id){
+  if(id===state.hero)return;
+  const hero=$id("hero"); hero.classList.add("out");
+  setTimeout(()=>{state.hero=id;renderHero();hero.classList.remove("out");},160);
+}
+
+/* ---------- Catálogo Premium con filtros reales ---------- */
+function renderTabs(){
+  const cats=[["","Todos"],...state.facets.cats.map(x=>[x[0],x[0]])];
+  $id("tabs").innerHTML=cats.map(([v,l])=>`<button class="tab" type="button" data-cat="${esc(v)}" aria-pressed="${state.cat===v}">${esc(l)}<small>${v?state.facets.cats.find(x=>x[0]===v)?.[1]||0:state.games.length}</small></button>`).join("");
+}
+function renderFilterPanel(){
+  const opts=(rows,selected,all)=>`<option value="">${all}</option>`+rows.map(([v])=>`<option value="${esc(v)}" ${v===selected?"selected":""}>${esc(v)}</option>`).join("");
+  $id("moreFilters").innerHTML=`
+    <label>Género <select id="fGenre">${opts(state.facets.genres,state.genre,"Todos")}</select></label>
+    <label>Plataforma <select id="fPlatform">${opts(state.facets.platforms,state.platform,"Todas")}</select></label>
+    <label class="range-label">Hasta <input id="price" type="range" min="0" max="${state.maxPriceAll}" step="500" value="${state.maxPrice}" aria-label="Precio máximo"><output id="priceVal">${fmt(state.maxPrice)} CUP</output></label>
+    <button class="btn ghost" type="button" id="clearFilters">Limpiar filtros</button>`;
+}
+const STATUS_LABELS={pending:"Pendiente",played:"Jugado",won:"Ganado"};
+function gameStatus(g){return state.status.get(g.id)||"";}
+function cardHTML(g){
+  const status=gameStatus(g);
+  return `<article class="card${status?" has-status":""}" data-open="${esc(g.id)}" tabindex="0" role="button" aria-label="Ver detalles de ${esc(g.name)}">
+    <button class="poster-btn" type="button" data-open="${esc(g.id)}" aria-label="Ver detalles de ${esc(g.name)}">${art(g)}</button>
+    <div class="info"><div class="card-top"><h3>${esc(g.name)}</h3></div><p class="sub">${esc([g.category,g.genres[0],g.size?gb(g.size)+" GB":"",g.year||""].filter(Boolean).join(" · "))}</p>
+      ${status?`<span class="status-chip">${esc(STATUS_LABELS[status])}</span>`:""}
+      <div class="foot">${priceTag(g)}<div class="card-actions">${toggleListBtn(g,"mini")}</div></div>
+    </div>
+  </article>`;
+}
+function renderGrid(){
+  const items=filtered();
+  $id("count").textContent=plural(items.length,"juego","juegos");
+  if(!items.length){
+    const q=state.q.trim();
+    $id("grid").innerHTML=`<div class="empty"><b>${q?"No tenemos ese juego todavía":"Ningún juego coincide con los filtros"}</b><p>${q?"Escríbenos y lo conseguimos para ti.":"Prueba otra categoría o ajusta los filtros."}</p><button class="btn gold" type="button" id="emptyBtn">${q?"Pedir este juego":"Quitar filtros"}</button></div>`;
+    return;
+  }
+  $id("grid").innerHTML=items.slice(0,state.shown).map(cardHTML).join("");
+  const rest=items.length-state.shown;
+  $id("moreWrap").hidden=rest<=0;
+  if(rest>0)$id("moreBtn").textContent=`Mostrar más juegos (${rest} restantes)`;
+}
+function resetPaging(){state.shown=CONFIG.PAGE_SIZE;}
+
+/* ---------- Detalle real ---------- */
+function formatRequirements(v){
+  if(!v) return "No especificados en el catálogo.";
+  if(typeof v==="string") return v.trim() || "No especificados en el catálogo.";
+  if(Array.isArray(v)) return v.map(x=>typeof x==="string"?x:`${x.label||x.name||""}: ${x.value||x.text||""}`).filter(Boolean).join("\n");
+  if(typeof v==="object") return Object.entries(v).map(([k,val])=>`${k}: ${typeof val==="string"?val:JSON.stringify(val)}`).join("\n");
+  return String(v);
+}
+function renderDetail(g){
+  const mob=!!(window.matchMedia && window.matchMedia("(max-width:699px)").matches);
+  const dimg=imgHTML(g,mob?"banner":"poster",960,mob?540:1100,'fetchpriority="high"');
+  const cover=dimg?`<span class="art detail-real" style="--c:${gradientFor(g)};--glow:hsl(${g._h} 70% 55%)">${dimg}</span>`:art(g);
+  const shots=(g.screenshots||[]).map(resolveImg).filter(Boolean).slice(0,4);
+  const status=gameStatus(g), fav=state.favorites.has(g.id);
+  $id("detailDlg").innerHTML=`<div class="detail"><div class="detail-top">
+    <button class="detail-back" type="button" data-close aria-label="Volver al catálogo" title="Volver"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg></button>
+    <div class="detail-menu-wrap">
+      <button class="detail-menu-btn" type="button" data-detail-menu aria-label="Más opciones" aria-haspopup="true" aria-expanded="false"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span></button>
+      <div class="detail-menu" data-detail-menu-panel hidden>
+        <button type="button" data-detail-action="favorite" data-id="${esc(g.id)}" aria-pressed="${fav}">Favorito</button>
+        <div class="dm-sep"></div>
+        <span class="dm-label">Mi colección</span>
+        <button type="button" data-detail-action="status" data-status="pending" data-id="${esc(g.id)}" aria-pressed="${status==='pending'}">Pendiente</button>
+        <button type="button" data-detail-action="status" data-status="played" data-id="${esc(g.id)}" aria-pressed="${status==='played'}">Jugado</button>
+        <button type="button" data-detail-action="status" data-status="won" data-id="${esc(g.id)}" aria-pressed="${status==='won'}">Ganado</button>
+        ${status?`<button type="button" data-detail-action="clear-status" data-id="${esc(g.id)}">Quitar estado</button>`:""}
+      </div>
+    </div>
+  </div>
+    <div class="detail-art">${cover}</div>
+    <div class="detail-body"><h2>${esc(g.name)}</h2><p class="sub">${esc([g.category,...g.genres].filter(Boolean).join(" · "))}</p>
+    <p class="desc">${esc(g.description||"Sin descripción disponible.")}</p>
+    <div class="specs"><div><span>Espacio</span><b>${g.size?gb(g.size)+" GB":"—"}</b></div><div><span>Año</span><b>${g.year||"—"}</b></div><div><span>Plataformas</span><b>${esc(g.platforms.join(" · "))}</b></div></div>
+    <section class="requirements" aria-label="Requisitos del sistema">
+      <div class="req-head">Requisitos del sistema</div>
+      <div class="req-grid">
+        <div class="req"><h4>Mínimos</h4><p>${esc(formatRequirements(g.minRequirements || g.requirements?.minimum))}</p></div>
+        <div class="req"><h4>Recomendados</h4><p>${esc(formatRequirements(g.recommendedRequirements || g.requirements?.recommended))}</p></div>
+      </div>
+    </section>
+    <div class="detail-buy">${g.soon?`<span class="big soon-big">Próximamente</span><span class="available-label">● ${esc(releaseInfo(g).date||"Fecha por confirmar")}</span>`:`<span class="big">${fmt(g.price)}<small>CUP</small></span><span class="available-label">● ${g.available?"Disponible":"No disponible"}</span>`}</div>
+    <div class="detail-actions">${toggleBtn(g,"btn gold")} ${toggleFavoriteBtn(g,"btn ghost favorite-detail")}</div>
+    ${shots.length?`<div class="shots">${shots.map(s=>`<a class="shot" href="${esc(s)}" target="_blank" rel="noopener"><img referrerpolicy="no-referrer" src="${esc(sized(s,560,315))}"${sized(s,560,315)!==s?` data-alt="${esc(JSON.stringify([s]))}"`:""} alt="Captura de ${esc(g.name)}" loading="lazy" decoding="async"></a>`).join("")}</div>`:""}</div></div>`;
+}
+function closeDetailMenu(){const d=$id("detailDlg");const m=d?.querySelector("[data-detail-menu-panel]"),b=d?.querySelector("[data-detail-menu]");if(m)m.hidden=true;if(b)b.setAttribute("aria-expanded","false");}
+function openDetail(id){ const g=state.games.find(x=>x.id===id); if(!g)return; state.detail=id; renderDetail(g); openDlg($id("detailDlg")); }
+function openDlg(d){ d.showModal(); document.body.style.overflow="hidden"; }
+function closeDlg(d){ if(d?.open)d.close(); }
+
+/* ---------- Favoritos ---------- */
+function renderCart(){
+  const gs=listGames(), total=gs.reduce((a,g)=>a+g.price,0), size=gs.reduce((a,g)=>a+g.size,0);
+  $id("cartDlg").innerHTML=`<div class="drawer-in"><div class="drawer-head"><button class="close" type="button" data-close aria-label="Cerrar">×</button><h2>Mi lista</h2></div>
+  ${gs.length?`<ul class="drawer-list">${gs.map(g=>`<li class="item">${art(g)}<div class="meta"><b>${esc(g.name)}</b><span>${g.size?gb(g.size)+" GB":"—"}</span></div><span class="p">${fmt(g.price)} CUP</span><button class="rm" type="button" data-remove="${esc(g.id)}">Quitar</button></li>`).join("")}</ul>`:`<div class="drawer-empty">No tienes juegos en tu lista todavía.<br>Añade los juegos que quieres solicitar.</div>`}
+  <div class="drawer-foot">${gs.length?`<div class="totals"><b>${fmt(total)} CUP</b><span>${gs.length} juegos · ${gb(size)} GB</span></div><button class="btn gold" type="button" id="sendList">Pedir por mensaje</button><button class="btn ghost" type="button" id="clearList">Vaciar lista</button>`:`<button class="btn" type="button" data-close>Seguir explorando</button>`}</div></div>`;
+}
+function favoriteGames(){ return state.games.filter(g=>state.favorites.has(g.id)); }
+function renderFavorites(){
+  const gs=favoriteGames();
+  $id("favDlg").innerHTML=`<div class="drawer-in"><div class="drawer-head"><button class="close" type="button" data-close aria-label="Cerrar">×</button><h2>Favoritos</h2></div>
+  ${gs.length?`<ul class="drawer-list">${gs.map(g=>`<li class="item">${art(g)}<div class="meta"><b>${esc(g.name)}</b><span>${esc([g.category,g.genres?.[0],g.size?gb(g.size)+" GB":"",g.year||""].filter(Boolean).join(" · "))}</span></div><button class="rm" type="button" data-remove-favorite="${esc(g.id)}">Quitar</button></li>`).join("")}</ul>`:`<div class="drawer-empty">Todavía no tienes juegos en favoritos.<br>Ábrelos y pulsa «Favorito» para guardarlos aquí.</div>`}
+  <div class="drawer-foot"><button class="btn" type="button" data-close>Cerrar</button></div></div>`;
+}
+let collectionFilter="all";
+const COLLECTION_LABELS={all:"Todos",favorite:"Favoritos",pending:"Pendiente",played:"Jugado",won:"Ganado"};
+function collectionGames(){return state.games.filter(g=>{if(collectionFilter==="favorite")return state.favorites.has(g.id);if(["pending","played","won"].includes(collectionFilter))return state.status.get(g.id)===collectionFilter;return state.favorites.has(g.id)||state.status.has(g.id);});}
+function collectionCount(filter){if(filter==="favorite")return state.games.filter(g=>state.favorites.has(g.id)).length;if(filter==="all")return state.games.filter(g=>state.favorites.has(g.id)||state.status.has(g.id)).length;return state.games.filter(g=>state.status.get(g.id)===filter).length;}
+function renderCollection(){
+ const gs=collectionGames();
+ const tabs=Object.entries(COLLECTION_LABELS).map(([k,l])=>`<button class="collection-tab" type="button" data-collection-filter="${k}" aria-pressed="${collectionFilter===k}">${l}<span>${collectionCount(k)}</span></button>`).join("");
+ $id("collectionDlg").innerHTML=`<div class="drawer-in"><div class="drawer-head"><button class="close" type="button" data-close aria-label="Cerrar">×</button><h2>Mi colección</h2><span class="collection-count">Tu biblioteca personal</span></div><div class="collection-tabs">${tabs}</div>${gs.length?`<ul class="collection-list">${gs.map(g=>{const st=gameStatus(g);const label=state.favorites.has(g.id)&&st?`Favorito · ${STATUS_LABELS[st]}`:state.favorites.has(g.id)?"Favorito":STATUS_LABELS[st];return `<li class="item"><button class="poster-btn" type="button" data-open="${esc(g.id)}">${art(g)}</button><div class="meta"><b>${esc(g.name)}</b><span>${esc(label||"")}</span><span>${g.size?gb(g.size)+" GB":"—"} · ${fmt(g.price)} CUP</span></div></li>`}).join("")}</ul>`:`<div class="collection-empty"><b>${COLLECTION_LABELS[collectionFilter]}</b>Marca juegos como favoritos, pendientes, jugados o ganados desde su detalle.</div>`}<div class="drawer-foot"><button class="btn" type="button" data-close>Seguir explorando</button></div></div>`;
+}
+function openCollection(filter="all"){collectionFilter=filter;renderCollection();openDlg($id("collectionDlg"));}
+
+function syncList(){
+  document.querySelectorAll("[data-toggle]").forEach(b=>{const on=state.list.has(b.dataset.toggle);b.setAttribute("aria-pressed",on);b.textContent=on?b.dataset.on:b.dataset.off;}); document.querySelectorAll("[data-favorite]").forEach(b=>{const on=state.favorites.has(b.dataset.favorite);b.setAttribute("aria-pressed",on);b.setAttribute("aria-label",on?"Quitar de favoritos":"Añadir a favoritos");});
+  const gs=listGames(),n=gs.length;
+  const fab=$id("listFab"); if(fab){ $id("fabBadge").textContent=n; fab.classList.toggle("show",n>0); if(typeof window.__fabN==="number" && n>window.__fabN){fab.classList.remove("bump");void fab.offsetWidth;fab.classList.add("bump")} window.__fabN=n; }
+  if($id("badge")){ $id("badge").textContent=n; $id("badge").hidden=!n; }
+  if($id("sideListBadge")){ $id("sideListBadge").textContent=n; }
+  const cn=state.games.filter(g=>state.favorites.has(g.id)||state.status.has(g.id)).length; $id("sideCollectionBadge").textContent=cn; $id("sideCollectionBadge").hidden=!cn;
+  if($id("sideListBadge")){ $id("sideListBadge").hidden=!n; }
+  const fn=favoriteGames().length;
+  if($id("favBadge")){ $id("favBadge").textContent=fn; $id("favBadge").hidden=!fn; }
+  if($id("sideFavBadge")){ $id("sideFavBadge").textContent=fn; $id("sideFavBadge").hidden=!fn; }
+  if($id("collBadge")){ $id("collBadge").textContent=cn; $id("collBadge").hidden=!cn; }
+  const lb=$id("openCart"); if(lb){ if(typeof window.__lastN==="number" && n>window.__lastN){lb.classList.remove("bump");void lb.offsetWidth;lb.classList.add("bump")} window.__lastN=n; }
+  document.querySelectorAll("[data-favorite]").forEach(b=>{const on=state.favorites.has(b.dataset.favorite);b.classList.toggle("is-favorite",on);b.textContent="Favorito";});
+  if(state.detail){const g=state.games.find(x=>x.id===state.detail);const d=$id("detailDlg");if(g&&d?.open)renderDetail(g);}
+  renderCart();renderFavorites();
+}
+function listMessage(){
+  const gs=listGames();
+  return `Hola Javier, quiero estos juegos:\n${gs.map(g=>`- ${g.name} (${fmt(g.price)} CUP, ${gb(g.size)} GB)`).join("\n")}\nTotal: ${fmt(gs.reduce((a,g)=>a+g.price,0))} CUP`;
+}
+let toastTimer;
+function toast(msg){const t=$id("toast");t.textContent=msg;t.classList.add("show");clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove("show"),2800);}
+async function deliver(text){
+  if(CONFIG.WHATSAPP){window.open(`https://wa.me/${CONFIG.WHATSAPP}?text=${encodeURIComponent(text)}`,"_blank","noopener");return;}
+  try{await navigator.clipboard.writeText(text);toast("Mensaje copiado. Pégalo en tu chat con Javier.");}
+  catch(e){const ta=document.createElement("textarea");ta.value=text;document.body.appendChild(ta);ta.select();try{document.execCommand("copy");toast("Mensaje copiado.");}catch(_){toast("No se pudo copiar el mensaje.");}ta.remove();}
+}
+
+/* ---------- Carga Feed: cache -> versión -> catálogo ---------- */
+function applyCatalog(cat,expiresAt){
+  state.games=cat.games.map(decorate);state.catalogVersion=cat.catalogVersion;state.updatedAt=cat.updatedAt;state.expiresAt=expiresAt||"";state.ready=true;state.error="";
+  buildFacets();renderFilterPanel();renderTabs();renderHero();renderGrid();syncList();
+  $id("ver").textContent=`Catálogo v${state.catalogVersion} · v12`;
+}
+function readCache(){
+  let raw;try{raw=localStorage.getItem(CONFIG.CACHE_KEY)}catch(e){return null}if(!raw)return null;
+  try{const c=JSON.parse(raw);if(!c||c.schemaVersion!==CONFIG.SCHEMA_VERSION||!Number.isFinite(c.catalogVersion)||!c.data||!Array.isArray(c.data.games))throw 0;return c;}catch(e){try{localStorage.removeItem(CONFIG.CACHE_KEY)}catch(_){}return null;}
+}
+function writeCache(cat){const now=Date.now(),entry={schemaVersion:CONFIG.SCHEMA_VERSION,catalogVersion:cat.catalogVersion,updatedAt:cat.updatedAt,cachedAt:new Date(now).toISOString(),expiresAt:new Date(now+CONFIG.CACHE_TTL_MS).toISOString(),data:{games:cat.games}};try{localStorage.setItem(CONFIG.CACHE_KEY,JSON.stringify(entry))}catch(e){}return entry.expiresAt;}
+const isExpired=()=>state.expiresAt&&Date.now()>Date.parse(state.expiresAt);
+async function checkCatalogVersion(){
+  try{
+    let needs=!state.ready||isExpired();
+    if(!needs&&navigator.onLine){const v=await api.version();needs=Number(v.version)!==state.catalogVersion;}
+    if(needs){const cat=normalizeCatalog(await api.catalog());applyCatalog(cat,writeCache(cat));}
+  }catch(e){
+    if(!state.ready){const c=readCache();if(c){applyCatalog({catalogVersion:c.catalogVersion,updatedAt:c.updatedAt,games:c.data.games.map(normalizeGame)},c.expiresAt);toast("Mostrando catálogo guardado");}else{state.error="No pudimos cargar el catálogo."; $id("grid").innerHTML=`<div class="empty"><b>${state.error}</b><p>Revisa tu conexión e inténtalo de nuevo.</p><button class="btn gold" id="retry">Reintentar</button></div>`;}}
+  }
+}
+let pollTimer=null;
+function startPolling(){if(pollTimer||document.hidden)return;pollTimer=setInterval(()=>{if(!document.hidden)checkCatalogVersion()},CONFIG.POLL_MS)}
+document.addEventListener("visibilitychange",()=>{if(document.hidden){clearInterval(pollTimer);pollTimer=null}else{checkCatalogVersion();startPolling()}});
+window.addEventListener("online",()=>{checkCatalogVersion();startPolling()});
+
+/* ---------- Eventos ---------- */
+if($id("q")) $id("q").addEventListener("input",e=>{state.q=e.target.value; if($id("clearSearch")) $id("clearSearch").hidden=!state.q; resetPaging();renderGrid()});
+if($id("clearSearch")) $id("clearSearch").addEventListener("click",()=>{if($id("q")) $id("q").value="";state.q="";$id("clearSearch").hidden=true;resetPaging();renderGrid();if($id("q")) $id("q").focus()});
+document.addEventListener("keydown",e=>{if(e.key==="/"&&!/input|textarea|select/i.test(document.activeElement.tagName)){e.preventDefault();$id("q").focus()}});
+$id("tabs").addEventListener("click",e=>{const b=e.target.closest("[data-cat]");if(!b)return;state.cat=b.dataset.cat;resetPaging();renderTabs();renderGrid()});
+$id("sort").addEventListener("change",e=>{state.sort=e.target.value;resetPaging();renderGrid()});
+$id("filtersBtn").addEventListener("click",()=>{$id("moreFilters").classList.toggle("open");$id("filtersBtn").setAttribute("aria-expanded",$id("moreFilters").classList.contains("open"))});
+$id("moreFilters").addEventListener("change",e=>{
+  if(e.target.id==="fGenre")state.genre=e.target.value;
+  if(e.target.id==="fPlatform")state.platform=e.target.value;
+  resetPaging();renderGrid();
+});
+$id("moreFilters").addEventListener("input",e=>{if(e.target.id==="price"){state.maxPrice=+e.target.value;state.priceTouched=state.maxPrice<state.maxPriceAll;$id("priceVal").textContent=fmt(state.maxPrice)+" CUP";resetPaging();renderGrid()}});
+$id("moreFilters").addEventListener("click",e=>{if(e.target.id==="clearFilters"){state.cat="";state.genre="";state.platform="";state.maxPrice=state.maxPriceAll;state.priceTouched=false;state.q="";$id("q").value="";renderFilterPanel();renderTabs();renderGrid()}});
+$id("moreBtn").addEventListener("click",()=>{state.shown+=CONFIG.PAGE_SIZE;renderGrid()});
+(function(){
+  const fab=$id("listFab"); if(!fab) return;
+  const KEY="javierpc:fab-pos", M=8;
+  const vw=()=>document.documentElement.clientWidth, vh=()=>window.innerHeight;
+  const clamp=(v,a,b)=>Math.min(Math.max(v,a),Math.max(a,b));
+  function place(x,y){
+    const w=fab.offsetWidth||58,h=fab.offsetHeight||58;
+    fab.style.left=clamp(x,M,vw()-w-M)+"px";
+    fab.style.top=clamp(y,M,vh()-h-M)+"px";
+    fab.style.bottom="auto";
+  }
+  function savePos(){
+    const r=fab.getBoundingClientRect(),w=fab.offsetWidth||58,h=fab.offsetHeight||58;
+    try{localStorage.setItem(KEY,JSON.stringify({x:r.left/Math.max(1,vw()-w),y:r.top/Math.max(1,vh()-h)}))}catch(_){}
+  }
+  function restorePos(){
+    let p=null;try{p=JSON.parse(localStorage.getItem(KEY)||"null")}catch(_){}
+    if(!p||!Number.isFinite(p.x)||!Number.isFinite(p.y)) return;
+    const w=fab.offsetWidth||58,h=fab.offsetHeight||58;
+    place(p.x*(vw()-w),p.y*(vh()-h));
+  }
+  restorePos();
+  window.addEventListener("resize",()=>{ if(fab.style.top) restorePos(); });
+
+  let drag=null,moved=false,suppress=false;
+  fab.addEventListener("pointerdown",e=>{
+    if(e.pointerType==="mouse"&&e.button!==0) return;
+    const r=fab.getBoundingClientRect();
+    drag={id:e.pointerId,dx:e.clientX-r.left,dy:e.clientY-r.top,sx:e.clientX,sy:e.clientY};
+    moved=false;
+    try{fab.setPointerCapture(e.pointerId)}catch(_){}
+  });
+  fab.addEventListener("pointermove",e=>{
+    if(!drag||e.pointerId!==drag.id) return;
+    if(!moved && Math.hypot(e.clientX-drag.sx,e.clientY-drag.sy)<8) return;
+    moved=true; fab.classList.add("dragging");
+    place(e.clientX-drag.dx,e.clientY-drag.dy);
+  });
+  const end=e=>{
+    if(!drag||e.pointerId!==drag.id) return;
+    try{fab.releasePointerCapture(e.pointerId)}catch(_){}
+    fab.classList.remove("dragging");
+    if(moved){ savePos(); suppress=true; setTimeout(()=>{suppress=false},60); }
+    drag=null;
+  };
+  fab.addEventListener("pointerup",end);
+  fab.addEventListener("pointercancel",end);
+  fab.addEventListener("click",()=>{
+    if(suppress){suppress=false;return}
+    renderCart();openDlg($id("cartDlg"));
+  });
+})();
+if($id("openCart")) $id("openCart").addEventListener("click",()=>{renderCart();openDlg($id("cartDlg"))});
+if($id("openFavorites")) $id("openFavorites").addEventListener("click",()=>{renderFavorites();openDlg($id("favDlg"))});
+if($id("openCollectionBtn")) $id("openCollectionBtn").addEventListener("click",()=>openCollection());
+if($id("openContact")) $id("openContact").addEventListener("click",()=>{ $id("contact").scrollIntoView({behavior:"smooth",block:"center"}); });
+const sidebar=$id("sidebar"), sidebarOverlay=$id("sidebarOverlay"), brandMenu=$id("brandMenu");
+function openSidebar(){sidebar.classList.add("open");sidebarOverlay.classList.add("open");sidebar.setAttribute("aria-hidden","false");brandMenu.setAttribute("aria-expanded","true");document.body.classList.add("sidebar-open");}
+function closeSidebar(){sidebar.classList.remove("open");sidebarOverlay.classList.remove("open");sidebar.setAttribute("aria-hidden","true");brandMenu.setAttribute("aria-expanded","false");document.body.classList.remove("sidebar-open");}
+brandMenu.addEventListener("click",()=>{
+  if(sidebar.classList.contains("open")){closeSidebar();return}
+  /* En PC, "Javier" (sin scroll) lleva al inicio; con la ☰ visible abre el menú */
+  if(window.matchMedia("(min-width:700px)").matches && !document.body.classList.contains("scrolled-down")){window.scrollTo({top:0,behavior:"smooth"});return}
+  openSidebar();
+});
+$id("sidebarClose").addEventListener("click",closeSidebar); sidebarOverlay.addEventListener("click",closeSidebar);
+document.querySelectorAll("[data-nav]").forEach(b=>b.addEventListener("click",()=>{const n=b.dataset.nav;closeSidebar();if(n==="home")window.scrollTo({top:0,behavior:"smooth"});if(n==="games")$id("grid").scrollIntoView({behavior:"smooth",block:"start"});if(n==="help"){openWelcome();}if(n==="favorites"){renderFavorites();openDlg($id("favDlg"));}if(n==="collection"){openCollection();}if(n==="list"){renderCart();openDlg($id("cartDlg"));}if(n==="contact")$id("contact").scrollIntoView({behavior:"smooth",block:"center"});}));
+window.addEventListener("scroll",()=>{
+  const y=window.scrollY, cl=document.body.classList;
+  /* histéresis: apenas bajas aparece la ☰; solo vuelve "Javier" al estar arriba de todo */
+  if(y>60) cl.add("scrolled-down"); else if(y<24) cl.remove("scrolled-down");
+},{passive:true});
+$id("contactBtn").addEventListener("click",()=>deliver("Hola Javier, quiero consultar por un juego."));
+
+
+
+/* ---------- Delegación global ---------- */
+document.addEventListener("keydown",e=>{
+  const card=e.target.closest(".card[data-open]");
+  if(card && (e.key==="Enter" || e.key===" ")){e.preventDefault();openDetail(card.dataset.open);}
+});
+document.addEventListener("click",e=>{
+  let el;
+  if(el=e.target.closest("[data-collection-filter]")){collectionFilter=el.dataset.collectionFilter;renderCollection();return;}
+  if(el=e.target.closest("[data-detail-menu]")){
+    const menu=$id("detailDlg")?.querySelector("[data-detail-menu-panel]");
+    if(menu){const open=menu.hidden;menu.hidden=!open;el.setAttribute("aria-expanded",String(open));}
+    return;
+  }
+  if(el=e.target.closest("[data-detail-action]")){
+    const id=el.dataset.id, action=el.dataset.detailAction;
+    if(action==="favorite"){state.favorites.has(id)?state.favorites.delete(id):state.favorites.add(id);}
+    if(action==="status"){state.status.get(id)===el.dataset.status?state.status.delete(id):state.status.set(id,el.dataset.status);}
+    if(action==="clear-status"){state.status.delete(id);}
+    persist();closeDetailMenu();renderGrid();syncList();return;
+  }
+  if(!e.target.closest(".detail-menu-wrap")){closeDetailMenu();}
+  if(el=e.target.closest("[data-favorite]")){const id=el.dataset.favorite;state.favorites.has(id)?state.favorites.delete(id):state.favorites.add(id);persist();syncList();return} if(el=e.target.closest("[data-toggle]")){const id=el.dataset.toggle;state.list.has(id)?state.list.delete(id):state.list.add(id);persist();syncList();return}
+  if(el=e.target.closest("[data-notify]")){const g=state.games.find(x=>x.id===el.dataset.notify);if(g)deliver(`Hola Javier, avísame cuando ${g.name} esté disponible en el catálogo.`);return}
+  if(el=e.target.closest("[data-open]")){
+    if(el.matches(".card") && e.target.closest("button,a,input,select")) return;
+    openDetail(el.dataset.open);return
+  }
+  if(el=e.target.closest("[data-hero]")){setHero(el.dataset.hero);return}
+  if(e.target.closest("[data-close]")){closeDlg(e.target.closest("dialog"));return}
+  if(el=e.target.closest("[data-remove]")){state.list.delete(el.dataset.remove);persist();syncList();return}
+  if(el=e.target.closest("[data-remove-favorite]")){state.favorites.delete(el.dataset.removeFavorite);persist();syncList();return}
+  if(e.target.closest("#sendList")){deliver(listMessage());return}
+  if(e.target.closest("#clearList")){state.list.clear();persist();syncList();return}
+  if(e.target.closest("#emptyBtn")){if(state.q.trim())deliver(`Hola Javier, busco este juego: ${state.q.trim()}`);else{state.cat="";state.genre="";state.platform="";state.maxPrice=state.maxPriceAll;state.q="";$id("q").value="";renderFilterPanel();renderTabs();renderGrid()}}
+});
+
+[$id("detailDlg"),$id("cartDlg"),$id("favDlg"),$id("collectionDlg")].forEach(d=>{d.addEventListener("close",()=>document.body.style.overflow="");d.addEventListener("click",e=>{if(e.target===d)d.close()})});
+
+/* ---------- Placeholder adaptable ---------- */
+/* ---------- Tarjeta de bienvenida ---------- */
+const WELCOME_KEY="javierpc:welcome-seen";
+function openWelcome(){
+  const d=$id("welcomeDlg"); if(!d||d.open)return;
+  const h=new Date().getHours();
+  $id("wcGreet").textContent=h>=5&&h<12?"Buenos días":h>=12&&h<19?"Buenas tardes":"Buenas noches";
+  openDlg(d);
+}
+(function initWelcome(){
+  const d=$id("welcomeDlg"); if(!d)return;
+  const done=()=>{try{localStorage.setItem(WELCOME_KEY,"1")}catch(_){} document.body.style.overflow=""};
+  $id("wcOk").addEventListener("click",()=>d.close());
+  d.addEventListener("close",done);
+  d.addEventListener("click",e=>{if(e.target===d)d.close()});
+  $id("openHelp").addEventListener("click",openWelcome);
+  let seen=false;try{seen=!!localStorage.getItem(WELCOME_KEY)}catch(_){}
+  if(!seen) setTimeout(openWelcome,700);
+})();
+/* ---------- Marca: ancho exacto para que el buscador ocupe el hueco al pasar a ☰ ---------- */
+function measureBrand(){const w=document.querySelector(".brand-word"),h=document.querySelector(".site-header");if(w&&h)h.style.setProperty("--brand-w",Math.ceil(w.offsetWidth)+"px")}
+measureBrand();window.addEventListener("resize",measureBrand);if(document.fonts&&document.fonts.ready)document.fonts.ready.then(measureBrand);
+
+(function adaptivePlaceholder(){
+  const q=$id("q"),mq=window.matchMedia("(min-width:700px)");
+  const set=()=>{q.placeholder=mq.matches?"Busca por nombre o género":"¿Qué juego buscas?"};
+  set();mq.addEventListener("change",set);
+})();
+
+/* ---------- Inicio: carga rápida desde cache ---------- */
+const cached=readCache();
+if(cached){
+  applyCatalog({catalogVersion:cached.catalogVersion,updatedAt:cached.updatedAt,games:cached.data.games.map(normalizeGame)},cached.expiresAt);
+  if($id("clearSearch")) $id("clearSearch").hidden=!state.q;
+} else {
+  $id("count").textContent="Cargando catálogo…";
+}
+checkCatalogVersion();startPolling();
+
+</script>
+</body>
+</html>

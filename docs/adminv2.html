@@ -1,0 +1,1012 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#07080c">
+<title>Luismi Platform · Admin V2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ===== Tokens ===== */
+:root{--bg:#07080c;--s1:#0e1016;--s2:#151821;--ln:#232735;--tx:#eceae4;--mu:#979aa6;--au:#d9b872;--ok:#7fcf9b;--wn:#e3a95b;--bd:#e87a72;--in:#82aaf0;--hd:'Big Shoulders Display','Arial Narrow',Impact,sans-serif;--bn:64px}
+*{box-sizing:border-box;margin:0}
+html{-webkit-text-size-adjust:100%}
+body{background:var(--bg);color:var(--tx);font:500 15px/1.5 Manrope,system-ui,-apple-system,'Segoe UI',sans-serif;min-height:100dvh;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit}
+small{color:var(--mu);font-size:12.5px}
+h1,h2,h3{font-family:var(--hd);font-weight:800;letter-spacing:.015em;line-height:1.05}
+:focus-visible{outline:2px solid var(--au);outline-offset:2px}
+.ic{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.ic.au{color:var(--au);width:13px;height:13px}
+/* ===== Shell ===== */
+.app{display:grid;grid-template-columns:276px minmax(0,1fr);min-height:100dvh}
+.side{position:sticky;top:0;height:100dvh;background:var(--s1);border-right:1px solid var(--ln);display:flex;flex-direction:column;overflow-y:auto;overscroll-behavior:contain}
+.brand{padding:22px 22px 14px}
+.brand b{display:block;font:800 30px/1 var(--hd);letter-spacing:.02em}
+.brand b i{font-style:normal;color:var(--au)}
+.brand small{display:block;margin-top:6px}
+.tnt{margin:0 14px 8px;padding:10px 12px;border:1px solid var(--ln);border-radius:10px;font-size:13px;color:var(--mu)}
+.tnt b{color:var(--tx);font-weight:700}
+.nav{padding:6px 10px;flex:1}
+.ng{margin:14px 0 4px;padding:0 12px;font-size:12.5px;color:var(--mu);font-weight:700}
+.nl{display:flex;align-items:center;gap:12px;min-height:42px;padding:0 12px;border-radius:8px;color:#c9c8c4;font-weight:600;font-size:14.5px}
+.nl:hover{background:var(--s2)}
+.nl.on{background:var(--s2);color:var(--au);box-shadow:inset 3px 0 0 var(--au)}
+.nl.sub{padding-left:42px;min-height:38px;font-size:14px;font-weight:500}
+.sf{padding:14px 22px 22px;border-top:1px solid var(--ln);font-size:12.5px;color:var(--mu);line-height:1.45}
+.sf b{color:var(--tx)}
+.main{min-width:0;display:flex;flex-direction:column}
+.top{position:sticky;top:0;z-index:30;display:flex;align-items:center;gap:12px;min-height:60px;padding:0 24px;background:rgba(7,8,12,.9);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--ln)}
+.top .tt{font:700 20px var(--hd);letter-spacing:.03em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.sp{flex:1}
+.menu-btn{display:none}
+.pill{display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 10px;border:1px solid var(--ln);border-radius:99px;font-size:12.5px;color:var(--mu);white-space:nowrap}
+.me{display:inline-flex;align-items:center;gap:10px;min-height:40px;padding:0 12px 0 6px;border:1px solid var(--ln);border-radius:99px;background:var(--s1);cursor:pointer}
+.av{width:28px;height:28px;border-radius:50%;background:var(--au);color:#15110a;display:grid;place-items:center;font:800 15px var(--hd)}
+.me span{font-size:13.5px;font-weight:700;line-height:1.1}
+.me small{display:block;font-size:11.5px}
+.view{padding:28px 24px 96px;max-width:1260px;width:100%;margin:0 auto}
+.bnav{display:none}
+.bar-off{background:#2a1d12;border-bottom:1px solid #5a3b17;color:#f1c58d;padding:10px 24px;font-size:13.5px;display:flex;gap:10px;align-items:center}
+/* ===== Type & layout ===== */
+.ph{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:22px}
+.ph h1{font-size:44px;text-transform:uppercase}
+.ph p{color:var(--mu);margin-top:6px;max-width:62ch}
+.pa{display:flex;gap:10px;flex-wrap:wrap}
+.sec{margin-top:34px}
+.sec>h2{font-size:26px;margin-bottom:12px;text-transform:uppercase}
+.sec>p.d{color:var(--mu);margin:-6px 0 14px;max-width:70ch}
+.panel{border:1px solid var(--ln);border-radius:12px;background:var(--s1);padding:18px}
+.hr{height:1px;background:var(--ln);margin:18px 0}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.two{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:28px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:1px;background:var(--ln);border:1px solid var(--ln);border-radius:12px;overflow:hidden}
+.st{background:var(--bg);padding:18px}
+.st b{display:block;font:800 42px/1 var(--hd);letter-spacing:.01em}
+.st b.t{font-size:28px;padding-top:8px}
+.st span{display:block;color:var(--mu);font-size:13px;margin-top:6px}
+.dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--ok);margin-right:8px}
+.dot.wn{background:var(--wn)}.dot.bd{background:var(--bd)}
+.rows>*{display:flex;align-items:center;gap:12px;padding:13px 0;border-bottom:1px solid var(--ln)}
+.rows>*:last-child{border-bottom:0}
+.rows .gr{flex:1;min-width:0}
+.note{border:1px solid var(--ln);border-left:3px solid var(--au);background:var(--s1);border-radius:8px;padding:12px 14px;color:#cfcdc7;font-size:14px;margin-bottom:16px}
+.note.bd{border-left-color:var(--bd)}.note.ok{border-left-color:var(--ok)}.note.wn{border-left-color:var(--wn)}
+.hint{color:var(--mu);font-size:13px}
+.kv{display:grid;grid-template-columns:150px 1fr;gap:8px 16px;font-size:14.5px}
+.kv dt{color:var(--mu)}
+.mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:12.5px;color:#c7c5bf}
+/* ===== Controls ===== */
+.btn{min-height:42px;padding:0 16px;border-radius:8px;border:1px solid var(--ln);background:var(--s2);font-weight:700;font-size:14px;display:inline-flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;white-space:nowrap}
+.btn:hover{border-color:#3a4054}
+.btn.pri{background:var(--au);border-color:var(--au);color:#15110a}
+.btn.pri:hover{filter:brightness(1.06)}
+.btn.dng{color:var(--bd)}
+.btn.sm{min-height:36px;padding:0 12px;font-size:13.5px}
+.btn[disabled],.ib[disabled]{opacity:.45;cursor:not-allowed}
+.ib{width:36px;height:36px;border-radius:8px;border:1px solid transparent;background:transparent;display:inline-grid;place-items:center;cursor:pointer;color:#b9b8b3}
+.ib:hover{background:var(--s2);border-color:var(--ln);color:var(--tx)}
+.ib.dng:hover{color:var(--bd)}
+input,select,textarea{width:100%;min-height:44px;background:var(--bg);border:1px solid var(--ln);border-radius:8px;color:var(--tx);padding:0 12px;font:inherit;font-size:15px}
+textarea{padding:10px 12px;min-height:96px;resize:vertical;line-height:1.5}
+input:disabled,select:disabled,textarea:disabled{opacity:.55}
+select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none' stroke='%23979aa6' stroke-width='2'%3E%3Cpath d='m1 1 5 5 5-5'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:34px}
+.f{display:grid;gap:6px;align-content:start}
+.f>label,.f>.lb{font-size:13px;color:var(--mu);font-weight:700}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.tg{position:relative}
+.tg input{position:absolute;opacity:0;inset:0;width:100%;height:100%;cursor:pointer;min-height:0}
+.tg span{display:inline-flex;align-items:center;min-height:42px;padding:0 16px;border:1px solid var(--ln);border-radius:99px;font-weight:700;font-size:14px;background:var(--bg)}
+.tg input:checked+span{background:var(--au);border-color:var(--au);color:#15110a}
+.tg input:focus-visible+span{outline:2px solid var(--au);outline-offset:2px}
+.tg input:disabled+span{opacity:.55}
+.tgl{display:flex;align-items:center;gap:12px;min-height:44px;cursor:pointer}
+.tgl input{position:absolute;opacity:0;width:1px;height:1px;min-height:0}
+.trk,.sw{width:42px;height:24px;border-radius:99px;background:var(--ln);position:relative;flex:none;transition:background .15s;border:0;cursor:pointer;padding:0}
+.trk::after,.sw::after{content:"";position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:#cfcdc7;transition:transform .15s}
+.tgl input:checked+.trk,.sw[aria-checked=true]{background:var(--au)}
+.tgl input:checked+.trk::after,.sw[aria-checked=true]::after{transform:translateX(18px);background:#15110a}
+.tgl input:focus-visible+.trk{outline:2px solid var(--au);outline-offset:2px}
+.swc{display:inline-flex;align-items:center;gap:8px;font-size:13px;color:var(--mu);min-height:36px}
+.bd2{display:inline-flex;align-items:center;gap:6px;height:24px;padding:0 9px;border-radius:99px;font-size:12px;font-weight:700;border:1px solid var(--ln);color:var(--mu);white-space:nowrap}
+.bd2.ok{color:var(--ok);border-color:#244a33}.bd2.wn{color:var(--wn);border-color:#5a4220}.bd2.bd{color:var(--bd);border-color:#5b2c29}.bd2.au{color:var(--au);border-color:#5d4e2c}.bd2.in{color:var(--in);border-color:#27385a}
+.tabs{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;margin-bottom:20px;border-bottom:1px solid var(--ln)}
+.tabs::-webkit-scrollbar{display:none}
+.tabs a,.tabs button{flex:none;min-height:44px;padding:0 14px;border:0;background:none;color:var(--mu);font-weight:700;font-size:14px;border-bottom:2px solid transparent;cursor:pointer;display:inline-flex;align-items:center;gap:8px}
+.tabs .on{color:var(--au);border-bottom-color:var(--au)}
+.tabs em{font-style:normal;font-size:12px;color:var(--mu)}
+/* ===== Lists (tabla en desktop, tarjetas en móvil) ===== */
+.list{margin-top:6px}
+.lh,.li{display:grid;grid-template-columns:var(--cols);gap:14px;align-items:center}
+.lh{padding:0 8px 10px;color:var(--mu);font-size:12.5px;font-weight:700;border-bottom:1px solid var(--ln)}
+.li{padding:12px 8px;border-bottom:1px solid var(--ln)}
+.li:hover{background:rgba(255,255,255,.015)}
+.pc{display:flex;align-items:center;gap:12px;min-width:0}
+.nm{min-width:0}.nm b{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:700}
+.nm small{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ac{display:flex;align-items:center;gap:2px;justify-content:flex-end;flex-wrap:wrap}
+.cnt{color:var(--mu);font-size:13px;margin:4px 0 0}
+.art{background:linear-gradient(150deg,hsl(var(--h) 26% 19%),hsl(var(--h) 22% 9%));display:grid;place-items:center;font:800 18px var(--hd);letter-spacing:.05em;color:hsl(var(--h) 38% 72%);overflow:hidden;position:relative}
+.art img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.art.none{background:var(--bg);border:1px dashed #3a4054;color:var(--mu);font:600 11px Manrope;text-align:center;padding:4px}
+.th{width:48px;height:64px;border-radius:6px;flex:none;display:block}
+.th .art{width:100%;height:100%;border-radius:6px}
+.th-sm{width:40px;height:54px;border-radius:6px;flex:none;overflow:hidden}
+/* ===== Filtros ===== */
+.sr{display:flex;gap:10px;margin:4px 0 12px}
+.sr .srch{position:relative;flex:1}
+.sr .srch .ic{position:absolute;left:12px;top:13px;color:var(--mu)}
+.sr input{padding-left:40px}
+.fbtn{display:none}
+.filters{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:14px;align-items:end}
+.filters .sh{display:none}
+.fbd{display:none}
+/* ===== Modal / sheet ===== */
+.ov{position:fixed;inset:0;background:rgba(0,0,0,.66);z-index:90;display:flex;align-items:center;justify-content:center;padding:16px}
+.md{width:min(580px,100%);max-height:90dvh;overflow:auto;background:var(--s1);border:1px solid var(--ln);border-radius:14px;overscroll-behavior:contain}
+.md.wide{width:min(760px,100%)}
+.mh{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:18px 20px 6px}
+.mh h3{font-size:26px;text-transform:uppercase}
+.mb{padding:10px 20px 6px}
+.mf{display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap;padding:14px 20px 20px}
+.toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%);z-index:120;display:grid;gap:8px;width:min(440px,calc(100vw - 24px))}
+.toast div{background:var(--s2);border:1px solid var(--ln);border-left:3px solid var(--ok);border-radius:8px;padding:12px 14px;font-size:14px;box-shadow:0 8px 24px rgba(0,0,0,.4)}
+.toast div.bd{border-left-color:var(--bd)}
+/* ===== Estados ===== */
+.state{border:1px dashed #323850;border-radius:12px;padding:40px 20px;text-align:center;display:grid;gap:10px;justify-items:center;margin-top:10px}
+.state h3{font-size:26px}
+.state p{color:var(--mu);max-width:44ch}
+.sk{height:64px;border-radius:8px;background:linear-gradient(90deg,var(--s1),var(--s2),var(--s1));background-size:200% 100%;animation:sk 1.3s linear infinite;margin-bottom:10px}
+@keyframes sk{to{background-position:-200% 0}}
+/* ===== Formulario ===== */
+details.fs{border:1px solid var(--ln);border-radius:12px;background:var(--s1);margin-bottom:14px}
+details.fs>summary{list-style:none;cursor:pointer;min-height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 18px;font:800 24px var(--hd);letter-spacing:.02em;text-transform:uppercase}
+details.fs>summary::-webkit-details-marker{display:none}
+details.fs>summary .ic{transition:transform .15s}
+details.fs[open]>summary .ic{transform:rotate(90deg)}
+details.fs>.fb{padding:4px 18px 20px;display:grid;gap:16px}
+.spec{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.sbar{position:sticky;bottom:0;z-index:25;display:flex;gap:10px;justify-content:flex-end;padding:12px 0;background:linear-gradient(0deg,var(--bg) 70%,transparent);margin-top:10px}
+.slots{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
+.slot{display:grid;gap:8px}
+.slot .art{aspect-ratio:16/10;border-radius:8px}
+.slot.cv .art{aspect-ratio:3/4}
+.slot .sa{display:flex;gap:6px}
+.slot .sa .btn{flex:1;padding:0 8px}
+.rule{display:grid;grid-template-columns:1fr 1fr 1fr auto auto;gap:12px;align-items:end;padding:14px 0;border-bottom:1px solid var(--ln)}
+.step{display:flex;gap:12px;align-items:flex-start;padding:9px 0;color:var(--mu);font-size:14px}
+.step i{width:24px;height:24px;border-radius:50%;border:1px solid var(--ln);display:grid;place-items:center;font:700 12px Manrope;font-style:normal;flex:none}
+.step.done{color:var(--tx)}.step.done i{background:var(--ok);border-color:var(--ok);color:#08140c}
+.step.cur{color:var(--au)}.step.cur i{border-color:var(--au);color:var(--au)}
+.diff{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:var(--ln);border:1px solid var(--ln);border-radius:10px;overflow:hidden;margin:12px 0}
+.diff div{background:var(--bg);padding:14px}
+.diff b{display:block;font:800 32px/1 var(--hd)}
+.diff span{font-size:13px;color:var(--mu)}
+.mg{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:14px}
+.mi{display:grid;gap:8px;align-content:start}
+.mi .art{aspect-ratio:16/10;border-radius:8px}
+.mi.cv .art{aspect-ratio:3/4}
+.mi .nm b{font-size:14px}
+.mi .ma{display:flex;gap:4px;flex-wrap:wrap}
+.lg{max-width:100%;border-radius:10px}
+.lg .art{aspect-ratio:16/10;font-size:48px}
+.req{width:100%;border-collapse:collapse;font-size:14px}
+.req td,.req th{padding:9px 8px;border-bottom:1px solid var(--ln);text-align:left;vertical-align:top}
+.req th{color:var(--mu);font-weight:700;width:34%}
+.vh{display:grid;grid-template-columns:200px minmax(0,1fr);gap:28px}
+.vh .art{aspect-ratio:3/4;border-radius:10px;font-size:54px}
+/* ===== Responsive ===== */
+@media (max-width:1023px){
+ .app{grid-template-columns:1fr}
+ .side{position:fixed;inset:0 auto 0 0;width:min(86vw,330px);z-index:70;transform:translateX(-102%);transition:transform .22s ease;box-shadow:0 0 0 100vmax rgba(0,0,0,0)}
+ .side.open{transform:none;box-shadow:0 0 0 100vmax rgba(0,0,0,.6)}
+ .menu-btn{display:inline-grid}
+ .top{padding:0 14px}.view{padding:20px 16px 110px}.bar-off{padding:10px 16px}
+ .two{grid-template-columns:1fr}
+}
+@media (max-width:860px){
+ .lh{display:none}
+ .li{grid-template-columns:1fr 1fr;gap:10px 14px;padding:16px 0}
+ .li>.pc,.li>.ac{grid-column:1/-1}
+ .li>[data-l]::before{content:attr(data-l);display:block;font-size:12px;color:var(--mu);margin-bottom:2px}
+ .ac{justify-content:space-between;flex-wrap:nowrap;gap:0}
+ .ac .swc{margin-right:auto}
+ .spec{grid-template-columns:1fr 1fr}
+ .vh{grid-template-columns:1fr}.vh .art{max-width:180px}
+}
+@media (max-width:760px){
+ body{font-size:16px}
+ .ph h1{font-size:36px}
+ .grid2,.grid3{grid-template-columns:1fr}
+ .spec{grid-template-columns:1fr}
+ .btn{min-height:48px}.btn.sm{min-height:44px}
+ .ib{width:44px;height:44px}
+ .pa{width:100%}.pa .btn{flex:1}
+ .top .pill,.top .tnt-t{display:none}
+ .me span small{display:none}
+ .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .st b{font-size:36px}
+ .rule{grid-template-columns:1fr 1fr;align-items:end}
+ .rule .f.pr,.rule .rm{grid-column:auto}
+ .diff{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .fbtn{display:inline-flex}
+ .filters{position:fixed;left:0;right:0;bottom:0;z-index:80;background:var(--s1);border-top:1px solid var(--ln);border-radius:16px 16px 0 0;padding:18px 16px calc(18px + env(safe-area-inset-bottom));grid-template-columns:1fr;max-height:82dvh;overflow:auto;transform:translateY(105%);transition:transform .22s ease;margin:0}
+ .filters.open{transform:none}
+ .filters .sh{display:flex;justify-content:space-between;align-items:center}
+ .filters .sh b{font:800 24px var(--hd);text-transform:uppercase}
+ .fbd.open{display:block;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:75}
+ .ov{align-items:flex-end;padding:0}
+ .md,.md.wide{width:100%;border-radius:16px 16px 0 0;max-height:92dvh;padding-bottom:env(safe-area-inset-bottom)}
+ .mf .btn{flex:1}
+ .bnav{display:grid;grid-template-columns:repeat(5,1fr);position:fixed;left:0;right:0;bottom:0;z-index:40;height:calc(var(--bn) + env(safe-area-inset-bottom));padding-bottom:env(safe-area-inset-bottom);background:rgba(14,16,22,.96);backdrop-filter:blur(10px);border-top:1px solid var(--ln)}
+ .bnav a,.bnav button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border:0;background:none;color:var(--mu);font-size:11.5px;font-weight:700;min-width:0}
+ .bnav .on{color:var(--au)}
+ body.nobn .bnav{display:none}
+ body:not(.nobn) .toast{bottom:calc(var(--bn) + 18px + env(safe-area-inset-bottom))}
+ .kv{grid-template-columns:1fr;gap:2px}.kv dd{margin-bottom:8px}
+ input,select,textarea{font-size:16px}
+ .sbar{bottom:0;padding-bottom:calc(12px + env(safe-area-inset-bottom))}
+ .sbar .btn{flex:1}
+ .view{padding-bottom:120px}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+noscript{display:block;padding:40px;text-align:center}
+</style>
+</head>
+<body>
+<noscript>Esta interfaz necesita JavaScript.</noscript>
+<div class="app">
+  <aside class="side" id="side" aria-label="Navegación principal"></aside>
+  <div class="main">
+    <header class="top">
+      <button class="ib menu-btn" data-a="drawer" aria-label="Abrir menú"><svg class="ic" viewBox="0 0 24 24"><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="18" y2="18"/></svg></button>
+      <div class="tt" id="ttl">Admin</div>
+      <div class="sp"></div>
+      <span class="pill" title="Esta versión no está conectada al backend"><span class="dot wn" style="margin:0"></span>Demo sin backend</span>
+      <span class="pill tnt-t" id="tntp"></span>
+      <button class="me" data-a="whoModal" id="mebtn" aria-label="Cambiar vista de demostración"></button>
+    </header>
+    <div id="offbar"></div>
+    <main class="view" id="view" tabindex="-1"></main>
+  </div>
+</div>
+<nav class="bnav" id="bnav" aria-label="Navegación rápida"></nav>
+<div id="ov" role="dialog" aria-modal="true" hidden></div>
+<div class="toast" id="toast" aria-live="polite"></div>
+<input type="file" id="filepick" accept="image/jpeg,image/png,image/webp" hidden>
+<input type="file" id="impfile" accept=".json,application/json" hidden>
+
+<script>
+'use strict';
+/* =====================================================================
+   LUISMI PLATFORM · ADMIN V2
+   Una sola arquitectura: un router (hash), un estado (S), un modelo de
+   roles (SUPER_ADMIN / ADMIN), un modelo de tenant (tenantId) y UNA
+   función de precios (priceFor).
+   Esta interfaz SOLO representa permisos y datos. El backend real debe:
+   autenticar, autorizar, imponer tenantId, validar, auditar y calcular
+   precios. Nada de lo que hace este archivo es seguridad real.
+   API futura: /api/v1/admin/*, /games, /catalog, /catalog/version,
+   /categories, /genres, /platforms.
+   ===================================================================== */
+
+/* ---------- Utilidades ---------- */
+const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const nf=n=>Number(n).toLocaleString('en-US',{maximumFractionDigits:2});
+const norm=s=>String(s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+const slug=s=>norm(s).replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+const rel=ts=>{const m=Math.max(0,Math.round((Date.now()-ts)/60000));if(m<1)return'ahora';if(m<60)return`hace ${m} min`;const h=Math.round(m/60);if(h<24)return`hace ${h} h`;return`hace ${Math.round(h/24)} d`};
+const dt=ts=>new Date(ts).toLocaleString('es',{dateStyle:'medium',timeStyle:'short'});
+const ago=m=>Date.now()-m*60000;
+const hue=s=>[...String(s)].reduce((a,c)=>(a*31+c.charCodeAt(0))%360,7);
+const ini=s=>String(s).replace(/[^\p{L}\p{N} ]/gu,'').split(' ').filter(Boolean).slice(0,2).map(w=>w[0]).join('').toUpperCase()||'?';
+const clone=o=>JSON.parse(JSON.stringify(o));
+
+const ICONS={
+dash:'<rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/>',
+games:'<line x1="6" x2="10" y1="12" y2="12"/><line x1="8" x2="8" y1="10" y2="14"/><line x1="15" x2="15.01" y1="13" y2="13"/><line x1="18" x2="18.01" y1="11" y2="11"/><rect width="20" height="12" x="2" y="6" rx="2"/>',
+library:'<path d="m16 6 4 14"/><path d="M12 6v14"/><path d="M8 8v12"/><path d="M4 4v16"/>',
+tag:'<path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"/><circle cx="7.5" cy="7.5" r=".5"/>',
+layers:'<path d="m12 2 10 5-10 5L2 7z"/><path d="m2 12 10 5 10-5"/><path d="m2 17 10 5 10-5"/>',
+monitor:'<rect width="20" height="14" x="2" y="3" rx="2"/><path d="M8 21h8M12 17v4"/>',
+image:'<rect width="18" height="18" x="3" y="3" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.1-3.1a2 2 0 0 0-2.8 0L6 21"/>',
+users:'<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>',
+audit:'<rect width="8" height="4" x="8" y="2" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="m9 14 2 2 4-4"/>',
+key:'<circle cx="7.5" cy="15.5" r="5.5"/><path d="m21 2-9.6 9.6"/><path d="m15.5 7.5 3 3L22 7l-3-3"/>',
+building:'<rect width="16" height="20" x="4" y="2" rx="2"/><path d="M9 22v-4h6v4"/><path d="M8 6h.01M16 6h.01M12 6h.01M12 10h.01M12 14h.01M16 10h.01M16 14h.01M8 10h.01M8 14h.01"/>',
+cfg:'<line x1="21" x2="14" y1="4" y2="4"/><line x1="10" x2="3" y1="4" y2="4"/><line x1="21" x2="12" y1="12" y2="12"/><line x1="8" x2="3" y1="12" y2="12"/><line x1="21" x2="16" y1="20" y2="20"/><line x1="12" x2="3" y1="20" y2="20"/><line x1="14" x2="14" y1="2" y2="6"/><line x1="8" x2="8" y1="10" y2="14"/><line x1="16" x2="16" y1="18" y2="22"/>',
+menu:'<line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="18" y2="18"/>',
+x:'<path d="M18 6 6 18M6 6l12 12"/>',
+search:'<circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>',
+filter:'<path d="M22 3H2l8 9.46V19l4 2v-8.54z"/>',
+plus:'<path d="M5 12h14M12 5v14"/>',
+edit:'<path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4z"/>',
+eye:'<path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/>',
+copy:'<rect width="14" height="14" x="8" y="8" rx="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/>',
+trash:'<path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/>',
+clock:'<circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>',
+upload:'<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m17 8-5-5-5 5"/><path d="M12 3v12"/>',
+download:'<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/><path d="M12 15V3"/>',
+check:'<path d="M20 6 9 17l-5-5"/>',
+alert:'<path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4M12 17h.01"/>',
+lock:'<rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>',
+refresh:'<path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/>',
+chev:'<path d="m9 18 6-6-6-6"/>',
+db:'<ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5"/><path d="M3 12a9 3 0 0 0 18 0"/>',
+cloud:'<path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/>',
+star:'<path d="m12 2 3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/>',
+more:'<circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/>',
+shield:'<path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/>'
+};
+const ic=n=>`<svg class="ic" viewBox="0 0 24 24" aria-hidden="true">${ICONS[n]||''}</svg>`;
+
+/* ---------- Catálogos fijos ---------- */
+const PLATS=['PC','PS4','PS5'];            // sin Xbox
+const PLK={P:'PC','4':'PS4','5':'PS5'};
+const CPU=['Intel i3','Intel i5','Intel i7','Intel i9','Ryzen 3','Ryzen 5','Ryzen 7','Ryzen 9','Otro'];
+const GPU=['GTX','RTX','RX','Intel Arc','Otro'];
+const RAM=[2,4,6,8,12,16,32,64].map(n=>[n,n+' GB']);
+const OSL=['Windows 10 64-bit','Windows 11 64-bit'];
+const DXL=[10,11,12].map(n=>[n,'DirectX '+n]);
+const STO=['HDD','SSD'];
+
+/* ---------- Datos de demostración (los reemplazará /api/v1) ---------- */
+const TENANTS=[{id:'t_javier',name:'Javier',slug:'javier',status:'Activo',created:ago(60*24*90)}];
+const USERS={
+  luismi:{id:'u_luismi',name:'Luismi',role:'SUPER_ADMIN',tenantId:null},
+  javier:{id:'u_javier',name:'Javier',role:'ADMIN',tenantId:'t_javier'}
+};
+const LIBD=[
+['Red Dead Redemption 2','Aventura','P45',2018,119],['Grand Theft Auto V','Acción','P45',2013,95],['The Witcher 3: Wild Hunt','RPG','P45',2015,50],
+['Cyberpunk 2077','RPG','P45',2020,70],['EA Sports FC 26','Deportes','P45',2025,55],['Minecraft','Aventura','P45',2011,1.5],
+['Elden Ring','RPG','P45',2022,60],['God of War','Acción','P45',2018,70],['Hollow Knight','Aventura','P45',2017,1.5],
+['Forza Horizon 5','Carreras','P',2021,110],['Need for Speed Heat','Carreras','P45',2019,50],['The Sims 4','Simulación','P45',2014,45],
+['Cities: Skylines','Estrategia','P45',2015,6],['Euro Truck Simulator 2','Simulación','P',2012,7],['Farming Simulator 22','Simulación','P45',2021,25],
+['Resident Evil 4','Terror','P45',2023,60],['Counter-Strike 2','Shooter','P',2023,35],['Age of Empires II: Definitive Edition','Estrategia','P',2019,50],
+['Stardew Valley','Simulación','P45',2016,1],['Terraria','Aventura','P45',2011,1],["Marvel's Spider-Man Remastered",'Acción','P',2022,75],
+['Hogwarts Legacy','RPG','P45',2023,85],['Mortal Kombat 11','Lucha','P45',2019,60],['Tekken 8','Lucha','P5',2024,100],
+['Football Manager 2024','Deportes','P',2023,20],['Need for Speed: Most Wanted','Carreras','P',2005,4],['Grand Theft Auto: San Andreas','Acción','P',2004,5],
+['Fallout 4','RPG','P45',2015,30],['The Elder Scrolls V: Skyrim Special Edition','RPG','P45',2016,15],["Assassin's Creed Valhalla",'Acción','P45',2020,100],
+['Dying Light 2','Terror','P45',2022,60],['Far Cry 6','Shooter','P45',2021,60],['Resident Evil Village','Terror','P45',2021,30],
+['Horizon Zero Dawn','Aventura','P4',2017,100],['The Last of Us Part I','Acción','P5',2022,90]
+];
+/* Requisitos orientativos por tamaño (solo para la demo) */
+function reqFor(size){
+  const m=size<10?['Intel i3','GTX',4,'HDD']:size<50?['Intel i5','GTX',8,'HDD']:['Intel i5','GTX',12,'SSD'];
+  const r=size<10?['Intel i5','GTX',8,'HDD']:size<50?['Intel i7','GTX',16,'SSD']:['Intel i7','RTX',16,'SSD'];
+  const mk=a=>({cpu:a[0],cpuModel:'',gpu:a[1],gpuModel:'',ram:a[2],os:'Windows 10 64-bit',dx:11,storage:a[3]});
+  return {min:mk(m),rec:mk(r)};
+}
+const LIB=LIBD.map(([t,g,p,y,s])=>({id:'b_'+slug(t),title:t,genre:g,platforms:[...p].map(c=>PLK[c]),year:y,size:s,desc:`${t}: ficha base mantenida por la plataforma (descripción, requisitos y multimedia).`,req:reqFor(s)}));
+const libBy=t=>LIB.find(x=>x.title===t);
+
+const S={
+  who:'luismi', ctx:'t_javier', route:'', sim:'normal', libTotal:1024,
+  rules:[{id:'r1',min:1,max:10,price:40,active:true},{id:'r2',min:10.01,max:50,price:50,active:true},{id:'r3',min:50.01,max:100,price:70,active:true},{id:'r4',min:100.01,max:null,price:100,active:true}],
+  rulesDraft:null,
+  cats:['Destacados','Lanzamientos','Clásicos','Multijugador','Livianos'],
+  gens:['Acción','Aventura','RPG','Deportes','Carreras','Simulación','Estrategia','Terror','Shooter','Lucha'],
+  platOn:{PC:true,PS4:true,PS5:true},
+  cfg:{publicName:'Javier',whatsapp:'',footer:'',showUnavailable:true,offerOffline:true},
+  catalog:{version:128,publishedAt:ago(60*26),pending:0},
+  games:[],media:[],audit:[],backups:[],sessions:[],admins:[],
+  gf:{q:'',cat:'',gen:'',plat:'',av:'',origin:'',size:'',sort:'title',del:false},
+  lf:{q:'',gen:'',plat:'',notin:false},
+  mf:{q:''}, mtab:'all', af:{q:''},
+  imp:{stage:'select',name:'',data:null,errors:[],warns:[],diff:null},
+  cb:null, pick:null
+};
+S.rulesDraft=clone(S.rules);
+
+/* Precio: UNA sola función. Réplica de vista previa; la fuente de verdad es el backend
+   (POST /api/v1/admin/pricing/preview). */
+const priceFor=(size,rules)=>{
+  const r=[...rules].filter(x=>x.active).sort((a,b)=>a.min-b.min).find(x=>size>=x.min&&(x.max==null||size<=x.max));
+  return r?r.price:null;
+};
+
+(function seed(){
+  const T='t_javier';
+  const mk=(lib,cat,av,feat,mode,manual)=>{const b=typeof lib==='string'?libBy(lib):lib;
+    return {id:'g_'+slug(b.title),tenantId:T,libId:b.id,origin:'biblioteca',title:b.title,genre:b.genre,category:cat,platforms:[...b.platforms],year:b.year,size:b.size,desc:b.desc,req:clone(b.req),available:!!av,featured:!!feat,priceMode:mode||'rule',price:mode==='manual'?manual:priceFor(b.size,S.rules),note:'',deleted:false,updated:ago(60*24*3)}};
+  S.games=[
+    mk('Red Dead Redemption 2','Destacados',1,1),mk('Grand Theft Auto V','Destacados',1,1),mk('The Witcher 3: Wild Hunt','Clásicos',1,0),
+    mk('Cyberpunk 2077','Destacados',1,0),mk('EA Sports FC 26','Lanzamientos',1,1),mk('Minecraft','Livianos',1,0),mk('Elden Ring','Lanzamientos',1,0),
+    mk('God of War','Clásicos',1,0),mk('Hollow Knight','Livianos',1,0),mk('Need for Speed Heat','Clásicos',1,0),mk('The Sims 4','Clásicos',1,0),
+    mk('Euro Truck Simulator 2','Livianos',1,0),mk('Counter-Strike 2','Multijugador',1,0),mk('Stardew Valley','Livianos',1,0),
+    mk('Resident Evil 4','Lanzamientos',1,0),mk("Marvel's Spider-Man Remastered",'Destacados',1,0,'manual',80),
+    mk('Hogwarts Legacy','Lanzamientos',0,0),mk('Mortal Kombat 11','Multijugador',0,0)
+  ];
+  const cu=(t,g,p,y,s,cat)=>({id:'g_'+slug(t),tenantId:T,libId:null,origin:'personalizado',title:t,genre:g,category:cat,platforms:p,year:y,size:s,desc:'Juego personalizado del negocio.',req:reqFor(s),available:true,featured:false,priceMode:'rule',price:priceFor(s,S.rules),note:'',deleted:false,updated:ago(60*24*2)});
+  S.games.push(cu('Pack Arcade Clásicos','Aventura',['PC'],2024,3,'Livianos'),cu('Actualización Liga Local 26','Deportes',['PC'],2026,12,'Lanzamientos'),cu('Pack Retro 90s','Aventura',['PC'],2024,8,'Clásicos'));
+  const noCover=['Hogwarts Legacy','Pack Retro 90s'];let n=0;
+  S.games.forEach((g,i)=>{
+    if(!noCover.includes(g.title))S.media.push({id:'m'+(++n),tenantId:T,gameId:g.id,kind:'cover',publicId:`tenants/${T}/games/${slug(g.title)}/cover`,status:'ok'});
+    const k=(i*7+3)%5;for(let s=1;s<=k;s++)S.media.push({id:'m'+(++n),tenantId:T,gameId:g.id,kind:'shot',publicId:`tenants/${T}/games/${slug(g.title)}/shot-${s}`,status:'ok'});
+  });
+  const e=S.media.find(m=>m.kind==='shot');if(e)e.status='error';
+  ['Juego eliminado A','Juego eliminado B','Prueba antigua'].forEach((t,i)=>S.media.push({id:'m'+(++n),tenantId:T,gameId:null,kind:i===1?'shot':'cover',publicId:`tenants/${T}/games/${slug(t)}/${i===1?'shot-1':'cover'}`,status:'orphan',label:t}));
+  S.admins=[{id:'a1',name:'Luismi',handle:'luismi',role:'SUPER_ADMIN',tenantId:null,status:'Activo',last:ago(3)},{id:'a2',name:'Javier',handle:'javier',role:'ADMIN',tenantId:T,status:'Activo',last:ago(60*5)}];
+  S.sessions=[{id:'s1',uid:'u_luismi',device:'Chrome en Windows',start:ago(60*3),last:ago(2)},{id:'s2',uid:'u_luismi',device:'Chrome en Android',start:ago(60*30),last:ago(60*9)},{id:'s3',uid:'u_javier',device:'Chrome en Android',start:ago(60*6),last:ago(60*5)}];
+  S.backups=[{id:'b1',ts:ago(60*20),type:'Automática',scope:'Plataforma',tenantId:null,status:'ok'},{id:'b2',ts:ago(60*44),type:'Pre-importación',scope:'Tenant Javier',tenantId:T,status:'ok'},{id:'b3',ts:ago(60*68),type:'Manual',scope:'Tenant Javier',tenantId:T,status:'ok'}];
+  const L=(m,u,r,t,a,en,eid,d)=>S.audit.push({ts:ago(m),user:u,role:r,tenantId:t,action:a,entity:en,eid,detail:d});
+  L(60*70,'Luismi','SUPER_ADMIN',null,'Crear negocio','Negocio',T,'Negocio Javier creado');
+  L(60*50,'Javier','ADMIN',T,'Agregar de biblioteca','Juego','g_red-dead-redemption-2','Red Dead Redemption 2');
+  L(60*26,'Javier','ADMIN',T,'Publicar catálogo','Catálogo',null,'Versión 128');
+  L(60*8,'Javier','ADMIN',T,'Editar juego','Juego','g_minecraft','Disponibilidad actualizada');
+  L(60*3,'Luismi','SUPER_ADMIN',null,'Crear copia','Backup','b1','Copia automática de la plataforma');
+})();
+
+/* ---------- Contexto / permisos (solo representación) ---------- */
+const me=()=>USERS[S.who];
+const isSA=()=>me().role==='SUPER_ADMIN';
+const tid=()=>me().tenantId||S.ctx;
+const tnt=()=>TENANTS.find(t=>t.id===tid())||TENANTS[0];
+const tg=()=>S.games.filter(g=>g.tenantId===tid());
+const tgl=()=>tg().filter(g=>!g.deleted);
+const findGame=id=>S.games.find(g=>g.id===id&&g.tenantId===tid());
+const tm=()=>S.media.filter(m=>m.tenantId===tid());
+const coverOf=id=>S.media.find(m=>m.gameId===id&&m.kind==='cover');
+const shotsOf=id=>S.media.filter(m=>m.gameId===id&&m.kind==='shot');
+const off=()=>S.sim==='offline'||!navigator.onLine;
+const activePlats=()=>PLATS.filter(p=>S.platOn[p]);
+function log(action,entity,eid,detail,tenantId){S.audit.unshift({ts:Date.now(),user:me().name,role:me().role,tenantId:tenantId===undefined?tid():tenantId,action,entity,eid,detail})}
+
+/* ---------- Componentes ---------- */
+const art=(t,cls='')=>`<div class="art ${cls}" style="--h:${hue(t)}"><span>${esc(ini(t))}</span></div>`;
+function mediaArt(m,title){
+  if(m.preview)return `<div class="art" style="--h:${hue(title)}"><img src="${m.preview}" alt="" loading="lazy"></div>`;
+  return art(title||m.label||'Sin juego');
+}
+const noCover='<div class="art none">Sin portada</div>';
+function cover(g){const c=coverOf(g.id);return c?mediaArt(c,g.title):noCover}
+const badge=(t,c='')=>`<span class="bd2 ${c}">${esc(t)}</span>`;
+const ph=(t,s,a='')=>`<header class="ph"><div><h1>${esc(t)}</h1>${s?`<p>${s}</p>`:''}</div>${a?`<div class="pa">${a}</div>`:''}</header>`;
+const btn=(label,a,o={})=>`<button class="btn ${o.c||''}" data-a="${a}" ${Object.entries(o.d||{}).map(([k,v])=>`data-${k}="${esc(v)}"`).join(' ')} ${o.dis?'disabled':''}>${o.i?ic(o.i):''}${esc(label)}</button>`;
+const ib=(i,label,a,d={},c='')=>`<button class="ib ${c}" title="${esc(label)}" aria-label="${esc(label)}" data-a="${a}" ${Object.entries(d).map(([k,v])=>`data-${k}="${esc(v)}"`).join(' ')}>${ic(i)}</button>`;
+const sel=(name,opts,val,o={})=>`<select name="${name}" ${o.dis?'disabled':''} ${o.f?`data-f="${o.f}"`:''}>${o.ph!==undefined?`<option value="">${esc(o.ph)}</option>`:''}${opts.map(x=>{const[v,l]=Array.isArray(x)?x:[x,x];return`<option value="${esc(v)}" ${String(v)===String(val)?'selected':''}>${esc(l)}</option>`}).join('')}</select>`;
+const field=(label,inner,cls='')=>`<div class="f ${cls}"><label>${esc(label)}</label>${inner}</div>`;
+const skeleton=()=>'<div aria-busy="true" aria-label="Cargando">'+'<div class="sk"></div>'.repeat(5)+'</div>';
+const emptyBox=(t,p,act='')=>`<div class="state">${ic('games')}<h3>${esc(t)}</h3><p>${esc(p)}</p>${act}</div>`;
+const errorBox=()=>`<div class="state">${ic('alert')}<h3>No se pudo cargar</h3><p>Revisa tu conexión e inténtalo de nuevo. No se perdió ningún cambio guardado.</p>${btn('Reintentar','retry',{i:'refresh'})}</div>`;
+function gate(count,empty){
+  if(S.sim==='loading')return skeleton();
+  if(S.sim==='error')return errorBox();
+  if(S.sim==='empty'||count===0)return empty;
+  return null;
+}
+const denied=()=>`<div class="state">${ic('lock')}<h3>Sin permiso</h3><p>Tu rol no puede ver esta sección. El backend también la rechazaría (403): esta pantalla solo lo representa.</p><a class="btn" href="#/admin/dashboard">Volver al dashboard</a></div>`;
+const notFound=()=>`<div class="state">${ic('search')}<h3>No encontrado</h3><p>Ese elemento no existe en tu negocio o fue eliminado.</p><a class="btn" href="#/admin/juegos">Ir a juegos</a></div>`;
+const roleBadge=r=>badge(r,r==='SUPER_ADMIN'?'au':'in');
+
+/* ---------- Navegación ---------- */
+const NAV=[
+ {g:'Principal',items:[['dashboard','Dashboard','dash'],['juegos','Juegos','games'],['biblioteca','Biblioteca base','library'],['categorias','Categorías','tag'],['generos','Géneros','layers'],['plataformas','Plataformas','monitor'],['media','Multimedia','image']]},
+ {g:'Administración',items:[['administradores','Administradores','users'],['auditoria','Auditoría','audit'],['sesiones','Sesiones','key']]},
+ {g:'Plataforma',role:'SUPER_ADMIN',items:[['negocios','Negocios','building']]},
+ {g:'Configuración',items:[['configuracion/general','General','cfg'],['configuracion/catalogo','Catálogo'],['configuracion/precios','Precios'],['configuracion/datos','Datos / Importación'],['configuracion/backups','Backups'],['configuracion/multimedia','Multimedia'],['configuracion/sistema','Sistema']]}
+];
+const ROUTES=[
+['/admin','dashboard'],['/admin/dashboard','dashboard'],['/admin/juegos','games'],['/admin/juegos/nuevo','gameForm'],['/admin/juegos/:id','gameView'],['/admin/juegos/:id/editar','gameForm'],
+['/admin/biblioteca','library'],['/admin/categorias','cats'],['/admin/generos','gens'],['/admin/plataformas','plats'],['/admin/media','media'],
+['/admin/administradores','admins'],['/admin/auditoria','audit'],['/admin/sesiones','sessions'],['/admin/negocios','tenants','SUPER_ADMIN'],
+['/admin/configuracion','cfg'],['/admin/configuracion/general','cfgGeneral'],['/admin/configuracion/catalogo','cfgCatalog'],['/admin/configuracion/precios','cfgPrices'],
+['/admin/configuracion/datos','cfgData'],['/admin/configuracion/backups','cfgBackups'],['/admin/configuracion/multimedia','cfgMedia'],['/admin/configuracion/sistema','cfgSystem']
+];
+const API=[['GET','/api/v1/admin/games','Juegos del tenant'],['GET','/api/v1/games','Juegos publicados'],['GET','/api/v1/catalog','Catálogo ligero (metadata)'],['GET','/api/v1/catalog/version','Versión para la caché pública'],['GET','/api/v1/categories','Categorías'],['GET','/api/v1/genres','Géneros'],['GET','/api/v1/platforms','Plataformas'],['*','/api/v1/admin/*','Resto del panel (tenant impuesto por el servidor)']];
+function match(path){
+  const ps=(path.replace(/\/+$/,'')||'/admin').split('/');
+  for(const[pat,name,role]of ROUTES){const q=pat.split('/');if(q.length!==ps.length)continue;const params={};let ok=true;
+    q.forEach((s,i)=>{if(s[0]===':')params[s.slice(1)]=decodeURIComponent(ps[i]);else if(s!==ps[i])ok=false});
+    if(ok)return{name,params,role}}
+  return null;
+}
+const cur=()=>(location.hash.slice(1)||'/admin/dashboard').split('?')[0];
+function renderNav(){
+  const p=cur();
+  $('#side').innerHTML=`<div class="brand"><b>Luismi <i>Platform</i></b><small>Panel de administración</small></div>
+   <div class="tnt">Tenant actual: <b>${esc(tnt().name)}</b></div>
+   <nav class="nav">${NAV.filter(g=>!g.role||g.role===me().role).map(g=>`<div class="ng">${g.g}</div>`+g.items.map(([k,l,i])=>`<a class="nl ${i?'':'sub'} ${p==='/admin/'+k||(k==='juegos'&&p.startsWith('/admin/juegos'))?'on':''}" href="#/admin/${k}">${i?ic(i):''}${l}</a>`).join('')).join('')}</nav>
+   <div class="sf"><b>Luismi Platform</b><br>Plataforma desarrollada y mantenida por Luismi.<br>Admin V2</div>`;
+  const u=me();
+  $('#mebtn').innerHTML=`<span class="av">${esc(u.name[0])}</span><span>${esc(u.name)}<small>${u.role}</small></span>`;
+  $('#tntp').textContent='Tenant actual: '+tnt().name;
+  const b=[['dashboard','Inicio','dash'],['juegos','Juegos','games'],['biblioteca','Biblioteca','library'],['media','Multimedia','image']];
+  $('#bnav').innerHTML=b.map(([k,l,i])=>`<a class="${p==='/admin/'+k||(k==='juegos'&&p.startsWith('/admin/juegos'))?'on':''}" href="#/admin/${k}">${ic(i)}${l}</a>`).join('')+`<button data-a="drawer" aria-label="Abrir menú completo">${ic('menu')}Menú</button>`;
+}
+function render(keep){
+  const path=cur();S.route=path;
+  const m=match(path);let html;
+  if(!m)html=notFound();else if(m.role&&m.role!==me().role)html=denied();else html=PAGES[m.name](m.params);
+  $('#view').innerHTML=html;
+  $('#offbar').innerHTML=off()?`<div class="bar-off">${ic('alert')}Sin conexión. Puedes consultar lo ya cargado; los cambios no se guardarán hasta recuperar la conexión.</div>`:'';
+  document.body.classList.toggle('nobn',/\/(nuevo|editar)$/.test(path));
+  renderNav();
+  $('#ttl').textContent=($('#view h1')||{}).textContent||'Admin';
+  closeDrawer();
+  if(!keep)window.scrollTo(0,0);
+}
+function refreshLive(){const l=$('#live');if(l&&LIVE.fn)l.innerHTML=LIVE.fn()}
+const LIVE={fn:null};
+const closeDrawer=()=>{$('#side').classList.remove('open')};
+
+/* ---------- Modal / toast ---------- */
+function modal(title,body,foot='',wide=false){
+  const o=$('#ov');o.hidden=false;
+  o.innerHTML=`<div class="ov" data-a="ovClose"><div class="md ${wide?'wide':''}" role="document" onclick="event.stopPropagation()"><div class="mh"><h3>${esc(title)}</h3>${ib('x','Cerrar','close')}</div><div class="mb">${body}</div><div class="mf">${foot}</div></div></div>`;
+  const f=$('input,select,textarea,.btn.pri',o);if(f)setTimeout(()=>f.focus(),30);
+}
+const closeM=()=>{const o=$('#ov');o.hidden=true;o.innerHTML='';S.cb=null};
+function confirmM(title,msg,okLabel,cb,danger){S.cb=cb;modal(title,`<p>${msg}</p>`,btn('Cancelar','close')+btn(okLabel,'cbOk',{c:danger?'dng':'pri'}))}
+function promptM(title,label,val,okLabel,cb){S.cb=cb;modal(title,field(label,`<input id="pv" value="${esc(val)}" maxlength="60">`),btn('Cancelar','close')+btn(okLabel,'cbOk',{c:'pri'}))}
+function toast(msg,kind=''){const t=document.createElement('div');t.className=kind;t.textContent=msg;$('#toast').appendChild(t);setTimeout(()=>t.remove(),3600)}
+
+/* ====================================================================
+   PÁGINAS
+   ==================================================================== */
+const PAGES={};
+
+/* ---- Dashboard ---- */
+PAGES.dashboard=()=>{
+  const sa=isSA(),gs=tgl(),av=gs.filter(g=>g.available).length,assets=sa?S.media:tm();
+  const lastB=S.backups.filter(b=>sa||b.tenantId===tid())[0];
+  const noCov=gs.filter(g=>!coverOf(g.id)).length,orph=assets.filter(m=>m.status==='orphan').length,errs=assets.filter(m=>m.status==='error').length;
+  const pp=priceDiff().length;
+  const st=sa?[
+    [TENANTS.length,'Negocios'],[nf(S.libTotal),'Juegos en biblioteca base'],[nf(S.games.filter(g=>!g.deleted&&g.available).length),'Juegos publicados'],
+    [S.admins.length,'Administradores'],[assets.length,'Archivos multimedia'],['<i class="dot"></i>Operativo','Estado del sistema','t'],[lastB?rel(lastB.ts):'—','Último backup','t']
+  ]:[
+    [gs.length,'Juegos en tu catálogo'],[av,'Disponibles'],[gs.length-av,'No disponibles'],[nf(gs.filter(g=>g.available).reduce((a,g)=>a+(g.price||0),0)),'CUP sumando disponibles'],
+    [assets.length,'Archivos multimedia'],[rel(S.catalog.publishedAt),'Última actualización','t'],[S.catalog.pending?`<i class="dot wn"></i>${S.catalog.pending} sin publicar`:'<i class="dot"></i>Al día','Sincronización · v'+S.catalog.version,'t']
+  ];
+  const att=[];
+  if(S.catalog.pending)att.push([`${S.catalog.pending} cambio(s) sin publicar en el catálogo`,'/admin/configuracion/catalogo','Publicar']);
+  if(pp)att.push([`${pp} juego(s) cambiarían de precio con las reglas guardadas`,'/admin/configuracion/precios','Revisar']);
+  if(noCov)att.push([`${noCov} juego(s) sin portada`,'/admin/juegos','Ver juegos']);
+  if(orph)att.push([`${orph} archivo(s) huérfano(s) en Cloudinary`,'/admin/media','Revisar']);
+  if(errs)att.push([`${errs} subida(s) fallida(s)`,'/admin/media','Reintentar']);
+  return ph(sa?'Hola, Luismi':'Hola, '+me().name,sa?'Resumen de la plataforma. Estás operando el tenant actual: '+esc(tnt().name)+'.':'Resumen de tu catálogo.')+
+  `<div class="stats">${st.map(([v,l,t])=>`<div class="st"><b class="${t||''}">${v}</b><span>${l}</span></div>`).join('')}</div>
+  <div class="two sec">
+   <section><h2>Requiere atención</h2>${att.length?`<div class="rows">${att.map(([t,h,b])=>`<div><div class="gr">${esc(t)}</div><a class="btn sm" href="#${h}">${b}</a></div>`).join('')}</div>`:`<div class="note ok">Todo al día. No hay pendientes.</div>`}</section>
+   <section><h2>Acciones rápidas</h2><div class="rows">
+     <div><div class="gr">Agregar un juego propio</div><a class="btn sm" href="#/admin/juegos/nuevo">Crear</a></div>
+     <div><div class="gr">Elegir juegos de la biblioteca base</div><a class="btn sm" href="#/admin/biblioteca">Explorar</a></div>
+     <div><div class="gr">Importar un catálogo</div><a class="btn sm" href="#/admin/configuracion/datos">Importar</a></div>
+   </div></section></div>
+  ${sa?`<section class="sec"><h2>Infraestructura</h2>${infraRows()}</section>`:''}`;
+};
+function infraRows(){
+  return `<div class="rows">${[['Neon / PostgreSQL','Datos, catálogo, configuración y referencias multimedia'],['Prisma','Esquema y migraciones al día'],['Cloudinary','Imágenes y miniaturas (la base solo guarda referencias)'],['API /api/v1','Autenticación, autorización y tenantId por sesión']].map(([a,b])=>`<div><div class="gr"><b>${a}</b><br><small>${b}</small></div>${badge('Operativo','ok')}</div>`).join('')}</div>`;
+}
+
+/* ---- Juegos ---- */
+const SIZEB={'':[0,1e9],lt10:[0,10],'10-50':[10.01,50],'50-100':[50.01,100],gt100:[100.01,1e9]};
+function gamesList(){
+  const f=S.gf;let a=tg().filter(g=>f.del?g.deleted:!g.deleted);
+  if(f.q)a=a.filter(g=>norm(g.title).includes(norm(f.q)));
+  if(f.cat)a=a.filter(g=>g.category===f.cat);if(f.gen)a=a.filter(g=>g.genre===f.gen);if(f.plat)a=a.filter(g=>g.platforms.includes(f.plat));
+  if(f.av)a=a.filter(g=>String(g.available)===f.av);if(f.origin)a=a.filter(g=>g.origin===f.origin);
+  const[lo,hi]=SIZEB[f.size]||SIZEB[''];a=a.filter(g=>g.size>=lo&&g.size<=hi);
+  a.sort((x,y)=>f.sort==='size'?x.size-y.size:f.sort==='price'?(x.price||0)-(y.price||0):x.title.localeCompare(y.title));
+  const g0=gate(a.length,f.del?emptyBox('La papelera está vacía','Los juegos eliminados aparecen aquí y se pueden restaurar.'):(tgl().length?emptyBox('Nada coincide con tus filtros','Prueba con otra búsqueda o limpia los filtros.',btn('Limpiar filtros','gfReset')):emptyBox('No hay juegos todavía','Agrega juegos desde la biblioteca base o crea uno propio.',`<div class="pa"><a class="btn pri" href="#/admin/biblioteca">Explorar biblioteca</a><a class="btn" href="#/admin/juegos/nuevo">Crear juego</a></div>`)));
+  if(g0)return g0;
+  return `<p class="cnt">${a.length} ${a.length===1?'juego':'juegos'}</p><div class="list" style="--cols:minmax(0,2.4fr) 84px 92px 118px 112px minmax(0,auto)">
+   <div class="lh"><span>Juego</span><span>Tamaño</span><span>Precio</span><span>Origen</span><span>Plataformas</span><span></span></div>${a.map(gRow).join('')}</div>`;
+}
+const gRow=g=>`<div class="li">
+ <div class="pc"><a class="th" href="#/admin/juegos/${g.id}" aria-label="Ver ${esc(g.title)}">${cover(g)}</a><div class="nm"><a href="#/admin/juegos/${g.id}"><b>${esc(g.title)}</b></a><small>${esc(g.genre)}, ${esc(g.category)}${g.featured?' ':''}</small>${g.featured?`<small style="display:inline-flex;gap:4px;align-items:center;color:var(--au)">${ic('star').replace('class="ic"','class="ic" style="width:12px;height:12px"')}Destacado</small>`:''}</div></div>
+ <div data-l="Tamaño">${nf(g.size)} GB</div>
+ <div data-l="Precio">${g.price==null?badge('Sin regla','wn'):nf(g.price)+' CUP'}</div>
+ <div data-l="Origen">${g.origin==='biblioteca'?badge('Biblioteca','in'):badge('Personalizado','au')}</div>
+ <div data-l="Plataformas">${esc(g.platforms.join(', '))}</div>
+ <div class="ac">${g.deleted?btn('Restaurar','restore',{c:'sm',d:{id:g.id},i:'refresh'}):`<span class="swc"><button class="sw" role="switch" aria-checked="${g.available}" aria-label="Disponibilidad de ${esc(g.title)}" data-a="toggleAv" data-id="${g.id}"></button>${g.available?'Disponible':'No disponible'}</span>
+  ${ib('eye','Ver','go',{to:'/admin/juegos/'+g.id})}${ib('edit','Editar','go',{to:'/admin/juegos/'+g.id+'/editar'})}${ib('image','Multimedia','go',{to:'/admin/juegos/'+g.id+'/editar',sec:'media'})}${ib('copy','Duplicar','dup',{id:g.id})}${ib('clock','Historial','hist',{id:g.id})}${ib('trash','Eliminar','del',{id:g.id},'dng')}`}</div></div>`;
+PAGES.games=()=>{
+  const f=S.gf;LIVE.fn=gamesList;
+  return ph('Juegos','Catálogo de '+esc(tnt().name)+'. Todo lo que cambies queda registrado en auditoría.',`<a class="btn" href="#/admin/biblioteca">${ic('library')}Desde biblioteca</a><a class="btn pri" href="#/admin/juegos/nuevo">${ic('plus')}Crear juego personalizado</a>`)+
+  `<div class="sr"><div class="srch">${ic('search')}<input type="search" placeholder="Buscar juego" data-f="gf.q" value="${esc(f.q)}" aria-label="Buscar juego"></div><button class="btn fbtn" data-a="filters">${ic('filter')}Filtros</button></div>
+  <div class="fbd" data-a="filters"></div>
+  <div class="filters"><div class="sh"><b>Filtros</b>${btn('Listo','filters',{c:'pri sm'})}</div>
+   ${field('Categoría',sel('',S.cats,f.cat,{ph:'Todas',f:'gf.cat'}))}${field('Género',sel('',S.gens,f.gen,{ph:'Todos',f:'gf.gen'}))}${field('Plataforma',sel('',PLATS,f.plat,{ph:'Todas',f:'gf.plat'}))}
+   ${field('Disponibilidad',sel('',[['true','Disponible'],['false','No disponible']],f.av,{ph:'Todas',f:'gf.av'}))}${field('Origen',sel('',[['biblioteca','Biblioteca'],['personalizado','Personalizado']],f.origin,{ph:'Todos',f:'gf.origin'}))}
+   ${field('Tamaño',sel('',[['lt10','Hasta 10 GB'],['10-50','10 a 50 GB'],['50-100','50 a 100 GB'],['gt100','Más de 100 GB']],f.size,{ph:'Cualquiera',f:'gf.size'}))}
+   ${field('Ordenar por',sel('',[['title','Nombre'],['size','Tamaño'],['price','Precio']],f.sort,{f:'gf.sort'}))}
+   <label class="tgl"><input type="checkbox" data-f="gf.del" ${f.del?'checked':''}><span class="trk"></span><b>Ver eliminados</b></label></div>
+  <div id="live">${gamesList()}</div>`;
+};
+
+/* ---- Detalle de juego ---- */
+PAGES.gameView=p=>{
+  const g=findGame(p.id);if(!g)return notFound();
+  const c=coverOf(g.id),sh=shotsOf(g.id);
+  const rq=r=>`<tr><th>Procesador</th><td>${esc(r.cpu)}${r.cpuModel?' '+esc(r.cpuModel):''}</td></tr><tr><th>Gráficos</th><td>${esc(r.gpu)}${r.gpuModel?' '+esc(r.gpuModel):''}</td></tr><tr><th>RAM</th><td>${r.ram} GB</td></tr><tr><th>Sistema</th><td>${esc(r.os)}</td></tr><tr><th>DirectX</th><td>${r.dx}</td></tr><tr><th>Almacenamiento</th><td>${esc(r.storage)}, ${nf(g.size)} GB libres</td></tr>`;
+  return `<p class="hint"><a href="#/admin/juegos">Juegos</a> / ${esc(g.title)}</p>`+ph(g.title,`${esc(g.genre)}, ${esc(g.year)}. ${g.platforms.join(' + ')}`,`${btn('Historial','hist',{d:{id:g.id},i:'clock'})}${btn('Duplicar','dup',{d:{id:g.id},i:'copy'})}<a class="btn pri" href="#/admin/juegos/${g.id}/editar">${ic('edit')}Editar</a>`)+
+  `<div class="vh"><div>${c?mediaArt(c,g.title).replace('class="art"','class="art"'):noCover.replace('class="art none"','class="art none" style="aspect-ratio:3/4;border-radius:10px"')}</div><div>
+   <dl class="kv"><dt>Estado</dt><dd>${g.deleted?badge('Eliminado','bd'):g.available?badge('Disponible','ok'):badge('No disponible','wn')} ${g.featured?badge('Destacado','au'):''}</dd>
+   <dt>Origen</dt><dd>${g.origin==='biblioteca'?badge('Biblioteca base','in'):badge('Personalizado','au')}</dd><dt>Categoría</dt><dd>${esc(g.category)}</dd>
+   <dt>Tamaño</dt><dd>${nf(g.size)} GB</dd><dt>Precio</dt><dd>${g.price==null?'Sin regla aplicable':nf(g.price)+' CUP'} <small>(${g.priceMode==='rule'?'por reglas del negocio':'manual'})</small></dd>
+   <dt>Descripción</dt><dd>${esc(g.desc)}</dd>${g.note?`<dt>Nota comercial</dt><dd>${esc(g.note)}</dd>`:''}<dt>ID del tenant</dt><dd class="mono">${esc(g.tenantId)}</dd></dl></div></div>
+  <section class="sec"><h2>Requisitos</h2><div class="grid2"><div><h3 style="font-size:20px;margin-bottom:6px">Mínimos</h3><table class="req">${rq(g.req.min)}</table></div><div><h3 style="font-size:20px;margin-bottom:6px">Recomendados</h3><table class="req">${rq(g.req.rec)}</table></div></div></section>
+  <section class="sec"><h2>Multimedia</h2>${sh.length||c?`<div class="mg">${[c,...sh].filter(Boolean).map(m=>`<div class="mi ${m.kind==='cover'?'cv':''}">${mediaArt(m,g.title)}<small>${m.kind==='cover'?'Portada':'Screenshot'}</small></div>`).join('')}</div>`:emptyBox('Sin multimedia','Sube una portada y hasta 4 screenshots.',`<a class="btn" href="#/admin/juegos/${g.id}/editar">Agregar multimedia</a>`)}</section>`;
+};
+
+/* ---- Crear / editar ---- */
+function specBlock(pre,r,dis){
+  return `<div class="spec">${field('Procesador',sel(pre+'.cpu',CPU,r.cpu,{dis}))}${field('Modelo (opcional)',`<input name="${pre}.cpuModel" value="${esc(r.cpuModel)}" placeholder="Ej. 4590 o 2200G" ${dis?'disabled':''}>`)}${field('RAM',sel(pre+'.ram',RAM,r.ram,{dis}))}
+   ${field('Gráficos',sel(pre+'.gpu',GPU,r.gpu,{dis}))}${field('Modelo (opcional)',`<input name="${pre}.gpuModel" value="${esc(r.gpuModel)}" placeholder="Ej. 1050 Ti" ${dis?'disabled':''}>`)}${field('DirectX',sel(pre+'.dx',DXL,r.dx,{dis}))}
+   ${field('Sistema operativo',sel(pre+'.os',OSL,r.os,{dis}))}${field('Almacenamiento',sel(pre+'.storage',STO,r.storage,{dis}))}</div>`;
+}
+PAGES.gameForm=p=>{
+  const edit=!!p.id,g0=edit?findGame(p.id):null;if(edit&&!g0)return notFound();
+  const g=g0||{title:'',genre:'',category:S.cats[0],platforms:['PC'],year:new Date().getFullYear(),size:'',desc:'',available:true,featured:false,priceMode:'rule',price:'',note:'',origin:'personalizado',req:reqFor(10)};
+  const lock=edit&&g.origin==='biblioteca',d=lock;
+  const slot=(m,kind,i)=>{const t=g.title||'Juego';return `<div class="slot ${kind==='cover'?'cv':''}">${m?mediaArt(m,t):`<div class="art none">${kind==='cover'?'Sin portada':'Vacío'}</div>`}
+    <small>${kind==='cover'?'Portada':'Screenshot '+i}${m&&m.status!=='ok'?' ('+(m.status==='uploading'?'subiendo':'error')+')':''}</small>
+    <div class="slot sa">${m?btn('Cambiar','pick',{c:'sm',d:{kind,gid:g.id,rid:m.id}})+ib('trash','Eliminar','delAsset',{id:m.id},'dng'):btn('Subir','pick',{c:'sm',d:{kind,gid:g.id}})}</div></div>`};
+  const c=edit?coverOf(g.id):null,sh=edit?shotsOf(g.id):[];
+  const fsec=(t,body,open=true,id='')=>`<details class="fs" ${open?'open':''} ${id?`id="${id}"`:''}><summary>${t}${ic('chev')}</summary><div class="fb">${body}</div></details>`;
+  const sug=priceFor(parseFloat(g.size)||0,S.rules);
+  return `<p class="hint"><a href="#/admin/juegos">Juegos</a> / ${edit?esc(g.title):'Nuevo'}</p>`+ph(edit?'Editar juego':'Crear juego personalizado',lock?'Este juego viene de la biblioteca base. Puedes ajustar solo lo comercial.':'Todo lo repetitivo se selecciona. Todo lo excepcional se escribe.')+
+  `<form id="gf" data-gid="${edit?esc(g.id):''}" novalidate>
+   <div id="ferr"></div>
+   ${lock?`<div class="note">Los datos base (título, requisitos, tamaño, plataformas) los mantiene la plataforma. Para cambiarlos, duplica el juego como personalizado.</div>`:''}
+   ${fsec('Información básica',`<div class="grid2">${field('Título',`<input name="title" value="${esc(g.title)}" required maxlength="90" ${d?'disabled':''}>`)}${field('Categoría del catálogo',sel('category',S.cats,g.category))}</div>
+     <div class="grid3">${field('Género',sel('genre',S.gens,g.genre,{ph:'Elegir',dis:d}))}${field('Año',`<input name="year" type="number" inputmode="numeric" min="1980" max="2100" value="${esc(g.year)}" ${d?'disabled':''}>`)}${field('Origen',`<input value="${g.origin==='biblioteca'?'Biblioteca base':'Personalizado'}" disabled>`)}</div>
+     <div class="f"><span class="lb">Plataformas (elige una o más)</span><div class="chips">${activePlats().map(x=>`<label class="tg"><input type="checkbox" name="plat" value="${x}" ${g.platforms.includes(x)?'checked':''} ${d?'disabled':''}><span>${x}</span></label>`).join('')}</div></div>`)}
+   ${fsec('Información del juego',`${field('Descripción',`<textarea name="desc" maxlength="1200" ${d?'disabled':''}>${esc(g.desc)}</textarea>`)}<div class="grid2">${field('Tamaño (GB)',`<input name="size" type="number" inputmode="decimal" step="0.1" min="0.1" value="${esc(g.size)}" ${d?'disabled':''}>`)}${field('Nota comercial (opcional)',`<input name="note" value="${esc(g.note)}" maxlength="140" placeholder="Ej. Incluye parche en español">`)}</div>`)}
+   ${fsec('Requisitos mínimos',specBlock('min',g.req.min,d),!edit||!lock)}
+   ${fsec('Requisitos recomendados',`${lock?'':btn('Copiar mínimos → recomendados','copyReq',{c:'sm',i:'copy'})}${specBlock('rec',g.req.rec,d)}`,!edit||!lock)}
+   ${fsec('Multimedia',edit?`<p class="hint">1 portada y hasta 4 screenshots. Se suben a Cloudinary; la base de datos guarda solo la referencia.</p><div class="slots">${slot(c,'cover',0)}${[1,2,3,4].map(i=>slot(sh[i-1],'shot',i)).join('')}</div>`:`<div class="note">Guarda el juego primero para subir portada y screenshots.</div>`,true,'sec-media')}
+   ${fsec('Precio',`<div class="chips"><label class="tg"><input type="radio" name="priceMode" value="rule" ${g.priceMode==='rule'?'checked':''}><span>Usar reglas del negocio</span></label><label class="tg"><input type="radio" name="priceMode" value="manual" ${g.priceMode==='manual'?'checked':''}><span>Precio manual</span></label></div>
+     <p class="hint">Según las reglas guardadas: <b id="sug">${sug==null?'sin regla aplicable':sug+' CUP'}</b>. El precio definitivo lo calcula el backend.</p>
+     ${field('Precio manual (CUP)',`<input name="price" type="number" inputmode="decimal" min="0" step="1" value="${g.priceMode==='manual'?esc(g.price):''}">`)}`)}
+   ${fsec('Publicación',`<label class="tgl"><input type="checkbox" name="available" ${g.available?'checked':''}><span class="trk"></span><b>Disponible en el catálogo público</b></label><label class="tgl"><input type="checkbox" name="featured" ${g.featured?'checked':''}><span class="trk"></span><b>Destacado</b></label>`)}
+   <div class="sbar"><a class="btn" href="#/admin/juegos${edit?'/'+esc(g.id):''}">Cancelar</a><button class="btn pri" type="button" data-a="saveGame">${ic('check')}Guardar juego</button></div></form>`;
+};
+
+/* ---- Biblioteca base ---- */
+function libList(){
+  const f=S.lf;let a=LIB.filter(b=>(!f.q||norm(b.title).includes(norm(f.q)))&&(!f.gen||b.genre===f.gen)&&(!f.plat||b.platforms.includes(f.plat)));
+  const inC=b=>tgl().some(g=>g.libId===b.id);if(f.notin)a=a.filter(b=>!inC(b));
+  const g0=gate(a.length,emptyBox('Sin resultados','Ningún juego de la biblioteca coincide con la búsqueda.',btn('Limpiar filtros','lfReset')));if(g0)return g0;
+  return `<p class="cnt">Mostrando ${a.length} de ${nf(S.libTotal)} juegos (demo: el servidor paginará toda la biblioteca)</p><div class="list" style="--cols:minmax(0,2.4fr) 104px 118px 84px 150px">
+   <div class="lh"><span>Juego</span><span>Género</span><span>Plataformas</span><span>Tamaño</span><span></span></div>
+   ${a.map(b=>`<div class="li"><div class="pc"><div class="th-sm">${art(b.title)}</div><div class="nm"><b>${esc(b.title)}</b><small>${b.year}</small></div></div><div data-l="Género">${esc(b.genre)}</div><div data-l="Plataformas">${esc(b.platforms.join(', '))}</div><div data-l="Tamaño">${nf(b.size)} GB</div>
+    <div class="ac">${isSA()?btn('Editar ficha','libEdit',{c:'sm',d:{id:b.id},i:'edit'}):inC(b)?badge('En tu catálogo','ok'):btn('Agregar al catálogo','libAdd',{c:'sm pri',d:{id:b.id},i:'plus'})}</div></div>`).join('')}</div>`;
+}
+PAGES.library=()=>{
+  const f=S.lf;LIVE.fn=libList;const sa=isSA();
+  return ph('Biblioteca base',sa?'Activo de la plataforma. Tú administras las fichas; cada negocio decide qué publica y a qué precio.':'Fichas listas para usar. Agrega las que quieras vender; el precio y la disponibilidad los defines tú.',sa?btn('Nueva ficha en biblioteca','libEdit',{c:'pri',i:'plus'}):`<a class="btn" href="#/admin/juegos/nuevo">${ic('plus')}Crear juego personalizado</a>`)+
+  (sa?'':`<div class="note">La biblioteca es de solo lectura para tu rol. Los datos base no se pueden modificar desde tu negocio.</div>`)+
+  `<div class="sr"><div class="srch">${ic('search')}<input type="search" placeholder="Buscar en la biblioteca" data-f="lf.q" value="${esc(f.q)}" aria-label="Buscar en la biblioteca"></div><button class="btn fbtn" data-a="filters">${ic('filter')}Filtros</button></div>
+  <div class="fbd" data-a="filters"></div>
+  <div class="filters"><div class="sh"><b>Filtros</b>${btn('Listo','filters',{c:'pri sm'})}</div>${field('Género',sel('',S.gens,f.gen,{ph:'Todos',f:'lf.gen'}))}${field('Plataforma',sel('',PLATS,f.plat,{ph:'Todas',f:'lf.plat'}))}<label class="tgl"><input type="checkbox" data-f="lf.notin" ${f.notin?'checked':''}><span class="trk"></span><b>Solo los que aún no tengo</b></label></div>
+  <div id="live">${libList()}</div>`;
+};
+
+/* ---- Categorías / géneros / plataformas ---- */
+function taxPage(kind){
+  const T=kind==='cat'?{list:S.cats,field:'category',title:'Categorías',one:'categoría',d:'Secciones de tu catálogo público.'}:{list:S.gens,field:'genre',title:'Géneros',one:'género',d:'Clasificación por tipo de juego.'};
+  const g0=gate(T.list.length,emptyBox('Aún no hay '+T.title.toLowerCase(),'Crea la primera.',btn('Agregar '+T.one,'taxAdd',{c:'pri',d:{k:kind}})));
+  return ph(T.title,T.d+' Pertenecen solo a '+esc(tnt().name)+'.',btn('Agregar '+T.one,'taxAdd',{c:'pri',d:{k:kind},i:'plus'}))+(g0||`<div class="list" style="--cols:minmax(0,2fr) 110px 110px"><div class="lh"><span>Nombre</span><span>Juegos</span><span></span></div>${T.list.map(n=>{const c=tgl().filter(g=>g[T.field]===n).length;return `<div class="li"><div class="pc"><b>${esc(n)}</b></div><div data-l="Juegos">${c}</div><div class="ac">${ib('edit','Renombrar','taxEdit',{k:kind,n})}${ib('trash','Eliminar','taxDel',{k:kind,n},'dng')}</div></div>`}).join('')}</div>`);
+}
+PAGES.cats=()=>taxPage('cat');PAGES.gens=()=>taxPage('gen');
+PAGES.plats=()=>ph('Plataformas','Plataformas disponibles para tus juegos. El conjunto lo define la plataforma de Luismi; tú eliges cuáles usar.')+
+ `<div class="list" style="--cols:minmax(0,2fr) 110px 150px"><div class="lh"><span>Plataforma</span><span>Juegos</span><span></span></div>${PLATS.map(p=>`<div class="li"><div class="pc"><b>${p}</b></div><div data-l="Juegos">${tgl().filter(g=>g.platforms.includes(p)).length}</div><div class="ac"><span class="swc"><button class="sw" role="switch" aria-checked="${S.platOn[p]}" aria-label="Activar ${p}" data-a="platToggle" data-p="${p}"></button>${S.platOn[p]?'Activa':'Inactiva'}</span></div></div>`).join('')}</div><p class="hint" style="margin-top:14px">Xbox no está soportado.</p>`;
+
+/* ---- Multimedia ---- */
+function mediaList(){
+  let a=tm();const t=S.mtab,q=norm(S.mf.q);
+  if(t==='cover')a=a.filter(m=>m.kind==='cover'&&m.status!=='orphan');else if(t==='shot')a=a.filter(m=>m.kind==='shot'&&m.status!=='orphan');else if(t==='orphan')a=a.filter(m=>m.status==='orphan');
+  if(q)a=a.filter(m=>norm(gameTitle(m)+' '+m.publicId).includes(q));
+  const g0=gate(a.length,t==='orphan'?`<div class="state">${ic('check')}<h3>Sin huérfanas</h3><p>Todas las imágenes de Cloudinary tienen un juego asociado.</p></div>`:emptyBox('Sin multimedia aquí','Sube portadas y screenshots desde la ficha de cada juego.'));if(g0)return g0;
+  return `<p class="cnt">${a.length} archivo(s)</p><div class="mg" style="margin-top:10px">${a.map(m=>`<div class="mi ${m.kind==='cover'?'cv':''}">${mediaArt(m,gameTitle(m))}<div class="nm"><b>${esc(gameTitle(m))}</b><small>${m.kind==='cover'?'Portada':'Screenshot'}</small></div>
+   <div>${m.status==='ok'?badge('Sincronizada','ok'):m.status==='orphan'?badge('Huérfana','wn'):m.status==='uploading'?badge('Subiendo','in'):badge('Error de subida','bd')}</div>
+   <div class="ma">${ib('eye','Ver','mView',{id:m.id})}${m.gameId?ib('upload','Reemplazar','pick',{kind:m.kind,gid:m.gameId,rid:m.id}):ib('link','Vincular','mLink',{id:m.id})}${m.status==='error'?btn('Reintentar','retryUp',{c:'sm',d:{id:m.id},i:'refresh'}):''}${ib('trash','Eliminar','delAsset',{id:m.id},'dng')}</div></div>`).join('')}</div>`;
+}
+ICONS.link='<path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>';
+const gameTitle=m=>m.gameId?(S.games.find(g=>g.id===m.gameId)||{}).title||'Juego':(m.label||'Sin juego asociado');
+PAGES.media=()=>{
+  LIVE.fn=mediaList;const a=tm(),c=k=>a.filter(m=>k==='cover'?m.kind==='cover'&&m.status!=='orphan':k==='shot'?m.kind==='shot'&&m.status!=='orphan':k==='orphan'?m.status==='orphan':true).length;
+  return ph('Multimedia','Portadas y screenshots alojados en Cloudinary. La base de datos guarda solo referencias y metadatos.',btn('Detectar huérfanas','scan',{i:'search'})+btn('Sincronizar referencias','syncRefs',{i:'refresh'})+btn('Subir','upModal',{c:'pri',i:'upload'}))+
+  `<div class="tabs" role="tablist">${[['all','Todas'],['cover','Portadas'],['shot','Screenshots'],['orphan','Huérfanas']].map(([k,l])=>`<button role="tab" class="${S.mtab===k?'on':''}" data-a="mtab" data-v="${k}">${l}<em>${c(k)}</em></button>`).join('')}</div>
+  <div class="sr"><div class="srch">${ic('search')}<input type="search" placeholder="Buscar por juego o ID de Cloudinary" data-f="mf.q" value="${esc(S.mf.q)}" aria-label="Buscar multimedia"></div></div><div id="live">${mediaList()}</div>`;
+};
+
+/* ---- Administración ---- */
+PAGES.admins=()=>{
+  const a=S.admins.filter(x=>isSA()||x.tenantId===tid());
+  return ph('Administradores',isSA()?'Todas las cuentas de la plataforma.':'Cuentas con acceso a tu negocio.',btn('Invitar administrador','invite',{c:'pri',i:'plus'}))+
+  `<div class="list" style="--cols:minmax(0,1.6fr) 130px 130px 110px 130px 120px"><div class="lh"><span>Nombre</span><span>Rol</span><span>Negocio</span><span>Estado</span><span>Último acceso</span><span></span></div>
+  ${a.map(x=>`<div class="li"><div class="pc"><span class="av">${esc(x.name[0])}</span><div class="nm"><b>${esc(x.name)}</b><small>${esc(x.handle)}</small></div></div><div data-l="Rol">${roleBadge(x.role)}</div><div data-l="Negocio">${x.tenantId?esc(TENANTS.find(t=>t.id===x.tenantId)?.name||x.tenantId):'Plataforma'}</div><div data-l="Estado">${badge(x.status,x.status==='Activo'?'ok':'wn')}</div><div data-l="Último acceso">${rel(x.last)}</div>
+   <div class="ac">${x.role==='SUPER_ADMIN'||x.handle===me().name.toLowerCase()?'':btn(x.status==='Suspendido'?'Reactivar':'Suspender','admToggle',{c:'sm',d:{id:x.id}})}</div></div>`).join('')}</div>
+  <p class="hint" style="margin-top:14px">Los administradores del negocio nunca ven cuentas de otros negocios. El backend aplica ese aislamiento.</p>`;
+};
+PAGES.audit=()=>{
+  LIVE.fn=auditList;
+  return ph('Auditoría',isSA()?'Registro global de la plataforma.':'Registro de acciones de tu negocio.')+`<div class="sr"><div class="srch">${ic('search')}<input type="search" placeholder="Buscar en el registro" data-f="af.q" value="${esc(S.af.q)}" aria-label="Buscar en auditoría"></div></div><div id="live">${auditList()}</div>`;
+};
+function auditList(){
+  const q=norm(S.af.q);const a=S.audit.filter(e=>(isSA()||e.tenantId===tid())&&(!q||norm(e.user+e.action+e.entity+e.detail).includes(q)));
+  const g0=gate(a.length,emptyBox('Sin registros','Las acciones aparecerán aquí a medida que ocurran.'));if(g0)return g0;
+  return `<div class="list" style="--cols:150px 150px minmax(0,1.2fr) minmax(0,2fr)"><div class="lh"><span>Cuándo</span><span>Quién</span><span>Acción</span><span>Detalle</span></div>
+   ${a.map(e=>`<div class="li"><div data-l="Cuándo">${dt(e.ts)}</div><div data-l="Quién"><b>${esc(e.user)}</b> ${roleBadge(e.role)}</div><div data-l="Acción">${esc(e.action)}</div><div data-l="Detalle">${esc(e.entity)}: ${esc(e.detail)}${isSA()&&!e.tenantId?' '+badge('Plataforma','au'):''}</div></div>`).join('')}</div>`;
+}
+PAGES.sessions=()=>{
+  const cu=me().id,a=S.sessions.filter(s=>isSA()||USERS.javier.id===s.uid&&s.uid===cu);
+  const g0=gate(a.length,emptyBox('Sin sesiones activas','Cuando alguien inicie sesión aparecerá aquí.'));
+  return ph('Sesiones','Dispositivos con sesión iniciada. Cerrar una sesión la invalida en el servidor.')+(g0||`<div class="list" style="--cols:minmax(0,1.6fr) 130px 130px 130px 130px"><div class="lh"><span>Dispositivo</span><span>Usuario</span><span>Inicio</span><span>Última actividad</span><span></span></div>
+  ${a.map(s=>{const u=Object.values(USERS).find(x=>x.id===s.uid);const cur=s.id==='s1'&&S.who==='luismi'||s.id==='s3'&&S.who==='javier';return `<div class="li"><div class="pc"><b>${esc(s.device)}</b></div><div data-l="Usuario">${esc(u.name)}</div><div data-l="Inicio">${rel(s.start)}</div><div data-l="Última actividad">${rel(s.last)}</div><div class="ac">${cur?badge('Esta sesión','ok'):btn('Cerrar sesión','sesKill',{c:'sm dng',d:{id:s.id}})}</div></div>`}).join('')}</div>`);
+};
+PAGES.tenants=()=>ph('Negocios','Clientes de la plataforma. Cada uno tiene datos, precios, multimedia y administradores aislados.',btn('Nuevo negocio','tenantNew',{c:'pri',i:'plus'}))+
+ `<div class="list" style="--cols:minmax(0,1.6fr) 140px 90px 110px 120px 120px"><div class="lh"><span>Negocio</span><span>Identificador</span><span>Juegos</span><span>Admins</span><span>Estado</span><span></span></div>
+ ${TENANTS.map(t=>`<div class="li"><div class="pc"><span class="av">${esc(t.name[0])}</span><div class="nm"><b>${esc(t.name)}</b><small class="mono">${esc(t.id)}</small></div></div><div data-l="Identificador" class="mono">${esc(t.slug)}</div><div data-l="Juegos">${S.games.filter(g=>g.tenantId===t.id&&!g.deleted).length}</div><div data-l="Admins">${S.admins.filter(a=>a.tenantId===t.id).length}</div><div data-l="Estado">${badge(t.status,t.status==='Activo'?'ok':'wn')}</div><div class="ac">${btn(t.status==='Activo'?'Suspender':'Activar','tenToggle',{c:'sm',d:{id:t.id}})}</div></div>`).join('')}</div>`;
+
+/* ---- Configuración ---- */
+const CFG=[['general','General','Nombre público y contacto'],['catalogo','Catálogo','Versión y publicación'],['precios','Precios','Reglas por tamaño'],['datos','Datos / Importación','Exportar e importar con vista previa'],['backups','Backups','Copias y restauración'],['multimedia','Multimedia','Límites y Cloudinary'],['sistema','Sistema','Estado, rutas y herramientas de demo']];
+const cfgTabs=a=>`<nav class="tabs" aria-label="Configuración">${CFG.map(([k,l])=>`<a class="${k===a?'on':''}" href="#/admin/configuracion/${k}">${l}</a>`).join('')}</nav>`;
+PAGES.cfg=()=>ph('Configuración','Ajustes de '+esc(tnt().name)+(isSA()?' y de la plataforma.':'.'))+`<div class="rows">${CFG.map(([k,l,d])=>`<a href="#/admin/configuracion/${k}" style="min-height:64px"><div class="gr"><b>${l}</b><br><small>${d}</small></div>${ic('chev')}</a>`).join('')}</div>`;
+PAGES.cfgGeneral=()=>ph('General','')+cfgTabs('general')+`<form id="cg" class="panel" novalidate><div class="grid2">${field('Nombre público del negocio',`<input name="publicName" value="${esc(S.cfg.publicName)}" maxlength="50">`)}${field('WhatsApp de contacto',`<input name="whatsapp" inputmode="tel" value="${esc(S.cfg.whatsapp)}" placeholder="Ej. +53 5 000 0000">`)}${field('Moneda',`<input value="CUP" disabled>`)}${field('Identificador del tenant (asignado por el servidor)',`<input value="${esc(tid())}" disabled>`)}</div>${field('Texto al pie del catálogo',`<input name="footer" value="${esc(S.cfg.footer)}" maxlength="120">`)}<div class="pa" style="margin-top:16px">${btn('Guardar cambios','saveGeneral',{c:'pri',i:'check'})}</div></form>
+ <section class="sec"><h2>Plataforma</h2><div class="panel"><b>Luismi Platform</b><p class="hint">Plataforma desarrollada y mantenida por Luismi.</p><p style="margin-top:8px">Tenant actual: <b>${esc(tnt().name)}</b>. Tu rol: ${roleBadge(me().role)}</p></div></section>`;
+PAGES.cfgCatalog=()=>{const c=S.catalog;return ph('Catálogo','')+cfgTabs('catalogo')+
+ `<div class="stats" style="margin-bottom:22px"><div class="st"><b>v${c.version}</b><span>Versión publicada</span></div><div class="st"><b>${c.pending}</b><span>Cambios sin publicar</span></div><div class="st"><b class="t">${rel(c.publishedAt)}</b><span>Última publicación</span></div></div>
+ <div class="pa" style="margin-bottom:22px">${btn('Publicar cambios','publish',{c:'pri',dis:!c.pending,i:'upload'})}</div>
+ <div class="panel"><label class="tgl"><input type="checkbox" data-cfg="showUnavailable" ${S.cfg.showUnavailable?'checked':''}><span class="trk"></span><b>Mostrar juegos no disponibles en el catálogo público</b></label><label class="tgl"><input type="checkbox" data-cfg="offerOffline" ${S.cfg.offerOffline?'checked':''}><span class="trk"></span><b>Ofrecer descarga de imágenes para usar sin conexión</b></label></div>
+ <section class="sec"><h2>Cómo se actualiza la app pública</h2><p class="d">Pensado para conexiones lentas: el catálogo es liviano y las imágenes viajan aparte.</p><div class="rows">
+  <div><span class="step done"><i>1</i></span><div class="gr">Consulta <span class="mono">GET /api/v1/catalog/version</span></div></div>
+  <div><span class="step done"><i>2</i></span><div class="gr">Compara con la copia guardada en localStorage</div></div>
+  <div><span class="step done"><i>3</i></span><div class="gr">Solo si cambió, descarga <span class="mono">GET /api/v1/catalog</span> (solo metadata)</div></div>
+  <div><span class="step done"><i>4</i></span><div class="gr">Las imágenes se piden por CDN, en miniatura y con carga diferida. Descargarlas para uso sin conexión es opcional, progresivo y con pausa.</div></div></div></section>`;};
+
+/* Precios */
+const rng=r=>r.max==null?`más de ${nf(r.min)} GB`:`${nf(r.min)} a ${nf(r.max)} GB`;
+function validateRules(rs){
+  const e=[];rs.forEach((r,i)=>{if(!(r.min>=0))e.push(`Regla ${i+1}: el mínimo debe ser 0 o mayor.`);if(r.max!=null&&!(r.max>r.min))e.push(`Regla ${i+1}: el máximo debe ser mayor que el mínimo.`);if(!(r.price>=0))e.push(`Regla ${i+1}: el precio no es válido.`)});
+  const a=[...rs].filter(r=>r.active).sort((x,y)=>x.min-y.min);
+  for(let i=1;i<a.length;i++){const p=a[i-1],c=a[i];if(p.max==null)e.push('Hay una regla sin límite superior antes de otras reglas.');else if(c.min<=p.max)e.push(`Se solapan los rangos "${rng(p)}" y "${rng(c)}".`)}
+  return e;
+}
+const priceDiff=()=>tgl().filter(g=>g.priceMode==='rule').map(g=>({g,from:g.price,to:priceFor(g.size,S.rules)})).filter(x=>x.to!=null&&x.to!==x.from);
+const uncovered=()=>tgl().filter(g=>g.priceMode==='rule'&&priceFor(g.size,S.rules)==null);
+PAGES.cfgPrices=()=>{
+  const d=S.rulesDraft,dirty=JSON.stringify(d)!==JSON.stringify(S.rules),errs=validateRules(d),pd=priceDiff(),un=uncovered();
+  return ph('Precios','Cada negocio define sus propios precios por tamaño. Guardar las reglas no cambia el catálogo: los precios solo cambian cuando tú los aplicas.')+cfgTabs('precios')+
+  (errs.length?`<div class="note bd">${errs.map(esc).join('<br>')}</div>`:'')+
+  `<div class="panel">${d.map((r,i)=>`<div class="rule" data-i="${i}">${field('Desde (GB)',`<input type="number" inputmode="decimal" step="0.01" min="0" data-rule="min" value="${r.min}">`)}${field('Hasta (GB)',`<input type="number" inputmode="decimal" step="0.01" min="0" data-rule="max" value="${r.max==null?'':r.max}" placeholder="Sin límite">`)}${field('Precio (CUP)',`<input type="number" inputmode="decimal" step="1" min="0" data-rule="price" value="${r.price}">`,'pr')}
+   <span class="swc"><button class="sw" role="switch" aria-checked="${r.active}" aria-label="Activar regla ${i+1}" data-a="ruleToggle" data-i="${i}"></button>Activa</span><span class="rm">${ib('trash','Eliminar regla','ruleDel',{i},'dng')}</span></div>`).join('')||emptyBox('Sin reglas','Agrega la primera regla de precio.')}
+   <div class="pa" style="margin-top:16px">${btn('Agregar regla','ruleAdd',{i:'plus'})}${btn('Guardar reglas','ruleSave',{c:dirty?'pri':'',dis:!dirty||errs.length>0,i:'check'})}${dirty?btn('Descartar','ruleDiscard'):''}</div>
+   ${dirty?'<p class="hint" style="margin-top:10px">Tienes cambios sin guardar en las reglas.</p>':''}</div>
+  ${un.length?`<div class="note wn" style="margin-top:16px">${un.length} juego(s) no tienen regla aplicable (${un.slice(0,3).map(g=>esc(g.title)).join(', ')}${un.length>3?'…':''}). Su precio no cambiará.</div>`:''}
+  <section class="sec"><h2>Aplicar al catálogo</h2><p class="d">${pd.length?`${pd.length} juego(s) cambiarían de precio con las reglas guardadas.`:'El catálogo ya está al día con las reglas guardadas.'} Los juegos con precio manual nunca se tocan.</p>
+   ${btn('Aplicar nuevas reglas al catálogo','applyPrices',{c:'pri',dis:!pd.length||dirty,i:'check'})}${dirty?'<p class="hint" style="margin-top:8px">Guarda las reglas antes de aplicarlas.</p>':''}</section>`;
+};
+
+/* Datos / importación */
+const IMP_STEPS=['Seleccionar archivo','Validar','Mostrar errores','Analizar cambios','Vista previa','Crear backup','Confirmar','Importar','Registrar auditoría','Actualizar versión del catálogo'];
+function impStepIdx(){const i=S.imp;if(i.stage==='select')return 0;if(i.errors.length)return 2;if(i.stage==='preview')return 4;if(i.stage==='backed')return 6;return 10}
+PAGES.cfgData=()=>{
+  const i=S.imp,idx=impStepIdx();
+  return ph('Datos / Importación','Exporta tu catálogo o impórtalo con revisión previa y copia de seguridad automática.')+cfgTabs('datos')+
+  `<section><h2 style="font-size:26px;margin-bottom:12px">EXPORTAR</h2><div class="pa">${btn('Exportar catálogo','expCat',{i:'download'})}${btn('Exportar manifest multimedia','expMan',{i:'download'})}</div><p class="hint" style="margin-top:8px">El manifest lista las referencias de Cloudinary, no las imágenes.</p></section>
+  <section class="sec"><h2>Importar catálogo</h2><div class="two">
+   <div>${importBody()}</div>
+   <div class="panel" aria-label="Pasos de importación">${IMP_STEPS.map((s,k)=>`<div class="step ${k<idx?'done':k===idx?'cur':''}"><i>${k<idx?'✓':k+1}</i>${s}</div>`).join('')}</div></div></section>`;
+};
+function importBody(){
+  const i=S.imp;
+  if(i.stage==='select')return `<div class="panel"><p>Elige un archivo <span class="mono">.json</span> exportado desde la plataforma.</p><div class="pa" style="margin-top:14px">${btn('Seleccionar archivo','impPick',{c:'pri',i:'upload'})}${btn('Usar archivo de ejemplo','impSample')}</div></div>`;
+  const e=i.errors.length;
+  let h=`<div class="panel"><b class="mono">${esc(i.name)}</b>`;
+  if(e)h+=`<div class="note bd" style="margin-top:12px"><b>El archivo no es válido (${e} error${e>1?'es':''}).</b><br>${i.errors.slice(0,12).map(esc).join('<br>')}${e>12?'<br>…':''}</div><div class="pa">${btn('Cancelar','impReset')}${btn('Elegir otro archivo','impPick',{c:'pri'})}</div>`;
+  else{
+    h+=`<p style="margin:10px 0 0">${badge('Archivo válido','ok')} ${badge(nf(i.data.games.length)+' juegos detectados','in')}</p>${i.warns.map(w=>`<div class="note wn" style="margin-top:12px">${esc(w)}</div>`).join('')}
+    <div class="diff"><div><b style="color:var(--ok)">+${i.diff.nw.length}</b><span>nuevos</span></div><div><b style="color:var(--au)">~${i.diff.md.length}</b><span>modificados</span></div><div><b style="color:var(--bd)">−${i.diff.dl.length}</b><span>eliminados</span></div><div><b>=${i.diff.same}</b><span>sin cambios</span></div></div>
+    ${[['Nuevos',i.diff.nw.map(g=>g.title)],['Modificados',i.diff.md.map(x=>x.title+' ('+x.fields.join(', ')+')')],['Eliminados (a la papelera)',i.diff.dl.map(g=>g.title)]].filter(x=>x[1].length).map(([t,l])=>`<details style="margin-bottom:8px"><summary style="cursor:pointer;min-height:36px;font-weight:700">${t} (${l.length})</summary><div class="hint" style="padding:4px 0 8px">${l.slice(0,10).map(esc).join('<br>')}${l.length>10?'<br>…':''}</div></details>`).join('')}
+    ${i.stage==='preview'?`<p class="hint">Antes de importar se crea una copia de seguridad de tu catálogo.</p><div class="pa" style="margin-top:10px">${btn('Cancelar','impReset')}${btn('Crear backup','impBackup',{c:'pri',i:'shield'})}</div>`:''}
+    ${i.stage==='backed'?`<div class="note ok" style="margin-top:12px">Backup creado. Ya puedes confirmar.</div><div class="pa">${btn('Cancelar','impReset')}${btn('Confirmar e importar','impRun',{c:'pri',i:'check'})}</div>`:''}
+    ${i.stage==='done'?`<div class="note ok" style="margin-top:12px">Importación completada. Auditoría registrada. Catálogo en versión ${S.catalog.version}.</div><div class="pa">${btn('Nueva importación','impReset')}<a class="btn" href="#/admin/juegos">Ver juegos</a></div>`:''}`;
+  }
+  return h+'</div>';
+}
+function impAnalyze(data){
+  const errors=[],warns=[];
+  const arr=Array.isArray(data)?data:data&&data.games;
+  if(!Array.isArray(arr)){errors.push('El archivo debe contener una lista "games".');return{errors,warns,diff:null,data:null}}
+  if(data&&!Array.isArray(data)&&data.tenantId)warns.push('El archivo incluye un tenantId. Se ignora: el servidor siempre usa el de tu sesión.');
+  const seen=new Set();
+  arr.forEach((g,i)=>{const n='Juego '+(i+1)+': ';
+    if(!g||typeof g!=='object'){errors.push(n+'formato inválido.');return}
+    if(!g.title||typeof g.title!=='string'||!g.title.trim())errors.push(n+'falta el título.');
+    if(!(Number(g.size)>0))errors.push(n+`tamaño inválido (${esc(g.title||'sin título')}).`);
+    if(g.platforms!==undefined&&(!Array.isArray(g.platforms)||!g.platforms.length||g.platforms.some(p=>!PLATS.includes(p))))errors.push(n+`plataformas no permitidas (solo ${PLATS.join(', ')}).`);
+    const k=g.id||slug(g.title||'');if(seen.has(k))errors.push(n+'duplicado.');seen.add(k)});
+  if(errors.length)return{errors,warns,diff:null,data:null};
+  const cur=tg().filter(g=>!g.deleted),byId=new Map(cur.map(g=>[g.id,g])),bySlug=new Map(cur.map(g=>[slug(g.title),g]));
+  const diff={nw:[],md:[],dl:[],same:0},hit=new Set();
+  arr.forEach(g=>{const ex=(g.id&&byId.get(g.id))||bySlug.get(slug(g.title));
+    if(!ex){diff.nw.push(g);return}hit.add(ex.id);
+    const fields=[];if(g.title!==ex.title)fields.push('título');if(g.genre!==undefined&&g.genre!==ex.genre)fields.push('género');if(g.category!==undefined&&g.category!==ex.category)fields.push('categoría');
+    if(Number(g.size)!==ex.size)fields.push('tamaño');if(g.available!==undefined&&!!g.available!==ex.available)fields.push('disponibilidad');if(g.price!==undefined&&Number(g.price)!==ex.price)fields.push('precio');
+    if(g.platforms&&g.platforms.join()!==ex.platforms.join())fields.push('plataformas');
+    if(fields.length)diff.md.push({title:ex.title,ex,g,fields});else diff.same++;});
+  cur.forEach(g=>{if(!hit.has(g.id))diff.dl.push(g)});
+  return{errors,warns,diff,data:{games:arr}};
+}
+
+/* Backups */
+PAGES.cfgBackups=()=>{
+  const a=S.backups.filter(b=>isSA()||b.tenantId===tid()),l=a[0],sa=isSA();
+  return ph('Backups','Las copias incluyen datos, catálogo, configuración y el manifest multimedia. Las imágenes físicas de Cloudinary se gestionan aparte.',btn('Crear copia ahora','backupNow',{c:'pri',i:'db'}))+cfgTabs('backups')+
+  (l?`<div class="panel"><div class="ph" style="margin:0 0 10px"><div><h2 style="font-size:28px">Última copia</h2><small>${dt(l.ts)}, ${rel(l.ts)}</small></div><div>${badge('Completada','ok')} ${badge(l.type,'in')} ${badge(l.scope,'au')}</div></div>
+   <div class="rows">${[['Base de datos',ic('db')],['Catálogo',ic('games')],['Configuración',ic('cfg')],['Manifest multimedia',ic('cloud')]].map(([n,i])=>`<div>${i}<div class="gr">${n}</div><span style="color:var(--ok)">${ic('check')}</span></div>`).join('')}</div></div>`:emptyBox('Sin copias todavía','Crea la primera copia de seguridad.'))+
+  `<section class="sec"><h2>Restaurar</h2>${sa?`<p class="d">Operación crítica. Se pide confirmación escrita y el backend la registra en auditoría.</p>`:`<div class="note">La restauración está reservada a Luismi (SUPER_ADMIN). Si necesitas recuperar datos, pídeselo con la fecha de la copia.</div>`}</section>
+  <section class="sec"><h2>Historial</h2><div class="list" style="--cols:170px 140px 150px 110px 130px"><div class="lh"><span>Fecha</span><span>Tipo</span><span>Alcance</span><span>Estado</span><span></span></div>
+  ${a.map(b=>`<div class="li"><div data-l="Fecha">${dt(b.ts)}</div><div data-l="Tipo">${esc(b.type)}</div><div data-l="Alcance">${esc(b.scope)}</div><div data-l="Estado">${badge('Completada','ok')}</div><div class="ac">${sa?btn('Restaurar','restore2',{c:'sm',d:{id:b.id}}):`<span class="hint">${ic('lock')} Solo SUPER_ADMIN</span>`}</div></div>`).join('')}</div></section>`;
+};
+PAGES.cfgMedia=()=>ph('Multimedia','')+cfgTabs('multimedia')+`<div class="panel"><dl class="kv"><dt>Portada</dt><dd>1 por juego</dd><dt>Screenshots</dt><dd>Máximo 4 por juego</dd><dt>Formatos</dt><dd>JPG, PNG o WebP, hasta 8 MB</dd><dt>Carpeta Cloudinary</dt><dd class="mono">tenants/${esc(tid())}/games/…</dd><dt>Entrega</dt><dd>CDN, miniaturas y carga diferida</dd></dl></div><p class="hint" style="margin-top:12px">Estos límites los define la plataforma. Cambiarlos requiere SUPER_ADMIN.</p>`;
+PAGES.cfgSystem=()=>ph('Sistema','')+cfgTabs('sistema')+
+ (isSA()?`<section><h2 style="font-size:26px;margin-bottom:8px">INFRAESTRUCTURA</h2>${infraRows()}</section>`:`<div class="note">El estado de la infraestructura global solo lo ve SUPER_ADMIN.</div>`)+
+ `<section class="sec"><h2>Mapa de rutas y API</h2><details class="fs" style="margin-bottom:10px"><summary>Rutas del panel${ic('chev')}</summary><div class="fb"><div class="mono">${ROUTES.map(r=>esc(r[0])+(r[2]?' ('+r[2]+')':'')).join('<br>')}</div></div></details>
+  <details class="fs"><summary>API futura${ic('chev')}</summary><div class="fb"><div class="rows">${API.map(a=>`<div><span class="mono" style="width:44px">${a[0]}</span><div class="gr"><span class="mono">${esc(a[1])}</span><br><small>${esc(a[2])}</small></div></div>`).join('')}</div></div></details></section>
+ <section class="sec"><h2>Herramientas de demo</h2><p class="d">Simula cómo se ve cada pantalla en distintos estados.</p><div class="chips">${[['normal','Normal'],['loading','Cargando'],['empty','Vacío'],['error','Error'],['offline','Sin conexión']].map(([k,l])=>`<button class="btn sm ${S.sim===k?'pri':''}" data-a="sim" data-v="${k}">${l}</button>`).join('')}</div></section>
+ <section class="sec"><h2>Plataforma</h2><div class="panel"><b>Luismi Platform</b><p class="hint">Plataforma desarrollada y mantenida por Luismi. Admin V2.</p></div></section>`;
+
+/* ====================================================================
+   ACCIONES
+   ==================================================================== */
+const A={};
+const MUT=new Set(['toggleAv','del','restore','dup','saveGame','libAdd','taxDo','platToggle','delAsset','retryUp','scan','syncRefs','admToggle','sesKill','tenToggle','saveGeneral','publish','ruleSave','applyPrices','impBackup','impRun','backupNow','invite','doInvite','tenDo','upModal']);
+A.go=(d)=>{const t='#'+d.to;if(location.hash===t)render(true);else location.hash=t;if(d.sec)setTimeout(()=>{const e=$('#sec-media');if(e){e.open=true;e.scrollIntoView()}},60)};
+A.drawer=()=>$('#side').classList.toggle('open');
+A.close=closeM;A.ovClose=(d,el,e)=>{if(e.target===el)closeM()};
+A.cbOk=()=>{const c=S.cb;if(c){const v=$('#pv');if(c(v?v.value.trim():''))return;}closeM()};
+A.retry=()=>{S.sim='normal';render(true)};
+A.filters=()=>{const f=$('.filters');if(f){f.classList.toggle('open');$('.fbd').classList.toggle('open')}};
+A.gfReset=()=>{S.gf={q:'',cat:'',gen:'',plat:'',av:'',origin:'',size:'',sort:'title',del:false};render(true)};
+A.lfReset=()=>{S.lf={q:'',gen:'',plat:'',notin:false};render(true)};
+A.whoModal=()=>modal('Vista de demostración',`<p class="hint">Solo para probar la interfaz. En producción el rol y el tenant los define el backend según tu sesión; nunca el navegador.</p><div class="rows" style="margin-top:8px">${Object.entries(USERS).map(([k,u])=>`<div><span class="av">${esc(u.name[0])}</span><div class="gr"><b>${esc(u.name)}</b><br><small>${u.role}${u.tenantId?', tenant '+esc(u.tenantId):''}</small></div>${S.who===k?badge('Actual','ok'):btn('Ver como '+u.name,'who',{c:'sm',d:{k}})}</div>`).join('')}</div>`,btn('Cerrar','close'));
+A.who=d=>{S.who=d.k;closeM();if(match(cur())?.role&&match(cur()).role!==me().role)location.hash='#/admin/dashboard';else render(true)};
+A.sim=d=>{S.sim=d.v;render(true)};
+A.mtab=d=>{S.mtab=d.v;render(true)};
+
+/* Juegos */
+A.toggleAv=d=>{const g=findGame(d.id);g.available=!g.available;g.updated=Date.now();S.catalog.pending++;log('Disponibilidad','Juego',g.id,`${g.title}: ${g.available?'disponible':'no disponible'}`);render(true);toast(g.available?'Marcado como disponible':'Marcado como no disponible')};
+A.del=d=>{const g=findGame(d.id);confirmM('Eliminar juego',`"${esc(g.title)}" saldrá del catálogo y pasará a la papelera. Podrás restaurarlo.`,'Eliminar',()=>{g.deleted=true;S.catalog.pending++;log('Eliminar juego','Juego',g.id,g.title+' (papelera)');render(true);toast('Juego enviado a la papelera')},true)};
+A.restore=d=>{const g=findGame(d.id);g.deleted=false;S.catalog.pending++;log('Restaurar juego','Juego',g.id,g.title);render(true);toast('Juego restaurado')};
+A.dup=d=>{const g=findGame(d.id),n=clone(g);n.id='g_'+Date.now();n.title=g.title+' (copia)';n.libId=null;n.origin='personalizado';n.available=false;n.featured=false;n.updated=Date.now();S.games.push(n);S.catalog.pending++;log('Duplicar juego','Juego',n.id,`${g.title} → ${n.title}`);toast('Copia creada como juego personalizado (no disponible)');location.hash='#/admin/juegos/'+n.id+'/editar'};
+A.hist=d=>{const g=findGame(d.id),a=S.audit.filter(e=>e.eid===g.id);modal('Historial: '+g.title,a.length?`<div class="rows">${a.map(e=>`<div><div class="gr"><b>${esc(e.action)}</b><br><small>${esc(e.detail)}</small></div><small>${esc(e.user)}, ${rel(e.ts)}</small></div>`).join('')}</div>`:'<p class="hint">Aún no hay cambios registrados para este juego.</p>',btn('Cerrar','close'))};
+A.copyReq=()=>{$$('[name^="min."]').forEach(el=>{const t=$(`[name="rec.${el.name.slice(4)}"]`);if(t&&!t.disabled)t.value=el.value});toast('Mínimos copiados a recomendados')};
+function rd(fd,p){return{cpu:fd.get(p+'.cpu'),cpuModel:(fd.get(p+'.cpuModel')||'').trim(),gpu:fd.get(p+'.gpu'),gpuModel:(fd.get(p+'.gpuModel')||'').trim(),ram:+fd.get(p+'.ram'),os:fd.get(p+'.os'),dx:+fd.get(p+'.dx'),storage:fd.get(p+'.storage')}}
+A.saveGame=()=>{
+  const f=$('#gf'),fd=new FormData(f),id=f.dataset.gid,g=id?findGame(id):null,lock=g&&g.origin==='biblioteca',v=k=>(fd.get(k)||'').toString().trim(),errs=[];
+  const mode=v('priceMode')||'rule',size=lock?g.size:parseFloat(v('size')),plats=lock?g.platforms:fd.getAll('plat');
+  if(!lock){if(!v('title'))errs.push('Escribe el título.');if(!v('genre'))errs.push('Elige un género.');if(!(size>0))errs.push('El tamaño debe ser mayor que 0.');if(!plats.length)errs.push('Elige al menos una plataforma.')}
+  if(mode==='manual'&&!(parseFloat(v('price'))>=0&&v('price')!==''))errs.push('Escribe el precio manual.');
+  $('#ferr').innerHTML=errs.length?`<div class="note bd">${errs.map(esc).join('<br>')}</div>`:'';
+  if(errs.length){window.scrollTo({top:0,behavior:'smooth'});return toast('Revisa los campos marcados','bd')}
+  const price=mode==='manual'?parseFloat(v('price')):priceFor(size,S.rules);
+  const com={category:v('category'),note:v('note'),priceMode:mode,price,available:fd.has('available'),featured:fd.has('featured'),updated:Date.now()};
+  if(g){Object.assign(g,com);if(!lock)Object.assign(g,{title:v('title'),genre:v('genre'),year:+v('year')||g.year,desc:v('desc'),size,platforms:plats,req:{min:rd(fd,'min'),rec:rd(fd,'rec')}});log('Editar juego','Juego',g.id,g.title);S.catalog.pending++;toast('Juego guardado');location.hash='#/admin/juegos/'+g.id}
+  else{const n={id:'g_'+Date.now(),tenantId:tid(),libId:null,origin:'personalizado',title:v('title'),genre:v('genre'),year:+v('year')||new Date().getFullYear(),desc:v('desc'),size,platforms:plats,req:{min:rd(fd,'min'),rec:rd(fd,'rec')},deleted:false,...com};S.games.push(n);log('Crear juego','Juego',n.id,n.title);S.catalog.pending++;toast('Juego creado. Ahora puedes subir multimedia.');location.hash='#/admin/juegos/'+n.id+'/editar'}
+};
+
+/* Biblioteca */
+A.libAdd=d=>{const b=LIB.find(x=>x.id===d.id),sug=priceFor(b.size,S.rules);S.cb=()=>{const n={id:'g_'+Date.now(),tenantId:tid(),libId:b.id,origin:'biblioteca',title:b.title,genre:b.genre,category:$('#ac').value,platforms:[...b.platforms],year:b.year,size:b.size,desc:b.desc,req:clone(b.req),available:$('#av').value==='1',featured:false,priceMode:'rule',price:sug,note:'',deleted:false,updated:Date.now()};S.games.push(n);S.catalog.pending++;log('Agregar de biblioteca','Juego',n.id,b.title);render(true);toast('Agregado a tu catálogo')};
+  modal('Agregar al catálogo',`<p><b>${esc(b.title)}</b>, ${nf(b.size)} GB</p><div class="grid2" style="margin-top:12px">${field('Categoría',`<select id="ac">${S.cats.map(c=>`<option>${esc(c)}</option>`).join('')}</select>`)}${field('Disponibilidad',`<select id="av"><option value="1">Disponible</option><option value="0">No disponible</option></select>`)}</div><p class="hint" style="margin-top:12px">Precio según tus reglas: <b>${sug==null?'sin regla aplicable':sug+' CUP'}</b>. Podrás cambiarlo después.</p>`,btn('Cancelar','close')+btn('Agregar','cbOk',{c:'pri'}))};
+A.libEdit=d=>{const b=d.id?LIB.find(x=>x.id===d.id):{title:'',genre:S.gens[0],year:2026,size:10,platforms:['PC']};
+  S.cb=()=>{const t=$('#lt').value.trim(),s=parseFloat($('#ls').value);if(!t||!(s>0)){toast('Título y tamaño son obligatorios','bd');return true}
+    if(d.id){b.title=t;b.genre=$('#lg').value;b.year=+$('#ly').value||b.year;b.size=s;log('Editar ficha de biblioteca','Biblioteca',b.id,t,null)}
+    else{const n={id:'b_'+slug(t)+Date.now(),title:t,genre:$('#lg').value,platforms:['PC'],year:+$('#ly').value||2026,size:s,desc:t+': ficha base.',req:reqFor(s)};LIB.unshift(n);S.libTotal++;log('Crear ficha de biblioteca','Biblioteca',n.id,t,null)}
+    render(true);toast('Biblioteca actualizada')};
+  modal(d.id?'Editar ficha':'Nueva ficha',`<div class="grid2">${field('Título',`<input id="lt" value="${esc(b.title)}">`)}${field('Género',`<select id="lg">${S.gens.map(g=>`<option ${g===b.genre?'selected':''}>${esc(g)}</option>`).join('')}</select>`)}${field('Año',`<input id="ly" type="number" value="${b.year}">`)}${field('Tamaño (GB)',`<input id="ls" type="number" step="0.1" value="${b.size}">`)}</div>`,btn('Cancelar','close')+btn('Guardar','cbOk',{c:'pri'}))};
+
+/* Taxonomías */
+A.taxAdd=d=>promptM('Agregar '+(d.k==='cat'?'categoría':'género'),'Nombre','','Agregar',v=>{const L=d.k==='cat'?S.cats:S.gens;if(!v){toast('Escribe un nombre','bd');return true}if(L.some(x=>norm(x)===norm(v))){toast('Ya existe','bd');return true}L.push(v);log('Crear '+(d.k==='cat'?'categoría':'género'),'Taxonomía',null,v);render(true);toast('Agregado')});
+A.taxEdit=d=>promptM('Renombrar','Nombre',d.n,'Guardar',v=>{const L=d.k==='cat'?S.cats:S.gens,fl=d.k==='cat'?'category':'genre';if(!v){toast('Escribe un nombre','bd');return true}if(v!==d.n&&L.some(x=>norm(x)===norm(v))){toast('Ya existe','bd');return true}L[L.indexOf(d.n)]=v;tg().forEach(g=>{if(g[fl]===d.n)g[fl]=v});log('Renombrar','Taxonomía',null,`${d.n} → ${v}`);render(true);toast('Guardado')});
+A.taxDel=d=>{const fl=d.k==='cat'?'category':'genre',c=tg().filter(g=>g[fl]===d.n).length;if(c)return toast(`Tiene ${c} juego(s). Reasígnalos antes de eliminar.`,'bd');confirmM('Eliminar',`Se eliminará "${esc(d.n)}".`,'Eliminar',()=>{const L=d.k==='cat'?S.cats:S.gens;L.splice(L.indexOf(d.n),1);log('Eliminar','Taxonomía',null,d.n);render(true);toast('Eliminado')},true)};
+A.platToggle=d=>{S.platOn[d.p]=!S.platOn[d.p];log('Plataforma','Plataforma',null,`${d.p}: ${S.platOn[d.p]?'activa':'inactiva'}`);render(true)};
+
+/* Multimedia */
+A.pick=d=>{if(off())return toast('Sin conexión. No se puede subir.','bd');S.pick={kind:d.kind,gid:d.gid,rid:d.rid};const f=$('#filepick');f.value='';f.click()};
+function uploadAsset(file,p){
+  if(!/^image\/(jpeg|png|webp)$/.test(file.type))return toast('Formato no permitido. Usa JPG, PNG o WebP.','bd');
+  if(file.size>8*1048576)return toast('La imagen supera 8 MB.','bd');
+  const g=S.games.find(x=>x.id===p.gid);if(!g)return;
+  if(p.rid){const o=S.media.find(m=>m.id===p.rid);if(o)S.media.splice(S.media.indexOf(o),1)}
+  else if(p.kind==='shot'&&shotsOf(g.id).length>=4)return toast('Límite alcanzado: máximo 4 screenshots.','bd');
+  else if(p.kind==='cover'&&coverOf(g.id)){const o=coverOf(g.id);S.media.splice(S.media.indexOf(o),1)}
+  const n=shotsOf(g.id).length+1,m={id:'m'+Date.now(),tenantId:g.tenantId,gameId:g.id,kind:p.kind,publicId:`tenants/${g.tenantId}/games/${slug(g.title)}/${p.kind==='cover'?'cover':'shot-'+n}`,status:'uploading',preview:URL.createObjectURL(file)};
+  S.media.push(m);log('Subir multimedia','Multimedia',g.id,`${g.title}: ${p.kind==='cover'?'portada':'screenshot'}`);S.catalog.pending++;render(true);
+  setTimeout(()=>{m.status='ok';render(true);toast('Imagen sincronizada con Cloudinary')},900);
+}
+A.upModal=()=>{const gs=tgl();if(!gs.length)return toast('Primero agrega un juego','bd');S.cb=()=>{S.pick={kind:$('#uk').value,gid:$('#ug').value};setTimeout(()=>{const f=$('#filepick');f.value='';f.click()},0)};modal('Subir multimedia',`<div class="grid2">${field('Juego',`<select id="ug">${gs.map(g=>`<option value="${esc(g.id)}">${esc(g.title)}</option>`).join('')}</select>`)}${field('Tipo',`<select id="uk"><option value="cover">Portada</option><option value="shot">Screenshot</option></select>`)}</div>`,btn('Cancelar','close')+btn('Elegir archivo','cbOk',{c:'pri',i:'upload'}))};
+A.delAsset=d=>{const m=S.media.find(x=>x.id===d.id);confirmM('Eliminar archivo','Se quitará la referencia y se pedirá al servidor borrar la imagen en Cloudinary.','Eliminar',()=>{S.media.splice(S.media.indexOf(m),1);log('Eliminar multimedia','Multimedia',m.gameId,m.publicId);render(true);toast('Archivo eliminado')},true)};
+A.retryUp=d=>{const m=S.media.find(x=>x.id===d.id);m.status='uploading';render(true);setTimeout(()=>{m.status='ok';render(true);toast('Subida completada')},900)};
+A.mView=d=>{const m=S.media.find(x=>x.id===d.id);modal(gameTitle(m),`<div class="lg">${mediaArt(m,gameTitle(m))}</div><p class="mono" style="margin-top:10px">${esc(m.publicId)}</p>`,btn('Cerrar','close'),true)};
+A.mLink=d=>{const m=S.media.find(x=>x.id===d.id),gs=tgl();S.cb=()=>{const gid=$('#lg2').value;if(m.kind==='cover'&&coverOf(gid)){toast('Ese juego ya tiene portada','bd');return true}if(m.kind==='shot'&&shotsOf(gid).length>=4){toast('Ese juego ya tiene 4 screenshots','bd');return true}m.gameId=gid;m.status='ok';log('Vincular multimedia','Multimedia',gid,m.publicId);render(true);toast('Vinculada')};modal('Vincular a un juego',`<p class="mono">${esc(m.publicId)}</p>${field('Juego',`<select id="lg2">${gs.map(g=>`<option value="${esc(g.id)}">${esc(g.title)}</option>`).join('')}</select>`)}`,btn('Cancelar','close')+btn('Vincular','cbOk',{c:'pri'}))};
+A.scan=()=>{const n=tm().filter(m=>m.status==='orphan').length;toast(n?`Escaneo completo: ${n} huérfana(s) encontrada(s).`:'Escaneo completo: no hay huérfanas.')};
+A.syncRefs=()=>{toast('Referencias sincronizadas con Cloudinary');log('Sincronizar referencias','Multimedia',null,'Manual')};
+
+/* Administración */
+A.invite=()=>{const sa=isSA();S.cb=()=>{const n=$('#in').value.trim(),e=$('#ie').value.trim();if(!n||!/^\S+@\S+\.\S+$/.test(e)){toast('Escribe un nombre y un correo válido','bd');return true}
+  const t=sa?$('#it').value:tid();S.admins.push({id:'a'+Date.now(),name:n,handle:e.split('@')[0],role:'ADMIN',tenantId:t,status:'Invitado',last:Date.now()});log('Invitar administrador','Administrador',null,`${n} (${t})`);render(true);toast('Invitación enviada (el servidor envía el correo)')};
+  modal('Invitar administrador',`<div class="grid2">${field('Nombre',`<input id="in" maxlength="50">`)}${field('Correo',`<input id="ie" type="email" inputmode="email">`)}${sa?field('Negocio',`<select id="it">${TENANTS.map(t=>`<option value="${t.id}">${esc(t.name)}</option>`).join('')}</select>`):''}</div><p class="hint" style="margin-top:12px">El rol será ADMIN. ${sa?'':'El negocio lo asigna el servidor; no se envía desde el navegador.'}</p>`,btn('Cancelar','close')+btn('Enviar invitación','cbOk',{c:'pri'}))};
+A.admToggle=d=>{const a=S.admins.find(x=>x.id===d.id);a.status=a.status==='Suspendido'?'Activo':'Suspendido';log('Cambiar estado de administrador','Administrador',null,`${a.name}: ${a.status}`);render(true);toast('Estado actualizado')};
+A.sesKill=d=>confirmM('Cerrar sesión','La sesión se invalidará en el servidor.','Cerrar sesión',()=>{S.sessions=S.sessions.filter(s=>s.id!==d.id);log('Cerrar sesión','Sesión',null,d.id);render(true);toast('Sesión cerrada')},true);
+A.tenantNew=()=>{S.cb=()=>{const n=$('#tn').value.trim(),s=slug($('#ts').value||n);if(!n||!s){toast('Escribe el nombre','bd');return true}if(TENANTS.some(t=>t.slug===s)){toast('Ese identificador ya existe','bd');return true}
+  TENANTS.push({id:'t_'+s.replace(/-/g,'_'),name:n,slug:s,status:'Activo',created:Date.now()});log('Crear negocio','Negocio',null,n,null);render(true);toast('Negocio creado. Invita a su administrador.')};
+  modal('Nuevo negocio',`<div class="grid2">${field('Nombre',`<input id="tn" maxlength="50">`)}${field('Identificador (opcional)',`<input id="ts" maxlength="30" placeholder="cliente-b">`)}</div>`,btn('Cancelar','close')+btn('Crear negocio','cbOk',{c:'pri'}))};
+A.tenToggle=d=>{const t=TENANTS.find(x=>x.id===d.id);t.status=t.status==='Activo'?'Suspendido':'Activo';log('Cambiar estado de negocio','Negocio',null,`${t.name}: ${t.status}`,null);render(true);toast('Estado actualizado')};
+
+/* Configuración */
+A.saveGeneral=()=>{const fd=new FormData($('#cg'));S.cfg.publicName=(fd.get('publicName')||'').trim()||S.cfg.publicName;S.cfg.whatsapp=(fd.get('whatsapp')||'').trim();S.cfg.footer=(fd.get('footer')||'').trim();log('Guardar configuración','Configuración',null,'General');toast('Configuración guardada')};
+A.publish=()=>{const c=S.catalog;c.version++;c.publishedAt=Date.now();log('Publicar catálogo','Catálogo',null,`Versión ${c.version} (${c.pending} cambios)`);c.pending=0;render(true);toast('Catálogo publicado. La app pública lo descargará solo si su versión es anterior.')};
+A.ruleToggle=d=>{S.rulesDraft[+d.i].active=!S.rulesDraft[+d.i].active;render(true)};
+A.ruleDel=d=>{S.rulesDraft.splice(+d.i,1);render(true)};
+A.ruleAdd=()=>{const l=[...S.rulesDraft].sort((a,b)=>(a.max??1e9)-(b.max??1e9)).pop();S.rulesDraft.push({id:'r'+Date.now(),min:l&&l.max!=null?+(l.max+.01).toFixed(2):1,max:null,price:0,active:true});render(true)};
+A.ruleDiscard=()=>{S.rulesDraft=clone(S.rules);render(true)};
+A.ruleSave=()=>{if(validateRules(S.rulesDraft).length)return;S.rules=clone(S.rulesDraft);log('Guardar reglas de precio','Precios',null,`${S.rules.length} reglas (sin aplicar al catálogo)`);render(true);toast('Reglas guardadas. Aún no se aplicaron al catálogo.')};
+A.applyPrices=()=>{const n=priceDiff().length;modal('Aplicar nuevas reglas',`<p><b>${n} juego(s)</b> serán afectados.</p><p class="hint" style="margin-top:6px">Los juegos con precio manual no se modifican.</p>`,btn('Cancelar','close')+btn('Revisar cambios','reviewPrices')+btn('Aplicar','doApply',{c:'pri'}))};
+A.reviewPrices=()=>{const a=priceDiff();modal('Revisar cambios',`<div class="rows">${a.map(x=>`<div><div class="gr">${esc(x.g.title)}<br><small>${nf(x.g.size)} GB</small></div><span>${x.from==null?'—':nf(x.from)} → <b style="color:var(--au)">${nf(x.to)} CUP</b></span></div>`).join('')}</div>`,btn('Cancelar','close')+btn('Aplicar','doApply',{c:'pri'}),true)};
+A.doApply=()=>{if(off()){closeM();return toast('Sin conexión. No se puede aplicar.','bd')}const a=priceDiff();a.forEach(x=>{x.g.price=x.to;x.g.updated=Date.now()});S.catalog.pending+=a.length?1:0;log('Aplicar reglas de precio','Precios',null,`${a.length} juego(s) actualizados`);closeM();render(true);toast(`Precios actualizados en ${a.length} juego(s)`)};
+
+/* Datos */
+function download(name,obj){const u=URL.createObjectURL(new Blob([JSON.stringify(obj,null,2)],{type:'application/json'}));const a=document.createElement('a');a.href=u;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),500)}
+A.expCat=()=>{download(`catalogo-${tnt().slug}.json`,{schema:'luismi-platform/catalog@1',exportedAt:new Date().toISOString(),tenant:tnt().slug,version:S.catalog.version,games:tgl().map(({tenantId,...g})=>g)});log('Exportar catálogo','Catálogo',null,'JSON');toast('Catálogo exportado')};
+A.expMan=()=>{download(`manifest-multimedia-${tnt().slug}.json`,{schema:'luismi-platform/media-manifest@1',exportedAt:new Date().toISOString(),tenant:tnt().slug,assets:tm().map(m=>({publicId:m.publicId,kind:m.kind,gameId:m.gameId,status:m.status}))});log('Exportar manifest multimedia','Multimedia',null,'JSON');toast('Manifest exportado')};
+A.impPick=()=>{$('#impfile').value='';$('#impfile').click()};
+function impLoad(name,data){const r=impAnalyze(data);S.imp={stage:'preview',name,data:r.data,errors:r.errors,warns:r.warns,diff:r.diff};render(true)}
+A.impSample=()=>{const g=tgl().map(({tenantId,...x})=>clone(x));g.pop();g[0].title+=' (edición ampliada)';if(g[1])g[1].available=!g[1].available;g.push({title:'Nuevo juego de ejemplo A',genre:'Acción',category:'Lanzamientos',platforms:['PC'],size:22,year:2026,available:true},{title:'Nuevo juego de ejemplo B',genre:'Aventura',category:'Clásicos',platforms:['PC','PS4'],size:4,year:2020,available:true});impLoad('catalogo-ejemplo.json',{schema:'luismi-platform/catalog@1',games:g})};
+A.impReset=()=>{S.imp={stage:'select',name:'',data:null,errors:[],warns:[],diff:null};render(true)};
+A.impBackup=()=>{S.backups.unshift({id:'b'+Date.now(),ts:Date.now(),type:'Pre-importación',scope:'Tenant '+tnt().name,tenantId:tid(),status:'ok'});log('Crear copia','Backup',null,'Antes de importar');S.imp.stage='backed';render(true);toast('Backup creado')};
+A.impRun=()=>{const{diff}=S.imp,t=tid();
+  diff.nw.forEach(g=>{const b=g.libId?LIB.find(x=>x.id===g.libId):null;const size=Number(g.size);S.games.push({id:'g_'+Date.now()+Math.random().toString(36).slice(2,6),tenantId:t,libId:b?b.id:null,origin:b?'biblioteca':'personalizado',title:String(g.title).trim(),genre:g.genre||S.gens[0],category:g.category||S.cats[0],platforms:g.platforms||['PC'],year:+g.year||new Date().getFullYear(),size,desc:g.desc||'',req:g.req||reqFor(size),available:g.available!==false,featured:!!g.featured,priceMode:g.priceMode==='manual'?'manual':'rule',price:g.price!=null?Number(g.price):priceFor(size,S.rules),note:g.note||'',deleted:false,updated:Date.now()})});
+  diff.md.forEach(({ex,g})=>{if(ex.origin!=='biblioteca'){ex.title=g.title;ex.size=Number(g.size);if(g.genre)ex.genre=g.genre;if(g.platforms)ex.platforms=g.platforms}if(g.category)ex.category=g.category;if(g.available!==undefined)ex.available=!!g.available;if(g.price!==undefined){ex.price=Number(g.price);ex.priceMode='manual'}ex.updated=Date.now()});
+  diff.dl.forEach(g=>{g.deleted=true});
+  log('Importar catálogo','Catálogo',null,`+${diff.nw.length} ~${diff.md.length} −${diff.dl.length}`);
+  S.catalog.version++;S.catalog.publishedAt=Date.now();S.catalog.pending=0;S.imp.stage='done';render(true);toast('Importación completada')};
+A.backupNow=()=>{const b=$('[data-a=backupNow]');if(b){b.disabled=true;b.textContent='Creando copia…'}setTimeout(()=>{S.backups.unshift({id:'b'+Date.now(),ts:Date.now(),type:'Manual',scope:isSA()?'Plataforma':'Tenant '+tnt().name,tenantId:isSA()?null:tid(),status:'ok'});log('Crear copia','Backup',null,'Manual');render(true);toast('Copia creada')},1100)};
+A.restore2=d=>{const b=S.backups.find(x=>x.id===d.id);S.cb=()=>{if($('#pv').value.trim()!=='RESTAURAR'){toast('Escribe RESTAURAR para confirmar','bd');return true}log('Restaurar backup','Backup',b.id,`${dt(b.ts)} (${b.scope})`,null);toast('Solicitud de restauración enviada al backend')};
+  modal('Restaurar copia',`<div class="note bd">Reemplazará los datos actuales por los de la copia del ${esc(dt(b.ts))} (${esc(b.scope)}). Esta acción es crítica.</div>${field('Escribe RESTAURAR para confirmar','<input id="pv" autocomplete="off">')}`,btn('Cancelar','close')+btn('Restaurar','cbOk',{c:'dng'}))};
+
+/* Envoltorio: bloquear escrituras sin conexión */
+MUT.forEach(k=>{const f=A[k];if(!f)return;A[k]=(...a)=>{if(off()){toast('Sin conexión. No se puede guardar.','bd');return}return f(...a)}});
+/* Callbacks de confirmación también escriben: se verifican al ejecutarse */
+const _cb=A.cbOk;A.cbOk=(...a)=>{if(off()&&S.cb){toast('Sin conexión. No se puede guardar.','bd');return}return _cb(...a)};
+
+/* ====================================================================
+   EVENTOS
+   ==================================================================== */
+document.addEventListener('click',e=>{
+  const b=e.target.closest('[data-a]');
+  if(b&&!b.disabled&&A[b.dataset.a]){e.preventDefault();A[b.dataset.a](b.dataset,b,e);return}
+  if(e.target.closest('.side a'))closeDrawer();
+});
+function setPath(path,val){const[a,k]=path.split('.');S[a][k]=val}
+document.addEventListener('input',e=>{
+  const t=e.target;
+  if(t.dataset.f&&t.type!=='checkbox'&&t.tagName!=='SELECT'){setPath(t.dataset.f,t.value);refreshLive()}
+  if(t.name==='size'&&t.form&&t.form.id==='gf'){const s=$('#sug'),p=priceFor(parseFloat(t.value)||0,S.rules);if(s)s.textContent=p==null?'sin regla aplicable':p+' CUP'}
+});
+document.addEventListener('change',e=>{
+  const t=e.target;
+  if(t.dataset.f&&(t.type==='checkbox'||t.tagName==='SELECT')){setPath(t.dataset.f,t.type==='checkbox'?t.checked:t.value);refreshLive()}
+  if(t.dataset.cfg){S.cfg[t.dataset.cfg]=t.checked;log('Guardar configuración','Configuración',null,'Catálogo')}
+  if(t.dataset.rule){const r=S.rulesDraft[+t.closest('.rule').dataset.i],k=t.dataset.rule;r[k]=t.value===''?(k==='max'?null:0):parseFloat(t.value);render(true)}
+});
+document.addEventListener('submit',e=>e.preventDefault());
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){if(!$('#ov').hidden)closeM();else closeDrawer()}if(e.key==='Enter'&&e.target.id==='pv'){e.preventDefault();A.cbOk()}});
+$('#filepick').addEventListener('change',e=>{const f=e.target.files[0];if(f&&S.pick)uploadAsset(f,S.pick)});
+$('#impfile').addEventListener('change',async e=>{const f=e.target.files[0];if(!f)return;let d;try{d=JSON.parse(await f.text())}catch{S.imp={stage:'preview',name:f.name,data:null,errors:['El archivo no es JSON válido.'],warns:[],diff:null};render(true);return}impLoad(f.name,d)});
+window.addEventListener('hashchange',()=>render());
+window.addEventListener('online',()=>render(true));window.addEventListener('offline',()=>render(true));
+render();
+</script>
+</body>
+</html>
