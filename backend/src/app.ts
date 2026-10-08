@@ -10,6 +10,12 @@ import { createAdministratorsRouter } from './modules/administrators/administrat
 import { createAuthRouter } from './modules/auth/auth.route.js';
 import { healthRouter } from './modules/health/health.route.js';
 import { createTenantsRouter } from './modules/tenants/tenants.route.js';
+import {
+  categoryTaxonomy,
+  genreTaxonomy,
+  platformTaxonomy,
+} from './modules/taxonomy/taxonomy.config.js';
+import { createTaxonomyRouter } from './modules/taxonomy/taxonomy.route.js';
 import { AppError } from './utils/appError.js';
 
 export function createApp() {
@@ -46,6 +52,9 @@ export function createApp() {
   app.use('/api/v1/auth', createAuthRouter());
   app.use('/api/v1/admin/tenants', createTenantsRouter());
   app.use('/api/v1/admin/administrators', createAdministratorsRouter());
+  app.use('/api/v1/admin/categories', createTaxonomyRouter(categoryTaxonomy));
+  app.use('/api/v1/admin/genres', createTaxonomyRouter(genreTaxonomy));
+  app.use('/api/v1/admin/platforms', createTaxonomyRouter(platformTaxonomy));
 
   app.use(notFoundHandler);
   app.use(errorHandler);

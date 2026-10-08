@@ -52,6 +52,20 @@ export interface FakeAuditLog {
   timestamp: Date;
 }
 
+export interface FakeTaxonomy {
+  id: string;
+  tenantId: string;
+  name: string;
+  slug: string;
+  description: string | null;
+  deletedAt: Date | null;
+  createdBy: string | null;
+  updatedBy: string | null;
+  deletedBy: string | null;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
 type Where = Record<string, unknown>;
 
 function matches(row: Record<string, unknown>, where: Where | undefined): boolean {
@@ -140,6 +154,46 @@ const sessions = new Map<string, FakeSession>();
 const tenants = new Map<string, FakeTenant>();
 const tenantSettings = new Map<string, FakeTenantSettings>();
 const auditLogs = new Map<string, FakeAuditLog>();
+const categories = new Map<string, FakeTaxonomy>();
+const genres = new Map<string, FakeTaxonomy>();
+const platforms = new Map<string, FakeTaxonomy>();
+
+function createTaxonomyDelegate(store: Map<string, FakeTaxonomy>) {
+  return {
+    findMany: async (args: FindManyArgs) => {
+      const rows = [...store.values()].map((row) => row as unknown as Record<string, unknown>);
+      const matched = queryRows(rows, args);
+      return matched.map((row) => row as unknown as FakeTaxonomy);
+    },
+    count: async (args: { where?: Where }) => {
+      return [...store.values()].filter((row) =>
+        matches(row as unknown as Record<string, unknown>, args.where),
+      ).length;
+    },
+    findFirst: async (args: { where?: Where }) => {
+      for (const row of store.values()) {
+        if (matches(row as unknown as Record<string, unknown>, args.where)) return row;
+      }
+      return null;
+    },
+    create: async (args: {
+      data: Partial<FakeTaxonomy> & { id: string; tenantId: string; name: string; slug: string };
+    }) => {
+      const row = defaults<FakeTaxonomy>(
+        { ...args.data, description: args.data.description ?? null },
+        { deletedAt: null, createdBy: null, updatedBy: null, deletedBy: null },
+      );
+      store.set(row.id, row);
+      return row;
+    },
+    update: async (args: { where: { id: string }; data: Partial<FakeTaxonomy> }) => {
+      const row = store.get(args.where.id);
+      if (!row) throw new Error('taxonomy not found');
+      Object.assign(row, args.data, { updatedAt: new Date() });
+      return row;
+    },
+  };
+}
 
 export const fakeDb = {
   adminUser: {
@@ -298,10 +352,23 @@ export const fakeDb = {
     },
   },
 
+  category: createTaxonomyDelegate(categories),
+  genre: createTaxonomyDelegate(genres),
+  platform: createTaxonomyDelegate(platforms),
+
   $transaction: async (ops: Promise<unknown>[]) => Promise.all(ops),
 };
 
-export const state = { users, sessions, tenants, tenantSettings, auditLogs };
+export const state = {
+  users,
+  sessions,
+  tenants,
+  tenantSettings,
+  auditLogs,
+  categories,
+  genres,
+  platforms,
+};
 
 export function resetFakeDb(): void {
   users.clear();
@@ -309,6 +376,9 @@ export function resetFakeDb(): void {
   tenants.clear();
   tenantSettings.clear();
   auditLogs.clear();
+  categories.clear();
+  genres.clear();
+  platforms.clear();
 }
 
 export function addFakeUser(
@@ -347,4 +417,47 @@ export function addFakeSession(
   };
   sessions.set(session.id, session);
   return session;
+}
+
+type TaxonomyInput = Partial<FakeTaxonomy> & {
+  id: string;
+  tenantId: string;
+  name: string;
+  slug: string;
+};
+
+export function addFakeCategory(input: TaxonomyInput): FakeTaxonomy {
+  const row = defaults<FakeTaxonomy>(input, {
+    description: null,
+    deletedAt: null,
+    createdBy: null,
+    updatedBy: null,
+    deletedBy: null,
+  });
+  categories.set(row.id, row);
+  return row;
+}
+
+export function addFakeGenre(input: TaxonomyInput): FakeTaxonomy {
+  const row = defaults<FakeTaxonomy>(input, {
+    description: null,
+    deletedAt: null,
+    createdBy: null,
+    updatedBy: null,
+    deletedBy: null,
+  });
+  genres.set(row.id, row);
+  return row;
+}
+
+export function addFakePlatform(input: TaxonomyInput): FakeTaxonomy {
+  const row = defaults<FakeTaxonomy>(input, {
+    description: null,
+    deletedAt: null,
+    createdBy: null,
+    updatedBy: null,
+    deletedBy: null,
+  });
+  platforms.set(row.id, row);
+  return row;
 }

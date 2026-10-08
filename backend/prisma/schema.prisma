@@ -13,14 +13,17 @@ enum Role {
 }
 
 model Tenant {
-  id        String          @id @default(uuid())
-  name      String
-  slug      String          @unique
-  isActive  Boolean         @default(true)
-  createdAt DateTime        @default(now())
-  updatedAt DateTime        @updatedAt
-  settings  TenantSettings?
-  admins    AdminUser[]
+  id         String          @id @default(uuid())
+  name       String
+  slug       String          @unique
+  isActive   Boolean         @default(true)
+  createdAt  DateTime        @default(now())
+  updatedAt  DateTime        @updatedAt
+  settings   TenantSettings?
+  admins     AdminUser[]
+  categories Category[]
+  genres     Genre[]
+  platforms  Platform[]
 
   @@index([isActive])
 }
@@ -64,6 +67,60 @@ model AdminSession {
 
   @@index([adminId])
   @@index([expiresAt])
+}
+
+model Category {
+  id          String    @id @default(uuid())
+  tenantId    String
+  tenant      Tenant    @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  name        String
+  slug        String
+  description String?
+  deletedAt   DateTime?
+  createdBy   String?
+  updatedBy   String?
+  deletedBy   String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@unique([tenantId, slug])
+  @@index([tenantId, deletedAt])
+}
+
+model Genre {
+  id          String    @id @default(uuid())
+  tenantId    String
+  tenant      Tenant    @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  name        String
+  slug        String
+  description String?
+  deletedAt   DateTime?
+  createdBy   String?
+  updatedBy   String?
+  deletedBy   String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@unique([tenantId, slug])
+  @@index([tenantId, deletedAt])
+}
+
+model Platform {
+  id          String    @id @default(uuid())
+  tenantId    String
+  tenant      Tenant    @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  name        String
+  slug        String
+  description String?
+  deletedAt   DateTime?
+  createdBy   String?
+  updatedBy   String?
+  deletedBy   String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@unique([tenantId, slug])
+  @@index([tenantId, deletedAt])
 }
 
 model AuditLog {
