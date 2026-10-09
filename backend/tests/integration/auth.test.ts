@@ -34,6 +34,7 @@ function userRow(overrides: Partial<FakeAdminUser> = {}): FakeAdminUser {
     role: 'ADMIN',
     tenantId: 't-javier',
     isActive: true,
+    tokenVersion: 0,
     lastLoginAt: null,
     createdAt: new Date(),
     updatedAt: new Date(),

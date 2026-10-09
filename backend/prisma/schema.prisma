@@ -56,16 +56,22 @@ model Tenant {
   media      GameMedia[]
   pricingRules PricingRule[]
   catalog     CatalogMetadata?
+  backups     Backup[]
 
   @@index([isActive])
 }
 
 model TenantSettings {
-  id        String   @id @default(uuid())
-  tenantId  String   @unique
-  tenant    Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id              String   @id @default(uuid())
+  tenantId        String   @unique
+  tenant          Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  publicName      String?
+  whatsapp        String?
+  footer          String?
+  showUnavailable Boolean  @default(false)
+  offerOffline    Boolean  @default(true)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 }
 
 model AdminUser {
@@ -76,6 +82,7 @@ model AdminUser {
   tenantId     String?
   tenant       Tenant?        @relation(fields: [tenantId], references: [id])
   isActive     Boolean        @default(true)
+  tokenVersion Int            @default(0)
   lastLoginAt  DateTime?
   createdAt    DateTime       @default(now())
   updatedAt    DateTime       @updatedAt
@@ -315,4 +322,19 @@ model AuditLog {
   @@index([actorId])
   @@index([entity, entityId])
   @@index([timestamp])
+}
+
+model Backup {
+  id        String    @id @default(uuid())
+  tenantId  String?
+  tenant    Tenant?   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  type      String
+  scope     String
+  status    String    @default("COMPLETED")
+  payload   Json?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@index([tenantId])
+  @@index([createdAt])
 }

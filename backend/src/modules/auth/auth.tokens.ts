@@ -8,7 +8,10 @@ export interface AccessTokenClaims {
   id: string;
   role: Role;
   tenantId: string | null;
+  tokenVersion?: number;
 }
+
+export type VerifiedAccessToken = AccessTokenClaims & { tokenVersion: number };
 
 function accessKey(): Uint8Array {
   return new TextEncoder().encode(getEnv().JWT_ACCESS_SECRET);
@@ -18,6 +21,7 @@ export async function signAccessToken(claims: AccessTokenClaims): Promise<string
   return new SignJWT({
     role: claims.role,
     tenantId: claims.tenantId,
+    tokenVersion: claims.tokenVersion ?? 0,
     type: 'access',
   })
     .setProtectedHeader({ alg: 'HS256' })
@@ -27,14 +31,15 @@ export async function signAccessToken(claims: AccessTokenClaims): Promise<string
     .sign(accessKey());
 }
 
-export async function verifyAccessToken(token: string): Promise<AccessTokenClaims> {
+export async function verifyAccessToken(token: string): Promise<VerifiedAccessToken> {
   try {
     const { payload } = await jwtVerify(token, accessKey(), { algorithms: ['HS256'] });
 
     if (
       payload.type !== 'access' ||
       typeof payload.sub !== 'string' ||
-      (payload.role !== 'SUPER_ADMIN' && payload.role !== 'ADMIN')
+      (payload.role !== 'SUPER_ADMIN' && payload.role !== 'ADMIN') ||
+      typeof payload.tokenVersion !== 'number'
     ) {
       throw new Error('invalid claims');
     }
@@ -43,6 +48,7 @@ export async function verifyAccessToken(token: string): Promise<AccessTokenClaim
       id: payload.sub,
       role: payload.role,
       tenantId: typeof payload.tenantId === 'string' ? payload.tenantId : null,
+      tokenVersion: payload.tokenVersion,
     };
   } catch {
     throw new AppError(401, 'INVALID_TOKEN', 'Token inválido o expirado');

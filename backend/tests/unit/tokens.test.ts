@@ -13,7 +13,7 @@ describe('access token', () => {
     const token = await signAccessToken({ id: 'u-1', role: 'ADMIN', tenantId: 't-javier' });
     const claims = await verifyAccessToken(token);
 
-    expect(claims).toEqual({ id: 'u-1', role: 'ADMIN', tenantId: 't-javier' });
+    expect(claims).toEqual({ id: 'u-1', role: 'ADMIN', tenantId: 't-javier', tokenVersion: 0 });
   });
 
   it('soporta tenantId nulo para SUPER_ADMIN', async () => {
@@ -22,6 +22,35 @@ describe('access token', () => {
 
     expect(claims.tenantId).toBeNull();
     expect(claims.role).toBe('SUPER_ADMIN');
+  });
+
+  it('conserva tokenVersion en los claims', async () => {
+    const token = await signAccessToken({
+      id: 'u-9',
+      role: 'ADMIN',
+      tenantId: 't-javier',
+      tokenVersion: 3,
+    });
+    const claims = await verifyAccessToken(token);
+
+    expect(claims.tokenVersion).toBe(3);
+  });
+
+  it('rechaza tokens sin tokenVersion', async () => {
+    const legacy = await new SignJWT({
+      role: 'ADMIN',
+      tenantId: 't-javier',
+      type: 'access',
+    })
+      .setProtectedHeader({ alg: 'HS256' })
+      .setSubject('u-6')
+      .setExpirationTime('15m')
+      .sign(new TextEncoder().encode(getEnv().JWT_ACCESS_SECRET));
+
+    await expect(verifyAccessToken(legacy)).rejects.toMatchObject({
+      statusCode: 401,
+      code: 'INVALID_TOKEN',
+    });
   });
 
   it('rechaza tokens con firma inválida', async () => {

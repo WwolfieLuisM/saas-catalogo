@@ -5,6 +5,7 @@ export interface FakeAdminUser {
   role: 'SUPER_ADMIN' | 'ADMIN';
   tenantId: string | null;
   isActive: boolean;
+  tokenVersion: number;
   lastLoginAt: Date | null;
   createdAt: Date;
   updatedAt: Date;
@@ -34,6 +35,11 @@ export interface FakeTenant {
 export interface FakeTenantSettings {
   id: string;
   tenantId: string;
+  publicName: string | null;
+  whatsapp: string | null;
+  footer: string | null;
+  showUnavailable: boolean;
+  offerOffline: boolean;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -143,6 +149,17 @@ export interface FakeCatalogMetadata {
   id: string;
   tenantId: string;
   version: number;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface FakeBackup {
+  id: string;
+  tenantId: string | null;
+  type: string;
+  scope: string;
+  status: string;
+  payload: unknown;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -271,6 +288,31 @@ function defaults<T extends object>(data: Partial<T>, extra: Partial<T>): T {
   } as T;
 }
 
+function applyData(row: Record<string, unknown>, data: Record<string, unknown>): void {
+  for (const [key, value] of Object.entries(data)) {
+    if (
+      value !== null &&
+      typeof value === 'object' &&
+      !(value instanceof Date) &&
+      !Array.isArray(value)
+    ) {
+      const op = value as { increment?: number; set?: unknown };
+
+      if ('increment' in op) {
+        row[key] = (typeof row[key] === 'number' ? row[key] : 0) + (op.increment ?? 0);
+        continue;
+      }
+
+      if ('set' in op) {
+        row[key] = op.set;
+        continue;
+      }
+    }
+
+    row[key] = value;
+  }
+}
+
 const users = new Map<string, FakeAdminUser>();
 const sessions = new Map<string, FakeSession>();
 const tenants = new Map<string, FakeTenant>();
@@ -288,6 +330,7 @@ const gamePlatforms = new Map<string, FakeBridge>();
 const gameMedia = new Map<string, FakeGameMedia>();
 const pricingRules = new Map<string, FakePricingRule>();
 const catalogMetadata = new Map<string, FakeCatalogMetadata>();
+const backups = new Map<string, FakeBackup>();
 
 function createTaxonomyDelegate(store: Map<string, FakeTaxonomy>) {
   return {
@@ -322,11 +365,39 @@ function createTaxonomyDelegate(store: Map<string, FakeTaxonomy>) {
       store.set(row.id, row);
       return row;
     },
+    createMany: async (args: {
+      data: (Partial<FakeTaxonomy> & {
+        id: string;
+        tenantId: string | null;
+        name: string;
+        slug: string;
+      })[];
+    }) => {
+      for (const data of args.data) {
+        const row = defaults<FakeTaxonomy>(
+          { ...data, description: data.description ?? null },
+          { deletedAt: null, createdBy: null, updatedBy: null, deletedBy: null },
+        );
+        store.set(row.id, row);
+      }
+      return { count: args.data.length };
+    },
     update: async (args: { where: { id: string }; data: Partial<FakeTaxonomy> }) => {
       const row = store.get(args.where.id);
       if (!row) throw new Error('taxonomy not found');
-      Object.assign(row, args.data, { updatedAt: new Date() });
+      applyData(row as unknown as Record<string, unknown>, args.data as Record<string, unknown>);
+      row.updatedAt = new Date();
       return row;
+    },
+    deleteMany: async (args: { where?: Where } = {}) => {
+      let count = 0;
+      for (const [key, row] of [...store.entries()]) {
+        if (matches(row as unknown as Record<string, unknown>, args.where)) {
+          store.delete(key);
+          count += 1;
+        }
+      }
+      return { count };
     },
   };
 }
@@ -371,7 +442,8 @@ function createRowDelegate<T extends { id: string }>(
     update: async (args: { where: { id: string }; data: Partial<T> }) => {
       const row = store.get(args.where.id);
       if (!row) throw new Error('row not found');
-      Object.assign(row, args.data, { updatedAt: new Date() });
+      applyData(row as unknown as Record<string, unknown>, args.data as Record<string, unknown>);
+      Object.assign(row, { updatedAt: new Date() });
       return row;
     },
     delete: async (args: { where: { id: string } }) => {
@@ -456,6 +528,7 @@ export const fakeDb = {
         role: 'ADMIN',
         tenantId: null,
         isActive: true,
+        tokenVersion: 0,
         lastLoginAt: null,
       });
       users.set(user.id, user);
@@ -464,7 +537,8 @@ export const fakeDb = {
     update: async (args: { where: { id: string }; data: Partial<FakeAdminUser> }) => {
       const user = users.get(args.where.id);
       if (!user) throw new Error('adminUser not found');
-      Object.assign(user, args.data, { updatedAt: new Date() });
+      applyData(user as unknown as Record<string, unknown>, args.data as Record<string, unknown>);
+      user.updatedAt = new Date();
       return user;
     },
   },
@@ -527,14 +601,20 @@ export const fakeDb = {
     update: async (args: { where: { id: string }; data: Partial<FakeSession> }) => {
       const session = sessions.get(args.where.id);
       if (!session) throw new Error('adminSession not found');
-      Object.assign(session, args.data);
+      applyData(
+        session as unknown as Record<string, unknown>,
+        args.data as Record<string, unknown>,
+      );
       return session;
     },
     updateMany: async (args: { where?: Where; data: Partial<FakeSession> }) => {
       let count = 0;
       for (const session of sessions.values()) {
         if (!matches(session as unknown as Record<string, unknown>, args.where)) continue;
-        Object.assign(session, args.data);
+        applyData(
+          session as unknown as Record<string, unknown>,
+          args.data as Record<string, unknown>,
+        );
         count += 1;
       }
       return { count };
@@ -580,7 +660,8 @@ export const fakeDb = {
     update: async (args: { where: { id: string }; data: Partial<FakeTenant> }) => {
       const tenant = tenants.get(args.where.id);
       if (!tenant) throw new Error('tenant not found');
-      Object.assign(tenant, args.data, { updatedAt: new Date() });
+      applyData(tenant as unknown as Record<string, unknown>, args.data as Record<string, unknown>);
+      tenant.updatedAt = new Date();
       return tenant;
     },
   },
@@ -589,12 +670,72 @@ export const fakeDb = {
     create: async (args: { data: Partial<FakeTenantSettings> & { tenantId: string } }) => {
       const settings: FakeTenantSettings = {
         id: crypto.randomUUID(),
+        publicName: null,
+        whatsapp: null,
+        footer: null,
+        showUnavailable: false,
+        offerOffline: true,
         createdAt: new Date(),
         updatedAt: new Date(),
         ...args.data,
       };
       tenantSettings.set(settings.id, settings);
       return settings;
+    },
+    createMany: async (args: {
+      data: (Partial<FakeTenantSettings> & { id: string; tenantId: string })[];
+    }) => {
+      for (const data of args.data) {
+        const settings: FakeTenantSettings = {
+          publicName: null,
+          whatsapp: null,
+          footer: null,
+          showUnavailable: false,
+          offerOffline: true,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+          ...data,
+        };
+        tenantSettings.set(settings.id, settings);
+      }
+      return { count: args.data.length };
+    },
+    findUnique: async (args: { where: { id?: string; tenantId?: string } }) => {
+      for (const row of tenantSettings.values()) {
+        if (args.where.id !== undefined && row.id !== args.where.id) continue;
+        if (args.where.tenantId !== undefined && row.tenantId !== args.where.tenantId) continue;
+        return row;
+      }
+      return null;
+    },
+    findMany: async (args: FindManyArgs = {}) => {
+      const rows = [...tenantSettings.values()].map(
+        (row) => row as unknown as Record<string, unknown>,
+      );
+      const matched = queryRows(rows, args);
+      return matched.map((row) => row as unknown as FakeTenantSettings);
+    },
+    update: async (args: {
+      where: { id: string; tenantId?: string };
+      data: Partial<FakeTenantSettings>;
+    }) => {
+      const row = args.where.id
+        ? tenantSettings.get(args.where.id)
+        : [...tenantSettings.values()].find((item) => item.tenantId === args.where.tenantId);
+      if (!row) throw new Error('tenantSettings not found');
+      applyData(row as unknown as Record<string, unknown>, args.data as Record<string, unknown>);
+      row.updatedAt = new Date();
+      return row;
+    },
+    deleteMany: async (args: { where?: Where } = {}) => {
+      let count = 0;
+      for (const [key, row] of [...tenantSettings.entries()]) {
+        if (matches(row as unknown as Record<string, unknown>, args.where)) {
+          tenantSettings.delete(key);
+          count += 1;
+        }
+      }
+      return { count };
     },
   },
 
@@ -666,6 +807,9 @@ export const fakeDb = {
   catalogMetadata: createRowDelegate<FakeCatalogMetadata>(catalogMetadata, {
     version: 1,
   }),
+  backup: createRowDelegate<FakeBackup>(backups, {
+    status: 'COMPLETED',
+  }),
 
   $queryRaw: async (_strings: TemplateStringsArray, ..._values: unknown[]) => [{ ok: 1 }],
 
@@ -693,6 +837,7 @@ export const state = {
   gameMedia,
   pricingRules,
   catalogMetadata,
+  backups,
 };
 
 export function resetFakeDb(): void {
@@ -713,6 +858,7 @@ export function resetFakeDb(): void {
   gameMedia.clear();
   pricingRules.clear();
   catalogMetadata.clear();
+  backups.clear();
 }
 
 export function addFakeUser(
@@ -723,6 +869,7 @@ export function addFakeUser(
     role: 'ADMIN',
     tenantId: null,
     isActive: true,
+    tokenVersion: 0,
     lastLoginAt: null,
   });
   users.set(user.id, user);
@@ -735,6 +882,24 @@ export function addFakeTenant(
   const tenant = defaults<FakeTenant>(input, { isActive: true });
   tenants.set(tenant.id, tenant);
   return tenant;
+}
+
+export function addFakeTenantSettings(
+  input: Partial<FakeTenantSettings> & { id?: string; tenantId: string },
+): FakeTenantSettings {
+  const settings: FakeTenantSettings = {
+    id: input.id ?? crypto.randomUUID(),
+    publicName: null,
+    whatsapp: null,
+    footer: null,
+    showUnavailable: false,
+    offerOffline: true,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    ...input,
+  };
+  tenantSettings.set(settings.id, settings);
+  return settings;
 }
 
 export function addFakeSession(

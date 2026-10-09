@@ -439,6 +439,28 @@ describe('POST /api/v1/admin/administrators/:id/revoke-sessions', () => {
 
     expect(status).toBe(404);
   });
+
+  it('invalida los access tokens vigentes del objetivo', async () => {
+    const targetToken = await signAccessToken({
+      id: USER_ADMIN,
+      role: 'ADMIN',
+      tenantId: TENANT_JAVIER,
+    });
+
+    const before = await api('/api/v1/auth/me', {}, targetToken);
+    expect(before.status).toBe(200);
+
+    const { status } = await api(
+      `/api/v1/admin/administrators/${USER_ADMIN}/revoke-sessions`,
+      { method: 'POST' },
+      superToken,
+    );
+    expect(status).toBe(200);
+
+    const after = await api('/api/v1/auth/me', {}, targetToken);
+    expect(after.status).toBe(401);
+    expect(after.body.error?.code).toBe('UNAUTHENTICATED');
+  });
 });
 
 describe('cambio de password y sesiones', () => {
@@ -475,5 +497,45 @@ describe('cambio de password y sesiones', () => {
 
     expect(status).toBe(200);
     expect(state.sessions.get('s-n1')?.revokedAt).toBeNull();
+  });
+
+  it('invalida los access tokens vigentes al cambiar la password', async () => {
+    const targetToken = await signAccessToken({
+      id: USER_ADMIN,
+      role: 'ADMIN',
+      tenantId: TENANT_JAVIER,
+    });
+
+    const before = await api('/api/v1/auth/me', {}, targetToken);
+    expect(before.status).toBe(200);
+
+    const changed = await api(
+      `/api/v1/admin/administrators/${USER_ADMIN}`,
+      { method: 'PATCH', body: JSON.stringify({ password: 'NuevaPass!123' }) },
+      superToken,
+    );
+    expect(changed.status).toBe(200);
+
+    const after = await api('/api/v1/auth/me', {}, targetToken);
+    expect(after.status).toBe(401);
+    expect(after.body.error?.code).toBe('UNAUTHENTICATED');
+  });
+
+  it('no invalida los access tokens si la password no cambia', async () => {
+    const targetToken = await signAccessToken({
+      id: USER_ADMIN,
+      role: 'ADMIN',
+      tenantId: TENANT_JAVIER,
+    });
+
+    const { status } = await api(
+      `/api/v1/admin/administrators/${USER_ADMIN}`,
+      { method: 'PATCH', body: JSON.stringify({ isActive: true }) },
+      superToken,
+    );
+    expect(status).toBe(200);
+
+    const after = await api('/api/v1/auth/me', {}, targetToken);
+    expect(after.status).toBe(200);
   });
 });

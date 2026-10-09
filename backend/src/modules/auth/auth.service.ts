@@ -30,6 +30,7 @@ interface AdminRow {
   role: Role;
   tenantId: string | null;
   isActive: boolean;
+  tokenVersion: number;
 }
 
 function profile(user: AdminRow): UserPayload {
@@ -49,6 +50,7 @@ async function buildResult(user: AdminRow, refreshToken: string): Promise<AuthRe
       id: user.id,
       role: user.role,
       tenantId: user.tenantId,
+      tokenVersion: user.tokenVersion,
     }),
     accessTokenExpiresIn: parseDurationToSeconds(env.ACCESS_TOKEN_EXPIRES_IN),
     refreshToken,

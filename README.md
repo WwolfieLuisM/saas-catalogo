@@ -282,9 +282,9 @@ curl -H 'If-None-Match: "v5"' "http://localhost:3000/api/v1/catalog?tenant=javie
 curl "http://localhost:3000/api/v1/catalog/sync?tenant=javier&since=5"
 ```
 
-## Admin API (dashboard, sesiones, auditoría, sistema)
+## Admin API (dashboard, sesiones, auditoría, sistema, config, backups)
 
-Cuatro endpoints autenticados bajo `/api/v1/admin/*` (roles `ADMIN` y `SUPER_ADMIN`):
+Endpoints autenticados bajo `/api/v1/admin/*` (roles `ADMIN` y `SUPER_ADMIN`):
 
 ```text
 GET    /api/v1/admin/dashboard
@@ -292,6 +292,11 @@ GET    /api/v1/admin/sessions
 DELETE /api/v1/admin/sessions/:id
 GET    /api/v1/admin/audit
 GET    /api/v1/admin/system
+GET    /api/v1/admin/config
+PATCH  /api/v1/admin/config
+GET    /api/v1/admin/backups
+POST   /api/v1/admin/backups
+POST   /api/v1/admin/backups/:id/restore
 ```
 
 Dashboard (`GET /api/v1/admin/dashboard?tenantId=<uuid>`):
@@ -321,6 +326,19 @@ Auditoría (`GET /api/v1/admin/audit`):
 Sistema (`GET /api/v1/admin/system`):
 
 - Devuelve exactamente `{ status, database, uptimeSeconds, nodeVersion, environment, timestamp }`. `database` reutiliza el mismo chequeo `SELECT 1` que `/health`; nunca expone `DATABASE_URL`, credenciales ni permite mutaciones (POST/DELETE → `404`).
+
+Configuración (`GET|PATCH /api/v1/admin/config`):
+
+- Los 5 campos de `TenantSettings` del spec: `publicName` (≤50), `whatsapp` (≤30), `footer` (≤120), `showUnavailable` (default `false`) y `offerOffline` (default `true`); el DTO incluye `tenantId` y `updatedAt`.
+- `ADMIN` opera siempre sobre su propio tenant (`?tenantId` ajeno → `403`); `SUPER_ADMIN` requiere `?tenantId` (missing → `400`, desconocido → `422 TENANT_NOT_FOUND`).
+- `PATCH` exige al menos un campo (body vacío → `400`) y audita `CONFIG_UPDATED` (entidad `TenantSettings`, metadata `fields`); si cambia `showUnavailable` también incrementa la versión del catálogo para que los clientes revaliden.
+
+Backups (`GET|POST /api/v1/admin/backups`, `POST /:id/restore`):
+
+- Copia de seguridad real con payload JSON en la tabla `Backup` (juegos, taxonomía, media, precios, settings y metadata de catálogo; nunca passwords, sesiones ni auditoría) según lo aprobado para el flujo pre-import (Fase 12).
+- `POST` acepta `type` (`MANUAL` por defecto, `PRE_IMPORT`, `AUTOMATIC`) y `tenantId` opcional; `ADMIN` siempre crea `scope: TENANT` del propio tenant (ajeno → `403`), `SUPER_ADMIN` crea `PLATAFORMA` (sin `tenantId`) o `TENANT` (desconocido → `422`). Audita `BACKUP_CREATED`.
+- `GET` lista paginado ordenado por `createdAt` desc sin exponer el payload; `ADMIN` solo ve las suyas (`?tenantId` ajeno → `403`), `SUPER_ADMIN` todas o filtra (`422` si no existe).
+- `POST /:id/restore` es exclusivo `SUPER_ADMIN` y exige `{ "confirm": "RESTAURAR" }` (`422 RESTORE_CONFIRM_REQUIRED`); aplica el snapshot transaccionalmente (borra y reinserta el alcance de la copia), avanza la versión del catálogo (`max(actual, copia) + 1`) y audita `RESTORE_COMPLETED`. Copia inexistente → `404 BACKUP_NOT_FOUND`; payload corrupto → `422 BACKUP_PAYLOAD_INVALID`.
 
 Errores comunes:
 
@@ -575,10 +593,23 @@ Nunca almacenar en Git:
 - L4: `login` purga sesiones expiradas del usuario antes de emitir token nuevo;
 - L6: `CORS_ORIGIN` con `*` + credentials queda prohibido en producción (error en arranque); en producción `origin` lista concreta y `credentials: true`.
 
+## Revocación de tokens (Fase 11)
+
+- `AdminUser.tokenVersion` (migración `20261009031026_fase11_config_backups_tokenversion`): el access JWT lleva el claim `tokenVersion` y `authenticate` exige que coincida con el contador del usuario → 401 `UNAUTHENTICATED` al instante.
+- El contador se incrementa en la misma transacción del cambio de password (`administrators.service.ts`) y en la revocación global de sesiones (`POST /administrators/:id/revoke-sessions`); la revocación de una sesión individual (`DELETE /sessions/:id`) solo invalida el refresh y el access sigue vigente hasta expirar (comportamiento documentado en §7).
+- Tokens firmados sin el claim (legacy) son rechazados por `verifyAccessToken`.
+- Resuelve **D2**: los JWT de acceso ya no esperan a expirar para invalidarse.
+
+## Migración Fase 11
+
+- `TenantSettings` + `publicName`, `whatsapp`, `footer`, `showUnavailable` (default `false`), `offerOffline` (default `true`);
+- `AdminUser.tokenVersion Int @default(0)`;
+- tabla `Backup` (`id`, `tenantId?` con cascade, `type`, `scope`, `status`, `payload Json?`, timestamps, índices en `tenantId` y `createdAt`).
+- Aplicada en Neon (main `br-misty-salad-b8xwlwmc`) y registrada localmente; puramente aditiva.
+
 ## Deuda documentada (aceptada)
 
 - **D1 — `npm audit` (deepmerge-ts < 8, high; mysql2, high)**: alcanzables solo vía arbol de dependencias del CLI `prisma` (`@prisma/client → prisma → @prisma/config → deepmerge-ts`); `mysql2` no es alcanzable (el runtime usa `@prisma/adapter-pg`). Corregir requiere forzar `@prisma/client@2.15.0` (roto). **Nunca ejecutar `npm audit fix --force`**; revisar en el próximo bump de Prisma.
-- **D2 — revocación de access tokens**: los JWT de acceso (15 min) no son revocables hasta expirar; se mitigará con `AdminUser.tokenVersion` en la migración Fase 11 (claim en JWT + contador en usuario; incremento en cambio de password y revocación de sesiones invalida al instante).
 - **L1**: el chequeo de "último SUPER_ADMIN" ocurre fuera de la transacción (ventana mínima; solo SUPER_ADMIN puede desactivar a otro SUPER_ADMIN).
 - **L2**: `JWT_REFRESH_SECRET` se declara en `envSchema` por cumplimiento del spec pero no se usa (el refresh token es opaco y se guarda hasheado con `JWT_ACCESS_SECRET`).
 - **L3**: rate limiting en memoria (aceptable: una sola instancia Render); para múltiples instancias usar store externo.
@@ -984,6 +1015,8 @@ Funciones:
 - restore;
 - media status;
 - system status.
+
+Implementado (backend, Fase 11): los ajustes de catálogo (`publicName`, `whatsapp`, `footer`, `showUnavailable`, `offerOffline`) viven en `GET|PATCH /api/v1/admin/config` (ver §7); `export`/`import`/`duplicate` quedan para Fase 12 y `backup`/`restore` en `/api/v1/admin/backups` (ver §7 y §56).
 
 ---
 
@@ -1481,6 +1514,8 @@ No exponer:
 - dumps privados al usuario público.
 
 Exportar catálogo no equivale necesariamente a un dump completo de PostgreSQL.
+
+Implementado (backend, Fase 11): copias controladas en la tabla `Backup` con payload JSON (sin credenciales, sesiones ni auditoría) vía `GET|POST /api/v1/admin/backups` y `POST /api/v1/admin/backups/:id/restore` (`SUPER_ADMIN` + confirm `RESTAURAR`); ver §7 para el contrato completo.
 
 ---
 

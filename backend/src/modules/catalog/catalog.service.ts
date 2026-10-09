@@ -63,10 +63,17 @@ async function readSnapshot(tenantId: string): Promise<Snapshot> {
 
   return prisma.$transaction(
     async (tx) => {
+      const settings = await tx.tenantSettings.findUnique({ where: { tenantId } });
+      const showUnavailable = settings?.showUnavailable ?? false;
+
       const [metaRow, games, media] = await Promise.all([
         tx.catalogMetadata.findFirst({ where: { tenantId } }),
         tx.tenantGame.findMany({
-          where: { tenantId, availability: true, deletedAt: null },
+          where: {
+            tenantId,
+            ...(showUnavailable ? {} : { availability: true }),
+            deletedAt: null,
+          },
           orderBy: [{ createdAt: 'asc' }, { id: 'asc' }],
         }),
         tx.gameMedia.findMany({ where: { tenantId, status: 'OK' } }),

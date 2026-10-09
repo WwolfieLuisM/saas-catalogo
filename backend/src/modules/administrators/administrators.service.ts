@@ -175,7 +175,10 @@ export async function updateAdministrator(
   const data: Prisma.AdminUserUncheckedUpdateInput = {
     ...(patch.username !== undefined ? { username: patch.username } : {}),
     ...(patch.password !== undefined
-      ? { passwordHash: await argon2.hash(patch.password, { type: argon2.argon2id }) }
+      ? {
+          passwordHash: await argon2.hash(patch.password, { type: argon2.argon2id }),
+          tokenVersion: { increment: 1 },
+        }
       : {}),
     role: nextRole,
     tenantId: nextTenantId,
@@ -225,6 +228,10 @@ export async function revokeSessions(
     prisma.adminSession.updateMany({
       where: { adminId: id, revokedAt: null },
       data: { revokedAt: new Date() },
+    }),
+    prisma.adminUser.update({
+      where: { id },
+      data: { tokenVersion: { increment: 1 } },
     }),
     prisma.auditLog.create({
       data: auditData({
