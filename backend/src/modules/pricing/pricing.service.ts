@@ -5,6 +5,7 @@ import type { Prisma, PricingRule } from '../../generated/client.js';
 import { AppError } from '../../utils/appError.js';
 import type { RequestMeta } from '../../utils/requestMeta.js';
 import { auditData } from '../audit/audit.service.js';
+import { planCatalogBump } from '../catalog/catalog.service.js';
 import { resolveTenantId } from '../games/games.service.js';
 import type { CreatePricingRuleInput, UpdatePricingRuleInput } from './pricing.schemas.js';
 
@@ -387,20 +388,7 @@ export async function applyPricing(
     }),
   );
 
-  if (metadataRow) {
-    ops.push(
-      prisma.catalogMetadata.update({
-        where: { id: metadataRow.id },
-        data: { version: nextVersion },
-      }),
-    );
-  } else {
-    ops.push(
-      prisma.catalogMetadata.create({
-        data: { id: randomUUID(), tenantId, version: nextVersion },
-      }),
-    );
-  }
+  ops.push((await planCatalogBump(tenantId)).op);
 
   await prisma.$transaction(ops);
 

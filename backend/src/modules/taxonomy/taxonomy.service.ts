@@ -4,6 +4,7 @@ import type { AuthContext } from '../../middleware/auth.js';
 import { AppError } from '../../utils/appError.js';
 import type { RequestMeta } from '../../utils/requestMeta.js';
 import { auditData } from '../audit/audit.service.js';
+import { planCatalogBump } from '../catalog/catalog.service.js';
 import type { TaxonomyConfig } from './taxonomy.config.js';
 import type {
   CreateTaxonomyInput,
@@ -204,7 +205,7 @@ export function createTaxonomyService(config: TaxonomyConfig) {
     }
 
     const id = randomUUID();
-    const [row] = await db.$transaction([
+    const ops: Promise<unknown>[] = [
       delegate.create({
         data: {
           id,
@@ -228,7 +229,13 @@ export function createTaxonomyService(config: TaxonomyConfig) {
           userAgent: meta.userAgent,
         }),
       }),
-    ]);
+    ];
+
+    if (tenantId) {
+      ops.push((await planCatalogBump(tenantId)).op);
+    }
+
+    const [row] = await db.$transaction(ops);
 
     return row as TaxonomyRow;
   }
@@ -252,7 +259,11 @@ export function createTaxonomyService(config: TaxonomyConfig) {
       }
     }
 
-    const [updated] = await db.$transaction([
+    const nameOrSlugChanged =
+      (input.name !== undefined && input.name !== row.name) ||
+      (input.slug !== undefined && input.slug !== row.slug);
+
+    const ops: Promise<unknown>[] = [
       delegate.update({
         where: { id: row.id },
         data: { ...input, updatedBy: auth?.id ?? null },
@@ -269,7 +280,13 @@ export function createTaxonomyService(config: TaxonomyConfig) {
           userAgent: meta.userAgent,
         }),
       }),
-    ]);
+    ];
+
+    if (row.tenantId && nameOrSlugChanged) {
+      ops.push((await planCatalogBump(row.tenantId)).op);
+    }
+
+    const [updated] = await db.$transaction(ops);
 
     return updated as TaxonomyRow;
   }
@@ -283,7 +300,7 @@ export function createTaxonomyService(config: TaxonomyConfig) {
     assertRowAccess(row, auth, config.notFoundCode);
 
     const { db, delegate } = getDb();
-    const [deleted] = await db.$transaction([
+    const ops: Promise<unknown>[] = [
       delegate.update({
         where: { id: row.id },
         data: { deletedAt: new Date(), deletedBy: auth?.id ?? null, updatedBy: auth?.id ?? null },
@@ -300,7 +317,13 @@ export function createTaxonomyService(config: TaxonomyConfig) {
           userAgent: meta.userAgent,
         }),
       }),
-    ]);
+    ];
+
+    if (row.tenantId) {
+      ops.push((await planCatalogBump(row.tenantId)).op);
+    }
+
+    const [deleted] = await db.$transaction(ops);
 
     return deleted as TaxonomyRow;
   }
@@ -318,7 +341,7 @@ export function createTaxonomyService(config: TaxonomyConfig) {
     }
 
     const { db, delegate } = getDb();
-    const [restored] = await db.$transaction([
+    const ops: Promise<unknown>[] = [
       delegate.update({
         where: { id: row.id },
         data: { deletedAt: null, deletedBy: null, updatedBy: auth?.id ?? null },
@@ -335,7 +358,13 @@ export function createTaxonomyService(config: TaxonomyConfig) {
           userAgent: meta.userAgent,
         }),
       }),
-    ]);
+    ];
+
+    if (row.tenantId) {
+      ops.push((await planCatalogBump(row.tenantId)).op);
+    }
+
+    const [restored] = await db.$transaction(ops);
 
     return restored as TaxonomyRow;
   }

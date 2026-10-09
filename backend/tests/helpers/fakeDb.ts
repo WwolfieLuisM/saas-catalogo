@@ -586,7 +586,10 @@ export const fakeDb = {
     version: 1,
   }),
 
-  $transaction: async (ops: Promise<unknown>[]) => Promise.all(ops),
+  $transaction: async (
+    arg: Promise<unknown>[] | ((tx: unknown) => Promise<unknown>),
+    _options?: unknown,
+  ): Promise<unknown> => (typeof arg === 'function' ? arg(fakeDb) : Promise.all(arg)),
 };
 
 export const state = {
@@ -797,5 +800,13 @@ export function addFakePricingRule(
     active: true,
   });
   pricingRules.set(row.id, row);
+  return row;
+}
+
+export function addFakeCatalogMetadata(
+  input: Partial<FakeCatalogMetadata> & { id: string; tenantId: string },
+): FakeCatalogMetadata {
+  const row = defaults<FakeCatalogMetadata>(input, { version: 1 });
+  catalogMetadata.set(row.id, row);
   return row;
 }

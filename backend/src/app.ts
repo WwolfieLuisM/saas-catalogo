@@ -9,6 +9,7 @@ import { requestLogger } from './middleware/requestLogger.js';
 import { createAdministratorsRouter } from './modules/administrators/administrators.route.js';
 import { createAuthRouter } from './modules/auth/auth.route.js';
 import { createBaseGamesRouter } from './modules/base-games/base-games.route.js';
+import { createCatalogRouter } from './modules/catalog/catalog.route.js';
 import { createGamesRouter } from './modules/games/games.route.js';
 import { healthRouter } from './modules/health/health.route.js';
 import { createGameMediaRouter, createMediaRouter } from './modules/media/media.route.js';
@@ -30,6 +31,7 @@ export function createApp() {
   const app = express();
 
   app.disable('x-powered-by');
+  app.set('etag', false);
 
   if (env.NODE_ENV === 'production') {
     app.set('trust proxy', 1);
@@ -64,6 +66,7 @@ export function createApp() {
   app.use('/api/v1/admin/games', createGameMediaRouter());
   app.use('/api/v1/admin/media', createMediaRouter());
   app.use('/api/v1/admin/pricing', createPricingRouter());
+  app.use('/api/v1/catalog', createCatalogRouter());
 
   app.use(notFoundHandler);
   app.use(errorHandler);

@@ -5,6 +5,7 @@ import type { Prisma, TenantGame } from '../../generated/client.js';
 import { AppError } from '../../utils/appError.js';
 import type { RequestMeta } from '../../utils/requestMeta.js';
 import { auditData } from '../audit/audit.service.js';
+import { planCatalogBump } from '../catalog/catalog.service.js';
 import { assertTaxonomyRefs, jsonValue, resolveRequirements } from './game.shared.js';
 import type { CreateGameInput, GamesListQuery, UpdateGameInput } from './games.schemas.js';
 
@@ -407,6 +408,10 @@ async function publishFromLibrary(
     }),
   );
 
+  if (input.availability) {
+    ops.push((await planCatalogBump(tenantId)).op);
+  }
+
   const [row] = (await prisma.$transaction(ops)) as [TenantGame, ...unknown[]];
   return row;
 }
@@ -496,6 +501,10 @@ export async function createGame(
         }),
       }),
     );
+
+    if (input.availability) {
+      ops.push((await planCatalogBump(tenantId)).op);
+    }
 
     const [created] = (await prisma.$transaction(ops)) as [TenantGame, ...unknown[]];
     row = created;
@@ -596,6 +605,53 @@ export async function updateGame(
     }
   }
 
+  let bridgeChanged = false;
+  if (input.genreIds !== undefined) {
+    const current = await prisma.tenantGameGenre.findMany({
+      where: { tenantGameId: row.id },
+    });
+    const currentIds = new Set(current.map((bridge) => bridge.genreId));
+    bridgeChanged =
+      currentIds.size !== input.genreIds.length ||
+      input.genreIds.some((genreId) => !currentIds.has(genreId));
+  }
+  if (!bridgeChanged && input.platformIds !== undefined) {
+    const current = await prisma.gamePlatform.findMany({
+      where: { tenantGameId: row.id },
+    });
+    const currentIds = new Set(current.map((bridge) => bridge.platformId));
+    bridgeChanged =
+      currentIds.size !== input.platformIds.length ||
+      input.platformIds.some((platformId) => !currentIds.has(platformId));
+  }
+
+  const priceChanged =
+    newPrice === null
+      ? row.price !== null
+      : row.price === null || Number(newPrice) !== Number(row.price);
+
+  const requirementsChanged =
+    ('minimumRequirements' in data &&
+      JSON.stringify(data.minimumRequirements) !==
+        JSON.stringify(row.minimumRequirements ?? null)) ||
+    ('recommendedRequirements' in data &&
+      JSON.stringify(data.recommendedRequirements) !==
+        JSON.stringify(row.recommendedRequirements ?? null));
+
+  const publicChanged =
+    bridgeChanged ||
+    (input.title !== undefined && input.title !== row.title) ||
+    (input.slug !== undefined && input.slug !== row.slug) ||
+    (input.description !== undefined && (input.description ?? null) !== row.description) ||
+    (input.availability !== undefined && input.availability !== row.availability) ||
+    (input.sizeValue !== undefined && input.sizeValue !== row.sizeValue) ||
+    (input.sizeUnit !== undefined && input.sizeUnit !== row.sizeUnit) ||
+    (input.releaseYear !== undefined && (input.releaseYear ?? null) !== row.releaseYear) ||
+    (input.categoryId !== undefined && (input.categoryId ?? null) !== row.categoryId) ||
+    requirementsChanged ||
+    newPriceMode !== row.priceMode ||
+    priceChanged;
+
   const ops: Prisma.PrismaPromise<unknown>[] = [
     prisma.tenantGame.update({ where: { id: row.id }, data }),
   ];
@@ -637,6 +693,10 @@ export async function updateGame(
     }),
   );
 
+  if (publicChanged) {
+    ops.push((await planCatalogBump(row.tenantId)).op);
+  }
+
   const [updated] = (await prisma.$transaction(ops)) as [TenantGame, ...unknown[]];
   const details = await loadDetails([updated]);
   return tenantGameDto(updated, details.get(updated.id) as GameDetail);
@@ -647,7 +707,7 @@ export async function deleteGame(id: string, auth: AuthContext | null, meta: Req
   assertRowAccess(row, auth);
   const prisma = getPrisma();
 
-  const [deleted] = (await prisma.$transaction([
+  const ops: Prisma.PrismaPromise<unknown>[] = [
     prisma.tenantGame.update({
       where: { id: row.id },
       data: { deletedAt: new Date(), deletedBy: auth?.id ?? null, updatedBy: auth?.id ?? null },
@@ -664,7 +724,13 @@ export async function deleteGame(id: string, auth: AuthContext | null, meta: Req
         userAgent: meta.userAgent,
       }),
     }),
-  ])) as [TenantGame, ...unknown[]];
+  ];
+
+  if (row.availability) {
+    ops.push((await planCatalogBump(row.tenantId)).op);
+  }
+
+  const [deleted] = (await prisma.$transaction(ops)) as [TenantGame, ...unknown[]];
 
   const details = await loadDetails([deleted]);
   return tenantGameDto(deleted, details.get(deleted.id) as GameDetail);
@@ -678,7 +744,7 @@ export async function restoreGame(id: string, auth: AuthContext | null, meta: Re
   }
 
   const prisma = getPrisma();
-  const [restored] = (await prisma.$transaction([
+  const ops: Prisma.PrismaPromise<unknown>[] = [
     prisma.tenantGame.update({
       where: { id: row.id },
       data: { deletedAt: null, deletedBy: null, updatedBy: auth?.id ?? null },
@@ -695,7 +761,13 @@ export async function restoreGame(id: string, auth: AuthContext | null, meta: Re
         userAgent: meta.userAgent,
       }),
     }),
-  ])) as [TenantGame, ...unknown[]];
+  ];
+
+  if (row.availability) {
+    ops.push((await planCatalogBump(row.tenantId)).op);
+  }
+
+  const [restored] = (await prisma.$transaction(ops)) as [TenantGame, ...unknown[]];
 
   const details = await loadDetails([restored]);
   return tenantGameDto(restored, details.get(restored.id) as GameDetail);

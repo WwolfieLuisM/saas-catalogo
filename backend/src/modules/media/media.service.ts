@@ -14,6 +14,7 @@ import { AppError } from '../../utils/appError.js';
 import { withRetry } from '../../utils/retry.js';
 import type { RequestMeta } from '../../utils/requestMeta.js';
 import { auditData } from '../audit/audit.service.js';
+import { planCatalogBump } from '../catalog/catalog.service.js';
 import { resolveTenantId } from '../games/games.service.js';
 import type { MediaListQuery, MediaScanQuery, ReorderScreenshotsInput } from './media.schemas.js';
 
@@ -162,6 +163,11 @@ export async function uploadCover(
         }),
       }),
     ];
+
+    if (game.availability) {
+      ops.push((await planCatalogBump(game.tenantId)).op);
+    }
+
     const [row] = (await prisma.$transaction(ops)) as [GameMedia, ...unknown[]];
 
     if (
@@ -273,6 +279,11 @@ export async function uploadScreenshot(
         }),
       }),
     ];
+
+    if (game.availability) {
+      ops.push((await planCatalogBump(game.tenantId)).op);
+    }
+
     const [row] = (await prisma.$transaction(ops)) as [GameMedia, ...unknown[]];
     return row;
   } catch (error) {
@@ -301,7 +312,7 @@ export async function deleteCover(gameId: string, auth: AuthContext | null, meta
     }
   }
 
-  await prisma.$transaction([
+  const ops: Prisma.PrismaPromise<unknown>[] = [
     prisma.gameMedia.delete({ where: { id: row.id } }),
     prisma.auditLog.create({
       data: auditData({
@@ -315,7 +326,13 @@ export async function deleteCover(gameId: string, auth: AuthContext | null, meta
         userAgent: meta.userAgent,
       }),
     }),
-  ]);
+  ];
+
+  if (game.availability && row.status === 'OK') {
+    ops.push((await planCatalogBump(game.tenantId)).op);
+  }
+
+  await prisma.$transaction(ops);
 
   return { id: row.id };
 }
@@ -343,7 +360,7 @@ export async function deleteScreenshot(
     }
   }
 
-  await prisma.$transaction([
+  const ops: Prisma.PrismaPromise<unknown>[] = [
     prisma.gameMedia.delete({ where: { id: row.id } }),
     prisma.auditLog.create({
       data: auditData({
@@ -357,7 +374,13 @@ export async function deleteScreenshot(
         userAgent: meta.userAgent,
       }),
     }),
-  ]);
+  ];
+
+  if (game.availability && row.status === 'OK') {
+    ops.push((await planCatalogBump(game.tenantId)).op);
+  }
+
+  await prisma.$transaction(ops);
 
   return { id: row.id };
 }
@@ -407,7 +430,7 @@ export async function reorderScreenshots(
     };
   });
 
-  await prisma.$transaction([
+  const ops: Prisma.PrismaPromise<unknown>[] = [
     prisma.gameMedia.deleteMany({ where: { id: { in: inputIds } } }),
     prisma.gameMedia.createMany({ data: rewritten }),
     prisma.auditLog.create({
@@ -422,7 +445,13 @@ export async function reorderScreenshots(
         userAgent: meta.userAgent,
       }),
     }),
-  ]);
+  ];
+
+  if (game.availability && shots.some((shot) => shot.status === 'OK')) {
+    ops.push((await planCatalogBump(game.tenantId)).op);
+  }
+
+  await prisma.$transaction(ops);
 
   const rows = await prisma.gameMedia.findMany({
     where: { tenantId: game.tenantId, gameId: game.id, kind: 'SHOT' },
@@ -567,6 +596,16 @@ export async function scanMedia(
         }),
       }),
     );
+
+    const affectedIds = [...new Set([...missing, ...restorable].map((row) => row.gameId))];
+    const visibleGames = await prisma.tenantGame.findMany({
+      where: { id: { in: affectedIds }, availability: true, deletedAt: null },
+      select: { id: true },
+    });
+    if (visibleGames.length > 0) {
+      ops.push((await planCatalogBump(tenantId)).op);
+    }
+
     await prisma.$transaction(ops);
   }
 

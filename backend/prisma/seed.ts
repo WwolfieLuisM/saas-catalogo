@@ -295,6 +295,15 @@ async function main() {
   await ensurePricingRule({ minSize: 50.01, maxSize: 100, price: 70 });
   await ensurePricingRule({ minSize: 100.01, maxSize: null, price: 100 });
 
+  const existingCatalog = await prisma.catalogMetadata.findFirst({
+    where: { tenantId: tenant.id },
+  });
+  if (!existingCatalog) {
+    await prisma.catalogMetadata.create({
+      data: { id: crypto.randomUUID(), tenantId: tenant.id, version: 1 },
+    });
+  }
+
   const superAdminHash = await argon2.hash(env.SEED_ADMIN_PASSWORD, { type: argon2.argon2id });
   const superAdmin = await prisma.adminUser.upsert({
     where: { username: env.SEED_ADMIN_USERNAME },
@@ -342,6 +351,7 @@ async function main() {
   console.log(`admin de Javier: ${javierAdmin.username}`);
   console.log('juegos de ejemplo: hades (biblioteca), pack-mods-javier (personalizado)');
   console.log('reglas de precio: 4 rangos (1-10, 10.01-50, 50.01-100, 100.01+)');
+  console.log('catálogo: versión inicial 1 (creada solo si no existía)');
 }
 
 main()

@@ -6,6 +6,7 @@ import { destroyImage, listImages, uploadImage } from '../../src/config/cloudina
 import { signAccessToken } from '../../src/modules/auth/auth.tokens.js';
 import type { FakeGameMedia, FakeTenantGame } from '../helpers/fakeDb.js';
 import {
+  addFakeCatalogMetadata,
   addFakeGameMedia,
   addFakeTenant,
   addFakeTenantGame,
@@ -821,5 +822,31 @@ describe('POST /media/scan', () => {
     );
 
     expect(status).toBe(200);
+  });
+});
+
+describe('versionado del catálogo en media', () => {
+  function catalogVersion(): number | undefined {
+    return [...state.catalogMetadata.values()].find((row) => row.tenantId === T_JAVIER)?.version;
+  }
+
+  it('incrementa la versión al subir la portada de un juego visible', async () => {
+    const game = seedGame();
+    addFakeCatalogMetadata({ id: randomUUID(), tenantId: T_JAVIER, version: 1 });
+
+    const { status } = await uploadFile(`${GAMES}/${game.id}/cover`, adminToken);
+
+    expect(status).toBeLessThan(300);
+    expect(catalogVersion()).toBe(2);
+  });
+
+  it('no incrementa la versión si el juego está oculto', async () => {
+    const game = seedGame({ availability: false });
+    addFakeCatalogMetadata({ id: randomUUID(), tenantId: T_JAVIER, version: 1 });
+
+    const { status } = await uploadFile(`${GAMES}/${game.id}/cover`, adminToken);
+
+    expect(status).toBeLessThan(300);
+    expect(catalogVersion()).toBe(1);
   });
 });

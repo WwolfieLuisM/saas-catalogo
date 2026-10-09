@@ -231,6 +231,7 @@ GET /api/v1/games
 GET /api/v1/games/:id
 GET /api/v1/catalog
 GET /api/v1/catalog/version
+GET /api/v1/catalog/sync
 GET /api/v1/categories
 GET /api/v1/genres
 GET /api/v1/platforms
@@ -241,6 +242,44 @@ Admin:
 
 ```text
 /api/v1/admin/*
+```
+
+## Catálogo público
+
+Catálogo por tenant sin autenticación. El tenant se identifica siempre por su `slug`:
+
+```text
+GET /api/v1/catalog/version?tenant=<slug>
+GET /api/v1/catalog?tenant=<slug>
+GET /api/v1/catalog/sync?tenant=<slug>&since=<numero>
+```
+
+- `/version` devuelve `{ version, updatedAt }` de `CatalogMetadata` (versión `0` y `updatedAt: null` si aún no existe).
+- `/` devuelve la instantánea pública completa: `{ version, updatedAt, games }`, con los juegos visibles (`availability=true`, no eliminados) ordenados por `createdAt` asc y luego `id` asc. Cada juego expone solo los campos del DTO público (§69): `id`, `title`, `slug`, `description`, `price` (número o `null`, siempre `currency: "CUP"`), `availability`, `size {value, unit, formatted}`, `releaseYear`, `category {id, name} | null`, `genres[]`, `platforms[]`, `coverImage {url, alt} | null`, `screenshots[]` y `requirements {minimum, recommended}`. Nunca se filtran `tenantId`, `priceMode`, `origin`, timestamps ni datos de auditoría.
+- `/sync` compara `since` con la versión actual: si coincide responde `{ changed: false, version, updatedAt }`; si difiere (o `since` falta) responde `{ changed: true, version, updatedAt, games }` con el snapshot completo.
+
+Estrategia de caché y consistencia:
+
+- `/version` y `/` envían `ETag: "v<version>"` y `Cache-Control: no-cache`.
+- Con `If-None-Match` coincidente responden `304` sin cuerpo; un `If-None-Match` desactualizado recibe `200` con el ETag nuevo.
+- `/sync` no envía `ETag` (solo `Cache-Control: no-cache`).
+- La instantánea se lee en una única transacción `RepeatableRead` para que juegos, media y taxonomía sean coherentes entre sí.
+
+Errores:
+
+```text
+400 VALIDATION_ERROR   # falta tenant, está vacío, se envía tenantId o since no es entero
+404 TENANT_NOT_FOUND   # slug inexistente o tenant inactivo
+```
+
+Versionado: las operaciones que alteran lo visible en el catálogo incrementan `version` (crear/editar/eliminar juegos visibles, publicar/restaurar, subir/borrar media de juegos visibles, crear o renombrar taxonomía del tenant, aplicar precios). Las operaciones privadas (reglas de precio, juegos ocultos, edición sin cambios públicos) no incrementan la versión.
+
+Ejemplos:
+
+```bash
+curl "http://localhost:3000/api/v1/catalog/version?tenant=javier"
+curl -H 'If-None-Match: "v5"' "http://localhost:3000/api/v1/catalog?tenant=javier"
+curl "http://localhost:3000/api/v1/catalog/sync?tenant=javier&since=5"
 ```
 
 ---
