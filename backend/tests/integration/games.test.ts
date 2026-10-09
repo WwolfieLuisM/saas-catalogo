@@ -1037,3 +1037,38 @@ describe('visibilidad de la taxonomía global', () => {
     expect(body.meta?.total).toBe(1);
   });
 });
+
+describe('tenant inexistente (SUPER_ADMIN)', () => {
+  it('GET con tenantId inexistente devuelve 422 TENANT_NOT_FOUND', async () => {
+    const { status, body } = await api(
+      `${BASE}?tenantId=99999999-9999-4999-8999-999999999999`,
+      {},
+      superToken,
+    );
+
+    expect(status).toBe(422);
+    expect(body.error?.code).toBe('TENANT_NOT_FOUND');
+  });
+
+  it('POST con tenantId inexistente devuelve 422 TENANT_NOT_FOUND', async () => {
+    const { status, body } = await api(
+      BASE,
+      {
+        method: 'POST',
+        body: JSON.stringify({
+          tenantId: '99999999-9999-4999-8999-999999999999',
+          title: 'Huerfano',
+          slug: 'huerfano',
+          priceMode: 'MANUAL',
+          price: 10,
+          sizeValue: 1,
+          sizeUnit: 'GB',
+        }),
+      },
+      superToken,
+    );
+
+    expect(status).toBe(422);
+    expect(body.error?.code).toBe('TENANT_NOT_FOUND');
+  });
+});

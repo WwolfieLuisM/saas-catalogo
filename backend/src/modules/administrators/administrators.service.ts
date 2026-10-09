@@ -182,7 +182,7 @@ export async function updateAdministrator(
     ...(patch.isActive !== undefined ? { isActive: patch.isActive } : {}),
   };
 
-  const [updated] = await prisma.$transaction([
+  const ops: Prisma.PrismaPromise<unknown>[] = [
     prisma.adminUser.update({ where: { id }, data }),
     prisma.auditLog.create({
       data: auditData({
@@ -196,7 +196,19 @@ export async function updateAdministrator(
         userAgent: meta.userAgent,
       }),
     }),
-  ]);
+  ];
+
+  if (patch.password !== undefined) {
+    ops.push(
+      prisma.adminSession.updateMany({
+        where: { adminId: id, revokedAt: null },
+        data: { revokedAt: new Date() },
+      }),
+    );
+  }
+
+  const results = await prisma.$transaction(ops);
+  const updated = results[0] as AdminUser;
 
   return updated;
 }

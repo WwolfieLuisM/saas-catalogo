@@ -28,7 +28,10 @@ function summary(
   return row ? { id: row.id, name: row.name, slug: row.slug } : null;
 }
 
-export function resolveTenantId(auth: AuthContext | null, requested: string | undefined): string {
+export async function resolveTenantId(
+  auth: AuthContext | null,
+  requested: string | undefined,
+): Promise<string> {
   if (!auth) {
     throw new AppError(401, 'UNAUTHENTICATED', 'Autenticación requerida');
   }
@@ -46,6 +49,11 @@ export function resolveTenantId(auth: AuthContext | null, requested: string | un
   if (auth.role === 'SUPER_ADMIN') {
     if (!requested) {
       throw new AppError(400, 'VALIDATION_ERROR', 'tenantId es obligatorio para SUPER_ADMIN');
+    }
+    const tenant = await getPrisma().tenant.findUnique({ where: { id: requested } });
+
+    if (!tenant) {
+      throw new AppError(422, 'TENANT_NOT_FOUND', 'El tenant indicado no existe');
     }
     return requested;
   }
@@ -177,7 +185,7 @@ async function findRow(id: string, includeDeleted: boolean): Promise<TenantGame>
 }
 
 export async function listGames(query: GamesListQuery, auth: AuthContext | null) {
-  const tenantId = resolveTenantId(auth, query.tenantId);
+  const tenantId = await resolveTenantId(auth, query.tenantId);
   const prisma = getPrisma();
 
   const where: Prisma.TenantGameWhereInput = {
@@ -421,7 +429,7 @@ export async function createGame(
   auth: AuthContext | null,
   meta: RequestMeta,
 ) {
-  const tenantId = resolveTenantId(auth, input.tenantId);
+  const tenantId = await resolveTenantId(auth, input.tenantId);
   const prisma = getPrisma();
 
   let row: TenantGame;

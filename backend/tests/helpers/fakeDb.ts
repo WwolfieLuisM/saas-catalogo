@@ -539,6 +539,16 @@ export const fakeDb = {
       }
       return { count };
     },
+    deleteMany: async (args: { where?: Where } = {}) => {
+      let count = 0;
+      for (const [key, session] of [...sessions.entries()]) {
+        if (matches(session as unknown as Record<string, unknown>, args.where)) {
+          sessions.delete(key);
+          count += 1;
+        }
+      }
+      return { count };
+    },
   },
 
   tenant: {

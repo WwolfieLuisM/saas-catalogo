@@ -78,6 +78,18 @@ export async function login(
     throw invalid;
   }
 
+  if (user.tenantId) {
+    const tenant = await prisma.tenant.findUnique({ where: { id: user.tenantId } });
+
+    if (!tenant || !tenant.isActive) {
+      throw new AppError(401, 'ACCOUNT_DISABLED', 'Cuenta desactivada');
+    }
+  }
+
+  await prisma.adminSession.deleteMany({
+    where: { adminId: user.id, expiresAt: { lt: new Date() } },
+  });
+
   await prisma.adminUser.update({
     where: { id: user.id },
     data: { lastLoginAt: new Date() },
@@ -141,6 +153,20 @@ export async function refresh(
     throw new AppError(401, 'ACCOUNT_DISABLED', 'Cuenta desactivada');
   }
 
+  if (session.admin.tenantId) {
+    const tenant = await prisma.tenant.findUnique({
+      where: { id: session.admin.tenantId },
+    });
+
+    if (!tenant || !tenant.isActive) {
+      await prisma.adminSession.update({
+        where: { id: session.id },
+        data: { revokedAt: new Date() },
+      });
+      throw new AppError(401, 'ACCOUNT_DISABLED', 'Cuenta desactivada');
+    }
+  }
+
   const env = getEnv();
   const newRefreshToken = generateRefreshToken();
   const expiresAt = new Date(
@@ -182,6 +208,14 @@ export async function getMe(userId: string): Promise<UserPayload> {
 
   if (!user || !user.isActive) {
     throw new AppError(401, 'UNAUTHENTICATED', 'Cuenta inválida o desactivada');
+  }
+
+  if (user.tenantId) {
+    const tenant = await getPrisma().tenant.findUnique({ where: { id: user.tenantId } });
+
+    if (!tenant || !tenant.isActive) {
+      throw new AppError(401, 'UNAUTHENTICATED', 'Cuenta inválida o desactivada');
+    }
   }
 
   return profile(user);

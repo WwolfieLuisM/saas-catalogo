@@ -440,3 +440,40 @@ describe('POST /api/v1/admin/administrators/:id/revoke-sessions', () => {
     expect(status).toBe(404);
   });
 });
+
+describe('cambio de password y sesiones', () => {
+  it('revoca las sesiones activas del objetivo al cambiar la password', async () => {
+    addFakeSession({ id: 's-p1', adminId: USER_ADMIN, tokenHash: 'hash-p1' });
+    addFakeSession({ id: 's-p2', adminId: USER_ADMIN, tokenHash: 'hash-p2' });
+    addFakeSession({
+      id: 's-p3',
+      adminId: USER_ADMIN,
+      tokenHash: 'hash-p3',
+      revokedAt: new Date(),
+    });
+
+    const { status } = await api(
+      `/api/v1/admin/administrators/${USER_ADMIN}`,
+      { method: 'PATCH', body: JSON.stringify({ password: 'NuevaPass!123' }) },
+      superToken,
+    );
+
+    expect(status).toBe(200);
+    expect(state.sessions.get('s-p1')?.revokedAt).not.toBeNull();
+    expect(state.sessions.get('s-p2')?.revokedAt).not.toBeNull();
+    expect(state.sessions.get('s-p3')?.revokedAt).not.toBeNull();
+  });
+
+  it('no toca las sesiones cuando la password no cambia', async () => {
+    addFakeSession({ id: 's-n1', adminId: USER_ADMIN, tokenHash: 'hash-n1' });
+
+    const { status } = await api(
+      `/api/v1/admin/administrators/${USER_ADMIN}`,
+      { method: 'PATCH', body: JSON.stringify({ isActive: true }) },
+      superToken,
+    );
+
+    expect(status).toBe(200);
+    expect(state.sessions.get('s-n1')?.revokedAt).toBeNull();
+  });
+});

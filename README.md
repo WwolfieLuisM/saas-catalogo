@@ -565,6 +565,25 @@ Nunca almacenar en Git:
 - Cloudinary secrets;
 - tokens.
 
+## Correcciones de seguridad (Fase 10)
+
+- H1: cambio de password revoca las sesiones activas del administrador en la misma transacción (`administrators.service.ts`);
+- H2: `authenticate` valida que el tenant del usuario esté activo (401 `UNAUTHENTICATED`); `login`/`refresh` devuelven 401 `ACCOUNT_DISABLED` si el tenant está desactivado (login/refresh/getMe);
+- M1: mapeo Prisma de errores de constraint a códigos HTTP: P2002 → 409 `UNIQUE_CONFLICT`, P2003 → 422 `FOREIGN_KEY_VIOLATION`, P2025 → 404 `NOT_FOUND` (los demás siguen siendo 500);
+- M3: `resolveTenantId` (games, taxonomías, media, pricing) valida la existencia del tenant para SUPER_ADMIN → 422 `TENANT_NOT_FOUND` (antes 500 o lista vacía silenciosa);
+- M4: `envSchema` fuerza `COOKIE_SECURE=true` cuando `NODE_ENV=production`;
+- L4: `login` purga sesiones expiradas del usuario antes de emitir token nuevo;
+- L6: `CORS_ORIGIN` con `*` + credentials queda prohibido en producción (error en arranque); en producción `origin` lista concreta y `credentials: true`.
+
+## Deuda documentada (aceptada)
+
+- **D1 — `npm audit` (deepmerge-ts < 8, high; mysql2, high)**: alcanzables solo vía arbol de dependencias del CLI `prisma` (`@prisma/client → prisma → @prisma/config → deepmerge-ts`); `mysql2` no es alcanzable (el runtime usa `@prisma/adapter-pg`). Corregir requiere forzar `@prisma/client@2.15.0` (roto). **Nunca ejecutar `npm audit fix --force`**; revisar en el próximo bump de Prisma.
+- **D2 — revocación de access tokens**: los JWT de acceso (15 min) no son revocables hasta expirar; se mitigará con `AdminUser.tokenVersion` en la migración Fase 11 (claim en JWT + contador en usuario; incremento en cambio de password y revocación de sesiones invalida al instante).
+- **L1**: el chequeo de "último SUPER_ADMIN" ocurre fuera de la transacción (ventana mínima; solo SUPER_ADMIN puede desactivar a otro SUPER_ADMIN).
+- **L2**: `JWT_REFRESH_SECRET` se declara en `envSchema` por cumplimiento del spec pero no se usa (el refresh token es opaco y se guarda hasheado con `JWT_ACCESS_SECRET`).
+- **L3**: rate limiting en memoria (aceptable: una sola instancia Render); para múltiples instancias usar store externo.
+- **L5**: cast `as unknown as TaxonomyDb` en pruebas (fakeDb compatible con Prisma sin generar tipos).
+
 ---
 
 # 16. Frontend

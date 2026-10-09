@@ -497,7 +497,7 @@ function orderByFromSort(sort: string): Prisma.GameMediaOrderByWithRelationInput
 }
 
 export async function listMedia(query: MediaListQuery, auth: AuthContext | null) {
-  const tenantId = resolveTenantId(auth, query.tenantId);
+  const tenantId = await resolveTenantId(auth, query.tenantId);
   const prisma = getPrisma();
 
   const where: Prisma.GameMediaWhereInput = {
@@ -546,7 +546,7 @@ export async function scanMedia(
   auth: AuthContext | null,
   meta: RequestMeta,
 ) {
-  const tenantId = resolveTenantId(auth, query.tenantId);
+  const tenantId = await resolveTenantId(auth, query.tenantId);
   const prisma = getPrisma();
   const prefix = `tenants/${tenantId}/games/`;
 

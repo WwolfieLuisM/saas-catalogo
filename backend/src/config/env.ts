@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-export const envSchema = z.object({
+const envObject = z.object({
   NODE_ENV: z.enum(['development', 'test', 'production']).default('development'),
   PORT: z.coerce.number().int().positive().default(3000),
   DATABASE_URL: z.string().min(1),
@@ -27,6 +27,13 @@ export const envSchema = z.object({
   SEED_ADMIN_PASSWORD: z.string().optional(),
   SEED_JAVIER_ADMIN_USERNAME: z.string().min(1).optional(),
   SEED_JAVIER_ADMIN_PASSWORD: z.string().min(1).optional(),
+});
+
+export const envSchema = envObject.transform((data) => {
+  if (data.NODE_ENV === 'production') {
+    data.COOKIE_SECURE = true;
+  }
+  return data;
 });
 
 export type Env = z.infer<typeof envSchema>;

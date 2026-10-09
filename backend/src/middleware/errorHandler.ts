@@ -1,5 +1,6 @@
 import type { ErrorRequestHandler, RequestHandler } from 'express';
 import { ZodError } from 'zod';
+import { Prisma } from '../generated/client.js';
 import { AppError } from '../utils/appError.js';
 import { logger } from '../utils/logger.js';
 
@@ -8,6 +9,12 @@ interface BodyParserError {
   statusCode?: number;
   status?: number;
 }
+
+const PRISMA_ERROR_MAP: Record<string, { statusCode: number; code: string; message: string }> = {
+  P2002: { statusCode: 409, code: 'UNIQUE_CONFLICT', message: 'El registro ya existe' },
+  P2003: { statusCode: 422, code: 'FOREIGN_KEY_VIOLATION', message: 'Referencia inválida' },
+  P2025: { statusCode: 404, code: 'NOT_FOUND', message: 'Recurso no encontrado' },
+};
 
 export const notFoundHandler: RequestHandler = (_req, _res, next) => {
   next(new AppError(404, 'NOT_FOUND', 'Route not found'));
@@ -36,6 +43,22 @@ export const errorHandler: ErrorRequestHandler = (error, _req, res, _next) => {
       },
     });
     return;
+  }
+
+  if (error instanceof Prisma.PrismaClientKnownRequestError) {
+    const mapped = PRISMA_ERROR_MAP[error.code];
+
+    if (mapped) {
+      res.status(mapped.statusCode).json({
+        success: false,
+        error: {
+          code: mapped.code,
+          message: mapped.message,
+          details: null,
+        },
+      });
+      return;
+    }
   }
 
   const bodyError = error as BodyParserError;

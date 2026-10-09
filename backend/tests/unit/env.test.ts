@@ -67,4 +67,26 @@ describe('envSchema', () => {
 
     expect(result.success).toBe(false);
   });
+
+  it('fuerza COOKIE_SECURE en producción', () => {
+    const result = envSchema.safeParse({ ...baseEnv, NODE_ENV: 'production' });
+
+    expect(result.success).toBe(true);
+    if (!result.success) {
+      return;
+    }
+
+    expect(result.data.COOKIE_SECURE).toBe(true);
+  });
+
+  it('no altera COOKIE_SECURE fuera de producción', () => {
+    const result = envSchema.safeParse({ ...baseEnv, NODE_ENV: 'development' });
+
+    expect(result.success).toBe(true);
+    if (!result.success) {
+      return;
+    }
+
+    expect(result.data.COOKIE_SECURE).toBe(false);
+  });
 });

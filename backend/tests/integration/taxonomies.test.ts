@@ -618,3 +618,35 @@ describe.each(RESOURCES)('$path', ({ path, entity, notFoundCode, slugExistsCode 
     });
   });
 });
+
+describe('tenant inexistente (SUPER_ADMIN)', () => {
+  const MISSING_TENANT = '99999999-9999-4999-8999-999999999999';
+
+  it.each(['categories', 'genres', 'platforms'])(
+    'GET /%s con tenantId inexistente devuelve 422 TENANT_NOT_FOUND',
+    async (path) => {
+      const { status, body } = await api(
+        `/api/v1/admin/${path}?tenantId=${MISSING_TENANT}`,
+        {},
+        superToken,
+      );
+
+      expect(status).toBe(422);
+      expect(body.error?.code).toBe('TENANT_NOT_FOUND');
+    },
+  );
+
+  it('POST /categories con tenantId inexistente devuelve 422 TENANT_NOT_FOUND', async () => {
+    const { status, body } = await api(
+      '/api/v1/admin/categories',
+      {
+        method: 'POST',
+        body: JSON.stringify({ tenantId: MISSING_TENANT, name: 'Xx', slug: 'x-missing' }),
+      },
+      superToken,
+    );
+
+    expect(status).toBe(422);
+    expect(body.error?.code).toBe('TENANT_NOT_FOUND');
+  });
+});

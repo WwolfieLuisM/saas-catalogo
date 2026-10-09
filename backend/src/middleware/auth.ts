@@ -26,6 +26,14 @@ export const authenticate: RequestHandler = async (req, _res, next) => {
       throw new AppError(401, 'UNAUTHENTICATED', 'Cuenta inválida o desactivada');
     }
 
+    if (user.tenantId) {
+      const tenant = await getPrisma().tenant.findUnique({ where: { id: user.tenantId } });
+
+      if (!tenant || !tenant.isActive) {
+        throw new AppError(401, 'UNAUTHENTICATED', 'Cuenta inválida o desactivada');
+      }
+    }
+
     req.auth = {
       id: user.id,
       username: user.username,

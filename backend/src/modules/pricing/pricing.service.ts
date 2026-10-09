@@ -120,7 +120,7 @@ async function findRule(id: string): Promise<PricingRule> {
 }
 
 export async function listRules(auth: AuthContext | null, requestedTenantId?: string) {
-  const tenantId = resolveTenantId(auth, requestedTenantId);
+  const tenantId = await resolveTenantId(auth, requestedTenantId);
   const prisma = getPrisma();
   const rows = await prisma.pricingRule.findMany({
     where: { tenantId },
@@ -134,7 +134,7 @@ export async function createRule(
   auth: AuthContext | null,
   meta: RequestMeta,
 ) {
-  const tenantId = resolveTenantId(auth, input.tenantId);
+  const tenantId = await resolveTenantId(auth, input.tenantId);
   const prisma = getPrisma();
   const existing = await prisma.pricingRule.findMany({ where: { tenantId } });
 
@@ -335,7 +335,7 @@ async function computeDiff(tenantId: string): Promise<PriceDiff> {
 }
 
 export async function previewPricing(auth: AuthContext | null, requestedTenantId?: string) {
-  const tenantId = resolveTenantId(auth, requestedTenantId);
+  const tenantId = await resolveTenantId(auth, requestedTenantId);
   const diff = await computeDiff(tenantId);
 
   return {
@@ -355,7 +355,7 @@ export async function applyPricing(
   requestedTenantId: string | undefined,
   meta: RequestMeta,
 ) {
-  const tenantId = resolveTenantId(auth, requestedTenantId);
+  const tenantId = await resolveTenantId(auth, requestedTenantId);
   const prisma = getPrisma();
   const diff = await computeDiff(tenantId);
 

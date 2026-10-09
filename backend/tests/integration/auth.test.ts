@@ -11,7 +11,14 @@ vi.mock('../../src/config/database.js', async () => {
   return { getPrisma: () => fakeDb, closePrisma: async () => undefined };
 });
 
-import { addFakeUser, resetFakeDb, state, type FakeAdminUser } from '../helpers/fakeDb.js';
+import {
+  addFakeSession,
+  addFakeTenant,
+  addFakeUser,
+  resetFakeDb,
+  state,
+  type FakeAdminUser,
+} from '../helpers/fakeDb.js';
 
 const PASSWORD = 'Sup3rSecret!Pass';
 
@@ -70,6 +77,7 @@ afterAll(async () => {
 
 beforeEach(() => {
   resetFakeDb();
+  addFakeTenant({ id: 't-javier', name: 'Javier', slug: 'javier' });
   addFakeUser(userRow());
   addFakeUser(userRow({ id: 'u-super', username: 'root', role: 'SUPER_ADMIN', tenantId: null }));
   addFakeUser(userRow({ id: 'u-disabled', username: 'disabled-admin', isActive: false }));
@@ -332,5 +340,63 @@ describe('GET /api/v1/auth/me', () => {
     });
 
     expect(response.status).toBe(401);
+  });
+});
+
+describe('tenant desactivado', () => {
+  it('login devuelve 401 ACCOUNT_DISABLED si el tenant está desactivado', async () => {
+    const tenant = state.tenants.get('t-javier');
+    if (tenant) tenant.isActive = false;
+
+    const { response, body } = await login('javier-admin', PASSWORD);
+
+    expect(response.status).toBe(401);
+    expect(body.error?.code).toBe('ACCOUNT_DISABLED');
+  });
+
+  it('GET /me devuelve 401 si el tenant se desactiva con sesión activa', async () => {
+    const { body: loginBody } = await login('javier-admin', PASSWORD);
+    const accessToken = loginBody.data?.accessToken ?? '';
+    const tenant = state.tenants.get('t-javier');
+    if (tenant) tenant.isActive = false;
+
+    const response = await fetch(`${baseUrl}/api/v1/auth/me`, {
+      headers: { authorization: `Bearer ${accessToken}` },
+    });
+
+    expect(response.status).toBe(401);
+  });
+
+  it('refresh devuelve 401 ACCOUNT_DISABLED si el tenant está desactivado', async () => {
+    const { cookie } = await login('javier-admin', PASSWORD);
+    const tenant = state.tenants.get('t-javier');
+    if (tenant) tenant.isActive = false;
+
+    const response = await fetch(`${baseUrl}/api/v1/auth/refresh`, {
+      method: 'POST',
+      headers: { cookie: `refresh_token=${cookie}` },
+    });
+    const body = (await response.json()) as { error?: { code: string } };
+
+    expect(response.status).toBe(401);
+    expect(body.error?.code).toBe('ACCOUNT_DISABLED');
+  });
+});
+
+describe('purga de sesiones expiradas', () => {
+  it('login elimina sesiones expiradas y conserva las vigentes', async () => {
+    addFakeSession({
+      id: 's-expired',
+      adminId: 'u-admin',
+      tokenHash: 'hash-expired',
+      expiresAt: new Date(Date.now() - 1000),
+    });
+    addFakeSession({ id: 's-valid', adminId: 'u-admin', tokenHash: 'hash-valid' });
+
+    const { response } = await login('javier-admin', PASSWORD);
+
+    expect(response.status).toBe(200);
+    expect(state.sessions.has('s-expired')).toBe(false);
+    expect(state.sessions.has('s-valid')).toBe(true);
   });
 });

@@ -91,7 +91,10 @@ export function taxonomyDto(row: TaxonomyRow) {
   };
 }
 
-function resolveTenantId(auth: AuthContext | null, requested: string | undefined): string {
+async function resolveTenantId(
+  auth: AuthContext | null,
+  requested: string | undefined,
+): Promise<string> {
   if (!auth) {
     throw new AppError(401, 'UNAUTHENTICATED', 'Autenticación requerida');
   }
@@ -109,6 +112,11 @@ function resolveTenantId(auth: AuthContext | null, requested: string | undefined
   if (auth.role === 'SUPER_ADMIN') {
     if (!requested) {
       throw new AppError(400, 'VALIDATION_ERROR', 'tenantId es obligatorio para SUPER_ADMIN');
+    }
+    const tenant = await getPrisma().tenant.findUnique({ where: { id: requested } });
+
+    if (!tenant) {
+      throw new AppError(422, 'TENANT_NOT_FOUND', 'El tenant indicado no existe');
     }
     return requested;
   }
@@ -154,7 +162,7 @@ export function createTaxonomyService(config: TaxonomyConfig) {
     query: TaxonomyListQuery,
     auth: AuthContext | null,
   ): Promise<{ items: TaxonomyRow[]; total: number }> {
-    const tenantId = resolveTenantId(auth, query.tenantId);
+    const tenantId = await resolveTenantId(auth, query.tenantId);
     const { delegate } = getDb();
 
     const where: TaxonomyWhere = {
@@ -196,7 +204,7 @@ export function createTaxonomyService(config: TaxonomyConfig) {
     auth: AuthContext | null,
     meta: RequestMeta,
   ): Promise<TaxonomyRow> {
-    const tenantId = resolveTenantId(auth, input.tenantId);
+    const tenantId = await resolveTenantId(auth, input.tenantId);
     const { db, delegate } = getDb();
 
     const existing = await delegate.findFirst({ where: { tenantId, slug: input.slug } });

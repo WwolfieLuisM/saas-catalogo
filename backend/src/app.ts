@@ -32,6 +32,12 @@ export function createApp() {
   const origins = env.CORS_ORIGIN.split(',')
     .map((origin) => origin.trim())
     .filter((origin) => origin.length > 0);
+  const allowsWildcard = origins.includes('*');
+
+  if (env.NODE_ENV === 'production' && allowsWildcard) {
+    throw new Error('CORS_ORIGIN no puede incluir "*" en producción');
+  }
+
   const app = express();
 
   app.disable('x-powered-by');
@@ -42,7 +48,7 @@ export function createApp() {
   }
 
   app.use(helmet());
-  app.use(cors({ origin: origins.includes('*') ? '*' : origins, credentials: true }));
+  app.use(cors({ origin: allowsWildcard ? '*' : origins, credentials: !allowsWildcard }));
   app.use(requestLogger);
   app.use(
     rateLimit({
