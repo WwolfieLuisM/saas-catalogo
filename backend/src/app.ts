@@ -7,13 +7,17 @@ import { getEnv } from './config/env.js';
 import { errorHandler, notFoundHandler } from './middleware/errorHandler.js';
 import { requestLogger } from './middleware/requestLogger.js';
 import { createAdministratorsRouter } from './modules/administrators/administrators.route.js';
+import { createAuditRouter } from './modules/audit/audit.route.js';
 import { createAuthRouter } from './modules/auth/auth.route.js';
 import { createBaseGamesRouter } from './modules/base-games/base-games.route.js';
 import { createCatalogRouter } from './modules/catalog/catalog.route.js';
+import { createDashboardRouter } from './modules/dashboard/dashboard.route.js';
 import { createGamesRouter } from './modules/games/games.route.js';
 import { healthRouter } from './modules/health/health.route.js';
 import { createGameMediaRouter, createMediaRouter } from './modules/media/media.route.js';
 import { createPricingRouter } from './modules/pricing/pricing.route.js';
+import { createSessionsRouter } from './modules/sessions/sessions.route.js';
+import { createSystemRouter } from './modules/system/system.route.js';
 import { createTenantsRouter } from './modules/tenants/tenants.route.js';
 import {
   categoryTaxonomy,
@@ -58,6 +62,10 @@ export function createApp() {
   app.use('/api/v1/auth', createAuthRouter());
   app.use('/api/v1/admin/tenants', createTenantsRouter());
   app.use('/api/v1/admin/administrators', createAdministratorsRouter());
+  app.use('/api/v1/admin/dashboard', createDashboardRouter());
+  app.use('/api/v1/admin/sessions', createSessionsRouter());
+  app.use('/api/v1/admin/audit', createAuditRouter());
+  app.use('/api/v1/admin/system', createSystemRouter());
   app.use('/api/v1/admin/categories', createTaxonomyRouter(categoryTaxonomy));
   app.use('/api/v1/admin/genres', createTaxonomyRouter(genreTaxonomy));
   app.use('/api/v1/admin/platforms', createTaxonomyRouter(platformTaxonomy));

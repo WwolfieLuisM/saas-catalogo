@@ -282,6 +282,57 @@ curl -H 'If-None-Match: "v5"' "http://localhost:3000/api/v1/catalog?tenant=javie
 curl "http://localhost:3000/api/v1/catalog/sync?tenant=javier&since=5"
 ```
 
+## Admin API (dashboard, sesiones, auditoría, sistema)
+
+Cuatro endpoints autenticados bajo `/api/v1/admin/*` (roles `ADMIN` y `SUPER_ADMIN`):
+
+```text
+GET    /api/v1/admin/dashboard
+GET    /api/v1/admin/sessions
+DELETE /api/v1/admin/sessions/:id
+GET    /api/v1/admin/audit
+GET    /api/v1/admin/system
+```
+
+Dashboard (`GET /api/v1/admin/dashboard?tenantId=<uuid>`):
+
+- Devuelve exactamente los 10 campos de la especificación: `totalGames`, `availableGames`, `unavailableGames`, `libraryGames`, `customGames`, `mediaErrors`, `orphanMedia`, `activeSessions`, `recentAuditEvents` (ventana de 24 h) y `catalogVersion` (`null` si el tenant no tiene `CatalogMetadata`).
+- `ADMIN` solo agrega su propio tenant (enviar `?tenantId` distinto al propio responde `403`); `SUPER_ADMIN` agrega el global o, con `?tenantId`, un tenant concreto (desconocido → `422 TENANT_NOT_FOUND`).
+- Los juegos eliminados (`deletedAt`) no cuentan. `activeSessions` cuenta sesiones sin revocar y no vencidas de los admins del alcance; `recentAuditEvents` global incluye eventos de plataforma (`tenantId: null`).
+
+Sesiones (`GET /api/v1/admin/sessions`):
+
+- Filtros: `status` (`active` por defecto, `revoked`, `all`), `q` (sobre `userAgent`), `tenantId` (mismas reglas de dashboard) y paginación estándar (`page`, `limit`, `meta`). Orden estable por `createdAt` desc y luego `id` desc.
+- El DTO expone `id`, `adminId`, `adminUsername`, `adminRole`, `tenantId`, `userAgent`, `ipAddress`, `createdAt`, `lastUsedAt`, `expiresAt`, `revokedAt` e `isCurrent`; nunca `tokenHash` ni tokens.
+- `isCurrent` marca la sesión activa más reciente del usuario autenticado (heurística: el JWT no lleva `sessionId` y la cookie de refresh no llega a `/admin/*`); con varias sesiones simultáneas el distintivo puede señalar otra dispositivo.
+
+Revocación (`DELETE /api/v1/admin/sessions/:id`):
+
+- `ADMIN` solo revoca las suyas (ajena o inexistente → `404 SESSION_NOT_FOUND`); `SUPER_ADMIN` cualquier sesión. Ya revocada → `409 SESSION_ALREADY_REVOKED`. El id debe ser un uuid (`400` si no).
+- Revoca y audita `SESSION_REVOKED` (entidad `AdminSession`, metadata `adminId`) en una única transacción. El refresh de esa sesión queda invalidado de inmediato (`401 REFRESH_REUSE_DETECTED`); el access token sigue siendo válido hasta su expiración (JWT sin estado). En el propio dispositivo conviene `POST /auth/logout`.
+
+Auditoría (`GET /api/v1/admin/audit`):
+
+- Solo lectura: no existen endpoints de escritura (POST/PATCH/DELETE responden `404`). Los eventos se escriben exclusivamente desde los servicios con `auditData()`.
+- Filtros: `action` y `entity` (exactos), `from`/`to` (ISO 8601 con offset, `from <= to`), `q` (acción, entidad, `entityId` o username del actor, insensible a mayúsculas), `tenantId` y paginación. Orden por `timestamp` desc y luego `id` desc.
+- `ADMIN` siempre ve su tenant (tenant ajeno → `403`); `SUPER_ADMIN` ve el global incluyendo eventos de plataforma (`tenantId: null`) o filtra por tenant (`422` si no existe).
+- Cada evento incluye `actorUsername` resuelto y `metadata`; no expone `userAgent`, `tokenHash` ni credenciales.
+
+Sistema (`GET /api/v1/admin/system`):
+
+- Devuelve exactamente `{ status, database, uptimeSeconds, nodeVersion, environment, timestamp }`. `database` reutiliza el mismo chequeo `SELECT 1` que `/health`; nunca expone `DATABASE_URL`, credenciales ni permite mutaciones (POST/DELETE → `404`).
+
+Errores comunes:
+
+```text
+400 VALIDATION_ERROR          # parámetros o fechas inválidos
+401 UNAUTHENTICATED           # sin token o token inválido
+403 FORBIDDEN                 # rol no autorizado o tenant ajeno en ADMIN
+404 SESSION_NOT_FOUND         # sesión inexistente o de otro admin (ADMIN)
+409 SESSION_ALREADY_REVOKED   # sesión ya revocada
+422 TENANT_NOT_FOUND          # ?tenantId inexistente (SUPER_ADMIN)
+```
+
 ---
 
 # 8. Base de datos

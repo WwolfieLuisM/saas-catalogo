@@ -149,6 +149,12 @@ export interface FakeCatalogMetadata {
 
 type Where = Record<string, unknown>;
 
+function toComparable(value: unknown): number | null {
+  if (value instanceof Date) return value.getTime();
+  if (typeof value === 'number') return value;
+  return null;
+}
+
 function matches(row: Record<string, unknown>, where: Where | undefined): boolean {
   if (!where) {
     return true;
@@ -172,7 +178,15 @@ function matches(row: Record<string, unknown>, where: Where | undefined): boolea
     const value = row[key];
 
     if (condition !== null && typeof condition === 'object' && !(condition instanceof Date)) {
-      const operator = condition as { contains?: string; mode?: string; not?: unknown };
+      const operator = condition as {
+        contains?: string;
+        mode?: string;
+        not?: unknown;
+        gte?: unknown;
+        gt?: unknown;
+        lte?: unknown;
+        lt?: unknown;
+      };
 
       if ('contains' in operator) {
         const target = String(value ?? '');
@@ -183,10 +197,29 @@ function matches(row: Record<string, unknown>, where: Where | undefined): boolea
             : target.includes(needle);
         if (!hit) return false;
       } else if ('in' in operator) {
-        const list = operator.in;
+        const list = (operator as { in?: unknown }).in;
         if (!Array.isArray(list) || !list.includes(value)) return false;
       } else if ('not' in operator) {
         if (value === operator.not) return false;
+      } else if ('gte' in operator || 'gt' in operator || 'lte' in operator || 'lt' in operator) {
+        const left = toComparable(value);
+        if (left === null) return false;
+        if ('gte' in operator) {
+          const right = toComparable(operator.gte);
+          if (right === null || left < right) return false;
+        }
+        if ('gt' in operator) {
+          const right = toComparable(operator.gt);
+          if (right === null || left <= right) return false;
+        }
+        if ('lte' in operator) {
+          const right = toComparable(operator.lte);
+          if (right === null || left > right) return false;
+        }
+        if ('lt' in operator) {
+          const right = toComparable(operator.lt);
+          if (right === null || left >= right) return false;
+        }
       } else {
         return false;
       }
@@ -307,6 +340,12 @@ function createRowDelegate<T extends { id: string }>(
     findMany: async (args: FindManyArgs = {}) => {
       const matched = queryRows([...store.values()].map(asRow), args);
       return matched as unknown as T[];
+    },
+    findUnique: async (args: { where: Where }) => {
+      for (const row of store.values()) {
+        if (matches(asRow(row), args.where)) return row;
+      }
+      return null;
     },
     count: async (args: { where?: Where } = {}) => {
       return [...store.values()].filter((row) => matches(asRow(row), args.where)).length;
@@ -447,9 +486,36 @@ export const fakeDb = {
       sessions.set(session.id, session);
       return session;
     },
-    findUnique: async (args: { where: { tokenHash: string }; include?: { admin?: boolean } }) => {
+    findMany: async (args: FindManyArgs = {}) => {
+      const rows = [...sessions.values()].map((row) => row as unknown as Record<string, unknown>);
+      const matched = queryRows(rows, args);
+      return matched.map((row) => row as unknown as FakeSession);
+    },
+    count: async (args: { where?: Where } = {}) => {
+      return [...sessions.values()].filter((row) =>
+        matches(row as unknown as Record<string, unknown>, args.where),
+      ).length;
+    },
+    findFirst: async (args: { where?: Where; orderBy?: FindManyArgs['orderBy'] } = {}) => {
+      const rows = [...sessions.values()].filter((row) =>
+        matches(row as unknown as Record<string, unknown>, args.where),
+      );
+      if (rows.length === 0) return null;
+      const ordered = queryRows(
+        rows.map((row) => row as unknown as Record<string, unknown>),
+        { orderBy: args.orderBy },
+      );
+      return (ordered[0] as unknown as FakeSession) ?? null;
+    },
+    findUnique: async (args: {
+      where: { tokenHash?: string; id?: string };
+      include?: { admin?: boolean };
+    }) => {
       for (const session of sessions.values()) {
-        if (session.tokenHash !== args.where.tokenHash) continue;
+        if (args.where.id !== undefined && session.id !== args.where.id) continue;
+        if (args.where.tokenHash !== undefined && session.tokenHash !== args.where.tokenHash) {
+          continue;
+        }
         if (args.include?.admin) {
           const admin = users.get(session.adminId);
           return admin ? { ...session, admin } : null;
@@ -544,6 +610,11 @@ export const fakeDb = {
       const matched = queryRows(rows, args ?? {});
       return matched.map((row) => row as unknown as FakeAuditLog);
     },
+    count: async (args?: { where?: Where }) => {
+      return [...auditLogs.values()].filter((row) =>
+        matches(row as unknown as Record<string, unknown>, args?.where),
+      ).length;
+    },
   },
 
   category: createTaxonomyDelegate(categories),
@@ -585,6 +656,8 @@ export const fakeDb = {
   catalogMetadata: createRowDelegate<FakeCatalogMetadata>(catalogMetadata, {
     version: 1,
   }),
+
+  $queryRaw: async (_strings: TemplateStringsArray, ..._values: unknown[]) => [{ ok: 1 }],
 
   $transaction: async (
     arg: Promise<unknown>[] | ((tx: unknown) => Promise<unknown>),
@@ -808,5 +881,23 @@ export function addFakeCatalogMetadata(
 ): FakeCatalogMetadata {
   const row = defaults<FakeCatalogMetadata>(input, { version: 1 });
   catalogMetadata.set(row.id, row);
+  return row;
+}
+
+export function addFakeAuditLog(
+  input: Partial<FakeAuditLog> & { id: string; action: string; entity: string },
+): FakeAuditLog {
+  const row: FakeAuditLog = {
+    actorId: null,
+    actorRole: null,
+    tenantId: null,
+    entityId: null,
+    metadata: {},
+    ipAddress: null,
+    userAgent: null,
+    timestamp: new Date(),
+    ...input,
+  };
+  auditLogs.set(row.id, row);
   return row;
 }
