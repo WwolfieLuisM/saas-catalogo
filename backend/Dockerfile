@@ -7,6 +7,8 @@ COPY package.json package-lock.json ./
 RUN npm ci
 
 FROM base AS build
+ARG DATABASE_URL="postgresql://build:build@localhost:5432/build"
+ENV DATABASE_URL=$DATABASE_URL
 COPY --from=deps /app/node_modules ./node_modules
 COPY package.json tsconfig.json tsconfig.build.json prisma7.config.ts ./
 COPY prisma ./prisma

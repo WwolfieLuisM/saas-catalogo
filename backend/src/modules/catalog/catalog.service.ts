@@ -249,20 +249,11 @@ export async function planCatalogBump(
   tenantId: string,
   client: PrismaClient | Prisma.TransactionClient = getPrisma(),
 ): Promise<CatalogBumpOp> {
-  const existing = await client.catalogMetadata.findFirst({ where: { tenantId } });
-
-  if (existing) {
-    return {
-      op: client.catalogMetadata.update({
-        where: { id: existing.id },
-        data: { version: existing.version + 1 },
-      }),
-    };
-  }
-
   return {
-    op: client.catalogMetadata.create({
-      data: { id: randomUUID(), tenantId, version: 1 },
+    op: client.catalogMetadata.upsert({
+      where: { tenantId },
+      update: { version: { increment: 1 } },
+      create: { id: randomUUID(), tenantId, version: 1 },
     }),
   };
 }

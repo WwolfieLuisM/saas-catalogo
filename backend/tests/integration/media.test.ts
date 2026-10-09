@@ -478,23 +478,20 @@ describe('DELETE de media', () => {
     expect(body.error?.code).toBe('MEDIA_NOT_FOUND');
   });
 
-  it('devuelve 502 y conserva la fila si cloudinary falla al borrar', async () => {
+  it('elimina la fila aunque Cloudinary falle al borrar el asset', async () => {
     const game = seedGame();
     await uploadFile(`${GAMES}/${game.id}/cover`, adminToken);
+    const publicId = `tenants/${T_JAVIER}/games/${game.slug}/cover`;
     destroyImageMock.mockImplementationOnce(async () => {
       throw new Error('destroy caído');
     });
 
-    const { status, body } = await api(
-      `${GAMES}/${game.id}/cover`,
-      { method: 'DELETE' },
-      adminToken,
-    );
+    const { status } = await api(`${GAMES}/${game.id}/cover`, { method: 'DELETE' }, adminToken);
 
-    expect(status).toBe(502);
-    expect(body.error?.code).toBe('MEDIA_DELETE_FAILED');
-    expect(mediaRows()).toHaveLength(1);
-    expect(mediaRows()[0]?.status).toBe('OK');
+    expect(status).toBe(200);
+    expect(destroyImageMock).toHaveBeenCalledWith(publicId);
+    expect(mediaRows()).toHaveLength(0);
+    expect(assets.has(publicId)).toBe(true);
   });
 
   it('elimina una captura concreta', async () => {
@@ -840,13 +837,13 @@ describe('versionado del catálogo en media', () => {
     expect(catalogVersion()).toBe(2);
   });
 
-  it('no incrementa la versión si el juego está oculto', async () => {
+  it('incrementa la versión si el juego está oculto (bump incondicional)', async () => {
     const game = seedGame({ availability: false });
     addFakeCatalogMetadata({ id: randomUUID(), tenantId: T_JAVIER, version: 1 });
 
     const { status } = await uploadFile(`${GAMES}/${game.id}/cover`, adminToken);
 
     expect(status).toBeLessThan(300);
-    expect(catalogVersion()).toBe(1);
+    expect(catalogVersion()).toBe(2);
   });
 });

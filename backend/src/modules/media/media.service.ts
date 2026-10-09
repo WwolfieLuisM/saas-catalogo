@@ -164,9 +164,7 @@ export async function uploadCover(
       }),
     ];
 
-    if (game.availability) {
-      ops.push((await planCatalogBump(game.tenantId)).op);
-    }
+    ops.push((await planCatalogBump(game.tenantId)).op);
 
     const [row] = (await prisma.$transaction(ops)) as [GameMedia, ...unknown[]];
 
@@ -280,9 +278,7 @@ export async function uploadScreenshot(
       }),
     ];
 
-    if (game.availability) {
-      ops.push((await planCatalogBump(game.tenantId)).op);
-    }
+    ops.push((await planCatalogBump(game.tenantId)).op);
 
     const [row] = (await prisma.$transaction(ops)) as [GameMedia, ...unknown[]];
     return row;
@@ -304,14 +300,6 @@ export async function deleteCover(gameId: string, auth: AuthContext | null, meta
     throw new AppError(404, 'MEDIA_NOT_FOUND', 'Portada no encontrada');
   }
 
-  if (row.publicId) {
-    try {
-      await destroyImage(row.publicId);
-    } catch {
-      throw new AppError(502, 'MEDIA_DELETE_FAILED', 'No se pudo eliminar la imagen en Cloudinary');
-    }
-  }
-
   const ops: Prisma.PrismaPromise<unknown>[] = [
     prisma.gameMedia.delete({ where: { id: row.id } }),
     prisma.auditLog.create({
@@ -326,13 +314,14 @@ export async function deleteCover(gameId: string, auth: AuthContext | null, meta
         userAgent: meta.userAgent,
       }),
     }),
+    (await planCatalogBump(game.tenantId)).op,
   ];
 
-  if (game.availability && row.status === 'OK') {
-    ops.push((await planCatalogBump(game.tenantId)).op);
-  }
-
   await prisma.$transaction(ops);
+
+  if (row.publicId) {
+    await destroyImage(row.publicId).catch(() => undefined);
+  }
 
   return { id: row.id };
 }
@@ -352,14 +341,6 @@ export async function deleteScreenshot(
     throw new AppError(404, 'MEDIA_NOT_FOUND', 'Captura no encontrada');
   }
 
-  if (row.publicId) {
-    try {
-      await destroyImage(row.publicId);
-    } catch {
-      throw new AppError(502, 'MEDIA_DELETE_FAILED', 'No se pudo eliminar la imagen en Cloudinary');
-    }
-  }
-
   const ops: Prisma.PrismaPromise<unknown>[] = [
     prisma.gameMedia.delete({ where: { id: row.id } }),
     prisma.auditLog.create({
@@ -374,13 +355,14 @@ export async function deleteScreenshot(
         userAgent: meta.userAgent,
       }),
     }),
+    (await planCatalogBump(game.tenantId)).op,
   ];
 
-  if (game.availability && row.status === 'OK') {
-    ops.push((await planCatalogBump(game.tenantId)).op);
-  }
-
   await prisma.$transaction(ops);
+
+  if (row.publicId) {
+    await destroyImage(row.publicId).catch(() => undefined);
+  }
 
   return { id: row.id };
 }
@@ -447,9 +429,7 @@ export async function reorderScreenshots(
     }),
   ];
 
-  if (game.availability && shots.some((shot) => shot.status === 'OK')) {
-    ops.push((await planCatalogBump(game.tenantId)).op);
-  }
+  ops.push((await planCatalogBump(game.tenantId)).op);
 
   await prisma.$transaction(ops);
 
@@ -597,12 +577,7 @@ export async function scanMedia(
       }),
     );
 
-    const affectedIds = [...new Set([...missing, ...restorable].map((row) => row.gameId))];
-    const visibleGames = await prisma.tenantGame.findMany({
-      where: { id: { in: affectedIds }, availability: true, deletedAt: null },
-      select: { id: true },
-    });
-    if (visibleGames.length > 0) {
+    if (missing.length > 0 || restorable.length > 0) {
       ops.push((await planCatalogBump(tenantId)).op);
     }
 

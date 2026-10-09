@@ -272,7 +272,7 @@ Errores:
 404 TENANT_NOT_FOUND   # slug inexistente o tenant inactivo
 ```
 
-Versionado: las operaciones que alteran lo visible en el catálogo incrementan `version` (crear/editar/eliminar juegos visibles, publicar/restaurar, subir/borrar media de juegos visibles, crear o renombrar taxonomía del tenant, aplicar precios). Las operaciones privadas (reglas de precio, juegos ocultos, edición sin cambios públicos) no incrementan la versión.
+Versionado (bump incondicional desde la auditoría 2026-10-09): toda mutación de catálogo incrementa `version` sin comprobar visibilidad — crear/editar/eliminar/restaurar/duplicar juegos, subir/borrar/reordenar/escanear media, crear o renombrar taxonomía del tenant, aplicar precios y alternar `showUnavailable` — de modo que un cambio nunca puede quedar fuera del snapshot (el coste son recargas de más, nunca datos obsoletos). Excepción: un `PATCH` de juego sin ningún cambio público y el CRUD de reglas de precio (los precios se materializan con `apply`) no incrementan. El incremento es atómico (`upsert` con `version: { increment: 1 }`), sin lost update entre peticiones concurrentes.
 
 Ejemplos:
 
@@ -635,11 +635,31 @@ Nunca almacenar en Git:
 
 ## Deuda documentada (aceptada)
 
-- **D1 — `npm audit` (deepmerge-ts < 8, high; mysql2, high)**: alcanzables solo vía arbol de dependencias del CLI `prisma` (`@prisma/client → prisma → @prisma/config → deepmerge-ts`); `mysql2` no es alcanzable (el runtime usa `@prisma/adapter-pg`). Corregir requiere forzar `@prisma/client@2.15.0` (roto). **Nunca ejecutar `npm audit fix --force`**; revisar en el próximo bump de Prisma.
-- **L1**: el chequeo de "último SUPER_ADMIN" ocurre fuera de la transacción (ventana mínima; solo SUPER_ADMIN puede desactivar a otro SUPER_ADMIN).
+- **D1 — `npm audit` (2026-10-09: 0 critical, 4 high, 1 moderate)**: `deepmerge-ts < 8` (high) y `mysql2` (high + moderate GHSA-rgwj-5xj2-c3m3) alcanzables solo vía árbol de dependencias del CLI `prisma` (`@prisma/client → prisma → @prisma/config → deepmerge-ts`); `mysql2` no es alcanzable en el runtime (usa `@prisma/adapter-pg`); `@prisma/client` sale como moderate por la ruta de prisma. **Nunca ejecutar `npm audit fix --force`**; revisar en el próximo bump de Prisma.
+- **C1 (resuelto 2026-10-09)**: las migraciones `fase7_pricing` y `fase11_config_backups_tokenversion` tenían el DDL aplicado en Neon (vía `db push`/SQL manual) pero sin registrar en `_prisma_migrations` → `npx prisma migrate deploy` (CMD del `Dockerfile`) habría fallado en cada arranque. Reconciliado con `npx prisma migrate resolve --applied <migración>` para ambas; `migrate status` queda en "Database schema is up to date". Si vuelven a aplicar DDL manualmente, repetir `migrate resolve`.
+- **L1**: el chequeo de "último SUPER_ADMIN" ocurre fuera de la transacción (ventana mínima; solo SUPER_ADMIN puede desactivar a otro SUPER_ADMIN). Incluye la carrera de doble `refresh` con el mismo token (dos sesiones válidas sin `REFRESH_REUSE_DETECTED`; mitigado por `tokenVersion`).
 - **L2**: `JWT_REFRESH_SECRET` se declara en `envSchema` por cumplimiento del spec pero no se usa (el refresh token es opaco y se guarda hasheado con `JWT_ACCESS_SECRET`).
-- **L3**: rate limiting en memoria (aceptable: una sola instancia Render); para múltiples instancias usar store externo.
+- **L3**: rate limiting en memoria (aceptable: una sola instancia Render); para múltiples instancias usar store externo. `POST /auth/refresh` no tiene rate limit propio (solo el global + el de login).
 - **L5**: cast `as unknown as TaxonomyDb` en pruebas (fakeDb compatible con Prisma sin generar tipos).
+- **M2**: `LOG_LEVEL` se lee en `logger.ts` pero no está declarada en `envSchema`/`.env.example`.
+- **M3**: §7/`docs/Backend+Db.md` documentan `GET /games`, `/categories`, `/genres`, `/platforms` públicos que no existen; el único catálogo público real es `/api/v1/catalog`.
+- **M4**: `memory-bank/techContext.md` dice `src/generated/` commiteado; en realidad está en `.gitignore` (un clon limpio necesita `npm run prisma:generate`).
+- **M5**: README §16–§32/§39/§43/§47 describen un frontend que aún no existe en el repo (`frontend/` solo tiene `.gitkeep`).
+- **H-4**: transacciones interactivas con timeout por defecto de 5 s (`import`/`restore` grandes) y `P2028` sin mapear en `errorHandler` → 500 genérico.
+- **H-5/H-6/H-8**: chequeos de concurrencia sin lock (fingerprint del import, versiones del restore, validación de reglas de precio solapables) — sin corrupción FK, pero con ventanas de lost update.
+- **H-7**: `P2002` se traduce a 409 genérico sin `meta.target` (el cliente no sabe qué campo colisionó).
+- **H-9**: borrar taxonomía deja los puentes intactos; el admin (sin filtro `deletedAt`) y el catálogo público (con filtro) pueden divergir.
+- **H-10**: `scanMedia` consulta Cloudinary antes que la BD; un upload en la ventana puede marcarse `ORPHAN` indebidamente.
+- **H-11**: `publishFromLibrary` omite sin aviso taxonomía global borrada (no cae en `TAXONOMY_MAPPING_INCOMPLETE`).
+- **H-12**: `applyPricing` devuelve una versión calculada fuera de la transacción (puede no ser la persistida).
+- **H-13/H-14/H-16/H-17**: `IMPORT_STARTED` se audita fuera de la tx; `assertTaxonomyRefs` confunde duplicados con inexistentes; códigos Prisma (`P2028`, CHECK) caen a 500; no hay listado de borrados (papelera) para soft delete.
+- **H-19**: `prisma/seed.ts` escribe sin transacción y sin bump de versión.
+- **RBAC H-1**: juegos/media/pricing/taxonomy/import-export no usan `requireRoles` explícito (hoy correcto porque solo existen `ADMIN`/`SUPER_ADMIN`; defense-in-depth si se añade un rol).
+- **RBAC H-2**: `restoreBackup` inserta el payload sin validar `tenantId` por fila (solo SUPER_ADMIN puede llegar; validar con zod antes del `createMany`).
+- **RBAC H-3**: `GET /admin/system` (versión de Node/uptime) accesible a cualquier ADMIN; `GET /health` expone `ok|degraded`.
+- **B4/B5/B6/B9/B10**: `DATABASE_URL` leída fuera del schema Zod; `refresh` sin rate limit propio; `allowScripts` inerte (no hay `@lavamoat/allow-scripts`); `requestLogger` loguea la query completa de `originalUrl`; sin handler de `unhandledRejection`/`uncaughtException`.
+- **B1/B2/B3/B7/B8**: doc de errores sin 429/413 matizado; mensajes 4xx crudos de librerías; `helmet` con defaults; `.gitignore` sin `.next/`/`*.tsbuildinfo`.
+- **Tests — fakeDb no acredita atomicidad**: `$transaction` en `tests/helpers/fakeDb.ts` es `Promise.all`/`fn()` sin rollback, sin aislamiento ni restricciones únicas/CHECK; los tests prueban la lógica de aplicación, no la integridad concurrente en producción (esta última se verifica con `migrate status` + smokes reales contra Neon).
 
 ---
 
@@ -1182,26 +1202,50 @@ A partir de:
 backend/.env.example
 ```
 
-Variables esperadas:
+Variables esperadas (23; fuente de verdad: `backend/.env.example` ↔ `src/config/env.ts`):
 
 ```env
+NODE_ENV=development
+PORT=3000
+
 DATABASE_URL=
-DIRECT_URL=
+DIRECT_DATABASE_URL=
 
 JWT_ACCESS_SECRET=
 JWT_REFRESH_SECRET=
-ACCESS_TOKEN_EXPIRES_IN=
-REFRESH_TOKEN_EXPIRES_IN=
+ACCESS_TOKEN_EXPIRES_IN=15m
+REFRESH_TOKEN_EXPIRES_IN=30d
+
+COOKIE_DOMAIN=
+COOKIE_SECURE=false
+COOKIE_SAME_SITE=lax
+
+CORS_ORIGIN=http://localhost:3001
 
 CLOUDINARY_CLOUD_NAME=
 CLOUDINARY_API_KEY=
 CLOUDINARY_API_SECRET=
+CLOUDINARY_FOLDER=game-catalog
 
-CORS_ORIGIN=
+RATE_LIMIT_WINDOW_MS=900000
+RATE_LIMIT_MAX=100
+LOGIN_RATE_LIMIT_MAX=10
 
-NODE_ENV=development
-PORT=3000
+SEED_ADMIN_USERNAME=
+SEED_ADMIN_PASSWORD=
+SEED_JAVIER_ADMIN_USERNAME=javier-admin
+SEED_JAVIER_ADMIN_PASSWORD=
 ```
+
+`LOG_LEVEL` es opcional (no validada por el schema; por defecto `info`).
+
+Checklist de despliegue (producción):
+
+- `NODE_ENV=production` **obligatorio**: el schema lo tiene en `development` por defecto y solo con `production` se fuerza `COOKIE_SECURE=true`, se prohíbe `CORS_ORIGIN=*` y se activa `trust proxy` (rate limit tras el proxy). El `Dockerfile` ya lo fija; en Render/otro host **declararlo explícitamente**.
+- `DATABASE_URL` y `DIRECT_DATABASE_URL` apuntando a la BD de producción.
+- `JWT_ACCESS_SECRET`/`JWT_REFRESH_SECRET` con ≥32 caracteres y valores distintos a los de desarrollo.
+- `CORS_ORIGIN` con el origen exacto del frontend (nunca `*` en producción).
+- `COOKIE_SECURE=true` (si no va en el Dockerfile) y `COOKIE_DOMAIN` si aplica.
 
 Nunca subir `.env`.
 

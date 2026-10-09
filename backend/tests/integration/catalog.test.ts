@@ -639,7 +639,7 @@ describe('catálogo: versionado', () => {
     expect(await currentVersion()).toBe(2);
   });
 
-  it('no incrementa la versión al crear un juego oculto', async () => {
+  it('incrementa la versión al crear un juego oculto (bump incondicional)', async () => {
     seedCatalog(1);
 
     const created = await api(
@@ -649,7 +649,7 @@ describe('catálogo: versionado', () => {
     );
     expect(created.status).toBeLessThan(300);
 
-    expect(await currentVersion()).toBe(1);
+    expect(await currentVersion()).toBe(2);
   });
 
   it('incrementa la versión al publicar un juego oculto con PATCH', async () => {
@@ -690,14 +690,35 @@ describe('catálogo: versionado', () => {
     expect(await currentVersion()).toBe(3);
   });
 
-  it('no incrementa al eliminar un juego oculto', async () => {
+  it('incrementa al eliminar un juego oculto (bump incondicional)', async () => {
     const game = seedGame({ availability: false });
     seedCatalog(2);
 
     const deleted = await api(`${GAMES}/${game.id}`, { method: 'DELETE' }, adminToken);
     expect(deleted.status).toBeLessThan(300);
 
-    expect(await currentVersion()).toBe(2);
+    expect(await currentVersion()).toBe(3);
+  });
+
+  it('incrementa dos veces ante bumps concurrentes (sin lost update)', async () => {
+    seedCatalog(7);
+
+    const [first, second] = await Promise.all([
+      api(
+        `${GENRES}`,
+        { method: 'POST', body: JSON.stringify({ name: 'Accion', slug: 'accion' }) },
+        adminToken,
+      ),
+      api(
+        `${GENRES}`,
+        { method: 'POST', body: JSON.stringify({ name: 'RPG', slug: 'rpg' }) },
+        adminToken,
+      ),
+    ]);
+    expect(first.status).toBeLessThan(300);
+    expect(second.status).toBeLessThan(300);
+
+    expect(await currentVersion()).toBe(9);
   });
 
   it('incrementa la versión al crear taxonomía tenant', async () => {

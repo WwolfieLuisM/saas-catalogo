@@ -446,6 +446,22 @@ function createRowDelegate<T extends { id: string }>(
       Object.assign(row, { updatedAt: new Date() });
       return row;
     },
+    upsert: async (args: {
+      where: Where;
+      update: Record<string, unknown>;
+      create: Record<string, unknown> & { id: string };
+    }) => {
+      for (const row of store.values()) {
+        if (matches(asRow(row), args.where)) {
+          applyData(row as unknown as Record<string, unknown>, args.update);
+          Object.assign(row, { updatedAt: new Date() });
+          return row;
+        }
+      }
+      const created = defaults<T>(args.create as Partial<T>, extraDefaults);
+      store.set(created.id, created);
+      return created;
+    },
     delete: async (args: { where: { id: string } }) => {
       const row = store.get(args.where.id);
       if (!row) throw new Error('row not found');

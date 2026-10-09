@@ -416,9 +416,7 @@ async function publishFromLibrary(
     }),
   );
 
-  if (input.availability) {
-    ops.push((await planCatalogBump(tenantId)).op);
-  }
+  ops.push((await planCatalogBump(tenantId)).op);
 
   const [row] = (await prisma.$transaction(ops)) as [TenantGame, ...unknown[]];
   return row;
@@ -510,9 +508,7 @@ export async function createGame(
       }),
     );
 
-    if (input.availability) {
-      ops.push((await planCatalogBump(tenantId)).op);
-    }
+    ops.push((await planCatalogBump(tenantId)).op);
 
     const [created] = (await prisma.$transaction(ops)) as [TenantGame, ...unknown[]];
     row = created;
@@ -734,9 +730,7 @@ export async function deleteGame(id: string, auth: AuthContext | null, meta: Req
     }),
   ];
 
-  if (row.availability) {
-    ops.push((await planCatalogBump(row.tenantId)).op);
-  }
+  ops.push((await planCatalogBump(row.tenantId)).op);
 
   const [deleted] = (await prisma.$transaction(ops)) as [TenantGame, ...unknown[]];
 
@@ -771,9 +765,7 @@ export async function restoreGame(id: string, auth: AuthContext | null, meta: Re
     }),
   ];
 
-  if (row.availability) {
-    ops.push((await planCatalogBump(row.tenantId)).op);
-  }
+  ops.push((await planCatalogBump(row.tenantId)).op);
 
   const [restored] = (await prisma.$transaction(ops)) as [TenantGame, ...unknown[]];
 
@@ -874,6 +866,8 @@ export async function duplicateGame(id: string, auth: AuthContext | null, meta: 
       }),
     }),
   );
+
+  ops.push((await planCatalogBump(source.tenantId)).op);
 
   const [copy] = (await prisma.$transaction(ops)) as [TenantGame, ...unknown[]];
 
