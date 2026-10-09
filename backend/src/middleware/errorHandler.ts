@@ -75,6 +75,18 @@ export const errorHandler: ErrorRequestHandler = (error, _req, res, _next) => {
     return;
   }
 
+  if (bodyError.type === 'entity.too.large') {
+    res.status(413).json({
+      success: false,
+      error: {
+        code: 'PAYLOAD_TOO_LARGE',
+        message: 'Cuerpo de la solicitud demasiado grande',
+        details: null,
+      },
+    });
+    return;
+  }
+
   const clientStatus = bodyError.statusCode ?? bodyError.status;
 
   if (typeof clientStatus === 'number' && clientStatus >= 400 && clientStatus < 500) {

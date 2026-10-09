@@ -282,7 +282,7 @@ curl -H 'If-None-Match: "v5"' "http://localhost:3000/api/v1/catalog?tenant=javie
 curl "http://localhost:3000/api/v1/catalog/sync?tenant=javier&since=5"
 ```
 
-## Admin API (dashboard, sesiones, auditoría, sistema, config, backups)
+## Admin API (dashboard, sesiones, auditoría, sistema, config, backups, import/export)
 
 Endpoints autenticados bajo `/api/v1/admin/*` (roles `ADMIN` y `SUPER_ADMIN`):
 
@@ -297,6 +297,13 @@ PATCH  /api/v1/admin/config
 GET    /api/v1/admin/backups
 POST   /api/v1/admin/backups
 POST   /api/v1/admin/backups/:id/restore
+GET    /api/v1/admin/export/catalog
+GET    /api/v1/admin/export/media-manifest
+POST   /api/v1/admin/import/validate
+POST   /api/v1/admin/import/preview
+POST   /api/v1/admin/import/backup
+POST   /api/v1/admin/import/run
+POST   /api/v1/admin/games/:id/duplicate
 ```
 
 Dashboard (`GET /api/v1/admin/dashboard?tenantId=<uuid>`):
@@ -340,6 +347,21 @@ Backups (`GET|POST /api/v1/admin/backups`, `POST /:id/restore`):
 - `GET` lista paginado ordenado por `createdAt` desc sin exponer el payload; `ADMIN` solo ve las suyas (`?tenantId` ajeno → `403`), `SUPER_ADMIN` todas o filtra (`422` si no existe).
 - `POST /:id/restore` es exclusivo `SUPER_ADMIN` y exige `{ "confirm": "RESTAURAR" }` (`422 RESTORE_CONFIRM_REQUIRED`); aplica el snapshot transaccionalmente (borra y reinserta el alcance de la copia), avanza la versión del catálogo (`max(actual, copia) + 1`) y audita `RESTORE_COMPLETED`. Copia inexistente → `404 BACKUP_NOT_FOUND`; payload corrupto → `422 BACKUP_PAYLOAD_INVALID`.
 
+Import/Export (Fase 12, `/api/v1/admin/export` y `/api/v1/admin/import`):
+
+- `GET /export/catalog` devuelve el catálogo completo (`schema: luismi-platform/catalog@1`, `tenant`, `version`, `games[]` con referencias por slug) y `Content-Disposition: attachment` (`catalogo-<tenant>.json`); audita `CATALOG_EXPORTED` con metadata mínima no sensible. `GET /export/media-manifest` lista los assets reales de Cloudinary (`luismi-platform/media-manifest@1`, `manifest-multimedia-<tenant>.json`) y audita `MEDIA_MANIFEST_EXPORTED`.
+- `POST /import/validate` valida sin mutar: formato estricto (`games` con campos conocidos, entradas de hasta 50 géneros/plataformas) y referencias por slug (`categorySlug`, `genreSlugs`, `platformSlugs`, `baseGameSlug`) resueltas contra la DB del tenant; inexistentes → conflictos explícitos en `errors`.
+- `POST /import/preview` calcula `changes` (`create`/`update`/`delete`/`unchanged`) y `fingerprint` (sha256 de versión + `id`/`updatedAt`/`deletedAt` de cada fila) sin escribir nada: juegos activos ausentes del archivo se marcan para soft delete, campos de biblioteca (`origin`, `baseGameId` y metadatos copiados) solo generan warnings, y el slug de un juego ya eliminado → `422 IMPORT_VALIDATION_FAILED`.
+- `POST /import/backup` crea la copia de seguridad `PRE_IMPORT` (`COMPLETED`) del alcance del tenant, requerida por `run`.
+- `POST /import/run` exige `{ catalog, confirm: "IMPORTAR", backupId, fingerprint }`: copia inexistente → `404 BACKUP_NOT_FOUND`, no `PRE_IMPORT`/de otro tenant → `422 IMPORT_BACKUP_INVALID`, formato inválido → `422 IMPORT_FORMAT_INVALID`, confirm ausente → `400 VALIDATION_ERROR` y otro valor → `422 IMPORT_CONFIRM_REQUIRED`; si el catálogo cambió entre preview y run (fingerprint de otra versión) → `409 IMPORT_PREVIEW_STALE` sin tocar datos. Aplica altas/cambios/borrados en una única transacción all-or-nothing, audita `IMPORT_STARTED` y `IMPORT_COMPLETED` con contadores y avanza `CatalogMetadata.version`.
+- La entrada usa el formato del export: ids ignorados (siempre se resuelve por slug), `id` opcional solo como hint, y `tenantId` del archivo se ignora (el servidor usa el de la sesión). Roundtrip export→import con el mismo archivo reporta `unchanged` total (la comparación de `requirements` es insensible al orden de claves jsonb).
+- Límites de cuerpo: `/import` acepta JSON hasta 5 MB (`413 PAYLOAD_TOO_LARGE`); el resto de rutas admin mantiene 1 MB.
+
+Duplicar juego (`POST /api/v1/admin/games/:id/duplicate`):
+
+- Crea siempre una entidad nueva (nunca reutiliza el id): slug `-copia` (o `-copia-2`, `-copia-3`… si está ocupado), título con sufijo `(copia)` (máx. 150), `origin: PERSONALIZADO`, `baseGameId: null`, `availability: false`, precio/requirements/metadata copiados y puentes de taxonomía replicados; audita `CREATE` con `duplicatedFrom`.
+- Inexistente o de otro tenant (ADMIN) → `404 GAME_NOT_FOUND`; `id` no uuid → `400`; slug agotado → `409 GAME_SLUG_EXISTS`.
+
 Errores comunes:
 
 ```text
@@ -347,8 +369,12 @@ Errores comunes:
 401 UNAUTHENTICATED           # sin token o token inválido
 403 FORBIDDEN                 # rol no autorizado o tenant ajeno en ADMIN
 404 SESSION_NOT_FOUND         # sesión inexistente o de otro admin (ADMIN)
+404 BACKUP_NOT_FOUND          # copia PRE_IMPORT inexistente (import/run)
 409 SESSION_ALREADY_REVOKED   # sesión ya revocada
+409 IMPORT_PREVIEW_STALE      # el catálogo cambió entre preview y run
+413 PAYLOAD_TOO_LARGE         # cuerpo mayor a 5 MB en /import
 422 TENANT_NOT_FOUND          # ?tenantId inexistente (SUPER_ADMIN)
+422 IMPORT_VALIDATION_FAILED  # preview con errores de validación/referencias
 ```
 
 ---
@@ -1016,7 +1042,7 @@ Funciones:
 - media status;
 - system status.
 
-Implementado (backend, Fase 11): los ajustes de catálogo (`publicName`, `whatsapp`, `footer`, `showUnavailable`, `offerOffline`) viven en `GET|PATCH /api/v1/admin/config` (ver §7); `export`/`import`/`duplicate` quedan para Fase 12 y `backup`/`restore` en `/api/v1/admin/backups` (ver §7 y §56).
+Implementado (backend, Fase 11+12): los ajustes de catálogo (`publicName`, `whatsapp`, `footer`, `showUnavailable`, `offerOffline`) viven en `GET|PATCH /api/v1/admin/config` (ver §7); `backup`/`restore` en `/api/v1/admin/backups` (ver §7 y §56); `export`/`import` en `/api/v1/admin/export|import` y `duplicate` en `POST /api/v1/admin/games/:id/duplicate` (ver §7).
 
 ---
 
@@ -1045,6 +1071,8 @@ Nueva versión
 ```
 
 No realizar importaciones destructivas silenciosas.
+
+Implementado (backend, Fase 12): el flujo completo vive en `/api/v1/admin/import` (`validate` → `preview` → `backup` (`PRE_IMPORT`) → `run` con `confirm: "IMPORTAR"`, `backupId` y `fingerprint`), con el export de origen en `/api/v1/admin/export` (ver §7). Ningún paso es destructivo sin confirmación explícita y copia previa; `run` es all-or-nothing en una transacción.
 
 ---
 

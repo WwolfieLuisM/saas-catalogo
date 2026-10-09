@@ -1,7 +1,14 @@
 import { randomUUID } from 'node:crypto';
 import { getPrisma } from '../../config/database.js';
-import { Prisma } from '../../generated/client.js';
-import type { Category, GameMedia, Genre, Platform, TenantGame } from '../../generated/client.js';
+import {
+  Prisma,
+  type Category,
+  type GameMedia,
+  type Genre,
+  type Platform,
+  type PrismaClient,
+  type TenantGame,
+} from '../../generated/client.js';
 import { AppError } from '../../utils/appError.js';
 
 interface CatalogMeta {
@@ -238,13 +245,15 @@ export interface CatalogBumpOp {
   op: Prisma.PrismaPromise<unknown>;
 }
 
-export async function planCatalogBump(tenantId: string): Promise<CatalogBumpOp> {
-  const prisma = getPrisma();
-  const existing = await prisma.catalogMetadata.findFirst({ where: { tenantId } });
+export async function planCatalogBump(
+  tenantId: string,
+  client: PrismaClient | Prisma.TransactionClient = getPrisma(),
+): Promise<CatalogBumpOp> {
+  const existing = await client.catalogMetadata.findFirst({ where: { tenantId } });
 
   if (existing) {
     return {
-      op: prisma.catalogMetadata.update({
+      op: client.catalogMetadata.update({
         where: { id: existing.id },
         data: { version: existing.version + 1 },
       }),
@@ -252,7 +261,7 @@ export async function planCatalogBump(tenantId: string): Promise<CatalogBumpOp> 
   }
 
   return {
-    op: prisma.catalogMetadata.create({
+    op: client.catalogMetadata.create({
       data: { id: randomUUID(), tenantId, version: 1 },
     }),
   };

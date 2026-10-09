@@ -780,3 +780,103 @@ export async function restoreGame(id: string, auth: AuthContext | null, meta: Re
   const details = await loadDetails([restored]);
   return tenantGameDto(restored, details.get(restored.id) as GameDetail);
 }
+
+const COPY_SUFFIX = 'copia';
+
+function copySuffix(counter: number): string {
+  return counter > 1 ? `-${COPY_SUFFIX}-${counter}` : `-${COPY_SUFFIX}`;
+}
+
+export async function duplicateGame(id: string, auth: AuthContext | null, meta: RequestMeta) {
+  const source = await findRow(id, false);
+  assertRowAccess(source, auth);
+  const prisma = getPrisma();
+
+  let counter = 1;
+  let candidate = '';
+  while (counter <= 1000) {
+    const suffix = copySuffix(counter);
+    const base = source.slug.slice(0, 50 - suffix.length).replace(/-+$/, '');
+    candidate = `${base}${suffix}`;
+    const taken = await prisma.tenantGame.findFirst({
+      where: { tenantId: source.tenantId, slug: candidate },
+    });
+    if (!taken) break;
+    counter += 1;
+  }
+  if (counter > 1000) {
+    throw new AppError(409, 'GAME_SLUG_EXISTS', 'Ya existe un juego con ese slug en el catálogo');
+  }
+
+  const titleSuffix = ' (copia)';
+  const copyTitle = `${source.title.slice(0, 150 - titleSuffix.length).trimEnd()}${titleSuffix}`;
+
+  const [genreBridges, platformBridges] = await Promise.all([
+    prisma.tenantGameGenre.findMany({ where: { tenantGameId: source.id } }),
+    prisma.gamePlatform.findMany({ where: { tenantGameId: source.id } }),
+  ]);
+  const genreIds = genreBridges.map((bridge) => bridge.genreId);
+  const platformIds = platformBridges.map((bridge) => bridge.platformId);
+
+  const newId = randomUUID();
+  const ops: Prisma.PrismaPromise<unknown>[] = [
+    prisma.tenantGame.create({
+      data: {
+        id: newId,
+        tenantId: source.tenantId,
+        baseGameId: null,
+        origin: 'PERSONALIZADO',
+        title: copyTitle,
+        slug: candidate,
+        description: source.description,
+        priceMode: source.priceMode,
+        price: source.price,
+        availability: false,
+        sizeValue: source.sizeValue,
+        sizeUnit: source.sizeUnit,
+        releaseYear: source.releaseYear,
+        categoryId: source.categoryId,
+        minimumRequirements: jsonValue(source.minimumRequirements),
+        recommendedRequirements: jsonValue(source.recommendedRequirements),
+        createdBy: auth?.id ?? null,
+        updatedBy: auth?.id ?? null,
+      },
+    }),
+  ];
+
+  if (genreIds.length) {
+    ops.push(
+      prisma.tenantGameGenre.createMany({
+        data: genreIds.map((genreId) => ({ tenantGameId: newId, genreId })),
+      }),
+    );
+  }
+
+  if (platformIds.length) {
+    ops.push(
+      prisma.gamePlatform.createMany({
+        data: platformIds.map((platformId) => ({ tenantGameId: newId, platformId })),
+      }),
+    );
+  }
+
+  ops.push(
+    prisma.auditLog.create({
+      data: auditData({
+        actor: auth,
+        action: 'CREATE',
+        entity: 'TenantGame',
+        entityId: newId,
+        tenantId: source.tenantId,
+        metadata: { origin: 'PERSONALIZADO', slug: candidate, duplicatedFrom: source.id },
+        ipAddress: meta.ipAddress,
+        userAgent: meta.userAgent,
+      }),
+    }),
+  );
+
+  const [copy] = (await prisma.$transaction(ops)) as [TenantGame, ...unknown[]];
+
+  const details = await loadDetails([copy]);
+  return tenantGameDto(copy, details.get(copy.id) as GameDetail);
+}

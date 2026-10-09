@@ -5,6 +5,7 @@ import { requestMeta } from '../../utils/requestMeta.js';
 import {
   createGame,
   deleteGame,
+  duplicateGame,
   getGame,
   listGames,
   restoreGame,
@@ -67,6 +68,13 @@ export function createGamesRouter(): Router {
     const data = await restoreGame(id, req.auth ?? null, requestMeta(req));
 
     res.json({ success: true, data });
+  });
+
+  router.post('/:id/duplicate', async (req, res) => {
+    const { id } = gameIdParamSchema.parse(req.params);
+    const data = await duplicateGame(id, req.auth ?? null, requestMeta(req));
+
+    res.status(201).json({ success: true, data });
   });
 
   return router;

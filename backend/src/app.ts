@@ -14,6 +14,10 @@ import { createBaseGamesRouter } from './modules/base-games/base-games.route.js'
 import { createCatalogRouter } from './modules/catalog/catalog.route.js';
 import { createConfigRouter } from './modules/config/config.route.js';
 import { createDashboardRouter } from './modules/dashboard/dashboard.route.js';
+import {
+  createExportRouter,
+  createImportRouter,
+} from './modules/data-transfer/data-transfer.route.js';
 import { createGamesRouter } from './modules/games/games.route.js';
 import { healthRouter } from './modules/health/health.route.js';
 import { createGameMediaRouter, createMediaRouter } from './modules/media/media.route.js';
@@ -63,6 +67,7 @@ export function createApp() {
       },
     }),
   );
+  app.use('/api/v1/admin/import', express.json({ limit: '5mb' }));
   app.use(express.json({ limit: '1mb' }));
   app.use(cookieParser());
 
@@ -84,6 +89,8 @@ export function createApp() {
   app.use('/api/v1/admin/games', createGameMediaRouter());
   app.use('/api/v1/admin/media', createMediaRouter());
   app.use('/api/v1/admin/pricing', createPricingRouter());
+  app.use('/api/v1/admin/export', createExportRouter());
+  app.use('/api/v1/admin/import', createImportRouter());
   app.use('/api/v1/catalog', createCatalogRouter());
 
   app.use(notFoundHandler);
