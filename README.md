@@ -661,6 +661,17 @@ Nunca almacenar en Git:
 - **B1/B2/B3/B7/B8**: doc de errores sin 429/413 matizado; mensajes 4xx crudos de librerías; `helmet` con defaults; `.gitignore` sin `.next/`/`*.tsbuildinfo`.
 - **Tests — fakeDb no acredita atomicidad**: `$transaction` en `tests/helpers/fakeDb.ts` es `Promise.all`/`fn()` sin rollback, sin aislamiento ni restricciones únicas/CHECK; los tests prueban la lógica de aplicación, no la integridad concurrente en producción (esta última se verifica con `migrate status` + smokes reales contra Neon).
 
+## Despliegue en Render (Fase 13)
+
+Estado: backend **live** en `https://saas-catalogo-api.onrender.com` (servicio `saas-catalogo-api`, commit `48adc29`; detalle y comandos en §38). Implicaciones de seguridad y pendientes reales:
+
+- Los secretos de producción (JWT, Neon, Cloudinary) viven **solo en las env vars del servicio en Render**; no están en Git ni en el repo (`.env` sigue gitignored; verificación `migrate deploy`/arranque sin fugas de secretos en respuestas).
+- `CORS_ORIGIN=http://localhost:3000` es **provisional**: verificado que hace eco exacto del origen (sin `*`) y que orígenes ajenos no reciben `Access-Control-Allow-Origin`; deberá cambiarse en Render cuando exista el frontend publicado (L6 sigue vigente).
+- El health check `/api/v1/health` **no quedó registrado en Render** (el tool MCP no expone `healthCheckPath`); validado manualmente (`status: 'ok'`).
+- Rate limit tras el proxy activo (`NODE_ENV=production` → `trust proxy`); L3 (store en memoria) sigue aceptada con una sola instancia.
+- Plan Free: el servicio se suspende por inactividad → primer request lento tras el reposo (esperado, no es degradación).
+- **Pendientes**: sustituir `CORS_ORIGIN` con el dominio del frontend; registrar el health check en el dashboard de Render; documentación de Fase 13 commiteada (README §38/§15 + memory-bank) sin push (autorización pendiente); deuda §15 anterior (D1, L1-L5, H-*, RBAC, B*) sin cambios por el despliegue.
+
 ---
 
 # 16. Frontend
@@ -1248,6 +1259,58 @@ Checklist de despliegue (producción):
 - `COOKIE_SECURE=true` (si no va en el Dockerfile) y `COOKIE_DOMAIN` si aplica.
 
 Nunca subir `.env`.
+
+## Despliegue en Render (Fase 13, 2026-10-10)
+
+Estado real: el backend está desplegado como **un único Web Service**.
+
+- **Servicio**: `saas-catalogo-api` (ID `srv-db542bt9fdbs73bhrf50`), workspace "Saas-Catalogo".
+- **URL pública**: `https://saas-catalogo-api.onrender.com`.
+- **Repo/rama**: `WwolfieLuisM/saas-catalogo` @ `main`, autos deploy activado, región Oregon (default), plan Free.
+- **Commit desplegado**: `48adc29`.
+- **Node**: `engines` de `backend/package.json` (`>=22`) → Render resolvió **Node 26.11.1**. No hay forma de fijar la versión con el tool MCP de creación.
+- **Puerto**: Render asigna `PORT=10000` (la app lo lee de `env.PORT`; logs: `server started port=10000 nodeEnv=production`).
+
+Comandos reales configurados (el MCP no permite `rootDir`; el prefijo `cd backend && ` equivale a él):
+
+```text
+Build: cd backend && npm ci && npx prisma generate && npm run build
+Start: cd backend && npx prisma migrate deploy && node dist/server.js
+```
+
+Variables configuradas en el servicio (solo nombres; valores en el dashboard de Render, nunca en Git):
+
+```text
+NODE_ENV=production          DATABASE_URL               DIRECT_DATABASE_URL
+JWT_ACCESS_SECRET            JWT_REFRESH_SECRET         CORS_ORIGIN
+COOKIE_SECURE=true           CLOUDINARY_CLOUD_NAME      CLOUDINARY_API_KEY
+CLOUDINARY_API_SECRET        npm_config_include=dev
+```
+
+- `JWT_ACCESS_SECRET`/`JWT_REFRESH_SECRET` en Render son **nuevos** (≥32, distintos de los de desarrollo).
+- `DATABASE_URL`/`DIRECT_DATABASE_URL`: el host **directo** de Neon (sin sufijo `-pooler`) porque Prisma migraciones necesita acceso directo.
+
+### Fallo del primer build y solución
+
+El primer deploy falló (`build_failed`): con `NODE_ENV=production` en el entorno, `npm ci` **omite las devDependencies** (261 paquetes; faltan `@types/*`, `typescript`… → errores TS7016/TS7006 al ejecutar `tsc`).
+
+Solución **sin modificar el repo**: la variable de entorno extra `npm_config_include=dev` (mecanismo de configuración de npm que cancela el omit derivado de `NODE_ENV`) → `npm ci` instala los 394 paquetes completos. Verificado con `npm ci --dry-run` local (sin la variable: `*removed 133`; con ella: sin cambios). El segundo deploy quedó en **live** (build: `✔ Generated Prisma Client` + `tsc` sin errores).
+
+### CORS provisional
+
+- `CORS_ORIGIN=http://localhost:3000` es un valor **provisional** (origen del frontend en desarrollo local). Verificado con eco exacto de cabecera `Access-Control-Allow-Origin` y preflight 204, sin wildcard.
+- **Debe sustituirse** por el origen del frontend desplegado (dominio definitivo) en cuanto exista, desde el dashboard de Render.
+
+### Health check
+
+- Ruta de salud: **`GET /api/v1/health`** (200 con `{success, data:{status: 'ok'|'degraded', database, timestamp}}`; smoke manual contra la URL pública: OK con `status: 'ok'`).
+- **Limitación**: el tool MCP de creación de servicios no expone `healthCheckPath`, así que **no quedó registrado automáticamente en Render**. Validado manualmente; si se quiere el chequeo del dashboard, configurarlo a mano en *Web Service → Health Check Path*.
+
+### Estado de migraciones
+
+El arranque ejecuta `prisma migrate deploy` contra Neon: `5 migrations found` → **"No pending migrations to apply."** (BD pre-sembrada; no ejecutar `migrate dev`/`reset` en producción).
+
+Pendientes reales del despliegue: sustituir `CORS_ORIGIN` cuando exista frontend publicado; registrar el health check en el dashboard; `README` §38/§15 reflejados en este commit.
 
 ---
 

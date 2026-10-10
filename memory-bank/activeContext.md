@@ -1,10 +1,20 @@
 # Active Context
 
 ## Date
-2026-10-09
+2026-10-10
 
 ## Current Focus
-Backend Fases 0-12 completadas. **Auditoría integral del backend (2026-10-09)**: 3 informes de agentes consolidados + verificación propia de críticos; fixes aprobados aplicados (P1-C1 migraciones `migrate resolve`, P2-A1/A2 prisma en dependencies + Dockerfile ARG, P4-H1 `planCatalogBump` upsert atómico, P5-H2 bump incondicional en mutaciones de catálogo, P6-H3 delete de media con destroy post-commit, P7-M6 `.gitignore` para `Saas Catalogo.txt`, P3/M7 doc README §38+§15 sin fail-fast). Gates: format/lint/typecheck/build verdes, **574/574 tests** (+1 regresión H-1), `migrate status` up-to-date, smoke `SMOKE-AUDITORIA-ALL-OK` (29 checks reales), secret scan limpio. Pendiente: commit local de la auditoría (**sin push**) + informe final de 7 puntos con recomendación de publicación. Frontend no iniciado.
+Backend Fases 0-13 completadas. **FASE 13 (2026-10-10): despliegue controlado en Render — COMPLETADA**; **FASE 13.1: documentación del despliegue (README §38/§15 + memory-bank) lista para commit `docs: document fase 13 Render deployment`** (sin push; un único commit de docs autorizado por la fase). Servicio `saas-catalogo-api` (`srv-db542bt9fdbs73bhrf50`, workspace "Saas-Catalogo", Oregon, Free, repo `WwolfieLuisM/saas-catalogo` rama `main`) **live** en `https://saas-catalogo-api.onrender.com` con commit `48adc29`. Build #1 falló (raíz: `NODE_ENV=production` en env → `npm ci` omite devDeps → 261 paq. sin `@types/*` → TS7016/TS7006); corregido sin tocar el repo con env var `npm_config_include=dev` (verificado con `npm ci --dry-run`: 261→394 paq.), build #2 verdes. Migraciones: "No pending migrations to apply". Arranque: puerto Render 10000, nodeEnv=production. Smoke solo-lectura: health 200 (`status:'ok', database:'ok'`, verificado 14:03 UTC), catalog/version (javier) 200 (v41, 2 juegos), tenant inexistente 404, admin/* y auth/me 401 sin token, CORS eco exacto `http://localhost:3000` (provisional) sin wildcard + preflight 204, sin secretos en bodies 200, Cloudinary MCP accesible (solo lectura). JWTs de Render NUEVOS (no los de dev). Prohibido: cambios al servicio/env de Render, Neon y Cloudinary; sin push sin autorización. Frontend no iniciado.
+
+## Recent Changes
+- **Fase 13 (despliegue Render, 2026-10-10)**:
+  - Pre-checks: git `main`==`origin/main` limpio; `npm ci && npx prisma generate && npm run build` verificado localmente; `migrate status` up-to-date (5 migraciones); sin servicio Render previo para el repo.
+  - Limitaciones del MCP Render (sin tool): no `rootDir` → build/start con prefijo `cd backend && ` (equivalente exacto); no `healthCheckPath` → **health check no registrado en Render** (omisión, validar manualmente `/api/v1/health`); no update/delete de servicios → la corrección de build se hizo vía env var.
+  - Creación con las 10 vars §38 (NODE_ENV=production, DATABASE_URL/DIRECT_DATABASE_URL Neon directo, JWT_ACCESS/REFRESH nuevos ≥32, CORS_ORIGIN=http://localhost:3000 provisional, COOKIE_SECURE=true, Cloudinary 3 vars) + autoDeploy=yes; deploy inicial `dep-db542cd9fdbs73bhrgq0` → **build_failed** (omisión de devDeps por NODE_ENV=production; log: "added 261 packages", TS7016/TS7006).
+  - Fix: env var `npm_config_include=dev` (mecanismo documentado de npm que cancela el omit por NODE_ENV; verificado localmente con dry-run A: *removed 133* vs B: *sin cambios*) → deploy `dep-db545dijnfac73964j90` → **live** ("added 394 packages", `✔ Generated Prisma Client`, `tsc` sin errores, Build successful, "No pending migrations to apply", `server started port=10000 nodeEnv=production`).
+  - Node resuelto por Render vía `engines`: 26.11.1 (>=22 ✅). Nginx-free, plan free (spin-down → primer request lento).
+  - Smoke: ver tabla en informe Fase 13; todo green; cross-tenant parcial (solo 1 tenant existe → cubierto por tests); sin escrituras en Neon ni en Cloudinary.
+  - README §38/§15 **no** actualizados con la lección `npm_config_include=dev` (sin commits en Fase 13) → pendiente doc.
 
 ## Recent Changes
 - **Auditoría integral (2026-10-09, orden P1→P2→P4→P6→P5→P7→P3/M7 aprobado)**: 
@@ -106,16 +116,16 @@ Backend Fases 0-12 completadas. **Auditoría integral del backend (2026-10-09)**
 - Cloudinary solo vía REST con fetch (sin dependencia `cloudinary`); multer instalado (`^2.4.0`) + `@types/multer`.
 
 ## Next Steps
-1. **Commit local de la auditoría (P1-P7 + docs) sin push**; secret scan ya limpio.
-2. Push de `81752b3` (F10) + `1ee7d26` (F11) + `4fc0784` (F12) + commit de auditoría **solo tras autorización explícita** del usuario.
-3. Informe final de la auditoría (7 puntos: resumen/estado, tabla hallazgos, correcciones+pruebas, deuda pendiente, gates, git, recomendación de publicación).
-4. Frontend Next.js público + admin; Docker, Render, GitHub Actions, Cloudflare; OpenAPI/Swagger, store de rate limit, D1 en próximo bump de Prisma; deuda H-4..H-17/M2-M5/B1-B10 (README §15).
+1. Commit de documentación Fase 13.1 (`README.md` §38/§15 + memory-bank) con mensaje `docs: document fase 13 Render deployment`; **sin push** hasta autorización.
+2. Push de `81752b3` (F10) + `1ee7d26` (F11) + `4fc0784` (F12) + auditoría + docs de Fase 13 **solo tras autorización explícita** del usuario.
+3. Pendientes del despliegue: sustituir `CORS_ORIGIN` en Render cuando exista el frontend publicado; registrar el health check `/api/v1/health` en el dashboard de Render (MCP no lo permite).
+4. Frontend Next.js público + admin; Docker, GitHub Actions, Cloudflare; OpenAPI/Swagger, store de rate limit, D1 en próximo bump de Prisma; deuda H-4..H-17/M2-M5/B1-B10 (README §15).
 
 ## Open Questions / Blockers
 - ¿El proyecto se monetiza directamente con Javier o se buscan más tenants primero?
 - El one-pager de "skills activation sandbox" quedó pendiente de guardar en `docs/ideas/`.
 - Numeración de fases restantes (README §59 vs numeración en vivo usada hasta ahora).
-- ¿Configurar credenciales Cloudinary reales en Render antes del primer deploy con media?
+- ~~¿Configurar credenciales Cloudinary reales en Render antes del primer deploy con media?~~ Resuelto (Fase 13): las 3 vars de Cloudinary están configuradas en el servicio y verificadas de solo lectura.
 
 ## Session Notes
 - Sesión de 2026-10-08 (mañana): prueba de activación automática de skills — cargaron `code-review-and-quality` y `memory-bank` sin pedirlo.

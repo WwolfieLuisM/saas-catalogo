@@ -21,10 +21,12 @@
 - Auditoría backend completa (solo lectura) con informe de severidad; hallazgos H1/H2/M1/M3/M4/L4/L6 cerrados en Fase 10; D2 cerrado en Fase 11; L1/L2/L3/L5 + D1 documentados como deuda aceptada (README §15).
 
 ## In Progress
-- Fase 12 completa (gates 573/573 + smoke `SMOKE-FASE12-ALL-OK` + README/memory-bank); secret scan limpio; commit local `4fc0784`; **push pendiente de autorización explícita**.
+- **Fase 13.1 (2026-10-10): documentación del despliegue** — README §38 (subsección "Despliegue en Render": servicio, URL, comandos reales, Node/env vars solo-nombres, fix del build #1 con `npm_config_include=dev`, CORS provisional, health check + limitación MCP, migraciones) y §15 (subsección "Despliegue en Render": secretos solo en Render, CORS eco verificado, health sin registrar, plan Free, pendientes) + este memory-bank → **un único commit `docs: document fase 13 Render deployment`, sin push** (autorización pendiente). Servicio y variables de Render/Neon/Cloudinary intactos (solo lectura).
+- Push de `81752b3`/`1ee7d26`/`4fc0784`/`8619046`+docs **solo tras autorización explícita** del usuario.
 
 ## What's Left To Do
 - [x] Fase 12: Import/Export §87 + `POST /admin/games/:id/duplicate` (usa backups `PRE_IMPORT`) — commit `4fc0784`.
+- [x] Fase 13: despliegue controlado en Render (Web Service único, 10 vars, smoke solo lectura) — servicio live, informe entregado.
 - [ ] Auditoría final + gates + commit/push.
 - [ ] Frontend Next.js público + admin.
 - [ ] Docker, Render, GitHub Actions, Cloudflare, monitoring.
@@ -49,3 +51,4 @@
 - 2026-10-08: Fase 10 — correcciones de seguridad H1/H2/M1/M3/M4/L4/L6; 468/468 tests + smoke `SMOKE-FASE10-ALL-OK` (`81752b3`, push pendiente de autorización).
 - 2026-10-09: Fase 11 — migración Neon (TenantSettings cols + Backup + tokenVersion), `GET/PATCH /admin/config`, `GET/POST /admin/backups` + `POST /:id/restore`, revocación por `tokenVersion`; 527/527 tests + smoke `SMOKE-FASE11-ALL-OK` (commit local, push pendiente de autorización).
 - 2026-10-09: Fase 12 — export catalog/media-manifest, import validate/preview/backup/run (§87, refs por slug, fingerprint, `PRE_IMPORT`) y `POST /games/:id/duplicate`; 573/573 tests + smoke `SMOKE-FASE12-ALL-OK` (42 checks); commit local `4fc0784`, push pendiente de autorización.
+- 2026-10-10: Fase 13 — despliegue en Render (`saas-catalogo-api`, `srv-db542bt9fdbs73bhrf50`, Oregon/Free, commit `48adc29`); build #1 falló por devDeps omitidas con `NODE_ENV=production` → fix sin repo con `npm_config_include=dev` (261→394 paq.), build #2 live; migraciones "No pending migrations"; smoke solo-lectura green (health/catalog 200, tenant inexistente 404, admin 401, CORS eco `localhost:3000`, sin secretos, Cloudinary OK); sin commits/push.
