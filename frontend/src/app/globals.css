@@ -1,0 +1,58 @@
+/* Tokens de diseño — espejo de adminv2.html / feed v17 (premium dark + oro) */
+:root {
+  --au: #d9b872;
+  --au-strong: #e8c98a;
+  --au-soft: rgba(217, 184, 114, 0.14);
+
+  --bg: #0b0e12;
+  --bg-elev: #12171d;
+  --surface: #171d25;
+  --line: #263140;
+
+  --text: #e8edf2;
+  --text-dim: #9aa7b5;
+
+  --danger: #ff6b6b;
+  --ok: #51cf66;
+  --warn: #ffd43b;
+
+  --radius: 12px;
+  --radius-sm: 8px;
+
+  /* TODO(E0): self-hostear woff2 en public/fonts (next/font falla con red frágil) */
+  --font-display: 'Big Shoulders Display', 'Arial Narrow', Impact, sans-serif;
+  --font-body: 'Manrope', system-ui, -apple-system, 'Segoe UI', sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  line-height: 1.55;
+}
+
+a {
+  color: var(--au);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--au-strong);
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
+  letter-spacing: 0.02em;
+  line-height: 1.1;
+  margin: 0 0 0.5em;
+  font-weight: 700;
+}
