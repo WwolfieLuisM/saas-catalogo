@@ -175,7 +175,7 @@ export default function ConfigSistemaPage() {
       <section className="sec">
         <h2>Plataforma</h2>
         <div className="panel">
-          <b>Javier PC</b>
+          <b>JAVIER</b>
           <p className="hint">Plataforma desarrollada y mantenida por Luismi.</p>
         </div>
       </section>
