@@ -197,7 +197,7 @@ describe('GET /api/v1/admin/audit', () => {
   });
 
   it('SUPER_ADMIN con ?tenantId filtra por ese tenant y 422 si no existe', async () => {
-    const filtrado = await api(`/api/v1/admin/audit?tenantId=${TENANT_JAVIER}`, {}, superToken);
+    const filtrado = await api<AuditLogView[]>(`/api/v1/admin/audit?tenantId=${TENANT_JAVIER}`, {}, superToken);
     expect(filtrado.status).toBe(200);
     expect(filtrado.body.meta?.total).toBe(4);
     expect(

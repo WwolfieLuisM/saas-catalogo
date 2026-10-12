@@ -57,8 +57,11 @@ test('Administración es solo SUPER_ADMIN (administradores, auditoría y sesione
   const saConfig = saGroups.find((g) => g.group === 'Configuración');
   const adminConfig = adminGroups.find((g) => g.group === 'Configuración');
   assert.equal(saConfig?.items.length, 7);
-  assert.equal(adminConfig?.items.length, 6);
+  assert.equal(adminConfig?.items.length, 5);
   assert.ok(!adminConfig?.items.some((i) => i.key === 'configuracion/sistema'));
+  assert.ok(!adminConfig?.items.some((i) => i.key === 'configuracion/general'));
+  assert.ok(adminConfig?.items.some((i) => i.key === 'configuracion/catalogo'));
+  assert.ok(adminConfig?.items.some((i) => i.key === 'configuracion/precios'));
   assert.ok(saConfig?.items.some((i) => i.key === 'configuracion/sistema'));
 });
 

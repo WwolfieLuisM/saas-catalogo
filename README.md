@@ -284,7 +284,7 @@ curl "http://localhost:3000/api/v1/catalog/sync?tenant=javier&since=5"
 
 ## Admin API (dashboard, sesiones, auditoría, sistema, config, backups, import/export)
 
-Endpoints autenticados bajo `/api/v1/admin/*` (roles `ADMIN` y `SUPER_ADMIN`):
+Endpoints autenticados bajo `/api/v1/admin/*`; los permisos dependen de cada ruta. Auditoría, listado de sesiones y revocación de sesiones son exclusivos de `SUPER_ADMIN`:
 
 ```text
 GET    /api/v1/admin/dashboard
@@ -314,20 +314,21 @@ Dashboard (`GET /api/v1/admin/dashboard?tenantId=<uuid>`):
 
 Sesiones (`GET /api/v1/admin/sessions`):
 
-- Filtros: `status` (`active` por defecto, `revoked`, `all`), `q` (sobre `userAgent`), `tenantId` (mismas reglas de dashboard) y paginación estándar (`page`, `limit`, `meta`). Orden estable por `createdAt` desc y luego `id` desc.
+- Exclusivo de `SUPER_ADMIN`; `ADMIN` recibe `403 FORBIDDEN`, incluso al indicar su propio `tenantId`. `SUPER_ADMIN` puede consultar globalmente o filtrar por tenant.
+- Filtros: `status` (`active` por defecto, `revoked`, `all`), `q` (sobre `userAgent`), `tenantId` y paginación estándar (`page`, `limit`, `meta`). Orden estable por `createdAt` desc y luego `id` desc.
 - El DTO expone `id`, `adminId`, `adminUsername`, `adminRole`, `tenantId`, `userAgent`, `ipAddress`, `createdAt`, `lastUsedAt`, `expiresAt`, `revokedAt` e `isCurrent`; nunca `tokenHash` ni tokens.
 - `isCurrent` marca la sesión activa más reciente del usuario autenticado (heurística: el JWT no lleva `sessionId` y la cookie de refresh no llega a `/admin/*`); con varias sesiones simultáneas el distintivo puede señalar otra dispositivo.
 
 Revocación (`DELETE /api/v1/admin/sessions/:id`):
 
-- `ADMIN` solo revoca las suyas (ajena o inexistente → `404 SESSION_NOT_FOUND`); `SUPER_ADMIN` cualquier sesión. Ya revocada → `409 SESSION_ALREADY_REVOKED`. El id debe ser un uuid (`400` si no).
+- Exclusivo de `SUPER_ADMIN`; `ADMIN` recibe `403 FORBIDDEN`. `SUPER_ADMIN` puede revocar sesiones de cualquier administrador. Ya revocada → `409 SESSION_ALREADY_REVOKED`. El id debe ser un uuid (`400` si no).
 - Revoca y audita `SESSION_REVOKED` (entidad `AdminSession`, metadata `adminId`) en una única transacción. El refresh de esa sesión queda invalidado de inmediato (`401 REFRESH_REUSE_DETECTED`); el access token sigue siendo válido hasta su expiración (JWT sin estado). En el propio dispositivo conviene `POST /auth/logout`.
 
 Auditoría (`GET /api/v1/admin/audit`):
 
 - Solo lectura: no existen endpoints de escritura (POST/PATCH/DELETE responden `404`). Los eventos se escriben exclusivamente desde los servicios con `auditData()`.
 - Filtros: `action` y `entity` (exactos), `from`/`to` (ISO 8601 con offset, `from <= to`), `q` (acción, entidad, `entityId` o username del actor, insensible a mayúsculas), `tenantId` y paginación. Orden por `timestamp` desc y luego `id` desc.
-- `ADMIN` siempre ve su tenant (tenant ajeno → `403`); `SUPER_ADMIN` ve el global incluyendo eventos de plataforma (`tenantId: null`) o filtra por tenant (`422` si no existe).
+- Exclusivo de `SUPER_ADMIN`; `ADMIN` recibe `403 FORBIDDEN` incluso si solicita su propio tenant. `SUPER_ADMIN` ve el global incluyendo eventos de plataforma (`tenantId: null`) o filtra por tenant (`422` si no existe).
 - Cada evento incluye `actorUsername` resuelto y `metadata`; no expone `userAgent`, `tokenHash` ni credenciales.
 
 Sistema (`GET /api/v1/admin/system`):
@@ -368,7 +369,7 @@ Errores comunes:
 400 VALIDATION_ERROR          # parámetros o fechas inválidos
 401 UNAUTHENTICATED           # sin token o token inválido
 403 FORBIDDEN                 # rol no autorizado o tenant ajeno en ADMIN
-404 SESSION_NOT_FOUND         # sesión inexistente o de otro admin (ADMIN)
+404 SESSION_NOT_FOUND         # sesión inexistente (SUPER_ADMIN)
 404 BACKUP_NOT_FOUND          # copia PRE_IMPORT inexistente (import/run)
 409 SESSION_ALREADY_REVOKED   # sesión ya revocada
 409 IMPORT_PREVIEW_STALE      # el catálogo cambió entre preview y run

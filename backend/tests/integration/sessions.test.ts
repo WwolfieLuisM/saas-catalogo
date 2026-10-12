@@ -360,7 +360,7 @@ describe('DELETE /api/v1/admin/sessions/:id', () => {
   });
 
   it('al revocar la sesión de un admin el refresh queda invalidado y el access sigue vigente', async () => {
-    const { status, body } = await api<SessionView>(
+    const { status } = await api<SessionView>(
       '/api/v1/admin/sessions/' + S1,
       { method: 'DELETE' },
       superToken,

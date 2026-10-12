@@ -1271,6 +1271,7 @@ Solo `SUPER_ADMIN` debe administrar otros administradores y tenants.
 
 - puede administrar juegos, categorías, géneros, plataformas e imágenes **de su tenant**;
 - opera según sus permisos;
+- no puede consultar auditoría ni listar/revocar sesiones administrativas; esas rutas son exclusivas de `SUPER_ADMIN`;
 - `Negocios/Tenants` únicamente para `SUPER_ADMIN`.
 
 Nunca permitir que un admin normal se convierta a sí mismo en `SUPER_ADMIN`.

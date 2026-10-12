@@ -43,7 +43,7 @@ export const NAV: readonly NavGroup[] = [
   {
     group: 'Configuración',
     items: [
-      { key: 'configuracion/general', label: 'General', icon: 'cfg' },
+      { key: 'configuracion/general', label: 'General', icon: 'cfg', role: 'SUPER_ADMIN' },
       { key: 'configuracion/catalogo', label: 'Catálogo' },
       { key: 'configuracion/precios', label: 'Precios' },
       { key: 'configuracion/datos', label: 'Datos / Importación' },
