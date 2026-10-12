@@ -44,7 +44,9 @@ export default function ConfigSistemaPage() {
     queueMicrotask(() => {
       adminFetch<SystemInfo>('/admin/system')
         .then((data) => {
-          if (!cancelled) setInfo(data);
+          if (cancelled) return;
+          setInfo(data);
+          setError(null);
         })
         .catch((cause: unknown) => {
           if (!cancelled) {
