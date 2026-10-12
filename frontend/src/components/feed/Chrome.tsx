@@ -1,6 +1,7 @@
 'use client';
 
 import { useFeed } from '@/hooks/useFeed';
+import { deliver } from '@/lib/feed/deliver';
 
 export function Toast() {
   const { toastMsg } = useFeed();
@@ -12,6 +13,18 @@ export function Toast() {
 }
 
 export function ContactSection() {
+  const { toast } = useFeed();
+
+  const contact = async () => {
+    const result = await deliver('Hola Javier, quiero consultar por un juego.');
+    if (result === 'whatsapp') toast('Abriendo WhatsApp…');
+    else if (result === 'clipboard' || result === 'fallback') {
+      toast('Mensaje copiado. Pégalo en tu chat con Javier.');
+    } else {
+      toast('No se pudo abrir WhatsApp ni copiar el mensaje.');
+    }
+  };
+
   return (
     <section className="wrap" id="contact" aria-label="Contacto" style={{ paddingBottom: 8 }}>
       <div className="contact">
@@ -19,16 +32,9 @@ export function ContactSection() {
           <b>¿No ves tu juego?</b>
           <span>Dinos cuál es y lo conseguimos para ti.</span>
         </div>
-        <a
-          className="btn gold"
-          href={`https://wa.me/${(process.env.NEXT_PUBLIC_WHATSAPP ?? '5355555555').replace(/\D/g, '')}?text=${encodeURIComponent(
-            'Hola Javier, quiero consultar por un juego.',
-          )}`}
-          target="_blank"
-          rel="noreferrer"
-        >
+        <button className="btn gold" type="button" onClick={() => void contact()}>
           Escribir a Javier
-        </a>
+        </button>
       </div>
     </section>
   );
