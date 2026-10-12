@@ -15,8 +15,8 @@ Plataforma SaaS multi-tenant para catálogos de videojuegos, desarrollada por Lu
 - Admin completo: CRUD de catálogo, multimedia, pricing, auditoría, import/export.
 
 ## Goals
-- Plataforma lista para producción desplegada en Render + Neon + Cloudinary + Cloudflare.
-- Primer tenant (Javier) funcionando end-to-end: catálogo público + panel admin.
+- Plataforma lista para producción desplegada en **Render (backend) + Cloudflare Workers (frontend)** + Neon + Cloudinary. ✅ Logrado.
+- Primer tenant (Javier) funcionando end-to-end: catálogo público + panel admin. ✅ Logrado.
 - Monetizable incorporando más tenants sin tocar el código base.
 
 ## Scope
@@ -24,12 +24,13 @@ Plataforma SaaS multi-tenant para catálogos de videojuegos, desarrollada por Lu
 ### In Scope
 - Backend Express + Prisma (Fases 1-8 del README: base, seguridad, catálogo, media, pricing, APIs).
 - Frontend Next.js App Router (público + admin).
-- Tests, CI (GitHub Actions), deploy (Render), backups.
+- Tests, CI (GitHub Actions), deploy (Render + Cloudflare Workers), backups.
 
 ### Out of Scope
 - Pasarela de pagos (Mi Lista es "pedir por mensaje", no checkout online).
 - App móvil nativa.
 - Sistema de reseñas de usuarios finales.
+- **Cloudflare Pages** (abandonado a favor de Workers).
 
 ## Timeline
 Sin fechas formales definidas. Orden de fases fijado en README §59 (backend base → seguridad → catálogo → media → pricing → catalog API → admin API → data mgmt → frontend → admin frontend → producción).

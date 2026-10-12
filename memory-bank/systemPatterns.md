@@ -1,7 +1,7 @@
 # System Patterns
 
 ## Architecture Overview
-Monorepo con `backend/` y `frontend/`. Backend Express + TypeScript (ESM) con Prisma sobre PostgreSQL (Neon). Frontend Next.js App Router (aún no implementado). API REST versionada en `/api/v1`. Media en Cloudinary (solo referencias en DB).
+Monorepo con `backend/` y `frontend/`. Backend Express + TypeScript (ESM) con Prisma sobre PostgreSQL (Neon). Frontend Next.js App Router desplegado en Cloudflare Workers. API REST versionada en `/api/v1`. Media en Cloudinary (solo referencias en DB).
 
 ## Design Patterns in Use
 - **Módulos por dominio** en backend: cada módulo (`auth`, `tenants`, `administrators`, `taxonomy`, `base-games`, `games`, `media`, `pricing`, `catalog`, `audit`, `health`) tiene `*.route.ts`, `*.service.ts`, `*.schemas.ts` (Zod).
@@ -28,7 +28,8 @@ Monorepo con `backend/` y `frontend/`. Backend Express + TypeScript (ESM) con Pr
 
 ## Component Relationships
 ```
-Frontend (Next.js, pendiente)
+Frontend (Next.js App Router, Cloudflare Workers vía @opennextjs/cloudflare)
+    │ rewrite /api/v1/:path* → backend Render
     ↓ REST
 Express (app.ts monta routers)
     ├── /api/v1/health
@@ -46,6 +47,33 @@ Express (app.ts monta routers)
 Prisma (adapter-pg) → PostgreSQL (Neon)
 Cloudinary (REST vía config/cloudinary.ts: upload/destroy/list)
 ```
+
+## Cloudflare Workers (CD de frontend)
+
+**El frontend se despliega SOLO en Cloudflare Workers. Cloudflare Pages quedó abandonado.**
+
+### Flujo de despliegue
+- `@opennextjs/cloudflare` compila el App Router a un Worker: `npm run cf:build` genera `.open-next/worker.js`.
+- `frontend/wrangler.toml` define el Worker `saas-catalogo-frontend` con `compatibility_flags = ["nodejs_compat","global_fetch_strictly_public"]`, binding `ASSETS` y observability ON.
+- `next.config.ts` expone `rewrites()` que manda `/api/v1/:path*` al backend de Render. Así el admin no depende de CORS (misma origen que la cookie `Path=/api/v1/auth`).
+- `.github/workflows/deploy-frontend.yml` dispara en push a `main` con paths `frontend/**` → build OpenNext + `wrangler deploy`. Auto-deploy, sin pasos manuales.
+
+### Restricción dura: compatibilidad Next ↔ OpenNext
+**`@opennextjs/cloudflare` solo funciona con versiones de Next cuyos manifiestos conoce.** El build copia un conjunto **whitelistado** de manifiestos de `.next/server/` al Worker; si Next introduce un manifiesto nuevo, OpenNext lo ignora y el Worker revienta al importar `handler.mjs`.
+
+- Whitelist: `app-paths`, `functions-config`, `middleware`, `next-font`, `pages`, `prefetch-hints`, `server-reference`.
+- Punto de control: `node_modules/@opennextjs/cloudflare/dist/cli/build/patches/plugins/load-manifest.js`.
+- **Regla operativa**: antes de subir `next` en `package.json`, comprobar los issues de OpenNext y verificar que la versión no genera manifiestos fuera de esa lista. Comprobación barata: hacer `next build` y contar manifiestos en `.next/server/`.
+
+### Decisiones
+| Decisión | Reasoning |
+|---|---|
+| Workers en vez de Pages | Pages quedó a medias y no aportaba nada; Workers es el target real de OpenNext y ya estaba funcionando |
+| No borrar aún el proyecto Pages ni el Worker huérfano | El usuario vetó cualquier borrado sin confirmación explícita; queda como deuda diferida |
+| `global_fetch_strictly_public` | Evita que el Worker haga fetch a direcciones privadas |
+| `.open-next/**` en `globalIgnores` de ESLint | `.open-next/` son artefactos de build; lintearlos daba 937 falsos errores locales (en CI no se veía porque el checkout era limpio) |
+| Rewrites proxy en vez de CORS para `/api/v1` | Misma origen ⇒ la cookie de refresh funciona sin `SameSite=None` ni `credentials` en el navegador |
+
 
 ## Key Technical Decisions
 | Decision | Reasoning |
@@ -66,6 +94,7 @@ Cloudinary (REST vía config/cloudinary.ts: upload/destroy/list)
 | Cloudinary sin SDK + firma sha1 manual | Cero dependencias pesadas; control total del payload y fácil de mockear con `vi.mock` |
 | multer en memoria con fileFilter (MIME + extensión) | Validación temprana de tipo/tamaño con códigos propios (`MEDIA_*`) antes de llegar al servicio |
 | publicId fijo + `overwrite:true` en reemplazos | Slug inmutable ⇒ publicId estable; el historial versionado de Cloudinary mantiene viva la URL anterior si falla la DB |
+| **`next` fijado en 16.3.8** | Next 16.4.0 añadió `.next/server/preview-props.json`, manifiesto **fuera de la whitelist de OpenNext** → `Unexpected loadManifest` al importar `handler.mjs` → `1101` en todas las rutas del Worker. Ver "Cloudflare Workers" más arriba. No subir sin comprobar OpenNext #1355/#1448 |
 
 ## Data Flow
 1. Request → `requestLogger` (x-request-id) → rate limit global → `helmet`/`cors`/`cookieParser`.
@@ -82,4 +111,6 @@ Cloudinary (REST vía config/cloudinary.ts: upload/destroy/list)
 `AppError` → `errorHandler` (único). ZodError → 400. JSON malformado → 400. Errores 4xx del body-parser pasan con su mensaje. resto → 500 genérico + log pino. **Falta**: mapeo de errores de Prisma (P2002, P2003) → hoy caen a 500 (hallazgo M1 de auditoría). Códigos de negocio en español-tipo: `BASE_GAME_SLUG_EXISTS`, `GAME_SLUG_EXISTS`, `DUPLICATE_PUBLICATION`, `TAXONOMY_MAPPING_INCOMPLETE` (422 + `details.missing`), `LIBRARY_FIELDS_IMMUTABLE` (422 + `details.fields`), `PRICE_REQUIRED`, `PRICE_ONLY_MANUAL`, `CATEGORY/GENRE/PLATFORM_NOT_FOUND` (422 + `details.missingIds`); media: `MEDIA_FILE_REQUIRED` (422), `MEDIA_INVALID_TYPE` (422), `MEDIA_FILE_TOO_LARGE` (422), `MEDIA_LIMIT` (422), `MEDIA_REORDER_INVALID` (422), `MEDIA_NOT_FOUND` (404), `MEDIA_UPLOAD_FAILED` (502 + `details.attempts`), `MEDIA_SCAN_FAILED` (502); pricing: `PRICE_RULE_NOT_FOUND` (404), `PRICE_RULE_OVERLAP` (422 + `details.conflict`), `PRICE_RULE_UNBOUNDED_ORDER` (422), `PRICE_RULE_INVALID` (422).
 
 ## Testing Strategy
-Vitest. Tests por módulo en `backend/tests/integration/` (auth, tenants, taxonomies, administrators, rate limit, middleware, errorHandler, tokens, duration, env, health, base-games, games, media, pricing, **catalog**) con `fakeDb.ts` como doble de Prisma y `vi.mock` de `config/cloudinary` (assets en memoria + inyección de fallos). **407/407 en verde** (2026-10-08); gates `format/lint/typecheck/test/build` + smoke real antes de cada commit.
+Vitest. Tests por módulo en `backend/tests/integration/` (auth, tenants, taxonomies, administrators, rate limit, middleware, errorHandler, tokens, duration, env, health, base-games, games, media, pricing, **catalog**, dashboard, sesiones, audit, system, config, backups, tokenVersion, import-export, duplicate) con `fakeDb.ts` como doble de Prisma y `vi.mock` de `config/cloudinary` (assets en memoria + inyección de fallos). **575/575 en verde** (2026-10-12); gates `format/lint/typecheck/test/build` + smoke real antes de cada commit.
+
+Frontend: tests con `node --test` (Node 26 type-stripping, sin framework) en `frontend/src/**/*.test.ts` — formato/facets/filter del feed, `adminApi` (refresh single-flight), `dashboardView`, `nav`/permisos por rol. **80/80 en verde**. 4 gates: `node --test`, `tsc --noEmit`, `eslint .`, `next build` (+ `npm run cf:build` para validar el bundle del Worker).
