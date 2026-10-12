@@ -43,7 +43,7 @@ export default function AdminPanelLayout({ children }: { children: ReactNode }) 
         <aside className={`side${drawer ? ' open' : ''}`} aria-label="Navegación principal">
           <div className="brand">
             <b>
-              JAVIER
+              Luismi <i>Platform</i>
             </b>
             <small>Panel de administración</small>
           </div>
@@ -70,9 +70,11 @@ export default function AdminPanelLayout({ children }: { children: ReactNode }) 
             ))}
           </nav>
           <div className="sf">
-            <b>JAVIER</b>
+            <b>Luismi Platform</b>
             <br />
-            Panel de administración
+            Plataforma desarrollada y mantenida por Luismi.
+            <br />
+            Admin V2
           </div>
         </aside>
         <div className="main">

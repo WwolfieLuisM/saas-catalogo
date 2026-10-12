@@ -22,12 +22,12 @@ export function ContactSection() {
         <a
           className="btn gold"
           href={`https://wa.me/${(process.env.NEXT_PUBLIC_WHATSAPP ?? '5355555555').replace(/\D/g, '')}?text=${encodeURIComponent(
-            'Hola, busco un juego en el catálogo de JAVIER.',
+            'Hola Javier, quiero consultar por un juego.',
           )}`}
           target="_blank"
           rel="noreferrer"
         >
-          Hablar por WhatsApp
+          Escribir a Javier
         </a>
       </div>
     </section>
@@ -38,10 +38,8 @@ export function Footer() {
   return (
     <footer className="site-footer">
       <div className="wrap">
-        <b>
-          JAVIER
-        </b>
-        <span>Catálogo de videojuegos · Precios en CUP · Consultar disponibilidad</span>
+        <b>Javier PC</b>
+        <span>Catálogo de juegos de Javier · © 2026</span>
       </div>
     </footer>
   );

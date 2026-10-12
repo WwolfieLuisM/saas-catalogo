@@ -35,7 +35,7 @@ export function Sidebar() {
       <aside className={`sidebar${sidebarOpen ? ' open' : ''}`} aria-hidden={!sidebarOpen}>
         <div className="sidebar-head">
           <b>
-            JAVIER
+            Javier <i>PC</i>
           </b>
           <button
             className="sidebar-close"

@@ -56,7 +56,7 @@ export function WelcomeDialog() {
         <div className="wc-body">
           <span className="wc-eyebrow">Bienvenido</span>
           <h2 className="wc-title">
-            Explora el catálogo de <em>JAVIER</em>
+            Bienvenido a <em>Javier PC</em>
           </h2>
           <p className="wc-intro">Así sacas el máximo partido a la tienda:</p>
           <ol className="wc-steps">

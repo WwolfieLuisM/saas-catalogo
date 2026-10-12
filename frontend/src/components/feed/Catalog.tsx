@@ -41,7 +41,7 @@ export function Catalog() {
       {loadError && !filtered.length && (
         <div className="notice error" role="alert">
           No se pudo cargar el catálogo.{' '}
-          <button className="linklike" type="button" onClick={() => window.location.reload()}>
+          <button className="linklike" type="button" onClick={retryLoad}>
             Reintentar
           </button>
         </div>
