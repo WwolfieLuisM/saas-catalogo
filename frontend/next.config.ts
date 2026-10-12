@@ -5,6 +5,7 @@ const apiUrl = process.env.NEXT_PUBLIC_API_URL?.replace(/\/+$/, '');
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
+  outputFileTracingRoot: __dirname,
   images: {
     remotePatterns: [
       { protocol: 'https', hostname: 'res.cloudinary.com' },
