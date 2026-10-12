@@ -16,8 +16,8 @@ export function ContactSection() {
     <section className="wrap" id="contact" aria-label="Contacto" style={{ paddingBottom: 8 }}>
       <div className="contact">
         <div>
-          <b>¿No encuentras un juego?</b>
-          <span>Escríbenos y te ayudamos a conseguirlo al mejor precio.</span>
+          <b>¿No ves tu juego?</b>
+          <span>Dinos cuál es y lo conseguimos para ti.</span>
         </div>
         <a
           className="btn gold"
@@ -35,11 +35,14 @@ export function ContactSection() {
 }
 
 export function Footer() {
+  const { catalogVersion, openDialog } = useFeed();
   return (
     <footer className="site-footer">
       <div className="wrap">
         <b>Javier PC</b>
         <span>Catálogo de juegos de Javier · © 2026</span>
+        <span>{catalogVersion == null ? 'Catálogo sin cargar' : `Catálogo v${catalogVersion} · v12`}</span>
+        <button className="linklike" type="button" onClick={() => openDialog('welcome')}>¿Cómo funciona?</button>
       </div>
     </footer>
   );

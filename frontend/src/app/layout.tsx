@@ -35,7 +35,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'JAVIER · Catálogo de videojuegos',
+    title: 'Javier PC · Catálogo de juegos',
     description:
       'Catálogo público de videojuegos para PC: precios en CUP, disponibilidad y lista de compra por WhatsApp.',
     images: ['/opengraph-image'],

@@ -58,34 +58,46 @@ export function WelcomeDialog() {
           <h2 className="wc-title">
             Bienvenido a <em>Javier PC</em>
           </h2>
-          <p className="wc-intro">Así sacas el máximo partido a la tienda:</p>
+          <p className="wc-intro">Catálogo de juegos de Javier. Así lo aprovechas al máximo:</p>
           <ol className="wc-steps">
             <li>
               <div>
-                <b>Busca y filtra</b>
-                <span>Usa la barra superior, las categorías o el botón «Filtros» para afinar.</span>
+                <b>Explora y busca</b>
+                <span>Usa el buscador o los filtros de género, plataforma y precio para encontrar lo que quieres.</span>
               </div>
             </li>
             <li>
               <div>
-                <b>Añade a tu lista</b>
-                <span>Pulsa «+ Añadir» en cualquier tarjeta. Tu lista se guarda en este dispositivo.</span>
+                <b>Mira los detalles</b>
+                <span>Toca cualquier juego para ver su descripción, tamaño y precio.</span>
               </div>
             </li>
             <li>
               <div>
-                <b>Marca favoritos y estados</b>
-                <span>Guarda favoritos y apunta qué llevas pendiente, jugado o ganado.</span>
+                <b>Guarda tus favoritos</b>
+                <span>Marca un juego como Favorito y lo encuentras después en Favoritos.</span>
               </div>
             </li>
             <li>
               <div>
-                <b>Envía la lista</b>
-                <span>Al terminar, compártela por WhatsApp con un solo clic.</span>
+                <b>Arma tu lista y pídela</b>
+                <span>Agrega juegos a tu Lista y envíala a Javier por mensaje con un toque.</span>
+              </div>
+            </li>
+            <li>
+              <div>
+                <b>Lleva tu colección</b>
+                <span>Dentro de cada juego márcalo como Pendiente, Jugado o Ganado; todo queda en Colección.</span>
+              </div>
+            </li>
+            <li>
+              <div>
+                <b>¿Aún no sale o no lo ves?</b>
+                <span>En los próximos lanzamientos toca Avísame, y si falta un juego escribe desde Contacto.</span>
               </div>
             </li>
           </ol>
-          <p className="wc-note">Puedes volver a abrir esta guía desde el menú «¿Cómo funciona?».</p>
+          <p className="wc-note">Tus favoritos, lista y colección se guardan en este dispositivo.</p>
         </div>
         <div className="wc-foot">
           <button className="btn gold" type="button" onClick={close}>
