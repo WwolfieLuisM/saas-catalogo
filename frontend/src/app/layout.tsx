@@ -31,14 +31,14 @@ export const metadata: Metadata = {
     description:
       'Catálogo público de videojuegos para PC: precios en CUP, disponibilidad y lista de compra por WhatsApp.',
     url: siteUrl,
-    images: [{ url: '/icon.svg', width: 32, height: 32, alt: 'JAVIER' }],
+    images: [{ url: '/opengraph-image', width: 1200, height: 630, alt: 'JAVIER — catálogo de videojuegos para PC' }],
   },
   twitter: {
-    card: 'summary',
+    card: 'summary_large_image',
     title: 'JAVIER · Catálogo de videojuegos',
     description:
       'Catálogo público de videojuegos para PC: precios en CUP, disponibilidad y lista de compra por WhatsApp.',
-    images: ['/icon.svg'],
+    images: ['/opengraph-image'],
   },
   alternates: {
     canonical: siteUrl,
