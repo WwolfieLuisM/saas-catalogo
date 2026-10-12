@@ -30,17 +30,17 @@
 - **Permisos por rol SUPER_ADMIN (2026-10-12)**: Auditoría, Sesiones y Sistema solo SUPER_ADMIN en backend y frontend. Backend: `requireRoles('SUPER_ADMIN')` en `audit.route.ts`/`sessions.route.ts`/`system.route.ts`; 403 defensivo en `audit.service.ts` `listAuditLogs` y `sessions.service.ts` (`resolveAdminScope`/`revokeSession`). Frontend: `nav.ts` con `role:'SUPER_ADMIN'` en auditoria/sesiones/configuracion-sistema + `navGroupsFor` descarta grupos vacíos (fix sidebar ADMIN sin cabecera "Administración" vacía); DeniedBox en las 3 páginas (early-return tras hooks, o wrapper padre–hijo `sesiones`→`SesionesList`); sistema no fetch `/admin/system` si no es SA; botón/modal Historial ocultos a no-SA en `juegos` y `juegos/[id]`. Tests: audit/sessions/system reescritos (ADMIN→403, SA→200+filtros/DTO/auditorías), nav.test.ts ADMIN 2 grupos; backend **575/575**, frontend node --test 78, tsc 0, eslint 0, build 27 rutas. Smoke roles vs backend local :3001: **8/8 PASS**. CORS Render: `CORS_ORIGIN=http://localhost:3000,http://10.215.0.119:3000` (env var actualizada, redeploy disparado — usa `main` sin endurecimiento hasta push). Commit local `46f8bf9` (15 archivos, +189/−164); 3 commits pendientes de push (`10d0213`, `209ff2f`, `46f8bf9`). Archivo untracked `ADMIN` (0 bytes) pendiente de decisión.
 
 ## In Progress
-- **CI/CD (2026-10-12)**: CI creado por ChatGPT (`.github/workflows/ci.yml` — checks en push/PR a main). CD pendiente: decidir estrategia de despliegue (Render autoDeploy, Vercel, o GH Actions deploy). Backend tiene Dockerfile; frontend no.
+- **CI/CD (2026-10-12)**: CI completo (`.github/workflows/ci.yml`). CD Frontend: Cloudflare Pages configurado (`@opennextjs/cloudflare` + `wrangler`, build local OK). CD Backend: Render autoDeploy activo. Pendiente: usuario conectar Cloudflare Pages en dashboard.
 - **Fidelidad mergeada a main**: commit `c495315` en `origin/main`. Rama feat aún existe con memory-bank gap push.
 
 ## What's Left To Do
 - [x] CI: `.github/workflows/ci.yml` creado por ChatGPT (frontend+backend checks en push/PR a main, 2026-10-12).
-- [ ] **CD**: decidir e implementar despliegue automático a producción al hacer push a `main` (Render autoDeploy vs Vercel vs GH Actions).
+- [x] CD Frontend: Cloudflare Pages configurado (`@opennextjs/cloudflare` + `wrangler`, `open-next.config.ts`, `wrangler.toml`, CI incluye cf:build). Pendiente: conectar repo en dashboard Cloudflare Pages + env vars.
 - [x] Fidelidad feed+admin: COMPLETADA y mergeada a `main` (`c495315`, 2026-10-12).
 - [ ] Gap config contacto: decidir opción (A/B/C) y conectar `whatsapp`/`footer`/`publicName` del admin al feed.
-- [ ] Push a origin/main + smoke post-deploy Render (roles + CORS con `10.215.0.119:3000`).
+- [ ] Smoke post-deploy Render (roles + CORS con `10.215.0.119:3000`).
 - [ ] OpenAPI/Swagger, store de rate limit compartido, revisar D1 en próximo bump de Prisma.
-- [ ] Docker frontend, Cloudflare, monitoring.
+- [ ] Docker backend, monitoring.
 
 ## Known Issues
 - **M2 cerrado por política**: slug reservado tras soft delete (409 `*_SLUG_EXISTS`); mensaje ya no engañoso.

@@ -4,7 +4,11 @@
 2026-10-12
 
 ## Current Focus
-**CI/CD (2026-10-12)**: ChatGPT creó `.github/workflows/ci.yml` — solo **CI** (checks en push/PR a main: frontend tests/typecheck/lint/build, backend tests/typecheck/lint/build). **No hay CD** (despliegue automático a Render u otro). Backend ya tiene Dockerfile; frontend no tiene Dockerfile ni deploy automático. Próximo paso: decidir estrategia de despliegue (Render autoDeploy en push a main, Vercel, o GitHub Actions deploy).
+**CI/CD (2026-10-12)**: 
+- **CI**: `.github/workflows/ci.yml` — checks en push/PR a main (frontend tests/typecheck/lint/build + Cloudflare build, backend tests/typecheck/lint/build).
+- **CD Frontend**: Cloudflare Pages configurado (`@opennextjs/cloudflare` + `wrangler`, `open-next.config.ts`, `wrangler.toml`). Build local exitoso (27 rutas + worker bundle). Pendiente: conectar repo en dashboard Cloudflare Pages + configurar env vars.
+- **CD Backend**: Render autoDeploy ya activo (push a main).
+- Próximo: usuario conectar Cloudflare Pages a GitHub repo y configurar env vars (NEXT_PUBLIC_API_URL, etc.).
 
 **Fidelidad mergeada a main**: commit `c495315` en `origin/main` (ChatGPT hizo cherry-pick/merge del trabajo de la rama feat). Rama feat sigue existiendo con push de memory-bank gap.
 

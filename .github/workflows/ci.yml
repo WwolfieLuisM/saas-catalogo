@@ -37,6 +37,13 @@ jobs:
         run: npm run build
         env:
           NEXT_PUBLIC_SITE_URL: https://example.invalid
+      - name: Cloudflare build
+        run: npm run cf:build
+        env:
+          NEXT_PUBLIC_API_URL: https://saas-catalogo-api.onrender.com
+          NEXT_PUBLIC_TENANT_SLUG: javier
+          NEXT_PUBLIC_DEMO: "false"
+          NEXT_PUBLIC_SITE_URL: https://example.invalid
 
   backend:
     name: Backend checks

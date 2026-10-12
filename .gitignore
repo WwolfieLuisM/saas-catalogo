@@ -12,3 +12,5 @@ Saas Catalogo.txt
 out/
 frontend/vendor/
 *.tsbuildinfo
+.open-next/
+.wrangler/
