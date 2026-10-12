@@ -20,12 +20,13 @@ export default function ConfiguracionIndexPage() {
   const sub = scope.isSa
     ? 'Ajustes de la plataforma y del negocio seleccionado.'
     : 'Ajustes de tu negocio.';
+  const visibleCfg = CFG.filter((item) => scope.isSa || (item.key !== 'general' && item.key !== 'sistema'));
 
   return (
     <>
       <PageHead title="Configuración" sub={sub} />
       <div className="rows">
-        {CFG.map((item) => (
+        {visibleCfg.map((item) => (
           <Link key={item.key} href={`/admin/configuracion/${item.key}`} style={{ minHeight: 64 }}>
             <div className="gr">
               <b>{item.label}</b>
