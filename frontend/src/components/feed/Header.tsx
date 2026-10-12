@@ -77,7 +77,7 @@ export function Header() {
           onClick={onBrand}
         >
           <span className="brand-word">
-            Javier <i>PC</i>
+            JAVIER
           </span>
           <span className="hamburger" aria-hidden="true">
             <span />
