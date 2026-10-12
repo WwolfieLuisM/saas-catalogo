@@ -143,7 +143,7 @@ export default function ConfigGeneralPage() {
       <section className="sec">
         <h2>Plataforma</h2>
         <div className="panel">
-          <b>JAVIER</b>
+          <b>Luismi Platform</b>
           <p className="hint">Plataforma desarrollada y mantenida por Luismi.</p>
           <p style={{ marginTop: 8 }}>
             Tenant actual: <b>{config?.tenantId ?? (scope.tenantId || '—')}</b>. Tu rol:{' '}
