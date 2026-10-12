@@ -46,7 +46,7 @@ export default function AdminLoginPage() {
       <main className="adm-card">
         <div className="brand">
           <b>
-            Javier <i>PC</i>
+            JAVIER
           </b>
           <small>Panel de administración</small>
         </div>
