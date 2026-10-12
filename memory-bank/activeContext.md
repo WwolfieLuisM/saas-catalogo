@@ -1,10 +1,19 @@
 # Active Context
 
 ## Date
-2026-10-11
+2026-10-12
 
 ## Current Focus
-Backend Fases 0-13 completadas (desplegado en Render, live). Frontend E0–E7 (2026-10-10/11) completado. **Ahora: permisos por rol en el panel ADMIN** (menú oculta secciones SUPER_ADMIN-only, backend reforzado). Commit/push solo con autorización tras informe.
+Backend Fases 0-13 completadas (desplegado en Render, live). Frontend E0–E7 completado. **Permisos por rol (2026-10-12): COMPLETADO y commiteado localmente (`46f8bf9`)** — Auditoría, Sesiones y Sistema solo SUPER_ADMIN (backend `requireRoles` + servicios con 403 defensivo + frontend nav/DeniedBox/hidden history + `navGroupsFor` descarta grupos vacíos). CORS Render actualizado (env var) con `http://10.215.0.119:3000`. Pendiente: push (3 commits locales: `10d0213`, `209ff2f`, `46f8bf9`) y verificación post-push en Render.
+
+**Permisos por rol SA-only (2026-10-12)**: 
+- Backend: `audit.route.ts`, `sessions.route.ts`, `system.route.ts` → `router.use(authenticate, requireRoles('SUPER_ADMIN'))`. `audit.service.ts` `listAuditLogs` → 403 `FORBIDDEN` no-SA (mantiene validación `tenantId`→422). `sessions.service.ts` `resolveAdminScope`/`revokeSession` → 403 no-SA.
+- Frontend: `nav.ts` items `auditoria`/`sesiones`/`configuracion/sistema` con `role:'SUPER_ADMIN'`; **`navGroupsFor` filtra grupos con 0 items visibles** (fix: sidebar ADMIN sin cabecera "Administración" vacía — bug reportado por usuario). `DeniedBox` en las 3 páginas (patrón hooks: early-return tras todos los hooks, o wrapper padre–hijo como `sesiones`); `sistema` no fetch `/admin/system` si no es SA (`useEffect` con guard `isSa`). Botón y modal de `GameHistoryModal` ocultos para no-SA en `juegos/page.tsx` y `juegos/[id]/page.tsx` (`isSa &&`).
+- Tests: `audit.test.ts`/`sessions.test.ts`/`system.test.ts` reescritos (ADMIN→403, SA→200 con filtros/DTO/auditorías); `nav.test.ts` actualizado (ADMIN 2 grupos, sin Administración; SA 4 grupos). Backend **575/575**, frontend node --test 78, tsc 0, eslint 0, build 27 rutas.
+- Smoke roles contra backend local (`localhost:3001`, código nuevo): **8/8 PASS** (login SA+ADMIN, ADMIN 403 en los 3 endpoints, SA 200 en los 3). Smoke visual en navegador pendiente del usuario (DeniedBox + sin botón Historial + sidebar sin grupo vacío).
+- CORS: Render `CORS_ORIGIN=http://localhost:3000,http://10.215.0.119:3000` (env var actualizada vía MCP, redeploy disparado — el deploy usa el código de `main` sin los cambios de roles hasta que se haga push). `backend/.env` local también actualizado (localhost:3001, localhost:3000, 10.215.0.119:3000).
+- Commit local `46f8bf9` "feat(admin): restringir auditoria, sesiones y sistema a SUPER_ADMIN" (15 archivos, +189/-164); sin push (regla: solo local hasta que todo salga bien). Archivo sin seguimiento `ADMIN` (0 bytes, raíz) sigue pendiente de decisión.
+- Gotchas sesión: PowerShell inline con `$_`/`$()` falla (el exterior come `$`) → siempre `-File` scripts `.ps1`; `next start` y `tsx watch` en background requieren `Start-Process` (la shell tool mata el proceso tras timeout); backend local debe usar `PORT=3001` (choca con frontend en 3000).
 
 **Frontend E7 (SEO/meta/perf, 2026-10-11)**: COMPLETADO con 4 gates verdes + `SMOKE-E7` 24/24.
 
