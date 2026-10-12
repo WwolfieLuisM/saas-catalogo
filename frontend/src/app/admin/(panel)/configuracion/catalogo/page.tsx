@@ -23,6 +23,7 @@ export default function ConfigCatalogoPage() {
   const [dash, setDash] = useState<DashboardData | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
+  const [retryCount, setRetryCount] = useState(0);
 
   useEffect(() => {
     if (!scope.ready) return;
@@ -46,7 +47,7 @@ export default function ConfigCatalogoPage() {
     return () => {
       cancelled = true;
     };
-  }, [scope.ready, scope.scopeId]);
+  }, [scope.ready, scope.scopeId, retryCount]);
 
   const patchFlag = (key: 'showUnavailable' | 'offerOffline', value: boolean) => {
     setBusy(true);
@@ -70,7 +71,7 @@ export default function ConfigCatalogoPage() {
       <PageHead title="Catálogo" sub="Versión publicada y visibilidad del catálogo público." />
       <CfgTabs active="catalogo" />
       {error ? (
-        <ErrorBox onRetry={() => setError(null)} />
+        <ErrorBox onRetry={() => setRetryCount((count) => count + 1)} />
       ) : !config || !dash ? (
         <Skeleton rows={4} />
       ) : (
