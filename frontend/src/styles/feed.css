@@ -2222,6 +2222,7 @@ h1, h2, h3, p { margin-top: 0; }
   z-index: 2;
 }
 .art .mark {
+  z-index: 3;
   top: -3%;
   right: -4%;
   left: auto;
@@ -2492,3 +2493,8 @@ dialog.detail-dialog {
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; transition-duration: .01ms !important; }
 }
+
+/* Poster layers: image < shade < outlined mark < title/badges. */
+.art .sheen { z-index: 4; }
+.art .ptitle { z-index: 5; }
+.art .soldout, .art .soon-tag { z-index: 6; }
