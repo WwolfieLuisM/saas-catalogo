@@ -53,7 +53,7 @@ export default function AuditoriaPage() {
     page,
     limit: 20,
     q: query || undefined,
-  });
+  }, { enabled: isSa });
 
   if (!isSa) return <DeniedBox />;
   const sub = 'Registro global de la plataforma.';
