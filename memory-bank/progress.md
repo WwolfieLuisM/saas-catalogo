@@ -30,25 +30,17 @@
 - **Permisos por rol SUPER_ADMIN (2026-10-12)**: Auditoría, Sesiones y Sistema solo SUPER_ADMIN en backend y frontend. Backend: `requireRoles('SUPER_ADMIN')` en `audit.route.ts`/`sessions.route.ts`/`system.route.ts`; 403 defensivo en `audit.service.ts` `listAuditLogs` y `sessions.service.ts` (`resolveAdminScope`/`revokeSession`). Frontend: `nav.ts` con `role:'SUPER_ADMIN'` en auditoria/sesiones/configuracion-sistema + `navGroupsFor` descarta grupos vacíos (fix sidebar ADMIN sin cabecera "Administración" vacía); DeniedBox en las 3 páginas (early-return tras hooks, o wrapper padre–hijo `sesiones`→`SesionesList`); sistema no fetch `/admin/system` si no es SA; botón/modal Historial ocultos a no-SA en `juegos` y `juegos/[id]`. Tests: audit/sessions/system reescritos (ADMIN→403, SA→200+filtros/DTO/auditorías), nav.test.ts ADMIN 2 grupos; backend **575/575**, frontend node --test 78, tsc 0, eslint 0, build 27 rutas. Smoke roles vs backend local :3001: **8/8 PASS**. CORS Render: `CORS_ORIGIN=http://localhost:3000,http://10.215.0.119:3000` (env var actualizada, redeploy disparado — usa `main` sin endurecimiento hasta push). Commit local `46f8bf9` (15 archivos, +189/−164); 3 commits pendientes de push (`10d0213`, `209ff2f`, `46f8bf9`). Archivo untracked `ADMIN` (0 bytes) pendiente de decisión.
 
 ## In Progress
-- **Fidelidad visual/funcional (COMPLETADA 2026-10-12)**: feed Javier PC (43 brechas) + admin Luismi Platform · Admin V2 (71 brechas) implementados en rama `feat/fidelidad-luismi-platform-javier-pc` (PR #2). 4 gates verdes + smoke local + smoke prod OK. Pendiente commit y push (esperando aprobación).
+- **CI/CD (2026-10-12)**: CI creado por ChatGPT (`.github/workflows/ci.yml` — checks en push/PR a main). CD pendiente: decidir estrategia de despliegue (Render autoDeploy, Vercel, o GH Actions deploy). Backend tiene Dockerfile; frontend no.
+- **Fidelidad mergeada a main**: commit `c495315` en `origin/main`. Rama feat aún existe con memory-bank gap push.
 
 ## What's Left To Do
-- [x] Fase 12: Import/Export §87 + `POST /admin/games/:id/duplicate` (usa backups `PRE_IMPORT`) — commit `4fc0784`.
-- [x] Fase 13: despliegue controlado en Render (Web Service único, 10 vars, smoke solo lectura) — servicio live, informe entregado.
-- [x] Frontend E0: scaffold Next.js 16.4 + gates (2026-10-10).
-- [x] Frontend E1: cliente API/tipos/mappers/caché/loader + 15 tests (2026-10-10).
-- [x] Frontend E2–E3: feed público completo (UI v17) + 15 tests nuevos (2026-10-10).
-- [x] Frontend E4: auth admin (sesión+refresh, proxy rewrite, login/guard/stub) + admin.css escopado + 10 tests — 40/40 (2026-10-11).
-- [x] Frontend E5: shell adminv2 + dashboard real `GET /admin/dashboard` + 6 tests — 46/46 + smoke roles SA/ADMIN (2026-10-11).
-- [x] Frontend E6a: taxonomía/auditoría/sesiones/administradores/negocios + ui/counts/useAdminList + dashboard `.two`/acciones rápidas + 15 tests — 61/61 + `SMOKE-E6A-ALL-OK` (2026-10-11).
-- [x] Frontend E6b: juegos (`/admin/juegos` lista, nuevo, editar, gameView), biblioteca (SA CRUD + ADMIN add), media (tabs/scan/upload/delete/retry) + `SMOKE-E6B-ALL-OK` (2026-10-11).
-- [x] Frontend E6c: configuración 7 tabs (general/catálogo/precios/datos-import-export/backups/multimedia/sistema) + `adminFetchRaw` + `pricingRules` + `SMOKE-E6C` 20/20 (2026-10-11).
-- [x] Frontend E7: SEO/meta (layout root OG/twitter/canonical/robots/sitemap/icon, admin noindex, headers seguridad, preconnect perf) + `SMOKE-E7` 24/24 + build 27 rutas (2026-10-11).
-- [x] Permisos por rol: Auditoría/Sesiones/Sistema solo SUPER_ADMIN (backend `requireRoles` + 403 servicios, frontend nav/DeniedBox/hidden history, `navGroupsFor` sin grupos vacíos) + 575/575 + gates frontend verdes + smoke 8/8 + commit `46f8bf9` (2026-10-12).
-- [x] **Fidelidad visual/funcional (COMPLETADA 2026-10-12)**: feed Javier PC (43 brechas B1–B43) + admin Luismi Platform · Admin V2 (71 brechas B1–B71) contra HTMLs originales `docs/Javier-PC-...html` y `docs/adminv2.html`; rama `feat/fidelidad-luismi-platform-javier-pc` (PR #2). Implementación feed+admin terminada, 4 gates verdes (80/80 tests, tsc 0, eslint 0, build 27 rutas), smoke local 8/8 + checks feed/admin, smoke prod SMOKE-PROD-ALL-OK. Backend-blocked: featured/note (sin campos Prisma), Vincular orphan→game (sin endpoint). Pendiente commit y push.
+- [x] CI: `.github/workflows/ci.yml` creado por ChatGPT (frontend+backend checks en push/PR a main, 2026-10-12).
+- [ ] **CD**: decidir e implementar despliegue automático a producción al hacer push a `main` (Render autoDeploy vs Vercel vs GH Actions).
+- [x] Fidelidad feed+admin: COMPLETADA y mergeada a `main` (`c495315`, 2026-10-12).
+- [ ] Gap config contacto: decidir opción (A/B/C) y conectar `whatsapp`/`footer`/`publicName` del admin al feed.
 - [ ] Push a origin/main + smoke post-deploy Render (roles + CORS con `10.215.0.119:3000`).
-- [ ] Docker, Render, GitHub Actions, Cloudflare, monitoring.
 - [ ] OpenAPI/Swagger, store de rate limit compartido, revisar D1 en próximo bump de Prisma.
+- [ ] Docker frontend, Cloudflare, monitoring.
 
 ## Known Issues
 - **M2 cerrado por política**: slug reservado tras soft delete (409 `*_SLUG_EXISTS`); mensaje ya no engañoso.

@@ -4,7 +4,13 @@
 2026-10-12
 
 ## Current Focus
-**Fidelidad visual/funcional Javier PC + Luismi Platform · Admin V2 (2026-10-12): COMPLETADA** — rama `feat/fidelidad-luismi-platform-javier-pc` (PR #2). Implementación feed+admin terminada con 4 gates verdes + smoke local (8/8 + checks feed/admin) + smoke prod (`SMOKE-PROD-ALL-OK`). Pendiente: commit y push (esperando aprobación de usuario o instrucción directa). Tensión branding resuelta: feed usa "Javier PC" público; admin usa "Luismi Platform · Admin V2" con título absoluto.
+**CI/CD (2026-10-12)**: ChatGPT creó `.github/workflows/ci.yml` — solo **CI** (checks en push/PR a main: frontend tests/typecheck/lint/build, backend tests/typecheck/lint/build). **No hay CD** (despliegue automático a Render u otro). Backend ya tiene Dockerfile; frontend no tiene Dockerfile ni deploy automático. Próximo paso: decidir estrategia de despliegue (Render autoDeploy en push a main, Vercel, o GitHub Actions deploy).
+
+**Fidelidad mergeada a main**: commit `c495315` en `origin/main` (ChatGPT hizo cherry-pick/merge del trabajo de la rama feat). Rama feat sigue existiendo con push de memory-bank gap.
+
+**Gap config contacto**: admin setea `whatsapp`/`footer`/`publicName` en BD; feed público no los lee (env var build-time + literales). Opciones A/B/C pendientes.
+
+**Fidelidad visual/funcional Javier PC + Luismi Platform · Admin V2 (2026-10-12): COMPLETADA** — rama `feat/fidelidad-luismi-platform-javier-pc` (PR #2). Implementación feed+admin terminada con 4 gates verdes + smoke local (8/8 + checks feed/admin) + smoke prod (`SMOKE-PROD-ALL-OK`). Tensión branding resuelta: feed usa "Javier PC" público; admin usa "Luismi Platform · Admin V2" con título absoluto.
 
 **Resumen de implementación (2026-10-12)**:
 - **Feed (Fase 1)**: fuentes Big Shoulders Display 800/900 + Manrope 400–800 vía Google Fonts link en layout.tsx; globals.css con `--display`/`--body`, font-size 15px, focus-visible gold, reset h/p margins; feed.css completo (grid 2→3→4→5 breakpoints, card 96px row móvil, .art grain/mark/ptitle/sheen, hero crossfade, drawers sheet mobile, FAB threshold 8px pos normalizada, sidebar body.sidebar-open, .wrap max-width 1320px); WelcomeDialog 6 pasos con saludo por hora + mark-seen-on-close; Catalog con tab "Todos" + filtros inline desktop + empty states exactos + load-more; GameCard single action + status-chip + sub format; Header document.fonts.ready + adaptive placeholder; Drawers textos exactos (Mi lista, Vaciar lista, Pedir por mensaje); ListFab show-on-list + bump; Footer con catalogVersion + ¿Cómo funciona?; sr h1; filter.ts sort labels; storage normalized fab pos.
