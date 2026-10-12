@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - "frontend/**"
+      - ".github/workflows/deploy-frontend.yml"
   workflow_dispatch: {}
 
 jobs:
@@ -31,7 +32,7 @@ jobs:
           NEXT_PUBLIC_API_URL: https://saas-catalogo-api.onrender.com
           NEXT_PUBLIC_TENANT_SLUG: javier
           NEXT_PUBLIC_DEMO: "false"
-          NEXT_PUBLIC_SITE_URL: https://saas-catalogo.pages.dev
+          NEXT_PUBLIC_SITE_URL: https://saas-catalogo-frontend.luisiking89.workers.dev
         run: npx @opennextjs/cloudflare build
 
       - name: Deploy a Cloudflare Workers
