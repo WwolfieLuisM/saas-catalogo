@@ -2498,3 +2498,43 @@ dialog.detail-dialog {
 .art .sheen { z-index: 4; }
 .art .ptitle { z-index: 5; }
 .art .soldout, .art .soon-tag { z-index: 6; }
+
+/* Featured badge and release states from the original v17 prototype. */
+.hero-flag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 12px;
+  padding: 5px 12px;
+  border-radius: 999px;
+  background: var(--gold);
+  color: var(--gold-ink);
+  font: 800 12px/1 var(--body);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+.hero-flag::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  flex: none;
+  border-radius: 50%;
+  background: currentColor;
+  animation: soonPulse 1.6s ease-in-out infinite;
+}
+@keyframes soonPulse { 50% { opacity: .25; } }
+.hero-soon {
+  font: 900 46px/1 var(--display);
+  color: var(--gold);
+  text-transform: uppercase;
+}
+.hero-soon b { font-size: 1.3em; margin-right: 4px; }
+.soon-price { font-size: 12px; letter-spacing: .05em; text-transform: uppercase; }
+.soon-big { font-size: 26px; }
+@media (max-width: 699px) {
+  .hero-soon { font-size: 38px; }
+  .hero-flag { margin-bottom: 8px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-flag::before { animation: none; }
+}
