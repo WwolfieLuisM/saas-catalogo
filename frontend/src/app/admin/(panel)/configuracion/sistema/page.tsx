@@ -36,6 +36,7 @@ export default function ConfigSistemaPage() {
   const isSa = user?.role === 'SUPER_ADMIN';
   const [info, setInfo] = useState<SystemInfo | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [retryCount, setRetryCount] = useState(0);
 
   useEffect(() => {
     if (!isSa) return;
@@ -54,7 +55,7 @@ export default function ConfigSistemaPage() {
     return () => {
       cancelled = true;
     };
-  }, [isSa]);
+  }, [isSa, retryCount]);
 
   const panelRoutes = navGroupsFor(user?.role ?? 'ADMIN').flatMap((group) =>
     group.items.map((item) => ({ ...item, group: group.group })),
@@ -76,7 +77,7 @@ export default function ConfigSistemaPage() {
       <CfgTabs active="sistema" />
 
       {error ? (
-        <ErrorBox onRetry={() => setError(null)} />
+        <ErrorBox onRetry={() => setRetryCount((count) => count + 1)} />
       ) : !info ? (
         <Skeleton rows={3} />
       ) : (
