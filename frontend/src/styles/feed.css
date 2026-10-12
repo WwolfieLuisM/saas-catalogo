@@ -2538,3 +2538,9 @@ dialog.detail-dialog {
 @media (prefers-reduced-motion: reduce) {
   .hero-flag::before { animation: none; }
 }
+
+/* Sort is wrapped in a label, so order the flex item (the label), not only its select. */
+@media (max-width: 699px) {
+  .tools > label { order: 2; margin-left: auto; }
+  .tools > .linklike { order: 3; }
+}
