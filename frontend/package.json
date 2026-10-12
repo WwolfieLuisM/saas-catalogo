@@ -19,17 +19,17 @@
     "cf:deploy": "node node_modules/@opennextjs/cloudflare/dist/cli/index.js deploy"
   },
   "dependencies": {
-    "next": "16.4.0",
-    "react": "19.3.0",
-    "react-dom": "19.3.0"
+    "next": "16.3.8",
+    "react": "19.1.7",
+    "react-dom": "19.1.7"
   },
   "devDependencies": {
     "@opennextjs/cloudflare": "1.20.10",
     "@types/node": "26.6.5",
     "@types/react": "19.3.0",
     "@types/react-dom": "19.3.0",
-    "eslint": "10.12.0",
-    "eslint-config-next": "16.4.0",
+    "eslint": "9.39.2",
+    "eslint-config-next": "16.3.8",
     "typescript": "6.0.3",
     "wrangler": "^4.0.0"
   }
