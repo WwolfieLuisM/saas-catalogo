@@ -71,15 +71,7 @@ export async function listAuditLogs(
 
   let scopedTenantId: string | undefined;
 
-  if (auth.role === 'ADMIN') {
-    if (!auth.tenantId) {
-      throw new AppError(403, 'FORBIDDEN', 'Cuenta ADMIN sin tenant asignado');
-    }
-    if (query.tenantId && query.tenantId !== auth.tenantId) {
-      throw new AppError(403, 'FORBIDDEN', 'No puedes operar sobre otro tenant');
-    }
-    scopedTenantId = auth.tenantId;
-  } else if (auth.role === 'SUPER_ADMIN') {
+  if (auth.role === 'SUPER_ADMIN') {
     if (query.tenantId) {
       const tenant = await prisma.tenant.findUnique({ where: { id: query.tenantId } });
 
@@ -90,7 +82,7 @@ export async function listAuditLogs(
       scopedTenantId = query.tenantId;
     }
   } else {
-    throw new AppError(403, 'FORBIDDEN', 'Rol no autorizado');
+    throw new AppError(403, 'FORBIDDEN', 'Solo SUPER_ADMIN puede consultar la auditoría');
   }
 
   const timestamp: Prisma.DateTimeFilter = {};

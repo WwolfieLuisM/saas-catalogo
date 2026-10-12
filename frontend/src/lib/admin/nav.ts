@@ -31,8 +31,8 @@ export const NAV: readonly NavGroup[] = [
     group: 'Administración',
     items: [
       { key: 'administradores', label: 'Administradores', icon: 'users', role: 'SUPER_ADMIN' },
-      { key: 'auditoria', label: 'Auditoría', icon: 'audit' },
-      { key: 'sesiones', label: 'Sesiones', icon: 'key' },
+      { key: 'auditoria', label: 'Auditoría', icon: 'audit', role: 'SUPER_ADMIN' },
+      { key: 'sesiones', label: 'Sesiones', icon: 'key', role: 'SUPER_ADMIN' },
     ],
   },
   {
@@ -49,7 +49,7 @@ export const NAV: readonly NavGroup[] = [
       { key: 'configuracion/datos', label: 'Datos / Importación' },
       { key: 'configuracion/backups', label: 'Backups' },
       { key: 'configuracion/multimedia', label: 'Multimedia' },
-      { key: 'configuracion/sistema', label: 'Sistema' },
+      { key: 'configuracion/sistema', label: 'Sistema', role: 'SUPER_ADMIN' },
     ],
   },
 ];
@@ -80,10 +80,12 @@ export function navItemVisible(item: NavItem, role: AdminRole): boolean {
 }
 
 export function navGroupsFor(role: AdminRole): NavGroup[] {
-  return NAV.filter((group) => navVisible(group, role)).map((group) => ({
-    ...group,
-    items: group.items.filter((item) => navItemVisible(item, role)),
-  }));
+  return NAV.filter((group) => navVisible(group, role))
+    .map((group) => ({
+      ...group,
+      items: group.items.filter((item) => navItemVisible(item, role)),
+    }))
+    .filter((group) => group.items.length > 0);
 }
 
 const TITLES: readonly (readonly [string, string])[] = [

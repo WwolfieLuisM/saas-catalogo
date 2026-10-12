@@ -52,32 +52,25 @@ async function resolveAdminScope(
     throw new AppError(401, 'UNAUTHENTICATED', 'Autenticación requerida');
   }
 
-  if (auth.role === 'ADMIN') {
-    if (query.tenantId && query.tenantId !== auth.tenantId) {
-      throw new AppError(403, 'FORBIDDEN', 'No puedes operar sobre otro tenant');
-    }
-    return { adminIds: [auth.id] };
+  if (auth.role !== 'SUPER_ADMIN') {
+    throw new AppError(403, 'FORBIDDEN', 'Solo SUPER_ADMIN puede consultar las sesiones');
   }
 
-  if (auth.role === 'SUPER_ADMIN') {
-    if (query.tenantId) {
-      const tenant = await prisma.tenant.findUnique({ where: { id: query.tenantId } });
+  if (query.tenantId) {
+    const tenant = await prisma.tenant.findUnique({ where: { id: query.tenantId } });
 
-      if (!tenant) {
-        throw new AppError(422, 'TENANT_NOT_FOUND', 'El tenant indicado no existe');
-      }
-
-      const admins = await prisma.adminUser.findMany({
-        where: { tenantId: query.tenantId },
-        select: { id: true },
-      });
-      return { adminIds: admins.map((admin) => admin.id) };
+    if (!tenant) {
+      throw new AppError(422, 'TENANT_NOT_FOUND', 'El tenant indicado no existe');
     }
 
-    return { adminIds: undefined };
+    const admins = await prisma.adminUser.findMany({
+      where: { tenantId: query.tenantId },
+      select: { id: true },
+    });
+    return { adminIds: admins.map((admin) => admin.id) };
   }
 
-  throw new AppError(403, 'FORBIDDEN', 'Rol no autorizado');
+  return { adminIds: undefined };
 }
 
 async function findCurrentSessionId(adminId: string, now: Date): Promise<string | null> {
@@ -152,9 +145,13 @@ export async function revokeSession(
     throw new AppError(401, 'UNAUTHENTICATED', 'Autenticación requerida');
   }
 
+  if (auth.role !== 'SUPER_ADMIN') {
+    throw new AppError(403, 'FORBIDDEN', 'Solo SUPER_ADMIN puede revocar sesiones');
+  }
+
   const session = await prisma.adminSession.findUnique({ where: { id } });
 
-  if (!session || (auth.role === 'ADMIN' && session.adminId !== auth.id)) {
+  if (!session) {
     throw new AppError(404, 'SESSION_NOT_FOUND', 'Sesión no encontrada');
   }
 

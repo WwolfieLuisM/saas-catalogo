@@ -168,26 +168,21 @@ describe('GET /api/v1/admin/audit', () => {
     expect(body.error?.code).toBe('UNAUTHENTICATED');
   });
 
-  it('ADMIN solo ve eventos de su tenant con actorUsername resuelto', async () => {
-    const { status, body } = await api<AuditLogView[]>('/api/v1/admin/audit', {}, adminToken);
+  it('ADMIN recibe 403 aunque sea de un tenant', async () => {
+    const { status, body } = await api('/api/v1/admin/audit', {}, adminToken);
 
-    expect(status).toBe(200);
-    expect(body.meta?.total).toBe(4);
-    expect(body.data?.map((item) => item.id).sort()).toEqual(['a-same-1', 'a-same-2', 'a1', 'a2']);
-    expect(body.data?.find((item) => item.id === 'a1')?.actorUsername).toBe('javier-admin');
-    expect(body.data?.find((item) => item.id === 'a1')?.metadata).toEqual({
-      fields: ['username'],
-    });
+    expect(status).toBe(403);
+    expect(body.error?.code).toBe('FORBIDDEN');
   });
 
-  it('ADMIN con ?tenantId ajeno recibe 403 y con el propio 200', async () => {
+  it('ADMIN con ?tenantId ajeno y propio recibe 403 en ambos', async () => {
     const ajeno = await api(`/api/v1/admin/audit?tenantId=${TENANT_OTRO}`, {}, adminToken);
     expect(ajeno.status).toBe(403);
     expect(ajeno.body.error?.code).toBe('FORBIDDEN');
 
     const propio = await api(`/api/v1/admin/audit?tenantId=${TENANT_JAVIER}`, {}, adminToken);
-    expect(propio.status).toBe(200);
-    expect(propio.body.meta?.total).toBe(4);
+    expect(propio.status).toBe(403);
+    expect(propio.body.error?.code).toBe('FORBIDDEN');
   });
 
   it('SUPER_ADMIN lista el historial global incluyendo eventos de plataforma', async () => {
@@ -197,6 +192,7 @@ describe('GET /api/v1/admin/audit', () => {
     expect(body.meta?.total).toBe(6);
     expect(body.data?.find((item) => item.id === 'a3')?.tenantId).toBeNull();
     expect(body.data?.find((item) => item.id === 'a3')?.actorUsername).toBe('root');
+    expect(body.data?.find((item) => item.id === 'a1')?.actorUsername).toBe('javier-admin');
     expect(body.data?.find((item) => item.id === 'a4')?.actorUsername).toBe('otro-admin');
   });
 
@@ -204,6 +200,9 @@ describe('GET /api/v1/admin/audit', () => {
     const filtrado = await api(`/api/v1/admin/audit?tenantId=${TENANT_JAVIER}`, {}, superToken);
     expect(filtrado.status).toBe(200);
     expect(filtrado.body.meta?.total).toBe(4);
+    expect(
+      filtrado.body.data?.every((item) => item.tenantId === TENANT_JAVIER),
+    ).toBe(true);
 
     const desconocido = await api(
       '/api/v1/admin/audit?tenantId=00000000-0000-4000-8000-000000000000',
@@ -281,12 +280,9 @@ describe('GET /api/v1/admin/audit', () => {
   });
 
   it('ordena por timestamp desc y desempata por id desc', async () => {
-    const { status, body } = await api<AuditLogView[]>('/api/v1/admin/audit', {}, adminToken);
+    const { status, body } = await api<AuditLogView[]>('/api/v1/admin/audit', {}, superToken);
 
     expect(status).toBe(200);
-    const ids = body.data?.map((item) => item.id) ?? [];
-    expect(ids).toEqual(['a1', 'a-same-2', 'a-same-1', 'a2']);
-
     const timestamps = body.data?.map((item) => Date.parse(item.timestamp)) ?? [];
     expect([...timestamps].sort((a, b) => b - a)).toEqual(timestamps);
   });

@@ -8,6 +8,7 @@ import { adminFetch, adminFetchPaged } from '@/lib/admin/adminApi';
 import { nf } from '@/lib/admin/format';
 import { toast } from '@/lib/admin/toast';
 import type { GameItem, TaxonomyItem } from '@/lib/admin/types';
+import { useAdminAuth } from '@/hooks/useAdminAuth';
 import { useAdminList } from '@/hooks/useAdminList';
 import { useTenantScope } from '@/hooks/useTenantScope';
 import { AdminIcon } from '@/components/admin/icons';
@@ -31,6 +32,8 @@ import {
 function JuegosList() {
   const scope = useTenantScope();
   const router = useRouter();
+  const { user } = useAdminAuth();
+  const isSa = user?.role === 'SUPER_ADMIN';
   const [q, setQ] = useState('');
   const [debouncedQ, setDebouncedQ] = useState('');
   const [page, setPage] = useState(1);
@@ -334,15 +337,17 @@ function JuegosList() {
                   >
                     <AdminIcon name="copy" />
                   </button>
-                  <button
-                    className="ib"
-                    type="button"
-                    title="Historial"
-                    aria-label={`Historial de ${game.title}`}
-                    onClick={() => setHistory(game)}
-                  >
-                    <AdminIcon name="clock" />
-                  </button>
+                  {isSa ? (
+                    <button
+                      className="ib"
+                      type="button"
+                      title="Historial"
+                      aria-label={`Historial de ${game.title}`}
+                      onClick={() => setHistory(game)}
+                    >
+                      <AdminIcon name="clock" />
+                    </button>
+                  ) : null}
                   <button
                     className="ib dng"
                     type="button"
@@ -408,7 +413,7 @@ function JuegosList() {
         </Field>
       </FiltersPanel>
       {content}
-      {history ? (
+      {isSa && history ? (
         <GameHistoryModal
           gameId={history.id}
           title={history.title}

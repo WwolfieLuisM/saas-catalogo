@@ -20,6 +20,7 @@ import {
   Skeleton,
 } from '@/components/admin/ui';
 import { AdminIcon } from '@/components/admin/icons';
+import { useAdminAuth } from '@/hooks/useAdminAuth';
 
 function priceModeLabel(priceMode: string): string {
   return priceMode === 'RULE' ? 'por reglas del negocio' : 'manual';
@@ -92,6 +93,8 @@ function reqRows(r: GameRequirements, sizeValue: number | null, sizeUnit: string
 export default function JuegoDetallePage() {
   const params = useParams<{ id: string }>();
   const router = useRouter();
+  const { user } = useAdminAuth();
+  const isSa = user?.role === 'SUPER_ADMIN';
   const id = params.id;
   const [game, setGame] = useState<GameItem | null>(null);
   const [manifest, setManifest] = useState<MediaManifest | null>(null);
@@ -162,10 +165,12 @@ export default function JuegoDetallePage() {
         sub={sub || undefined}
         actions={
           <>
-            <button className="btn" type="button" onClick={() => setHistoryOpen(true)}>
-              <AdminIcon name="clock" />
-              Historial
-            </button>
+            {isSa ? (
+              <button className="btn" type="button" onClick={() => setHistoryOpen(true)}>
+                <AdminIcon name="clock" />
+                Historial
+              </button>
+            ) : null}
             <button className="btn" type="button" disabled={duplicating} onClick={duplicate}>
               <AdminIcon name="copy" />
               Duplicar
@@ -278,7 +283,7 @@ export default function JuegoDetallePage() {
           />
         )}
       </section>
-      {historyOpen ? (
+      {isSa && historyOpen ? (
         <GameHistoryModal
           gameId={game.id}
           title={game.title}

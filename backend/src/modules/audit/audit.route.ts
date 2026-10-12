@@ -7,7 +7,7 @@ import * as auditService from './audit.service.js';
 export function createAuditRouter(): Router {
   const router = Router();
 
-  router.use(authenticate, requireRoles('SUPER_ADMIN', 'ADMIN'));
+  router.use(authenticate, requireRoles('SUPER_ADMIN'));
 
   router.get('/', async (req, res) => {
     const query = auditListQuerySchema.parse(req.query);

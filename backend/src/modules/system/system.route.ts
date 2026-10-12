@@ -6,7 +6,7 @@ import { checkDatabaseHealth } from '../../utils/databaseHealth.js';
 export function createSystemRouter(): Router {
   const router = Router();
 
-  router.use(authenticate, requireRoles('SUPER_ADMIN', 'ADMIN'));
+  router.use(authenticate, requireRoles('SUPER_ADMIN'));
 
   router.get('/', async (_req, res) => {
     const database = await checkDatabaseHealth();

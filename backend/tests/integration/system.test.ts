@@ -41,8 +41,8 @@ async function api<T = Record<string, unknown>>(
   const response = await fetch(`${baseUrl}${path}`, {
     ...init,
     headers: {
+      ...(init.body ? { 'content-type': 'application/json' } : {}),
       ...(token ? { authorization: `Bearer ${token}` } : {}),
-      ...(init.headers as Record<string, string> | undefined),
     },
   });
   const body = (await response.json()) as ApiBody<T>;
@@ -97,8 +97,15 @@ describe('GET /api/v1/admin/system', () => {
     expect(body.error?.code).toBe('UNAUTHENTICATED');
   });
 
-  it('devuelve los datos del sistema con exactamente los 6 campos', async () => {
-    const { status, body } = await api<SystemData>('/api/v1/admin/system', {}, adminToken);
+  it('ADMIN recibe 403', async () => {
+    const { status, body } = await api('/api/v1/admin/system', {}, adminToken);
+
+    expect(status).toBe(403);
+    expect(body.error?.code).toBe('FORBIDDEN');
+  });
+
+  it('SUPER_ADMIN recibe los datos del sistema con exactamente los 6 campos', async () => {
+    const { status, body } = await api<SystemData>('/api/v1/admin/system', {}, superToken);
 
     expect(status).toBe(200);
     expect(Object.keys(body.data ?? {}).sort()).toEqual(
@@ -111,14 +118,6 @@ describe('GET /api/v1/admin/system', () => {
     expect(body.data?.nodeVersion).toBe(process.version);
     expect(['development', 'test', 'production']).toContain(body.data?.environment);
     expect(Number.isNaN(Date.parse(body.data?.timestamp ?? ''))).toBe(false);
-  });
-
-  it('SUPER_ADMIN también puede consultar el estado', async () => {
-    const { status, body } = await api<SystemData>('/api/v1/admin/system', {}, superToken);
-
-    expect(status).toBe(200);
-    expect(body.data?.status).toBe('ok');
-    expect(body.data?.database).toBe('ok');
   });
 
   it('no expone secretos de conexión ni credenciales', async () => {

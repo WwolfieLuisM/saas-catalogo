@@ -7,6 +7,7 @@ import { useAdminAuth } from '@/hooks/useAdminAuth';
 import { useAdminList } from '@/hooks/useAdminList';
 import {
   Badge,
+  DeniedBox,
   EmptyBox,
   ErrorBox,
   ListShell,
@@ -54,7 +55,8 @@ export default function AuditoriaPage() {
     q: query || undefined,
   });
 
-  const sub = isSa ? 'Registro global de la plataforma.' : 'Registro de acciones de tu negocio.';
+  if (!isSa) return <DeniedBox />;
+  const sub = 'Registro global de la plataforma.';
 
   let content: ReactNode;
   if (error) {

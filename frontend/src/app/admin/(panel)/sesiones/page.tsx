@@ -6,9 +6,11 @@ import { adminFetch } from '@/lib/admin/adminApi';
 import { rel } from '@/lib/admin/format';
 import { toast } from '@/lib/admin/toast';
 import type { SessionEntry } from '@/lib/admin/types';
+import { useAdminAuth } from '@/hooks/useAdminAuth';
 import { useAdminList } from '@/hooks/useAdminList';
 import {
   Badge,
+  DeniedBox,
   EmptyBox,
   ErrorBox,
   ListShell,
@@ -19,6 +21,12 @@ import {
 } from '@/components/admin/ui';
 
 export default function SesionesPage() {
+  const { user } = useAdminAuth();
+  if (user?.role !== 'SUPER_ADMIN') return <DeniedBox />;
+  return <SesionesList />;
+}
+
+function SesionesList() {
   const [page, setPage] = useState(1);
   const [killing, setKilling] = useState<SessionEntry | null>(null);
   const [killingBusy, setKillingBusy] = useState(false);

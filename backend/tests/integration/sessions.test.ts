@@ -161,19 +161,33 @@ describe('GET /api/v1/admin/sessions', () => {
     expect(body.error?.code).toBe('UNAUTHENTICATED');
   });
 
-  it('ADMIN solo ve sus sesiones activas con isCurrent en la más reciente', async () => {
-    const { status, body } = await api<SessionView[]>('/api/v1/admin/sessions', {}, adminToken);
+  it('ADMIN recibe 403 en la lista global', async () => {
+    const { status, body } = await api('/api/v1/admin/sessions', {}, adminToken);
+
+    expect(status).toBe(403);
+    expect(body.error?.code).toBe('FORBIDDEN');
+  });
+
+  it('ADMIN con ?tenantId ajeno y propio recibe 403 en ambos', async () => {
+    const ajeno = await api(`/api/v1/admin/sessions?tenantId=${TENANT_OTRO}`, {}, adminToken);
+    expect(ajeno.status).toBe(403);
+    expect(ajeno.body.error?.code).toBe('FORBIDDEN');
+
+    const propio = await api(`/api/v1/admin/sessions?tenantId=${TENANT_JAVIER}`, {}, adminToken);
+    expect(propio.status).toBe(403);
+    expect(propio.body.error?.code).toBe('FORBIDDEN');
+  });
+
+  it('SUPER_ADMIN lista activas globales incluyendo otros tenants', async () => {
+    const { status, body } = await api<SessionView[]>('/api/v1/admin/sessions', {}, superToken);
 
     expect(status).toBe(200);
-    expect(body.meta?.total).toBe(2);
-    expect(body.data?.map((item) => item.id)).toEqual([S1, S2]);
-    expect(body.data?.find((item) => item.id === S1)?.isCurrent).toBe(true);
-    expect(body.data?.find((item) => item.id === S2)?.isCurrent).toBe(false);
-    expect(body.data?.every((item) => item.adminUsername === 'javier-admin')).toBe(true);
+    expect(body.meta?.total).toBe(3);
+    expect(body.data?.map((item) => item.id)).toEqual([S5, S1, S2]);
   });
 
   it('no expone tokenHash ni otros secretos', async () => {
-    const { status, body } = await api<SessionView[]>('/api/v1/admin/sessions', {}, adminToken);
+    const { status, body } = await api<SessionView[]>('/api/v1/admin/sessions', {}, superToken);
 
     expect(status).toBe(200);
     expect(JSON.stringify(body)).not.toMatch(/tokenHash|refresh_token|passwordHash/);
@@ -195,24 +209,6 @@ describe('GET /api/v1/admin/sessions', () => {
     );
   });
 
-  it('ADMIN con ?tenantId ajeno recibe 403 y con el propio 200', async () => {
-    const ajeno = await api(`/api/v1/admin/sessions?tenantId=${TENANT_OTRO}`, {}, adminToken);
-    expect(ajeno.status).toBe(403);
-    expect(ajeno.body.error?.code).toBe('FORBIDDEN');
-
-    const propio = await api(`/api/v1/admin/sessions?tenantId=${TENANT_JAVIER}`, {}, adminToken);
-    expect(propio.status).toBe(200);
-    expect(propio.body.meta?.total).toBe(2);
-  });
-
-  it('SUPER_ADMIN lista activas globales incluyendo otros tenants', async () => {
-    const { status, body } = await api<SessionView[]>('/api/v1/admin/sessions', {}, superToken);
-
-    expect(status).toBe(200);
-    expect(body.meta?.total).toBe(3);
-    expect(body.data?.map((item) => item.id)).toEqual([S5, S1, S2]);
-  });
-
   it('SUPER_ADMIN con ?tenantId filtra por ese tenant y 422 si no existe', async () => {
     const filtrado = await api<SessionView[]>(
       `/api/v1/admin/sessions?tenantId=${TENANT_JAVIER}`,
@@ -221,6 +217,7 @@ describe('GET /api/v1/admin/sessions', () => {
     );
     expect(filtrado.status).toBe(200);
     expect(filtrado.body.meta?.total).toBe(2);
+    expect(filtrado.body.data?.every((item) => item.tenantId === TENANT_JAVIER)).toBe(true);
 
     const desconocido = await api(
       '/api/v1/admin/sessions?tenantId=00000000-0000-4000-8000-000000000000',
@@ -235,16 +232,16 @@ describe('GET /api/v1/admin/sessions', () => {
     const revocadas = await api<SessionView[]>(
       '/api/v1/admin/sessions?status=revoked',
       {},
-      adminToken,
+      superToken,
     );
     expect(revocadas.status).toBe(200);
     expect(revocadas.body.data?.map((item) => item.id)).toEqual([S3]);
 
-    const todas = await api<SessionView[]>('/api/v1/admin/sessions?status=all', {}, adminToken);
+    const todas = await api<SessionView[]>('/api/v1/admin/sessions?status=all', {}, superToken);
     expect(todas.status).toBe(200);
-    expect(todas.body.meta?.total).toBe(4);
+    expect(todas.body.meta?.total).toBe(5);
 
-    const invalida = await api('/api/v1/admin/sessions?status=inactiva', {}, adminToken);
+    const invalida = await api('/api/v1/admin/sessions?status=inactiva', {}, superToken);
     expect(invalida.status).toBe(400);
     expect(invalida.body.error?.code).toBe('VALIDATION_ERROR');
   });
@@ -253,7 +250,7 @@ describe('GET /api/v1/admin/sessions', () => {
     const { status, body } = await api<SessionView[]>(
       '/api/v1/admin/sessions?q=Android',
       {},
-      adminToken,
+      superToken,
     );
 
     expect(status).toBe(200);
@@ -264,57 +261,68 @@ describe('GET /api/v1/admin/sessions', () => {
     const { status, body } = await api<SessionView[]>(
       '/api/v1/admin/sessions?limit=1&page=2',
       {},
-      adminToken,
+      superToken,
     );
 
     expect(status).toBe(200);
-    expect(body.meta).toEqual({ page: 2, pageSize: 1, total: 2, totalPages: 2 });
-    expect(body.data?.map((item) => item.id)).toEqual([S2]);
+    expect(body.meta).toEqual({ page: 2, pageSize: 1, total: 3, totalPages: 3 });
+    expect(body.data?.map((item) => item.id)).toEqual([S1]);
   });
 });
 
 describe('DELETE /api/v1/admin/sessions/:id', () => {
-  it('devuelve 400 si el id no es un uuid', async () => {
-    const { status, body } = await api(
+  it('ADMIN recibe 403 antes de validar el id', async () => {
+    const noUuid = await api(
       '/api/v1/admin/sessions/no-uuid',
       { method: 'DELETE' },
       adminToken,
+    );
+    expect(noUuid.status).toBe(403);
+    expect(noUuid.body.error?.code).toBe('FORBIDDEN');
+
+    const ajena = await api('/api/v1/admin/sessions/' + S5, { method: 'DELETE' }, adminToken);
+    expect(ajena.status).toBe(403);
+    expect(ajena.body.error?.code).toBe('FORBIDDEN');
+  });
+
+  it('SUPER_ADMIN devuelve 400 si el id no es un uuid', async () => {
+    const { status, body } = await api(
+      '/api/v1/admin/sessions/no-uuid',
+      { method: 'DELETE' },
+      superToken,
     );
 
     expect(status).toBe(400);
     expect(body.error?.code).toBe('VALIDATION_ERROR');
   });
 
-  it('devuelve 404 si la sesión no existe o es de otro admin', async () => {
-    const inexistente = await api(
+  it('SUPER_ADMIN devuelve 404 si la sesión no existe', async () => {
+    const { status, body } = await api(
       '/api/v1/admin/sessions/00000000-0000-4000-8000-000000000000',
       { method: 'DELETE' },
-      adminToken,
+      superToken,
     );
-    expect(inexistente.status).toBe(404);
-    expect(inexistente.body.error?.code).toBe('SESSION_NOT_FOUND');
 
-    const ajena = await api('/api/v1/admin/sessions/' + S5, { method: 'DELETE' }, adminToken);
-    expect(ajena.status).toBe(404);
-    expect(ajena.body.error?.code).toBe('SESSION_NOT_FOUND');
+    expect(status).toBe(404);
+    expect(body.error?.code).toBe('SESSION_NOT_FOUND');
   });
 
-  it('devuelve 409 si la sesión ya está revocada', async () => {
+  it('SUPER_ADMIN devuelve 409 si la sesión ya está revocada', async () => {
     const { status, body } = await api(
       '/api/v1/admin/sessions/' + S3,
       { method: 'DELETE' },
-      adminToken,
+      superToken,
     );
 
     expect(status).toBe(409);
     expect(body.error?.code).toBe('SESSION_ALREADY_REVOKED');
   });
 
-  it('revoca una sesión, audita SESSION_REVOKED y no expone secretos', async () => {
+  it('SUPER_ADMIN revoca una sesión y lo audita', async () => {
     const { status, body } = await api<SessionView>(
       '/api/v1/admin/sessions/' + S2,
       { method: 'DELETE' },
-      adminToken,
+      superToken,
     );
 
     expect(status).toBe(200);
@@ -326,15 +334,16 @@ describe('DELETE /api/v1/admin/sessions/:id', () => {
     const session = state.sessions.get(S2);
     expect(session?.revokedAt).not.toBeNull();
 
-    const audit = [...state.auditLogs.values()].find((row) => row.action === 'SESSION_REVOKED');
+    const audit = [...state.auditLogs.values()].find(
+      (row) => row.action === 'SESSION_REVOKED' && row.entityId === S2,
+    );
     expect(audit).toBeDefined();
     expect(audit?.entity).toBe('AdminSession');
-    expect(audit?.entityId).toBe(S2);
-    expect(audit?.actorId).toBe(USER_ADMIN);
+    expect(audit?.actorId).toBe(USER_SUPER);
     expect(audit?.tenantId).toBe(TENANT_JAVIER);
   });
 
-  it('SUPER_ADMIN puede revocar sesiones de cualquier admin y lo audita', async () => {
+  it('SUPER_ADMIN puede revocar sesiones de cualquier admin', async () => {
     const { status, body } = await api<SessionView>(
       '/api/v1/admin/sessions/' + S5,
       { method: 'DELETE' },
@@ -350,14 +359,13 @@ describe('DELETE /api/v1/admin/sessions/:id', () => {
     expect(audit?.actorId).toBe(USER_SUPER);
   });
 
-  it('al revocar la sesión actual el refresh queda invalidado y el access sigue vigente', async () => {
+  it('al revocar la sesión de un admin el refresh queda invalidado y el access sigue vigente', async () => {
     const { status, body } = await api<SessionView>(
       '/api/v1/admin/sessions/' + S1,
       { method: 'DELETE' },
-      adminToken,
+      superToken,
     );
     expect(status).toBe(200);
-    expect(body.data?.isCurrent).toBe(true);
 
     const refresh = await fetch(`${baseUrl}/api/v1/auth/refresh`, {
       method: 'POST',

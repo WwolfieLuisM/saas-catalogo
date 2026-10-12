@@ -40,22 +40,26 @@ test('navItemVisible aplica rol por item', () => {
   assert.equal(navItemVisible(plainItem, 'SUPER_ADMIN'), true);
 });
 
-test('navGroupsFor filtra grupos y items por rol', () => {
+test('Administración es solo SUPER_ADMIN (administradores, auditoría y sesiones)', () => {
   const saGroups = navGroupsFor('SUPER_ADMIN');
   const adminGroups = navGroupsFor('ADMIN');
 
   assert.equal(saGroups.length, 4);
-  assert.equal(adminGroups.length, 3);
+  assert.equal(adminGroups.length, 2);
 
   const adminGroupNames = adminGroups.map((g) => g.group);
   assert.ok(!adminGroupNames.includes('Plataforma'));
+  assert.ok(!adminGroupNames.includes('Administración'));
 
   const saAdmins = saGroups.find((g) => g.group === 'Administración');
-  const adminAdmins = adminGroups.find((g) => g.group === 'Administración');
   assert.equal(saAdmins?.items.length, 3);
-  assert.equal(adminAdmins?.items.length, 2);
-  assert.ok(!adminAdmins?.items.some((i) => i.key === 'administradores'));
-  assert.ok(adminAdmins?.items.some((i) => i.key === 'auditoria'));
+
+  const saConfig = saGroups.find((g) => g.group === 'Configuración');
+  const adminConfig = adminGroups.find((g) => g.group === 'Configuración');
+  assert.equal(saConfig?.items.length, 7);
+  assert.equal(adminConfig?.items.length, 6);
+  assert.ok(!adminConfig?.items.some((i) => i.key === 'configuracion/sistema'));
+  assert.ok(saConfig?.items.some((i) => i.key === 'configuracion/sistema'));
 });
 
 test('navHref apunta dashboard a /admin y el resto a /admin/<key>', () => {

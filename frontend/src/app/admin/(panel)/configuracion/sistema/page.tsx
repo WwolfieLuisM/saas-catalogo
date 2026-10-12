@@ -10,7 +10,7 @@ import type { SystemInfo } from '@/lib/admin/types';
 import { useAdminAuth } from '@/hooks/useAdminAuth';
 import { CfgTabs } from '@/components/admin/CfgTabs';
 import { AdminIcon } from '@/components/admin/icons';
-import { Badge, ErrorBox, PageHead, Skeleton } from '@/components/admin/ui';
+import { Badge, DeniedBox, ErrorBox, PageHead, Skeleton } from '@/components/admin/ui';
 
 const API_MAP: ReadonlyArray<readonly [string, string, string]> = [
   ['GET', '/api/v1/catalog/version', 'Versión del catálogo público'],
@@ -38,6 +38,7 @@ export default function ConfigSistemaPage() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    if (!isSa) return;
     let cancelled = false;
     queueMicrotask(() => {
       adminFetch<SystemInfo>('/admin/system')
@@ -53,11 +54,21 @@ export default function ConfigSistemaPage() {
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [isSa]);
 
   const panelRoutes = navGroupsFor(user?.role ?? 'ADMIN').flatMap((group) =>
     group.items.map((item) => ({ ...item, group: group.group })),
   );
+
+  if (!isSa) {
+    return (
+      <>
+        <PageHead title="Sistema" sub="Estado del backend, infraestructura y mapa de rutas." />
+        <CfgTabs active="sistema" />
+        <DeniedBox />
+      </>
+    );
+  }
 
   return (
     <>
@@ -103,25 +114,21 @@ export default function ConfigSistemaPage() {
         </div>
       )}
 
-      {isSa ? (
-        <section>
-          <h2 style={{ fontSize: 26, marginBottom: 8 }}>INFRAESTRUCTURA</h2>
-          <div className="rows">
-            {INFRA_ROWS.map((row) => (
-              <div key={row.name}>
-                <AdminIcon name="cloud" />
-                <div className="gr">
-                  <b>{row.name}</b>
-                  <br />
-                  <small>{row.detail}</small>
-                </div>
+      <section>
+        <h2 style={{ fontSize: 26, marginBottom: 8 }}>INFRAESTRUCTURA</h2>
+        <div className="rows">
+          {INFRA_ROWS.map((row) => (
+            <div key={row.name}>
+              <AdminIcon name="cloud" />
+              <div className="gr">
+                <b>{row.name}</b>
+                <br />
+                <small>{row.detail}</small>
               </div>
-            ))}
-          </div>
-        </section>
-      ) : (
-        <div className="note">El estado de la infraestructura global solo lo ve SUPER_ADMIN.</div>
-      )}
+            </div>
+          ))}
+        </div>
+      </section>
 
       <section className="sec">
         <h2>Mapa de rutas y API</h2>
