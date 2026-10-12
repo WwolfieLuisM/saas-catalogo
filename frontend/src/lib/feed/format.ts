@@ -57,10 +57,10 @@ export const formatReleaseInfo = (
 ): { date: string; days: number | null } | null => {
   if (!soon) return null;
   if (!releaseDate) return { date: '', days: null };
-  const d = new Date(`${releaseDate}T00:00:00`);
+  const d = new Date(`${releaseDate}T00:00:00Z`);
   if (Number.isNaN(d.getTime())) return { date: '', days: null };
   return {
-    date: d.toLocaleDateString('es', { day: 'numeric', month: 'long', year: 'numeric' }),
+    date: d.toLocaleDateString('es', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' }),
     days: Math.ceil((d.getTime() - Date.now()) / 864e5),
   };
 };

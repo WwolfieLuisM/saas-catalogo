@@ -6,7 +6,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import { AdminIcon } from '@/components/admin/icons';
 import { TopbarTitleProvider, type TopbarTitleSetter } from '@/components/admin/title';
 import { useAdminAuth } from '@/hooks/useAdminAuth';
-import { BNAV, NAV, navActive, navHref, navVisible, titleFor } from '@/lib/admin/nav';
+import { BNAV, navActive, navGroupsFor, navHref, titleFor } from '@/lib/admin/nav';
 
 export default function AdminPanelLayout({ children }: { children: ReactNode }) {
   const { status, user, logout } = useAdminAuth();
@@ -35,6 +35,7 @@ export default function AdminPanelLayout({ children }: { children: ReactNode }) 
   const title = override && override.path === pathname ? override.title : titleFor(pathname);
   const close = () => setDrawer(false);
   const toggle = () => setDrawer((open) => !open);
+  const groups = navGroupsFor(user.role);
 
   return (
     <TopbarTitleProvider value={setTitle}>
@@ -47,7 +48,7 @@ export default function AdminPanelLayout({ children }: { children: ReactNode }) 
             <small>Panel de administración</small>
           </div>
           <nav className="nav">
-            {NAV.filter((group) => navVisible(group, user.role)).map((group) => (
+            {groups.map((group) => (
               <div key={group.group}>
                 <div className="ng">{group.group}</div>
                 {group.items.map((item) => {

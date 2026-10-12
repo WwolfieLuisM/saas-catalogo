@@ -4,9 +4,18 @@
 2026-10-11
 
 ## Current Focus
-Backend Fases 0-13 completadas (desplegado en Render, live). **Frontend E0–E7 (2026-10-10/11): COMPLETADOS con los 4 gates verdes** — scaffold, cliente API, feed público v17, E4 auth admin, E5 shell+dashboard, E6a CRUD taxonomía/auditoría/sesiones/admins/negocios, E6b juegos/biblioteca/media + gameView, **E6c configuración** (general/catálogo/precios/datos/backups/multimedia/sistema) y **E7 SEO/meta/perf**. Commit/push solo con autorización tras informe.
+Backend Fases 0-13 completadas (desplegado en Render, live). Frontend E0–E7 (2026-10-10/11) completado. **Ahora: permisos por rol en el panel ADMIN** (menú oculta secciones SUPER_ADMIN-only, backend reforzado). Commit/push solo con autorización tras informe.
 
 **Frontend E7 (SEO/meta/perf, 2026-10-11)**: COMPLETADO con 4 gates verdes + `SMOKE-E7` 24/24.
+
+**Permisos por rol (2026-10-11)**: 
+- Verificación previa (4 puntos): Config PATCH solo acepta campos de tenant (publicName/whatsapp/footer/showUnavailable/offerOffline) → OK, no filtra datos de plataforma. System endpoint solo expone status/database/uptime/nodeVersion/environment/timestamp → OK, sin datos internos. Import usa tenantId de sesión y solo escribe TenantGame (no toca base-games) → OK, no es vía lateral para saltarse SA-only. Media scan usa resolveTenantId (ADMIN forzado a su tenant) y listImages filtra por prefijo → OK, tenant-scoped.
+- Backend reforzado (ya en código): `tenants`, `administrators`, `base-games` (POST/PATCH/DELETE) y `backups/:id/restore` con `requireRoles('SUPER_ADMIN')` → ADMIN recibe 403. Lectura tenant-scoped (`base-games` GET, `backups` GET/POST) permitida para ADMIN (list/create scoped a su tenantId).
+- Frontend: `NavGroup` con `role?: AdminRole` (Plataforma SA-only, ya existente); `navVisible(group, role)` filtra grupos. Se añadió `NavItem` con `role?: AdminRole` y `navVisible` para items individuales (Administradores → SA-only). `NavRender` filtra items por rol. `DeniedBox` en páginas SA-only (negocios, administradores) si `useAdminAuth().user.role !== 'SUPER_ADMIN'`.
+- Fix de bugs secundarios: `formatReleaseInfo` en `src/lib/feed/format.ts` ahora usa `new Date(\`${releaseDate}T00:00:00Z\`)` (UTC) en lugar de hora local — antes el parseo local + `Date.now()` (UTC) inflaba el cálculo de días con offsets ≥48h. `format.test.ts` actualizado con fechas absolutas (2030-01-15) + test de offset UTC.
+- Smoke: `smoke-roles.ps1` 15/15 — ADMIN 403 en mutaciones SA-only (tenants, administrators, base-games write, backups restore), 200 en lecturas tenant-scoped, login ambos roles OK.
+- Gates: tsc 0, eslint 0, 79/79 tests, build OK (27 rutas). 
+- Script temporal `C:\Users\Luis\AppData\Local\Temp\opencode\smoke-roles.ps1` puede eliminarse tras commit.
   - `layout.tsx` root: metadata expandido (metadataBase, title template, keywords, openGraph con images/icon.svg, twitter card summary, alternates.canonical, robots index/follow); `viewport` export (themeColor `#0b0e12`); preconnect `res.cloudinary.com` + `wsrv.nl`, dns-prefetch Steam CDN.
   - `admin/layout.tsx`: metadata `robots: noindex,nofollow` + título `Panel de administración`.
   - `robots.ts`: allow `/`, disallow `/admin`, sitemap URL.

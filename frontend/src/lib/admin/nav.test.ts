@@ -4,7 +4,9 @@ import {
   BNAV,
   NAV,
   navActive,
+  navGroupsFor,
   navHref,
+  navItemVisible,
   navVisible,
   titleFor,
 } from './nav.ts';
@@ -27,6 +29,33 @@ test('Plataforma solo es visible para SUPER_ADMIN', () => {
   assert.equal(sa.length, 4);
   assert.equal(admin.length, 3);
   assert.ok(!admin.some((group) => group.group === 'Plataforma'));
+});
+
+test('navItemVisible aplica rol por item', () => {
+  const adminItem = { key: 'administradores', label: 'Administradores', role: 'SUPER_ADMIN' as const };
+  const plainItem = { key: 'auditoria', label: 'Auditoría' };
+  assert.equal(navItemVisible(adminItem, 'SUPER_ADMIN'), true);
+  assert.equal(navItemVisible(adminItem, 'ADMIN'), false);
+  assert.equal(navItemVisible(plainItem, 'ADMIN'), true);
+  assert.equal(navItemVisible(plainItem, 'SUPER_ADMIN'), true);
+});
+
+test('navGroupsFor filtra grupos y items por rol', () => {
+  const saGroups = navGroupsFor('SUPER_ADMIN');
+  const adminGroups = navGroupsFor('ADMIN');
+
+  assert.equal(saGroups.length, 4);
+  assert.equal(adminGroups.length, 3);
+
+  const adminGroupNames = adminGroups.map((g) => g.group);
+  assert.ok(!adminGroupNames.includes('Plataforma'));
+
+  const saAdmins = saGroups.find((g) => g.group === 'Administración');
+  const adminAdmins = adminGroups.find((g) => g.group === 'Administración');
+  assert.equal(saAdmins?.items.length, 3);
+  assert.equal(adminAdmins?.items.length, 2);
+  assert.ok(!adminAdmins?.items.some((i) => i.key === 'administradores'));
+  assert.ok(adminAdmins?.items.some((i) => i.key === 'auditoria'));
 });
 
 test('navHref apunta dashboard a /admin y el resto a /admin/<key>', () => {

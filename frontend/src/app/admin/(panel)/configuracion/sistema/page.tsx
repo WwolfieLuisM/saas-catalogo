@@ -5,7 +5,7 @@ import { ApiError } from '@/lib/api/client';
 import { adminFetch } from '@/lib/admin/adminApi';
 import { rel } from '@/lib/admin/format';
 import { INFRA_ROWS } from '@/lib/admin/dashboardView';
-import { NAV } from '@/lib/admin/nav';
+import { navGroupsFor } from '@/lib/admin/nav';
 import type { SystemInfo } from '@/lib/admin/types';
 import { useAdminAuth } from '@/hooks/useAdminAuth';
 import { CfgTabs } from '@/components/admin/CfgTabs';
@@ -55,7 +55,7 @@ export default function ConfigSistemaPage() {
     };
   }, []);
 
-  const panelRoutes = NAV.flatMap((group) =>
+  const panelRoutes = navGroupsFor(user?.role ?? 'ADMIN').flatMap((group) =>
     group.items.map((item) => ({ ...item, group: group.group })),
   );
 

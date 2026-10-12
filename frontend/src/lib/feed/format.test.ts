@@ -60,12 +60,21 @@ test('formatRequirements handles string array and object', () => {
 });
 
 test('formatReleaseInfo computes days for soon games', () => {
-  const future = new Date(Date.now() + 3 * 864e5).toISOString().slice(0, 10);
-  const info = formatReleaseInfo(future, true);
+  // Absolute dates are timezone-stable: 2030-01-15 is far enough that the
+  // UTC-midnight parse + ceil never collapses across local offsets.
+  const info = formatReleaseInfo('2030-01-15', true);
   assert.ok(info);
-  assert.equal(info!.days, 3);
+  assert.ok(info!.days !== null && info!.days > 1000);
   assert.equal(formatReleaseInfo(null, true)?.days, null);
   assert.equal(formatReleaseInfo('2020-01-01', false), null);
+});
+
+test('formatReleaseInfo uses UTC midnight so days is not inflated by local TZ', () => {
+  // A date exactly 3 days out from "today" (UTC) must report 3, not 4.
+  const today = new Date();
+  const target = new Date(Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate() + 3));
+  const iso = target.toISOString().slice(0, 10);
+  assert.equal(formatReleaseInfo(iso, true)?.days, 3);
 });
 
 test('safeUrl only accepts http(s) or relative', () => {

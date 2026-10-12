@@ -5,6 +5,7 @@ export interface NavItem {
   key: string;
   label: string;
   icon?: AdminIconName;
+  role?: AdminRole;
 }
 
 export interface NavGroup {
@@ -29,7 +30,7 @@ export const NAV: readonly NavGroup[] = [
   {
     group: 'Administración',
     items: [
-      { key: 'administradores', label: 'Administradores', icon: 'users' },
+      { key: 'administradores', label: 'Administradores', icon: 'users', role: 'SUPER_ADMIN' },
       { key: 'auditoria', label: 'Auditoría', icon: 'audit' },
       { key: 'sesiones', label: 'Sesiones', icon: 'key' },
     ],
@@ -72,6 +73,17 @@ export function navActive(pathname: string, key: string): boolean {
 
 export function navVisible(group: NavGroup, role: AdminRole): boolean {
   return !group.role || group.role === role;
+}
+
+export function navItemVisible(item: NavItem, role: AdminRole): boolean {
+  return !item.role || item.role === role;
+}
+
+export function navGroupsFor(role: AdminRole): NavGroup[] {
+  return NAV.filter((group) => navVisible(group, role)).map((group) => ({
+    ...group,
+    items: group.items.filter((item) => navItemVisible(item, role)),
+  }));
 }
 
 const TITLES: readonly (readonly [string, string])[] = [
