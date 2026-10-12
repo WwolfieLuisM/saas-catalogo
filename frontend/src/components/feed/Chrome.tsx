@@ -22,7 +22,7 @@ export function ContactSection() {
         <a
           className="btn gold"
           href={`https://wa.me/${(process.env.NEXT_PUBLIC_WHATSAPP ?? '5355555555').replace(/\D/g, '')}?text=${encodeURIComponent(
-            'Hola, busco un juego en el catálogo de Javier PC.',
+            'Hola, busco un juego en el catálogo de JAVIER.',
           )}`}
           target="_blank"
           rel="noreferrer"
@@ -39,7 +39,7 @@ export function Footer() {
     <footer className="site-footer">
       <div className="wrap">
         <b>
-          Javier <span style={{ color: 'var(--gold)' }}>PC</span>
+          JAVIER
         </b>
         <span>Catálogo de videojuegos · Precios en CUP · Consultar disponibilidad</span>
       </div>
