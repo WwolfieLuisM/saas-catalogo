@@ -23,10 +23,15 @@ jobs:
 
       - name: Instalar dependencias
         working-directory: frontend
-        run: npm ci
+        run: npm install
 
       - name: Build OpenNext
         working-directory: frontend
+        env:
+          NEXT_PUBLIC_API_URL: https://saas-catalogo-api.onrender.com
+          NEXT_PUBLIC_TENANT_SLUG: javier
+          NEXT_PUBLIC_DEMO: "false"
+          NEXT_PUBLIC_SITE_URL: https://saas-catalogo.pages.dev
         run: npx @opennextjs/cloudflare build
 
       - name: Deploy a Cloudflare Workers
