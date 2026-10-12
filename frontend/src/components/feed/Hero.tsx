@@ -22,7 +22,7 @@ export function Hero() {
       <section
         className={`hero${g.soon ? ' soon' : ''}`}
         aria-label="Juego destacado"
-        style={{ ['--glow-h' as string]: g.hue }}
+        style={{ ['--glow-h' as string]: g.hue, ['--glow' as string]: `hsl(${g.hue} 70% 55%)` }}
       >
         <div className="hero-main">
           <div>
