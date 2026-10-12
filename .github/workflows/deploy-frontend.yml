@@ -24,7 +24,7 @@ jobs:
 
       - name: Instalar dependencias
         working-directory: frontend
-        run: npm install
+        run: npm ci
 
       - name: Verificar versiones Next.js y OpenNext
         working-directory: frontend
