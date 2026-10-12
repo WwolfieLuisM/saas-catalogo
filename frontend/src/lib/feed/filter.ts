@@ -6,9 +6,9 @@ export const SORTS: SortKey[] = ['recent', 'az', 'priceAsc', 'priceDesc', 'sizeA
 export const SORT_LABELS: Record<SortKey, string> = {
   recent: 'Más recientes',
   az: 'A–Z',
-  priceAsc: 'Precio ↑',
-  priceDesc: 'Precio ↓',
-  sizeAsc: 'Tamaño ↑',
+  priceAsc: 'Precio menor',
+  priceDesc: 'Precio mayor',
+  sizeAsc: 'Menor tamaño',
 };
 
 const comparators: Record<SortKey, (a: FeedGame, b: FeedGame) => number> = {

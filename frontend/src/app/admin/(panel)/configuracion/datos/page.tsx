@@ -226,11 +226,60 @@ export default function ConfigDatosPage() {
                   Elige un archivo <span className="mono">.json</span> exportado desde la
                   plataforma.
                 </p>
+                <div className="pa" style={{ marginTop: 14 }}>
+                  <button
+                    className="btn pri"
+                    type="button"
+                    disabled={busy}
+                    onClick={() => fileRef.current?.click()}
+                  >
+                    <AdminIcon name="upload" />
+                    Seleccionar archivo
+                  </button>
+                  <button
+                    className="btn"
+                    type="button"
+                    disabled={busy}
+                    onClick={() => {
+                      const sample = {
+                        schema: 'luismi-platform/catalog@1',
+                        games: [
+                          {
+                            title: 'Nuevo juego de ejemplo A',
+                            genre: 'Acción',
+                            category: 'Lanzamientos',
+                            platforms: ['PC'],
+                            size: 22,
+                            year: 2026,
+                            available: true,
+                          },
+                          {
+                            title: 'Nuevo juego de ejemplo B',
+                            genre: 'Aventura',
+                            category: 'Clásicos',
+                            platforms: ['PC', 'PS4'],
+                            size: 4,
+                            year: 2020,
+                            available: true,
+                          },
+                        ],
+                      };
+                      const file = new File(
+                        [JSON.stringify(sample, null, 2)],
+                        'catalogo-ejemplo.json',
+                        { type: 'application/json' },
+                      );
+                      void onFile(file);
+                    }}
+                  >
+                    Usar archivo de ejemplo
+                  </button>
+                </div>
                 <input
                   ref={fileRef}
                   type="file"
                   accept="application/json,.json"
-                  style={{ marginTop: 12 }}
+                  hidden
                   disabled={busy}
                   onChange={(event) => {
                     const file = event.target.files?.[0];

@@ -22,7 +22,7 @@ export function ContactSection() {
         <a
           className="btn gold"
           href={`https://wa.me/${(process.env.NEXT_PUBLIC_WHATSAPP ?? '5355555555').replace(/\D/g, '')}?text=${encodeURIComponent(
-            'Hola, busco un juego en el catálogo de JAVIER.',
+            'Hola, busco un juego en el catálogo de Javier PC.',
           )}`}
           target="_blank"
           rel="noreferrer"
@@ -35,13 +35,22 @@ export function ContactSection() {
 }
 
 export function Footer() {
+  const { catalogVersion, setShowWelcome, showWelcome } = useFeed();
   return (
     <footer className="site-footer">
       <div className="wrap">
-        <b>
-          JAVIER
-        </b>
-        <span>Catálogo de videojuegos · Precios en CUP · Consultar disponibilidad</span>
+        <b>Javier PC</b>
+        <span>Catálogo de juegos de Javier · © 2026</span>
+        <span>
+          Catálogo v{catalogVersion ?? 1} · v12 ·{' '}
+          <button
+            className="linklike"
+            type="button"
+            onClick={() => setShowWelcome(!showWelcome)}
+          >
+            ¿Cómo funciona?
+          </button>
+        </span>
       </div>
     </footer>
   );

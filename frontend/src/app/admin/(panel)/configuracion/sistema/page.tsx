@@ -10,7 +10,7 @@ import type { SystemInfo } from '@/lib/admin/types';
 import { useAdminAuth } from '@/hooks/useAdminAuth';
 import { CfgTabs } from '@/components/admin/CfgTabs';
 import { AdminIcon } from '@/components/admin/icons';
-import { Badge, DeniedBox, ErrorBox, PageHead, Skeleton } from '@/components/admin/ui';
+import { Badge, ErrorBox, PageHead, Skeleton } from '@/components/admin/ui';
 
 const API_MAP: ReadonlyArray<readonly [string, string, string]> = [
   ['GET', '/api/v1/catalog/version', 'Versión del catálogo público'],
@@ -36,7 +36,6 @@ export default function ConfigSistemaPage() {
   const isSa = user?.role === 'SUPER_ADMIN';
   const [info, setInfo] = useState<SystemInfo | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [retryCount, setRetryCount] = useState(0);
 
   useEffect(() => {
     if (!isSa) return;
@@ -44,9 +43,7 @@ export default function ConfigSistemaPage() {
     queueMicrotask(() => {
       adminFetch<SystemInfo>('/admin/system')
         .then((data) => {
-          if (cancelled) return;
-          setInfo(data);
-          setError(null);
+          if (!cancelled) setInfo(data);
         })
         .catch((cause: unknown) => {
           if (!cancelled) {
@@ -57,7 +54,7 @@ export default function ConfigSistemaPage() {
     return () => {
       cancelled = true;
     };
-  }, [isSa, retryCount]);
+  }, [isSa]);
 
   const panelRoutes = navGroupsFor(user?.role ?? 'ADMIN').flatMap((group) =>
     group.items.map((item) => ({ ...item, group: group.group })),
@@ -68,7 +65,52 @@ export default function ConfigSistemaPage() {
       <>
         <PageHead title="Sistema" sub="Estado del backend, infraestructura y mapa de rutas." />
         <CfgTabs active="sistema" />
-        <DeniedBox />
+        <div className="note">El estado de la infraestructura global solo lo ve SUPER_ADMIN.</div>
+        <section className="sec">
+          <h2>Mapa de rutas y API</h2>
+          <details className="fs" style={{ marginBottom: 10 }}>
+            <summary>
+              Rutas del panel <AdminIcon name="chev" />
+            </summary>
+            <div className="fb">
+              <div className="mono">
+                {panelRoutes.map((route) => (
+                  <div key={route.key}>
+                    {route.label} · {route.group}
+                  </div>
+                ))}
+              </div>
+            </div>
+          </details>
+          <details className="fs">
+            <summary>
+              API <AdminIcon name="chev" />
+            </summary>
+            <div className="fb">
+              <div className="rows">
+                {API_MAP.map(([method, path, detail]) => (
+                  <div key={`${method} ${path}`}>
+                    <span className="mono" style={{ width: 44 }}>
+                      {method}
+                    </span>
+                    <div className="gr">
+                      <span className="mono">{path}</span>
+                      <br />
+                      <small>{detail}</small>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </details>
+        </section>
+        <section className="sec">
+          <h2>Plataforma</h2>
+          <div className="panel">
+            <b>Luismi Platform</b>
+            <p className="hint">Plataforma desarrollada y mantenida por Luismi. Admin V2.</p>
+          </div>
+        </section>
       </>
     );
   }
@@ -79,7 +121,7 @@ export default function ConfigSistemaPage() {
       <CfgTabs active="sistema" />
 
       {error ? (
-        <ErrorBox onRetry={() => setRetryCount((count) => count + 1)} />
+        <ErrorBox onRetry={() => setError(null)} />
       ) : !info ? (
         <Skeleton rows={3} />
       ) : (
@@ -175,8 +217,8 @@ export default function ConfigSistemaPage() {
       <section className="sec">
         <h2>Plataforma</h2>
         <div className="panel">
-          <b>JAVIER</b>
-          <p className="hint">Plataforma desarrollada y mantenida por Luismi.</p>
+          <b>Luismi Platform</b>
+          <p className="hint">Plataforma desarrollada y mantenida por Luismi. Admin V2.</p>
         </div>
       </section>
     </>

@@ -8,8 +8,8 @@ const siteUrl =
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: 'JAVIER · Catálogo de videojuegos',
-    template: '%s · JAVIER',
+    default: 'Javier PC · Catálogo de videojuegos',
+    template: '%s · Javier PC',
   },
   description:
     'Catálogo público de videojuegos para PC: precios en CUP, disponibilidad y lista de compra por WhatsApp.',
@@ -19,26 +19,26 @@ export const metadata: Metadata = {
     'catálogo',
     'CUP',
     'Cuba',
-    'JAVIER',
+    'Javier PC',
     'juegos',
     'precios',
   ],
   openGraph: {
     type: 'website',
     locale: 'es_ES',
-    siteName: 'JAVIER',
-    title: 'JAVIER · Catálogo de videojuegos',
+    siteName: 'Javier PC',
+    title: 'Javier PC · Catálogo de videojuegos',
     description:
       'Catálogo público de videojuegos para PC: precios en CUP, disponibilidad y lista de compra por WhatsApp.',
     url: siteUrl,
-    images: [{ url: '/opengraph-image', width: 1200, height: 630, alt: 'JAVIER — catálogo de videojuegos para PC' }],
+    images: [{ url: '/icon.svg', width: 32, height: 32, alt: 'Javier PC' }],
   },
   twitter: {
-    card: 'summary_large_image',
-    title: 'JAVIER · Catálogo de videojuegos',
+    card: 'summary',
+    title: 'Javier PC · Catálogo de videojuegos',
     description:
       'Catálogo público de videojuegos para PC: precios en CUP, disponibilidad y lista de compra por WhatsApp.',
-    images: ['/opengraph-image'],
+    images: ['/icon.svg'],
   },
   alternates: {
     canonical: siteUrl,
@@ -55,7 +55,7 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
-  themeColor: '#0b0e12',
+  themeColor: '#07080c',
 };
 
 export default function RootLayout({
@@ -64,6 +64,12 @@ export default function RootLayout({
   return (
     <html lang="es">
       <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@800;900&family=Manrope:wght@400;500;700;800&display=swap"
+          rel="stylesheet"
+        />
         <link rel="preconnect" href="https://res.cloudinary.com" />
         <link rel="preconnect" href="https://wsrv.nl" />
         <link rel="dns-prefetch" href="https://shared.akamai.steamstatic.com" />

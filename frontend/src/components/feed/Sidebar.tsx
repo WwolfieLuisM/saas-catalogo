@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect } from 'react';
 import { useFeed } from '@/hooks/useFeed';
 
 export function Sidebar() {
@@ -12,6 +13,11 @@ export function Sidebar() {
     status,
     list,
   } = useFeed();
+
+  useEffect(() => {
+    document.body.classList.toggle('sidebar-open', sidebarOpen);
+    return () => document.body.classList.remove('sidebar-open');
+  }, [sidebarOpen]);
 
   const favCount = favorites.length;
   const collCount = games.filter((g) => favorites.includes(g.id) || status[g.id]).length;
@@ -35,7 +41,7 @@ export function Sidebar() {
       <aside className={`sidebar${sidebarOpen ? ' open' : ''}`} aria-hidden={!sidebarOpen}>
         <div className="sidebar-head">
           <b>
-            JAVIER
+            Javier <i>PC</i>
           </b>
           <button
             className="sidebar-close"

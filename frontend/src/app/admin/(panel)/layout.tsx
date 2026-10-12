@@ -4,16 +4,21 @@ import { useCallback, useEffect, useState, type ReactNode } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { AdminIcon } from '@/components/admin/icons';
+import { OffBar } from '@/components/admin/OffBar';
+import { Badge, Modal } from '@/components/admin/ui';
 import { TopbarTitleProvider, type TopbarTitleSetter } from '@/components/admin/title';
 import { useAdminAuth } from '@/hooks/useAdminAuth';
+import { useTenantScope } from '@/hooks/useTenantScope';
 import { BNAV, navActive, navGroupsFor, navHref, titleFor } from '@/lib/admin/nav';
 
 export default function AdminPanelLayout({ children }: { children: ReactNode }) {
   const { status, user, logout } = useAdminAuth();
+  const scope = useTenantScope();
   const router = useRouter();
   const pathname = usePathname();
   const [drawer, setDrawer] = useState(false);
   const [override, setOverride] = useState<{ path: string; title: string } | null>(null);
+  const [meOpen, setMeOpen] = useState(false);
 
   useEffect(() => {
     if (status === 'anonymous') router.replace('/admin/login');
@@ -36,6 +41,10 @@ export default function AdminPanelLayout({ children }: { children: ReactNode }) 
   const close = () => setDrawer(false);
   const toggle = () => setDrawer((open) => !open);
   const groups = navGroupsFor(user.role);
+  const tenantName =
+    scope.tenants?.find((tenant) => tenant.id === scope.tenantId)?.name ??
+    user.tenantId ??
+    '—';
 
   return (
     <TopbarTitleProvider value={setTitle}>
@@ -43,9 +52,12 @@ export default function AdminPanelLayout({ children }: { children: ReactNode }) 
         <aside className={`side${drawer ? ' open' : ''}`} aria-label="Navegación principal">
           <div className="brand">
             <b>
-              JAVIER
+              Luismi <i>Platform</i>
             </b>
             <small>Panel de administración</small>
+          </div>
+          <div className="tnt">
+            Tenant actual: <b>{tenantName}</b>
           </div>
           <nav className="nav">
             {groups.map((group) => (
@@ -70,9 +82,11 @@ export default function AdminPanelLayout({ children }: { children: ReactNode }) 
             ))}
           </nav>
           <div className="sf">
-            <b>JAVIER</b>
+            <b>Luismi Platform</b>
             <br />
-            Panel de administración
+            Plataforma desarrollada y mantenida por Luismi.
+            <br />
+            Admin V2
           </div>
         </aside>
         <div className="main">
@@ -88,17 +102,21 @@ export default function AdminPanelLayout({ children }: { children: ReactNode }) 
             </button>
             <div className="tt">{title}</div>
             <div className="sp" />
-            <button className="btn sm" type="button" onClick={() => void logout()}>
-              Salir
-            </button>
-            <div className="me">
+            <span className="pill tnt-t">Tenant actual: {tenantName}</span>
+            <button
+              className="me"
+              type="button"
+              onClick={() => setMeOpen(true)}
+              aria-label="Información de usuario"
+            >
               <span className="av">{user.username.slice(0, 1).toUpperCase()}</span>
               <span>
                 {user.username}
                 <small>{user.role}</small>
               </span>
-            </div>
+            </button>
           </header>
+          <OffBar />
           <main className="view" tabIndex={-1}>
             {children}
           </main>
@@ -125,6 +143,44 @@ export default function AdminPanelLayout({ children }: { children: ReactNode }) 
           Menú
         </button>
       </nav>
+      {meOpen ? (
+        <Modal
+          title="Sesión"
+          onClose={() => setMeOpen(false)}
+          footer={
+            <>
+              <button className="btn" type="button" onClick={() => setMeOpen(false)}>
+                Cerrar
+              </button>
+              <button
+                className="btn pri"
+                type="button"
+                onClick={() => {
+                  setMeOpen(false);
+                  void logout();
+                }}
+              >
+                Cerrar sesión
+              </button>
+            </>
+          }
+        >
+          <div className="rows">
+            <div>
+              <div className="gr">
+                <b>{user.username}</b>
+              </div>
+              <Badge tone={user.role === 'SUPER_ADMIN' ? 'au' : 'in'}>{user.role}</Badge>
+            </div>
+            {user.tenantId ? (
+              <div>
+                <div className="gr">Tenant</div>
+                <span className="mono">{user.tenantId}</span>
+              </div>
+            ) : null}
+          </div>
+        </Modal>
+      ) : null}
     </TopbarTitleProvider>
   );
 }

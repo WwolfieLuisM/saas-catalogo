@@ -1,6 +1,6 @@
 import { ImageResponse } from 'next/og';
 
-export const alt = 'JAVIER — catálogo de videojuegos para PC';
+export const alt = 'Javier PC — catálogo de juegos';
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
 
@@ -118,7 +118,7 @@ export default function OpenGraphImage() {
           }}
         >
           <div style={{ fontSize: 88, lineHeight: 1, fontWeight: 900, letterSpacing: -3 }}>
-            JAVIER
+            Javier PC
           </div>
           <div
             style={{

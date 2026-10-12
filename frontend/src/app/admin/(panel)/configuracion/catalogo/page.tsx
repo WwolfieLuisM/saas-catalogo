@@ -3,18 +3,20 @@
 import { useEffect, useState } from 'react';
 import { ApiError } from '@/lib/api/client';
 import { adminFetch } from '@/lib/admin/adminApi';
+import { rel } from '@/lib/admin/format';
 import { toast } from '@/lib/admin/toast';
 import type { DashboardData } from '@/lib/admin/dashboardView';
 import type { TenantConfig } from '@/lib/admin/types';
 import { useTenantScope } from '@/hooks/useTenantScope';
 import { CfgTabs } from '@/components/admin/CfgTabs';
+import { AdminIcon } from '@/components/admin/icons';
 import { ErrorBox, PageHead, Skeleton, Switch } from '@/components/admin/ui';
 
 const UPDATE_STEPS = [
   'Consulta GET /api/v1/catalog/version',
   'Compara con la copia guardada en localStorage',
   'Solo si cambió, descarga GET /api/v1/catalog (solo metadata)',
-  'Las imágenes se piden por CDN, en miniatura y con carga diferida',
+  'El backend sube la versión al importar o publicar; la app pública la descarga solo si su versión es anterior',
 ] as const;
 
 export default function ConfigCatalogoPage() {
@@ -82,13 +84,21 @@ export default function ConfigCatalogoPage() {
               <span>Versión publicada</span>
             </div>
             <div className="st">
-              <b>{dash.totalGames}</b>
-              <span>Juegos en el catálogo</span>
+              <b>{dash.catalogPending ?? 0}</b>
+              <span>Cambios sin publicar</span>
             </div>
             <div className="st">
-              <b className="t">{dash.availableGames}</b>
-              <span>Disponibles</span>
+              <b className="t">
+                {dash.catalogUpdatedAt ? rel(dash.catalogUpdatedAt) : dash.totalGames === 0 ? '—' : 'hace un momento'}
+              </b>
+              <span>Última publicación</span>
             </div>
+          </div>
+          <div className="pa" style={{ marginBottom: 22 }}>
+            <button className="btn pri" type="button" disabled title="El backend aún no expone publicación manual; la versión sube al importar.">
+              <AdminIcon name="upload" />
+              Publicar cambios
+            </button>
           </div>
           <div className="panel">
             <Switch

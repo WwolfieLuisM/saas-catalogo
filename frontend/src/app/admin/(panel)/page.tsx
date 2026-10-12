@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { AdminIcon } from '@/components/admin/icons';
 import { useAdminAuth } from '@/hooks/useAdminAuth';
+import { useTenantScope } from '@/hooks/useTenantScope';
 import { adminFetch } from '@/lib/admin/adminApi';
 import {
   INFRA_ROWS,
@@ -20,6 +21,7 @@ type DashboardState =
 
 export default function AdminDashboardPage() {
   const { user, logout } = useAdminAuth();
+  const scope = useTenantScope();
   const [state, setState] = useState<DashboardState>({ kind: 'loading' });
   const [attempt, setAttempt] = useState(0);
 
@@ -56,12 +58,18 @@ export default function AdminDashboardPage() {
     setAttempt((n) => n + 1);
   };
 
+  const sa = user?.role === 'SUPER_ADMIN';
+  const tenantName =
+    scope.tenants?.find((tenant) => tenant.id === scope.tenantId)?.name ??
+    user?.tenantId ??
+    '—';
+
   if (state.kind === 'loading') {
     return (
       <>
         <div className="ph">
           <div>
-            <h1>Hola, {user?.username ?? ''}</h1>
+            <h1>{sa ? 'Hola, Luismi' : `Hola, ${user?.username ?? ''}`}</h1>
             <p>Cargando resumen…</p>
           </div>
         </div>
@@ -86,16 +94,20 @@ export default function AdminDashboardPage() {
     );
   }
 
-  const sa = user?.role === 'SUPER_ADMIN';
   const data = state.data;
   const attention = attentionOf(data);
+  const stats = statsOf(data, sa ? 'SUPER_ADMIN' : 'ADMIN');
 
   return (
     <>
       <div className="ph">
         <div>
-          <h1>Hola, {user?.username ?? ''}</h1>
-          <p>{sa ? 'Resumen de la plataforma.' : 'Resumen de tu catálogo.'}</p>
+          <h1>{sa ? 'Hola, Luismi' : `Hola, ${user?.username ?? ''}`}</h1>
+          <p>
+            {sa
+              ? `Resumen de la plataforma. Estás operando el tenant actual: ${tenantName}.`
+              : 'Resumen de tu catálogo.'}
+          </p>
         </div>
         <div className="pa">
           <span className={`bd2 ${sa ? 'au' : 'in'}`}>{user?.role ?? ''}</span>
@@ -103,10 +115,19 @@ export default function AdminDashboardPage() {
       </div>
 
       <div className="stats">
-        {statsOf(data).map(([value, label]) => (
-          <div className="st" key={label}>
-            <b>{value}</b>
-            <span>{label}</span>
+        {stats.map((row) => (
+          <div className="st" key={row.label}>
+            <b className={row.cls}>
+              {row.dot ? (
+                <>
+                  <i className={row.dot === 'ok' ? 'dot' : `dot ${row.dot}`} />
+                  {row.value}
+                </>
+              ) : (
+                row.value
+              )}
+            </b>
+            <span>{row.label}</span>
           </div>
         ))}
       </div>

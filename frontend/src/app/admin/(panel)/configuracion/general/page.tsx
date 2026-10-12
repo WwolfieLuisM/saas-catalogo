@@ -9,7 +9,7 @@ import { useAdminAuth } from '@/hooks/useAdminAuth';
 import { useTenantScope } from '@/hooks/useTenantScope';
 import { CfgTabs } from '@/components/admin/CfgTabs';
 import { AdminIcon } from '@/components/admin/icons';
-import { DeniedBox, ErrorBox, Field, PageHead, Skeleton, roleBadge } from '@/components/admin/ui';
+import { ErrorBox, Field, PageHead, Skeleton, roleBadge } from '@/components/admin/ui';
 
 export default function ConfigGeneralPage() {
   const scope = useTenantScope();
@@ -21,10 +21,9 @@ export default function ConfigGeneralPage() {
   const [whatsapp, setWhatsapp] = useState('');
   const [footer, setFooter] = useState('');
   const [busy, setBusy] = useState(false);
-  const [retryCount, setRetryCount] = useState(0);
 
   useEffect(() => {
-    if (!scope.isSa || !scope.ready) return;
+    if (!scope.ready) return;
     let cancelled = false;
     queueMicrotask(() => {
       setLoading(true);
@@ -47,10 +46,9 @@ export default function ConfigGeneralPage() {
     return () => {
       cancelled = true;
     };
-  }, [scope.isSa, scope.ready, scope.scopeId, retryCount]);
+  }, [scope.ready, scope.scopeId]);
 
   const submit = () => {
-    if (!scope.isSa) return;
     if (publicName.trim().length > 50) {
       toast('El nombre público supera 50 caracteres', 'bd');
       return;
@@ -75,8 +73,6 @@ export default function ConfigGeneralPage() {
       .finally(() => setBusy(false));
   };
 
-  if (!scope.isSa) return <DeniedBox />;
-
   return (
     <>
       <PageHead
@@ -87,7 +83,7 @@ export default function ConfigGeneralPage() {
       {!scope.ready ? (
         <Skeleton rows={4} />
       ) : error ? (
-        <ErrorBox onRetry={() => setRetryCount((count) => count + 1)} />
+        <ErrorBox onRetry={() => setError(null)} />
       ) : loading || !config ? (
         <Skeleton rows={4} />
       ) : (
@@ -143,8 +139,8 @@ export default function ConfigGeneralPage() {
       <section className="sec">
         <h2>Plataforma</h2>
         <div className="panel">
-          <b>JAVIER</b>
-          <p className="hint">Plataforma desarrollada y mantenida por Luismi.</p>
+          <b>Luismi Platform</b>
+          <p className="hint">Plataforma desarrollada y mantenida por Luismi. Admin V2.</p>
           <p style={{ marginTop: 8 }}>
             Tenant actual: <b>{config?.tenantId ?? (scope.tenantId || '—')}</b>. Tu rol:{' '}
             {roleBadge(user?.role)}

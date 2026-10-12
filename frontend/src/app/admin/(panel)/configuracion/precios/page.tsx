@@ -210,15 +210,7 @@ export default function ConfigPreciosPage() {
               <EmptyBox title="Sin reglas" text="Agrega la primera regla de precio." />
             ) : (
               draft.map((row, index) => (
-                <div
-                  key={row.id ?? `local-${index}`}
-                  className="grid2"
-                  style={{
-                    padding: '12px 0',
-                    borderBottom: index === draft.length - 1 ? undefined : '1px solid var(--line)',
-                    alignItems: 'end',
-                  }}
-                >
+                <div key={row.id ?? `local-${index}`} className="rule">
                   <Field label="Desde (GB)">
                     <input
                       type="number"
