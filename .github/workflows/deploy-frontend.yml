@@ -26,6 +26,10 @@ jobs:
         working-directory: frontend
         run: npm install
 
+      - name: Verificar versiones Next.js y OpenNext
+        working-directory: frontend
+        run: npm ls next @opennextjs/cloudflare
+
       - name: Build OpenNext
         working-directory: frontend
         env:
