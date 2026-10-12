@@ -21,6 +21,7 @@ export default function ConfigGeneralPage() {
   const [whatsapp, setWhatsapp] = useState('');
   const [footer, setFooter] = useState('');
   const [busy, setBusy] = useState(false);
+  const [retryCount, setRetryCount] = useState(0);
 
   useEffect(() => {
     if (!scope.isSa || !scope.ready) return;
@@ -46,7 +47,7 @@ export default function ConfigGeneralPage() {
     return () => {
       cancelled = true;
     };
-  }, [scope.isSa, scope.ready, scope.scopeId]);
+  }, [scope.isSa, scope.ready, scope.scopeId, retryCount]);
 
   const submit = () => {
     if (!scope.isSa) return;
@@ -86,7 +87,7 @@ export default function ConfigGeneralPage() {
       {!scope.ready ? (
         <Skeleton rows={4} />
       ) : error ? (
-        <ErrorBox onRetry={() => setError(null)} />
+        <ErrorBox onRetry={() => setRetryCount((count) => count + 1)} />
       ) : loading || !config ? (
         <Skeleton rows={4} />
       ) : (
