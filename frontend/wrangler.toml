@@ -1,4 +1,17 @@
 name = "saas-catalogo-frontend"
 main = ".open-next/worker.js"
-compatibility_date = "2024-09-23"
+
+compatibility_date = "2026-10-12"
 compatibility_flags = ["nodejs_compat"]
+
+[assets]
+directory = ".open-next/assets"
+binding = "ASSETS"
+
+[observability]
+enabled = true
+head_sampling_rate = 1
+
+[[services]]
+binding = "WORKER_SELF_REFERENCE"
+service = "saas-catalogo-frontend"
