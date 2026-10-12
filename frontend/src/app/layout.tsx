@@ -8,8 +8,8 @@ const siteUrl =
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: 'Javier PC · Catálogo de videojuegos',
-    template: '%s · Javier PC',
+    default: 'JAVIER · Catálogo de videojuegos',
+    template: '%s · JAVIER',
   },
   description:
     'Catálogo público de videojuegos para PC: precios en CUP, disponibilidad y lista de compra por WhatsApp.',
@@ -19,23 +19,23 @@ export const metadata: Metadata = {
     'catálogo',
     'CUP',
     'Cuba',
-    'Javier PC',
+    'JAVIER',
     'juegos',
     'precios',
   ],
   openGraph: {
     type: 'website',
     locale: 'es_ES',
-    siteName: 'Javier PC',
-    title: 'Javier PC · Catálogo de videojuegos',
+    siteName: 'JAVIER',
+    title: 'JAVIER · Catálogo de videojuegos',
     description:
       'Catálogo público de videojuegos para PC: precios en CUP, disponibilidad y lista de compra por WhatsApp.',
     url: siteUrl,
-    images: [{ url: '/icon.svg', width: 32, height: 32, alt: 'Javier PC' }],
+    images: [{ url: '/icon.svg', width: 32, height: 32, alt: 'JAVIER' }],
   },
   twitter: {
     card: 'summary',
-    title: 'Javier PC · Catálogo de videojuegos',
+    title: 'JAVIER · Catálogo de videojuegos',
     description:
       'Catálogo público de videojuegos para PC: precios en CUP, disponibilidad y lista de compra por WhatsApp.',
     images: ['/icon.svg'],
