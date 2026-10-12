@@ -2,7 +2,7 @@ name = "saas-catalogo-frontend"
 main = ".open-next/worker.js"
 
 compatibility_date = "2026-10-12"
-compatibility_flags = ["nodejs_compat"]
+compatibility_flags = ["nodejs_compat", "global_fetch_strictly_public"]
 
 [assets]
 directory = ".open-next/assets"
