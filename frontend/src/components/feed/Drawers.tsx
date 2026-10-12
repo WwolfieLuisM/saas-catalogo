@@ -49,24 +49,32 @@ function useDrawerDialog(open: boolean, onClose: () => void) {
 }
 
 export function CartDrawer() {
-  const { dialog, closeDialog, games, list, toggleList, openDetail, toast } = useFeed();
+  const { dialog, closeDialog, games, list, toggleList, openDetail, toast, clearList } = useFeed();
   const { ref, close, onBackdrop, onKey } = useDrawerDialog(dialog === 'cart', closeDialog);
 
   const items = list.map((id) => games.find((g) => g.id === id)).filter(Boolean);
   const total = items.reduce((s, g) => s + (g?.soon ? 0 : g?.price ?? 0), 0);
 
+  const send = async () => {
+    const gs = items.filter(Boolean) as NonNullable<(typeof items)[number]>[];
+    if (!gs.length) return;
+    const mode = await deliver(listMessage(gs));
+    if (mode === 'clipboard' || mode === 'fallback') toast('Mensaje copiado. Pégalo en tu chat con Javier.');
+    else if (mode === 'none') toast('No se pudo copiar el mensaje.');
+  };
+
   return (
     <dialog
       ref={ref}
       className="drawer"
-      aria-label="Tu lista"
+      aria-label="Mi lista"
       onClick={onBackdrop}
       onKeyDown={onKey}
       onClose={close}
     >
       <div className="drawer-in">
         <div className="drawer-head">
-          <h2>Tu lista</h2>
+          <h2>Mi lista</h2>
           <button className="close" type="button" aria-label="Cerrar lista" onClick={close}>
             ×
           </button>
@@ -116,25 +124,17 @@ export function CartDrawer() {
             </span>
             <b>{fmt(total)} CUP</b>
           </div>
-          <button
-            className="btn gold"
-            type="button"
-            disabled={!items.length}
-            onClick={() => {
-              const games = items.filter(Boolean) as NonNullable<(typeof items)[number]>[];
-              const result = deliver(listMessage(games));
-              void result.then((mode) => {
-                if (mode === 'whatsapp') toast('Abriendo WhatsApp…');
-                else if (mode === 'clipboard' || mode === 'fallback') toast('Lista copiada al portapapeles');
-                else toast('No se pudo enviar la lista');
-              });
-            }}
-          >
-            Enviar por WhatsApp
+          <button className="btn gold" type="button" disabled={!items.length} onClick={() => void send()}>
+            Pedir por mensaje
           </button>
           <button className="btn ghost" type="button" onClick={close}>
             Seguir explorando
           </button>
+          {items.length > 0 && (
+            <button className="linklike" type="button" onClick={clearList}>
+              Vaciar lista
+            </button>
+          )}
         </div>
       </div>
     </dialog>

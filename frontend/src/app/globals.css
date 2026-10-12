@@ -19,13 +19,20 @@
   --radius: 12px;
   --radius-sm: 8px;
 
-  /* TODO(E0): self-hostear woff2 en public/fonts (next/font falla con red frágil) */
-  --font-display: 'Big Shoulders Display', 'Arial Narrow', Impact, sans-serif;
-  --font-body: 'Manrope', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --display: 'Big Shoulders Display', 'Arial Narrow', Impact, sans-serif;
+  --body: 'Manrope', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  /* aliases admin */
+  --font-display: var(--display);
+  --font-body: var(--body);
 }
 
 * {
   box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
 }
 
 html,
@@ -34,8 +41,39 @@ body {
   padding: 0;
   background: var(--bg);
   color: var(--text);
-  font-family: var(--font-body);
+  font-family: var(--body);
+  font-size: 15px;
   line-height: 1.55;
+}
+
+button,
+input,
+select {
+  font: inherit;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  margin: 0;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--display);
+  letter-spacing: 0.02em;
+  line-height: 1.1;
+  font-weight: 700;
+}
+
+:focus-visible {
+  outline: 2px solid var(--au);
+  outline-offset: 3px;
 }
 
 a {
@@ -45,14 +83,4 @@ a {
 
 a:hover {
   color: var(--au-strong);
-}
-
-h1,
-h2,
-h3 {
-  font-family: var(--font-display);
-  letter-spacing: 0.02em;
-  line-height: 1.1;
-  margin: 0 0 0.5em;
-  font-weight: 700;
 }

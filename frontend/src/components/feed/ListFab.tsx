@@ -4,8 +4,8 @@ import { useCallback, useEffect, useRef } from 'react';
 import { useFeed } from '@/hooks/useFeed';
 import { loadFabPos, saveFabPos } from '@/lib/feed/storage';
 
-const EDGE = 12;
-const SIZE = 58;
+const EDGE = 8;
+const SIZE = 56;
 
 export function ListFab() {
   const { list, openDialog } = useFeed();
@@ -14,7 +14,7 @@ export function ListFab() {
 
   const clamp = useCallback((x: number, y: number) => {
     const maxX = window.innerWidth - SIZE - EDGE;
-    const maxY = window.innerHeight - SIZE - EDGE - (window.visualViewport?.height ? 0 : 0);
+    const maxY = window.innerHeight - SIZE - EDGE;
     return {
       x: Math.min(Math.max(EDGE, x), maxX),
       y: Math.min(Math.max(EDGE, y), maxY),
@@ -26,8 +26,9 @@ export function ListFab() {
     const el = ref.current;
     if (!el) return;
     if (pos) {
-      el.style.left = `${pos.x}px`;
-      el.style.top = `${pos.y}px`;
+      const c = clamp(pos.x, pos.y);
+      el.style.left = `${c.x}px`;
+      el.style.top = `${c.y}px`;
       el.style.bottom = 'auto';
       el.style.right = 'auto';
     }
@@ -40,6 +41,14 @@ export function ListFab() {
     window.addEventListener('resize', onResize);
     return () => window.removeEventListener('resize', onResize);
   }, [clamp]);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || !list.length) return;
+    el.classList.remove('bump');
+    void el.offsetWidth;
+    el.classList.add('bump');
+  }, [list.length]);
 
   const onPointerDown = (e: React.PointerEvent<HTMLButtonElement>) => {
     const el = ref.current;
@@ -62,7 +71,7 @@ export function ListFab() {
     if (!el) return;
     const dx = e.clientX - drag.current.sx;
     const dy = e.clientY - drag.current.sy;
-    if (!drag.current.moved && Math.hypot(dx, dy) < 6) return;
+    if (!drag.current.moved && Math.hypot(dx, dy) < 8) return;
     drag.current.moved = true;
     el.classList.add('dragging');
     const c = clamp(drag.current.x + dx, drag.current.y + dy);
@@ -72,7 +81,7 @@ export function ListFab() {
     el.style.right = 'auto';
   };
 
-  const endDrag = (e: React.PointerEvent<HTMLButtonElement>) => {
+  const endDrag = () => {
     if (!drag.current.active) return;
     const el = ref.current;
     drag.current.active = false;
@@ -80,8 +89,6 @@ export function ListFab() {
     if (drag.current.moved && el) {
       const rect = el.getBoundingClientRect();
       saveFabPos({ x: rect.left, y: rect.top });
-      // suppress click after drag
-      e.preventDefault();
     }
   };
 
@@ -93,13 +100,15 @@ export function ListFab() {
     openDialog('cart');
   };
 
+  if (!list.length) return null;
+
   return (
     <button
       ref={ref}
       className="list-fab show"
       type="button"
-      aria-label={`Abrir tu lista (${list.length} juegos)`}
-      title="Tu lista"
+      aria-label="Ver mi lista"
+      title="Mi lista (arrástralo para moverlo)"
       onPointerDown={onPointerDown}
       onPointerMove={onPointerMove}
       onPointerUp={endDrag}
@@ -110,9 +119,7 @@ export function ListFab() {
         <path d="M8 6h13M8 12h13M8 18h13" />
         <path d="M3 6h.01M3 12h.01M3 18h.01" />
       </svg>
-      <span className="fab-badge" hidden={!list.length}>
-        {list.length}
-      </span>
+      <span className="fab-badge">{list.length}</span>
     </button>
   );
 }

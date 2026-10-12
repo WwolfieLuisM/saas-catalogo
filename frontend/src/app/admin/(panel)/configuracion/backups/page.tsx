@@ -133,14 +133,20 @@ export default function ConfigBackupsPage() {
                 </div>
               </div>
               <div className="rows">
-                {['Base de datos', 'Catálogo', 'Configuración', 'Manifest multimedia'].map(
-                  (label) => (
-                    <div key={label}>
-                      <div className="gr">{label}</div>
-                      <AdminIcon name="check" />
-                    </div>
-                  ),
-                )}
+                {(
+                  [
+                    ['Base de datos', 'db'],
+                    ['Catálogo', 'games'],
+                    ['Configuración', 'cfg'],
+                    ['Manifest multimedia', 'cloud'],
+                  ] as const
+                ).map(([label, icon]) => (
+                  <div key={label}>
+                    <AdminIcon name={icon} />
+                    <div className="gr">{label}</div>
+                    <AdminIcon name="check" />
+                  </div>
+                ))}
               </div>
             </div>
           ) : (

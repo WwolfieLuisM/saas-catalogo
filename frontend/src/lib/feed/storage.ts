@@ -61,9 +61,10 @@ export const markWelcomeSeen = (): void => {
 export const loadFabPos = (): { x: number; y: number } | null => {
   const p = readJson<{ x: number; y: number } | null>(FAB_KEY, null);
   if (!p || !Number.isFinite(p.x) || !Number.isFinite(p.y)) return null;
-  return p;
+  return { x: p.x, y: p.y };
 };
-export const saveFabPos = (pos: { x: number; y: number }): void => writeJson(FAB_KEY, pos);
+export const saveFabPos = (pos: { x: number; y: number }): void =>
+  writeJson(FAB_KEY, { x: Math.round(pos.x), y: Math.round(pos.y) });
 
 export interface CatalogCacheEntry {
   schemaVersion: number;

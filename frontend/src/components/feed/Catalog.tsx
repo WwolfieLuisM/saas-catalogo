@@ -36,6 +36,8 @@ export function Catalog() {
     retryLoad,
   } = useFeed();
 
+  const hasActiveFilters = Boolean(q || cat || genre || platform || maxPrice !== null);
+
   return (
     <section className="wrap catalog" id="catalog" aria-label="Catálogo de juegos">
       {loadError && !filtered.length && (
@@ -66,6 +68,10 @@ export function Catalog() {
 
       {facets.cats.length > 0 && (
         <div className="tabs" role="group" aria-label="Filtrar por categoría">
+          <button className="tab" type="button" aria-pressed={cat === ''} onClick={() => setCat('')}>
+            Todos
+            <small>{games.length}</small>
+          </button>
           {facets.cats.map((c) => (
             <button
               key={c.value}
@@ -82,7 +88,14 @@ export function Catalog() {
       )}
 
       <div className="tools">
-        <button className="mini" type="button" aria-pressed={showFilters} onClick={toggleShowFilters}>
+        <button
+          className="mini"
+          id="filtersBtn"
+          type="button"
+          aria-expanded={showFilters}
+          aria-controls="moreFilters"
+          onClick={toggleShowFilters}
+        >
           Filtros
         </button>
         <label>
@@ -95,67 +108,67 @@ export function Catalog() {
             ))}
           </select>
         </label>
-        {(q || cat !== 'all' || genre !== 'all' || platform !== 'all' || maxPrice !== null) && (
+        {hasActiveFilters && (
           <button className="linklike" type="button" onClick={resetFilters}>
             Limpiar filtros
           </button>
         )}
       </div>
 
-      {showFilters && (
-        <div className="more open" role="group" aria-label="Filtros avanzados">
-          <label>
-            Género{' '}
-            <select value={genre} onChange={(e) => setGenre(e.target.value)}>
-              <option value="all">Todos</option>
-              {facets.genres.map((g) => (
-                <option key={g.value} value={g.value}>
-                  {g.label} ({g.count})
-                </option>
-              ))}
-            </select>
-          </label>
-          <label>
-            Plataforma{' '}
-            <select value={platform} onChange={(e) => setPlatform(e.target.value)}>
-              <option value="all">Todas</option>
-              {facets.platforms.map((p) => (
-                <option key={p.value} value={p.value}>
-                  {p.label} ({p.count})
-                </option>
-              ))}
-            </select>
-          </label>
-          {facets.maxPriceAll > 0 && (
-            <label className="range-label">
-              Hasta <output>{maxPrice === null ? facets.maxPriceAll : fmt(maxPrice)} CUP</output>
-              <input
-                type="range"
-                min={0}
-                max={facets.maxPriceAll}
-                step={500}
-                value={maxPrice ?? facets.maxPriceAll}
-                onChange={(e) => {
-                  const v = Number(e.target.value);
-                  setMaxPrice(v >= facets.maxPriceAll ? null : v);
-                }}
-              />
-            </label>
-          )}
-          {q && (
-            <button
-              className="linklike"
-              type="button"
-              onClick={() => {
-                setQ('');
-                document.getElementById('q-input')?.focus();
+      <div className={`more${showFilters ? ' open' : ''}`} id="moreFilters" role="group" aria-label="Filtros avanzados">
+        <label>
+          Género{' '}
+          <select value={genre} onChange={(e) => setGenre(e.target.value)}>
+            <option value="all">Todos</option>
+            {facets.genres.map((g) => (
+              <option key={g.value} value={g.value}>
+                {g.label} ({g.count})
+              </option>
+            ))}
+          </select>
+        </label>
+        <label>
+          Plataforma{' '}
+          <select value={platform} onChange={(e) => setPlatform(e.target.value)}>
+            <option value="all">Todas</option>
+            {facets.platforms.map((p) => (
+              <option key={p.value} value={p.value}>
+                {p.label} ({p.count})
+              </option>
+            ))}
+          </select>
+        </label>
+        {facets.maxPriceAll > 0 && (
+          <label className="range-label">
+            Hasta{' '}
+            <input
+              type="range"
+              min={0}
+              max={facets.maxPriceAll}
+              step={500}
+              value={maxPrice ?? facets.maxPriceAll}
+              aria-label="Precio máximo"
+              onChange={(e) => {
+                const v = Number(e.target.value);
+                setMaxPrice(v >= facets.maxPriceAll ? null : v);
               }}
-            >
-              Borrar búsqueda
-            </button>
-          )}
-        </div>
-      )}
+            />{' '}
+            <output>{maxPrice === null ? facets.maxPriceAll : fmt(maxPrice)} CUP</output>
+          </label>
+        )}
+        {q && (
+          <button
+            className="linklike"
+            type="button"
+            onClick={() => {
+              setQ('');
+              document.getElementById('q-input')?.focus();
+            }}
+          >
+            Borrar búsqueda
+          </button>
+        )}
+      </div>
 
       <div className="grid" id="catalog-grid" aria-busy={catalogLoading}>
         {filtered.slice(0, visible).map((g) => (
@@ -169,26 +182,32 @@ export function Catalog() {
         ))}
         {!filtered.length && (
           <div className="empty">
-            <b>{loadError && !filtered.length ? 'No se pudo cargar el catálogo.' : 'No hay juegos que coincidan.'}</b>
-            <p>
-              {loadError && !filtered.length
-                ? 'Revisa tu conexión y recarga la página.'
-                : 'Prueba con otra búsqueda o ajusta los filtros.'}
-            </p>
+            <b>{q ? 'No tenemos ese juego todavía' : 'Ningún juego coincide con los filtros'}</b>
+            <p>{q ? 'Escríbenos y lo conseguimos para ti.' : 'Prueba otra categoría o ajusta los filtros.'}</p>
             <button
               className="btn"
               type="button"
-              onClick={() => (loadError && !games.length ? retryLoad() : resetFilters())}
+              onClick={() => {
+                if (loadError && !games.length) retryLoad();
+                else if (q) {
+                  const msg = `Hola, busco: ${q}`;
+                  window.open(
+                    `https://wa.me/${(process.env.NEXT_PUBLIC_WHATSAPP ?? '').replace(/\D/g, '')}?text=${encodeURIComponent(msg)}`,
+                    '_blank',
+                    'noopener',
+                  );
+                } else resetFilters();
+              }}
             >
-              {loadError && !games.length ? 'Reintentar' : 'Limpiar filtros'}
+              {q ? 'Pedir este juego' : 'Quitar filtros'}
             </button>
           </div>
         )}
       </div>
 
       <div className="more-wrap" hidden={filtered.length <= visible}>
-        <button className="mini" type="button" onClick={more}>
-          Cargar más ({filtered.length - visible} restantes)
+        <button className="btn" type="button" onClick={more}>
+          Mostrar más juegos ({filtered.length - visible} restantes)
         </button>
       </div>
     </section>

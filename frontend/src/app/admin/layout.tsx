@@ -5,7 +5,7 @@ import { AdminShell } from '@/components/admin/AdminShell';
 import '@/styles/admin.css';
 
 export const metadata: Metadata = {
-  title: 'Luismi Platform · Admin V2',
+  title: { absolute: 'Luismi Platform · Admin V2' },
   robots: {
     index: false,
     follow: false,

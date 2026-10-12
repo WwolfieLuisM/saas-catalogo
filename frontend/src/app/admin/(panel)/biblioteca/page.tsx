@@ -448,6 +448,9 @@ export default function BibliotecaPage() {
           })}
         </ListShell>
         {meta ? <Pager meta={meta} onPage={setPage} /> : null}
+        <p className="hint" style={{ marginTop: 8 }}>
+          (demo: el servidor paginará toda la biblioteca)
+        </p>
       </>
     );
   }

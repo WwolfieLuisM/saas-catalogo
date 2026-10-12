@@ -14,6 +14,7 @@ import { Toast } from './Chrome';
 export function FeedApp() {
   return (
     <>
+      <h1 className="sr">Javier PC: catálogo de juegos</h1>
       <Header />
       <Sidebar />
       <main>

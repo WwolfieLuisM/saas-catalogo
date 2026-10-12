@@ -8,7 +8,7 @@ const siteUrl =
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: 'Javier PC · Catálogo de juegos',
+    default: 'Javier PC · Catálogo de videojuegos',
     template: '%s · Javier PC',
   },
   description:
@@ -27,18 +27,18 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'es_ES',
     siteName: 'Javier PC',
-    title: 'Javier PC · Catálogo de juegos',
+    title: 'Javier PC · Catálogo de videojuegos',
     description:
       'Catálogo público de videojuegos para PC: precios en CUP, disponibilidad y lista de compra por WhatsApp.',
     url: siteUrl,
-    images: [{ url: '/opengraph-image', width: 1200, height: 630, alt: 'Javier PC — catálogo de juegos' }],
+    images: [{ url: '/icon.svg', width: 32, height: 32, alt: 'Javier PC' }],
   },
   twitter: {
-    card: 'summary_large_image',
-    title: 'Javier PC · Catálogo de juegos',
+    card: 'summary',
+    title: 'Javier PC · Catálogo de videojuegos',
     description:
       'Catálogo público de videojuegos para PC: precios en CUP, disponibilidad y lista de compra por WhatsApp.',
-    images: ['/opengraph-image'],
+    images: ['/icon.svg'],
   },
   alternates: {
     canonical: siteUrl,
@@ -66,7 +66,10 @@ export default function RootLayout({
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800;900&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@800;900&family=Manrope:wght@400;500;700;800&display=swap"
+          rel="stylesheet"
+        />
         <link rel="preconnect" href="https://res.cloudinary.com" />
         <link rel="preconnect" href="https://wsrv.nl" />
         <link rel="dns-prefetch" href="https://shared.akamai.steamstatic.com" />

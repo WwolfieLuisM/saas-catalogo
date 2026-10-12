@@ -16,6 +16,7 @@ interface GameCardProps {
 function GameCardBase({ game: g, inList, isFav, st }: GameCardProps) {
   const { openDetail, toggleList, toggleFavorite, setStatus } = useFeed();
   const statusLabel = st === 'played' ? 'Jugado' : st === 'won' ? 'Ganado' : st === 'pending' ? 'Pendiente' : null;
+  const sub = [g.category, g.genres[0], g.sizeGb ? `${gb(g.sizeGb)} GB` : '', g.year].filter(Boolean).join(' · ');
 
   return (
     <article
@@ -23,7 +24,7 @@ function GameCardBase({ game: g, inList, isFav, st }: GameCardProps) {
       data-id={g.id}
       tabIndex={0}
       role="button"
-      aria-label={`${g.name} — abrir detalle`}
+      aria-label={`Ver detalles de ${g.name}`}
       onClick={() => openDetail(g.id)}
       onKeyDown={(e) => {
         if (e.key === 'Enter' || e.key === ' ') {
@@ -47,10 +48,7 @@ function GameCardBase({ game: g, inList, isFav, st }: GameCardProps) {
       <div className="info">
         {statusLabel && <span className="status-chip">{statusLabel}</span>}
         <h3>{g.name}</h3>
-        <p className="sub">
-          {[g.category, ...g.genres.slice(0, 2), ...g.platforms.slice(0, 2)].filter(Boolean).join(' · ')}
-          {g.sizeGb ? ` · ${gb(g.sizeGb)} GB` : ''}
-        </p>
+        <p className="sub">{sub}</p>
         <div className="foot">
           {g.soon ? (
             <span className="price soon-price">Próximamente</span>
@@ -71,29 +69,21 @@ function GameCardBase({ game: g, inList, isFav, st }: GameCardProps) {
             >
               {isFav ? '♥' : '♡'}
             </button>
-            <button
-              className="mini"
-              type="button"
-              aria-label={`Cambiar estado de ${g.name}`}
-              title="Estado"
-              aria-haspopup="listbox"
-              onClick={() => {
-                const order: (GameStatus | undefined)[] = [undefined, 'pending', 'played', 'won'];
-                const i = order.indexOf(st);
-                setStatus(g.id, order[(i + 1) % order.length]);
-              }}
-            >
-              {st === 'played' ? '✓' : st === 'won' ? '★' : st === 'pending' ? '…' : '○'}
-            </button>
-            <button
-              className="mini"
-              type="button"
-              aria-label={inList ? `Quitar ${g.name} de la lista` : `Añadir ${g.name} a la lista`}
-              aria-pressed={inList}
-              onClick={() => toggleList(g.id)}
-            >
-              {inList ? '−' : '+'}
-            </button>
+            {g.soon ? (
+              <button className="mini" type="button" aria-label={`Avisarme de ${g.name}`} onClick={() => setStatus(g.id, st === 'pending' ? undefined : 'pending')}>
+                {st === 'pending' ? '✓' : 'Avísame'}
+              </button>
+            ) : (
+              <button
+                className="mini"
+                type="button"
+                aria-label={inList ? `Quitar ${g.name} de la lista` : `Añadir ${g.name} a la lista`}
+                aria-pressed={inList}
+                onClick={() => toggleList(g.id)}
+              >
+                {inList ? 'En lista' : '+ Añadir'}
+              </button>
+            )}
           </div>
         </div>
       </div>

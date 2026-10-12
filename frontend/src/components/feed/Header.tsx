@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useFeed } from '@/hooks/useFeed';
 
 export function Header() {
@@ -18,6 +18,7 @@ export function Header() {
   } = useFeed();
   const brandRef = useRef<HTMLButtonElement>(null);
   const headerRef = useRef<HTMLElement>(null);
+  const [placeholder, setPlaceholder] = useState('¿Qué juego buscas?');
 
   const listCount = list.length;
   const favCount = favorites.length;
@@ -29,8 +30,12 @@ export function Header() {
       if (word && headerRef.current) {
         headerRef.current.style.setProperty('--brand-w', `${Math.ceil(word.offsetWidth)}px`);
       }
+      setPlaceholder(window.innerWidth >= 700 ? 'Busca por nombre o género' : '¿Qué juego buscas?');
     };
     measure();
+    if (document.fonts?.ready) {
+      document.fonts.ready.then(measure).catch(() => {});
+    }
     window.addEventListener('resize', measure);
     return () => window.removeEventListener('resize', measure);
   }, [scrolledDown]);
@@ -90,7 +95,7 @@ export function Header() {
           <input
             id="q-input"
             type="search"
-            placeholder="Buscar…"
+            placeholder={placeholder}
             autoComplete="off"
             aria-label="Buscar juegos"
             value={q}

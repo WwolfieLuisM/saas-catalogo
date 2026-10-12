@@ -19,7 +19,7 @@ export function WelcomeDialog() {
     });
     const t = window.setTimeout(() => {
       if (!cancelled && !hasSeenWelcome()) setShowWelcome(true);
-    }, 1200);
+    }, 700);
     return () => {
       cancelled = true;
       window.clearTimeout(t);
@@ -31,7 +31,6 @@ export function WelcomeDialog() {
     if (!dlg) return;
     if (showWelcome && !dlg.open) {
       dlg.showModal();
-      markWelcomeSeen();
     } else if (!showWelcome && dlg.open) {
       dlg.close();
     }
@@ -39,22 +38,29 @@ export function WelcomeDialog() {
 
   const close = () => {
     setShowWelcome(false);
+    markWelcomeSeen();
     ref.current?.close();
   };
+
+  const hour = new Date().getHours();
+  const greeting = hour >= 5 && hour < 12 ? 'Buenos días' : hour >= 12 && hour < 19 ? 'Buenas tardes' : 'Buenas noches';
 
   return (
     <dialog
       ref={ref}
       className="welcome-card"
       aria-label="Bienvenida"
-      onClose={() => setShowWelcome(false)}
+      onClose={() => {
+        setShowWelcome(false);
+        markWelcomeSeen();
+      }}
       onClick={(e) => {
         if (e.target === ref.current) close();
       }}
     >
       <div className="wc-in">
         <div className="wc-body">
-          <span className="wc-eyebrow">Bienvenido</span>
+          <span className="wc-eyebrow">{greeting}</span>
           <h2 className="wc-title">
             Bienvenido a <em>Javier PC</em>
           </h2>
@@ -63,37 +69,37 @@ export function WelcomeDialog() {
             <li>
               <div>
                 <b>Explora y busca</b>
-                <span>Usa el buscador o los filtros de género, plataforma y precio para encontrar lo que quieres.</span>
+                <span>Usa la barra superior, las categorías o el botón «Filtros» para encontrar juegos.</span>
               </div>
             </li>
             <li>
               <div>
                 <b>Mira los detalles</b>
-                <span>Toca cualquier juego para ver su descripción, tamaño y precio.</span>
+                <span>Toca cualquier tarjeta para ver descripción, requisitos y capturas.</span>
               </div>
             </li>
             <li>
               <div>
                 <b>Guarda tus favoritos</b>
-                <span>Marca un juego como Favorito y lo encuentras después en Favoritos.</span>
+                <span>Marca los que más te gusten con el corazón de cada tarjeta o desde el detalle.</span>
               </div>
             </li>
             <li>
               <div>
                 <b>Arma tu lista y pídela</b>
-                <span>Agrega juegos a tu Lista y envíala a Javier por mensaje con un toque.</span>
+                <span>Añade juegos a tu lista y envíala por WhatsApp con un solo clic.</span>
               </div>
             </li>
             <li>
               <div>
                 <b>Lleva tu colección</b>
-                <span>Dentro de cada juego márcalo como Pendiente, Jugado o Ganado; todo queda en Colección.</span>
+                <span>Apunta qué tienes pendiente, jugado o ganado para no perderte nada.</span>
               </div>
             </li>
             <li>
               <div>
                 <b>¿Aún no sale o no lo ves?</b>
-                <span>En los próximos lanzamientos toca Avísame, y si falta un juego escribe desde Contacto.</span>
+                <span>Explora lo próximo o escríbenos y te ayudamos a conseguirlo.</span>
               </div>
             </li>
           </ol>
@@ -101,7 +107,7 @@ export function WelcomeDialog() {
         </div>
         <div className="wc-foot">
           <button className="btn gold" type="button" onClick={close}>
-            ¡Entendido, empezar!
+            Entendido
           </button>
         </div>
       </div>

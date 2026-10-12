@@ -53,7 +53,7 @@ export function DetailModal() {
   const isFav = favorites.includes(g.id);
   const st = status[g.id];
   const ri = g.soon ? formatReleaseInfo(g.releaseDate, g.soon) : null;
-  const shots = (g.screenshots ?? []).slice(0, 6);
+  const shots = (g.screenshots ?? []).slice(0, 4);
 
   const menuItems = [
     {
