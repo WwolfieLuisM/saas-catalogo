@@ -369,7 +369,7 @@ Errores comunes:
 400 VALIDATION_ERROR          # parámetros o fechas inválidos
 401 UNAUTHENTICATED           # sin token o token inválido
 403 FORBIDDEN                 # rol no autorizado o tenant ajeno en ADMIN
-404 SESSION_NOT_FOUND         # sesión inexistente o de otro admin (ADMIN)
+404 SESSION_NOT_FOUND         # sesión inexistente (SUPER_ADMIN)
 404 BACKUP_NOT_FOUND          # copia PRE_IMPORT inexistente (import/run)
 409 SESSION_ALREADY_REVOKED   # sesión ya revocada
 409 IMPORT_PREVIEW_STALE      # el catálogo cambió entre preview y run
