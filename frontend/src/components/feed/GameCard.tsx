@@ -46,9 +46,9 @@ function GameCardBase({ game: g, inList, st }: GameCardProps) {
         <Art game={g} w={720} h={960} />
       </button>
       <div className="info">
-        {statusLabel && <span className="status-chip">{statusLabel}</span>}
-        <h3>{g.name}</h3>
+        <div className="card-top"><h3>{g.name}</h3></div>
         <p className="sub">{sub}</p>
+        {statusLabel && <span className="status-chip">{statusLabel}</span>}
         <div className="foot">
           {g.soon ? (
             <span className="price soon-price">Próximamente</span>
