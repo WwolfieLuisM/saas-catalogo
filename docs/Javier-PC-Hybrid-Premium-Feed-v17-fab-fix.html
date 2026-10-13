@@ -899,7 +899,7 @@ function normalizeGame(g){
     size: Number(g.size_gb ?? g.sizeGb ?? g.size) || 0,
     year: Number(g.year) || null,
     price: Number(g.price) || 0,
-    available: true,
+    available: g.available !== false && String(g.status ?? "").toLowerCase() !== "unavailable",
     cover: String(g.cover ?? g.coverUrl ?? g.image ?? ""),
     screenshots: list(g.screenshots).slice(0, 4),
     description: String(g.description ?? ""),
@@ -1025,9 +1025,11 @@ function buildFacets(){
 
 const SORTS={
   recent:(a,b)=>(b.addedAt||"").localeCompare(a.addedAt||"")||(b.year||0)-(a.year||0),
+  new:(a,b)=>(b.addedAt||"").localeCompare(a.addedAt||"")||(b.year||0)-(a.year||0),
   az:(a,b)=>a.name.localeCompare(b.name,"es"),
   priceAsc:(a,b)=>a.price-b.price,
-  priceDesc:(a,b)=>b.price-a.price
+  priceDesc:(a,b)=>b.price-a.price,
+  sizeAsc:(a,b)=>(a.size||0)-(b.size||0)||a.name.localeCompare(b.name,"es")
 };
 function filtered(){
   const tokens=norm(state.q).split(/\s+/).filter(Boolean);
@@ -1037,7 +1039,7 @@ function filtered(){
     (!state.platform||g.platforms.includes(state.platform)) &&
     g.price<=state.maxPrice &&
     tokens.every(t=>g._s.includes(t))
-  ).sort(SORTS[state.sort]);
+  ).sort(SORTS[state.sort] || SORTS.recent);
 }
 
 function gradientFor(g){
@@ -1145,6 +1147,7 @@ function renderGrid(){
   if(!items.length){
     const q=state.q.trim();
     $id("grid").innerHTML=`<div class="empty"><b>${q?"No tenemos ese juego todavía":"Ningún juego coincide con los filtros"}</b><p>${q?"Escríbenos y lo conseguimos para ti.":"Prueba otra categoría o ajusta los filtros."}</p><button class="btn gold" type="button" id="emptyBtn">${q?"Pedir este juego":"Quitar filtros"}</button></div>`;
+    $id("moreWrap").hidden=true;
     return;
   }
   $id("grid").innerHTML=items.slice(0,state.shown).map(cardHTML).join("");
@@ -1261,7 +1264,7 @@ async function deliver(text){
 function applyCatalog(cat,expiresAt){
   state.games=cat.games.map(decorate);state.catalogVersion=cat.catalogVersion;state.updatedAt=cat.updatedAt;state.expiresAt=expiresAt||"";state.ready=true;state.error="";
   buildFacets();renderFilterPanel();renderTabs();renderHero();renderGrid();syncList();
-  $id("ver").textContent=`Catálogo v${state.catalogVersion} · v12`;
+  $id("ver").textContent=`Catálogo v${state.catalogVersion} · Feed v17`;
 }
 function readCache(){
   let raw;try{raw=localStorage.getItem(CONFIG.CACHE_KEY)}catch(e){return null}if(!raw)return null;
@@ -1296,7 +1299,7 @@ $id("moreFilters").addEventListener("change",e=>{
   resetPaging();renderGrid();
 });
 $id("moreFilters").addEventListener("input",e=>{if(e.target.id==="price"){state.maxPrice=+e.target.value;state.priceTouched=state.maxPrice<state.maxPriceAll;$id("priceVal").textContent=fmt(state.maxPrice)+" CUP";resetPaging();renderGrid()}});
-$id("moreFilters").addEventListener("click",e=>{if(e.target.id==="clearFilters"){state.cat="";state.genre="";state.platform="";state.maxPrice=state.maxPriceAll;state.priceTouched=false;state.q="";$id("q").value="";renderFilterPanel();renderTabs();renderGrid()}});
+$id("moreFilters").addEventListener("click",e=>{if(e.target.id==="clearFilters"){state.cat="";state.genre="";state.platform="";state.maxPrice=state.maxPriceAll;state.priceTouched=false;state.q="";$id("q").value="";resetPaging();renderFilterPanel();renderTabs();renderGrid()}});
 $id("moreBtn").addEventListener("click",()=>{state.shown+=CONFIG.PAGE_SIZE;renderGrid()});
 (function(){
   const fab=$id("listFab"); if(!fab) return;
