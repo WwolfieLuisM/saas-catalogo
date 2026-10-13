@@ -13,8 +13,8 @@ interface GameCardProps {
   st?: GameStatus;
 }
 
-function GameCardBase({ game: g, inList, isFav, st }: GameCardProps) {
-  const { openDetail, toggleList, toggleFavorite, setStatus } = useFeed();
+function GameCardBase({ game: g, inList, st }: GameCardProps) {
+  const { openDetail, toggleList, setStatus } = useFeed();
   const statusLabel = st === 'played' ? 'Jugado' : st === 'won' ? 'Ganado' : st === 'pending' ? 'Pendiente' : null;
   const sub = [g.category, g.genres[0], g.sizeGb ? `${gb(g.sizeGb)} GB` : '', g.year].filter(Boolean).join(' · ');
 
@@ -59,16 +59,6 @@ function GameCardBase({ game: g, inList, isFav, st }: GameCardProps) {
             </span>
           )}
           <div className="card-actions" onClick={(e) => e.stopPropagation()}>
-            <button
-              className="mini"
-              type="button"
-              title={isFav ? 'Quitar de favoritos' : 'Añadir a favoritos'}
-              aria-label={isFav ? `Quitar ${g.name} de favoritos` : `Añadir ${g.name} a favoritos`}
-              aria-pressed={isFav}
-              onClick={() => toggleFavorite(g.id)}
-            >
-              {isFav ? '♥' : '♡'}
-            </button>
             {g.soon ? (
               <button className="mini" type="button" aria-label={`Avisarme de ${g.name}`} onClick={() => setStatus(g.id, st === 'pending' ? undefined : 'pending')}>
                 {st === 'pending' ? '✓' : 'Avísame'}
