@@ -159,7 +159,7 @@ export function DetailModal() {
         <div className="detail-body">
           <h2>{g.name}</h2>
           <p className="sub">{[g.category, ...g.genres].filter(Boolean).join(' · ')}</p>
-          {g.description && <p className="desc">{g.description}</p>}
+          <p className="desc">{g.description || 'Sin descripción disponible.'}</p>
 
           <div className="specs" aria-label="Especificaciones">
             <div>
@@ -172,7 +172,7 @@ export function DetailModal() {
             </div>
             <div>
               <span>Plataformas</span>
-              <b>{g.platforms.join(', ') || 'PC'}</b>
+              <b>{g.platforms.join(' · ')}</b>
             </div>
           </div>
 
@@ -182,13 +182,13 @@ export function DetailModal() {
                 <div className="req">
                   <h4>Mínimos</h4>
                   <p>
-                    {formatRequirements(g.minRequirements ?? g.requirements?.minimum) || 'No especificados en el catálogo.'}
+                    {formatRequirements(g.minRequirements || g.requirements?.minimum)}
                   </p>
                 </div>
                 <div className="req">
                   <h4>Recomendados</h4>
                   <p>
-                    {formatRequirements(g.recommendedRequirements ?? g.requirements?.recommended) || 'No especificados en el catálogo.'}
+                    {formatRequirements(g.recommendedRequirements || g.requirements?.recommended)}
                   </p>
                 </div>
               </div>
@@ -196,16 +196,17 @@ export function DetailModal() {
 
           <div className="detail-buy">
             {g.soon ? (
-              <span className="big soon-big">
-                {ri && ri.date ? `Sale el ${ri.date}` : 'Próximamente'}
-              </span>
+              <>
+                <span className="big soon-big">Próximamente</span>
+                <span className="available-label">● {ri?.date || 'Fecha por confirmar'}</span>
+              </>
             ) : (
               <>
                 <span className="big">
                   {fmt(g.price ?? 0)}
                   <small>CUP</small>
                 </span>
-                {g.available && <span className="available-label">Disponible</span>}
+                <span className="available-label">● {g.available ? 'Disponible' : 'No disponible'}</span>
               </>
             )}
             <div className="detail-actions">
