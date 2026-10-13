@@ -42,7 +42,7 @@ export function Footer() {
         <b>Javier PC</b>
         <span>Catálogo de juegos de Javier · © 2026</span>
         <span>
-          Catálogo v{catalogVersion ?? 1} · v12 ·{' '}
+          Catálogo v{catalogVersion ?? 1} · Feed v17 ·{' '}
           <button
             className="linklike"
             type="button"
