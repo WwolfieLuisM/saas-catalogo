@@ -108,11 +108,6 @@ export function Catalog() {
             ))}
           </select>
         </label>
-        {hasActiveFilters && (
-          <button className="linklike" type="button" onClick={resetFilters}>
-            Limpiar filtros
-          </button>
-        )}
       </div>
 
       <div className={`more${showFilters ? ' open' : ''}`} id="moreFilters" role="group" aria-label="Filtros avanzados">
@@ -168,6 +163,9 @@ export function Catalog() {
             Borrar búsqueda
           </button>
         )}
+        <button className="btn ghost" type="button" onClick={resetFilters}>
+          Limpiar filtros
+        </button>
       </div>
 
       <div className="grid" id="catalog-grid" aria-busy={catalogLoading}>
