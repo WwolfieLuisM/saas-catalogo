@@ -158,20 +158,17 @@ export function DetailModal() {
 
         <div className="detail-body">
           <h2>{g.name}</h2>
-          <p className="sub">
-            {[g.category, ...g.genres, ...g.platforms].filter(Boolean).join(' · ')}
-            {g.year ? ` · ${g.year}` : ''}
-          </p>
+          <p className="sub">{[g.category, ...g.genres].filter(Boolean).join(' · ')}</p>
           {g.description && <p className="desc">{g.description}</p>}
 
           <div className="specs" aria-label="Especificaciones">
             <div>
-              <span>Tamaño</span>
+              <span>Espacio</span>
               <b>{g.sizeGb ? `${gb(g.sizeGb)} GB` : '—'}</b>
             </div>
             <div>
-              <span>Géneros</span>
-              <b>{g.genres.join(', ') || '—'}</b>
+              <span>Año</span>
+              <b>{g.year ?? '—'}</b>
             </div>
             <div>
               <span>Plataformas</span>
@@ -179,27 +176,23 @@ export function DetailModal() {
             </div>
           </div>
 
-          {(g.minRequirements || g.recommendedRequirements || g.requirements) && (
-            <div className="requirements">
-              <div className="req-head">Requisitos</div>
+          <div className="requirements" aria-label="Requisitos del sistema">
+              <div className="req-head">Requisitos del sistema</div>
               <div className="req-grid">
                 <div className="req">
                   <h4>Mínimos</h4>
                   <p>
-                    {formatRequirements(g.minRequirements ?? g.requirements) || 'Consultar con el vendedor.'}
+                    {formatRequirements(g.minRequirements ?? g.requirements?.minimum) || 'No especificados en el catálogo.'}
                   </p>
                 </div>
                 <div className="req">
                   <h4>Recomendados</h4>
                   <p>
-                    {formatRequirements(g.recommendedRequirements) ||
-                      formatRequirements(g.minRequirements ?? g.requirements) ||
-                      'Consultar con el vendedor.'}
+                    {formatRequirements(g.recommendedRequirements ?? g.requirements?.recommended) || 'No especificados en el catálogo.'}
                   </p>
                 </div>
               </div>
-            </div>
-          )}
+          </div>
 
           <div className="detail-buy">
             {g.soon ? (
