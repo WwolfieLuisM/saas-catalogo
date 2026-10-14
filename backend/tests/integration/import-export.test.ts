@@ -277,6 +277,7 @@ describe('GET /api/v1/admin/export/media-manifest', () => {
       gameId: game.id,
       kind: 'COVER',
       publicId: 'cover-1',
+      url: 'https://res.cloudinary.com/demo/image/upload/v1/cover-1.jpg',
       status: 'OK',
     });
     addFakeGameMedia({
@@ -292,13 +293,53 @@ describe('GET /api/v1/admin/export/media-manifest', () => {
     expect(status).toBe(200);
     expect(disposition).toContain('manifest-multimedia-javier.json');
     expect(body['schema']).toBe('luismi-platform/media-manifest@1');
+    expect(body['notice']).toContain('No es un archivo de restauración');
+    expect(body['totals']).toMatchObject({ assets: 1, cloudinary: 1, external: 0 });
     expect(body['assets']).toEqual([
-      { publicId: 'cover-1', kind: 'COVER', gameId: game.id, status: 'OK' },
+      {
+        id: expect.any(String),
+        kind: 'COVER',
+        gameId: game.id,
+        gameTitle: game.title,
+        gameSlug: game.slug,
+        status: 'OK',
+        url: 'https://res.cloudinary.com/demo/image/upload/v1/cover-1.jpg',
+        publicId: 'cover-1',
+        hosting: 'cloudinary',
+        provider: 'cloudinary',
+      },
     ]);
 
     const log = auditByAction('MEDIA_MANIFEST_EXPORTED');
     expect(log).toMatchObject({ entity: 'GameMedia', tenantId: T_JAVIER, actorId: 'u-admin' });
     expect(log?.metadata).toMatchObject({ format: 'json', assets: 1 });
+  });
+
+  it('exporta URLs externas aunque publicId sea null', async () => {
+    const game = seedGame({ title: 'Juego Externo' });
+    addFakeGameMedia({
+      id: randomUUID(),
+      tenantId: T_JAVIER,
+      gameId: game.id,
+      kind: 'COVER',
+      publicId: null,
+      url: 'https://images.igdb.com/igdb/image/upload/t_cover_big/abc123.jpg',
+      status: 'OK',
+    });
+
+    const { status, body } = await rawGet(`${EXPORT}/media-manifest`, adminToken);
+
+    expect(status).toBe(200);
+    const assets = body['assets'] as Record<string, unknown>[];
+    expect(assets).toHaveLength(1);
+    expect(assets[0]).toMatchObject({
+      url: 'https://images.igdb.com/igdb/image/upload/t_cover_big/abc123.jpg',
+      publicId: null,
+      hosting: 'external',
+      provider: 'igdb',
+      gameTitle: 'Juego Externo',
+    });
+    expect(body['totals']).toMatchObject({ external: 1, missingPublicId: 1 });
   });
 
   it('el ADMIN no puede exportar el manifiesto de otro tenant', async () => {
@@ -360,6 +401,37 @@ describe('POST /api/v1/admin/import/validate', () => {
     const { status, body } = await api<ValidateData>(
       `${IMPORT}/validate`,
       { method: 'POST', body: JSON.stringify({ catalog: { nada: true } }) },
+      adminToken,
+    );
+
+    expect(status).toBe(200);
+    expect(body.data?.valid).toBe(false);
+    expect(body.data?.errors).toEqual(['El archivo debe contener una lista "games"']);
+  });
+
+  it('rechaza un manifiesto multimedia enviado como catálogo', async () => {
+    const manifest = {
+      schema: 'luismi-platform/media-manifest@1',
+      exportedAt: new Date().toISOString(),
+      tenant: 'javier',
+      notice: 'Inventario de solo lectura.',
+      totals: { assets: 1 },
+      assets: [
+        {
+          id: randomUUID(),
+          kind: 'COVER',
+          gameId: randomUUID(),
+          url: 'https://images.igdb.com/igdb/image/upload/t_cover_big/abc123.jpg',
+          publicId: null,
+          hosting: 'external',
+          provider: 'igdb',
+        },
+      ],
+    };
+
+    const { status, body } = await api<ValidateData>(
+      `${IMPORT}/validate`,
+      { method: 'POST', body: JSON.stringify({ catalog: manifest }) },
       adminToken,
     );
 

@@ -4,6 +4,7 @@ import { getPrisma } from '../../config/database.js';
 import type { Prisma, PrismaClient } from '../../generated/client.js';
 import type { AuthContext } from '../../middleware/auth.js';
 import { AppError } from '../../utils/appError.js';
+import { describeMediaHosting } from '../../utils/mediaHosting.js';
 import type { RequestMeta } from '../../utils/requestMeta.js';
 import { auditData } from '../audit/audit.service.js';
 import { createBackup } from '../backups/backups.service.js';
@@ -780,16 +781,52 @@ export async function exportMediaManifest(
     orderBy: [{ kind: 'asc' }, { sortOrder: 'asc' }],
   });
 
+  const gameIds = [...new Set(rows.map((row) => row.gameId))];
+  const games = gameIds.length
+    ? await prisma.tenantGame.findMany({
+        where: { id: { in: gameIds } },
+        select: { id: true, title: true, slug: true },
+      })
+    : [];
+  const gameById = new Map(games.map((game) => [game.id, game]));
+
+  const assets = rows.map((row) => {
+    const hosting = describeMediaHosting(row.url, row.publicId);
+    const game = gameById.get(row.gameId);
+    return {
+      id: row.id,
+      kind: row.kind,
+      gameId: row.gameId,
+      gameTitle: game?.title ?? null,
+      gameSlug: game?.slug ?? null,
+      status: row.status,
+      url: row.url,
+      publicId: row.publicId,
+      hosting: hosting.hosting,
+      provider: hosting.provider,
+    };
+  });
+
+  const totals = {
+    assets: assets.length,
+    cloudinary: assets.filter((asset) => asset.hosting === 'cloudinary').length,
+    external: assets.filter((asset) => asset.hosting === 'external').length,
+    unknown: assets.filter((asset) => asset.hosting === 'unknown').length,
+    missingUrl: assets.filter((asset) => asset.url === null).length,
+    missingPublicId: assets.filter((asset) => asset.publicId === null).length,
+  };
+
   const payload: Record<string, unknown> = {
     schema: MEDIA_MANIFEST_SCHEMA,
     exportedAt: new Date().toISOString(),
     tenant: tenant.slug,
-    assets: rows.map((row) => ({
-      publicId: row.publicId,
-      kind: row.kind,
-      gameId: row.gameId,
-      status: row.status,
-    })),
+    tenantId: tenant.id,
+    notice:
+      'Inventario de solo lectura. Describe qué recurso multimedia existe y dónde está ubicado. ' +
+      'No es un archivo de restauración: una URL externa solo identifica la ubicación del recurso, ' +
+      'no garantiza que siga disponible ni que exista una copia recuperable.',
+    totals,
+    assets,
   };
 
   await prisma.auditLog.create({

@@ -1,6 +1,7 @@
 'use client';
 
 import { CfgTabs } from '@/components/admin/CfgTabs';
+import { MediaAudit } from '@/components/admin/MediaAudit';
 import { PageHead } from '@/components/admin/ui';
 import { useTenantScope } from '@/hooks/useTenantScope';
 
@@ -36,6 +37,7 @@ export default function ConfigMultimediaPage() {
       <p className="hint" style={{ marginTop: 12 }}>
         Estos límites los define la plataforma. Cambiarlos requiere SUPER_ADMIN.
       </p>
+      <MediaAudit />
     </>
   );
 }

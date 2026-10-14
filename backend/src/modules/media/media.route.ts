@@ -4,6 +4,8 @@ import { uploadSingleImage } from '../../middleware/upload.js';
 import { buildMeta } from '../../utils/pagination.js';
 import { requestMeta } from '../../utils/requestMeta.js';
 import {
+  auditMedia,
+  checkMediaAvailability,
   deleteCover,
   deleteScreenshot,
   getMediaManifest,
@@ -15,6 +17,8 @@ import {
 } from './media.service.js';
 import {
   gameMediaParamSchema,
+  mediaAuditCheckSchema,
+  mediaAuditQuerySchema,
   mediaListQuerySchema,
   mediaScanQuerySchema,
   reorderScreenshotsSchema,
@@ -86,6 +90,24 @@ export function createMediaRouter(): Router {
       data: items,
       meta: buildMeta(total, query.page, query.limit),
     });
+  });
+
+  router.get('/audit', async (req, res) => {
+    const query = mediaAuditQuerySchema.parse(req.query);
+    const { items, summary, total } = await auditMedia(query, req.auth ?? null);
+
+    res.json({
+      success: true,
+      data: { items, summary },
+      meta: buildMeta(total, query.page, query.limit),
+    });
+  });
+
+  router.post('/audit/check', async (req, res) => {
+    const body = mediaAuditCheckSchema.parse(req.body);
+    const data = await checkMediaAvailability(body, req.auth ?? null);
+
+    res.json({ success: true, data });
   });
 
   router.post('/scan', async (req, res) => {

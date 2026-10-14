@@ -11,12 +11,20 @@ import type { AuthContext } from '../../middleware/auth.js';
 import { MAX_IMAGE_BYTES, type UploadedImage } from '../../middleware/upload.js';
 import type { GameMedia, Prisma, TenantGame } from '../../generated/client.js';
 import { AppError } from '../../utils/appError.js';
+import { describeMediaHosting, mediaUrlPatternKey } from '../../utils/mediaHosting.js';
+import { safeHeadUrl } from '../../utils/safeUrl.js';
 import { withRetry } from '../../utils/retry.js';
 import type { RequestMeta } from '../../utils/requestMeta.js';
 import { auditData } from '../audit/audit.service.js';
 import { planCatalogBump } from '../catalog/catalog.service.js';
 import { resolveTenantId } from '../games/games.service.js';
-import type { MediaListQuery, MediaScanQuery, ReorderScreenshotsInput } from './media.schemas.js';
+import type {
+  MediaAuditCheckInput,
+  MediaAuditQuery,
+  MediaListQuery,
+  MediaScanQuery,
+  ReorderScreenshotsInput,
+} from './media.schemas.js';
 
 const MAX_SHOTS = 4;
 const UPLOAD_ATTEMPTS = 3;
@@ -592,4 +600,219 @@ export async function scanMedia(
     assetsWithoutDb,
     orphans: missing.map(mediaDto),
   };
+}
+
+const CHECK_CONCURRENCY = 5;
+const CHECK_TIMEOUT_MS = 5000;
+
+interface AuditScope {
+  tenantIds: string[] | null;
+}
+
+async function resolveAuditScope(
+  auth: AuthContext | null,
+  requested: string | undefined,
+): Promise<AuditScope> {
+  if (!auth) {
+    throw new AppError(401, 'UNAUTHENTICATED', 'Autenticación requerida');
+  }
+  if (auth.role === 'ADMIN') {
+    if (!auth.tenantId) {
+      throw new AppError(403, 'FORBIDDEN', 'Cuenta ADMIN sin tenant asignado');
+    }
+    if (requested && requested !== auth.tenantId) {
+      throw new AppError(403, 'FORBIDDEN', 'No puedes operar sobre otro tenant');
+    }
+    return { tenantIds: [auth.tenantId] };
+  }
+  if (auth.role === 'SUPER_ADMIN') {
+    if (!requested) {
+      return { tenantIds: null };
+    }
+    const tenant = await getPrisma().tenant.findUnique({ where: { id: requested } });
+    if (!tenant) {
+      throw new AppError(422, 'TENANT_NOT_FOUND', 'El tenant indicado no existe');
+    }
+    return { tenantIds: [requested] };
+  }
+  throw new AppError(403, 'FORBIDDEN', 'Rol no autorizado');
+}
+
+function markDuplicateFlags(rows: GameMedia[]): Map<string, string[]> {
+  const flags = new Map<string, string[]>();
+  const add = (id: string, reason: string) => {
+    const list = flags.get(id) ?? [];
+    if (!list.includes(reason)) list.push(reason);
+    flags.set(id, list);
+  };
+
+  const byPublicId = new Map<string, string[]>();
+  for (const row of rows) {
+    if (!row.publicId) continue;
+    const list = byPublicId.get(row.publicId) ?? [];
+    list.push(row.id);
+    byPublicId.set(row.publicId, list);
+  }
+  for (const ids of byPublicId.values()) {
+    if (ids.length > 1) {
+      for (const id of ids) add(id, 'public-id-repetido');
+    }
+  }
+
+  const byGamePattern = new Map<string, string[]>();
+  for (const row of rows) {
+    if (row.kind !== 'COVER') continue;
+    const pattern = mediaUrlPatternKey(row.url);
+    if (!pattern) continue;
+    const key = `${row.gameId}|${pattern}`;
+    const list = byGamePattern.get(key) ?? [];
+    list.push(row.id);
+    byGamePattern.set(key, list);
+  }
+  for (const ids of byGamePattern.values()) {
+    if (ids.length > 1) {
+      for (const id of ids) add(id, 'patron-url-repetido');
+    }
+  }
+
+  return flags;
+}
+
+export async function auditMedia(query: MediaAuditQuery, auth: AuthContext | null) {
+  const scope = await resolveAuditScope(auth, query.tenantId);
+  const prisma = getPrisma();
+
+  const where: Prisma.GameMediaWhereInput = scope.tenantIds
+    ? { tenantId: { in: scope.tenantIds } }
+    : {};
+
+  const rows = await prisma.gameMedia.findMany({
+    where,
+    orderBy: [{ tenantId: 'asc' }, { kind: 'asc' }, { gameId: 'asc' }],
+  });
+
+  const gameIds = [...new Set(rows.map((row) => row.gameId))];
+  const games = gameIds.length
+    ? await prisma.tenantGame.findMany({
+        where: { id: { in: gameIds } },
+        select: { id: true, title: true, slug: true },
+      })
+    : [];
+  const gameById = new Map(games.map((game) => [game.id, game]));
+  const duplicates = markDuplicateFlags(rows);
+
+  const audited = rows.map((row) => {
+    const hosting = describeMediaHosting(row.url, row.publicId);
+    const attention: string[] = [];
+    if (!row.url) attention.push('sin-url');
+    if (!row.publicId) attention.push('sin-public-id');
+    if (hosting.hosting === 'external') attention.push('hotlink-externo');
+    for (const flag of duplicates.get(row.id) ?? []) attention.push(flag);
+    const game = gameById.get(row.gameId);
+    return {
+      id: row.id,
+      tenantId: row.tenantId,
+      gameId: row.gameId,
+      gameTitle: game?.title ?? null,
+      gameSlug: game?.slug ?? null,
+      kind: row.kind,
+      status: row.status,
+      url: row.url,
+      publicId: row.publicId,
+      hosting: hosting.hosting,
+      provider: hosting.provider,
+      attention,
+      needsAttention: attention.length > 0,
+    };
+  });
+
+  const summary = {
+    total: audited.length,
+    cloudinary: audited.filter((item) => item.hosting === 'cloudinary').length,
+    external: audited.filter((item) => item.hosting === 'external').length,
+    missingUrl: audited.filter((item) => item.url === null).length,
+    missingPublicId: audited.filter((item) => item.publicId === null).length,
+    needsAttention: audited.filter((item) => item.needsAttention).length,
+  };
+
+  const filtered = audited.filter((item) => {
+    if (query.hosting && item.hosting !== query.hosting) return false;
+    if (query.status && item.status !== query.status) return false;
+    if (
+      query.provider &&
+      (item.provider ?? '').toLowerCase() !== query.provider.toLowerCase()
+    ) {
+      return false;
+    }
+    return true;
+  });
+
+  const total = filtered.length;
+  const start = (query.page - 1) * query.limit;
+  const items = filtered.slice(start, start + query.limit);
+
+  return { items, summary, total };
+}
+
+async function mapLimit<T, R>(
+  items: T[],
+  limit: number,
+  fn: (item: T) => Promise<R>,
+): Promise<R[]> {
+  const results = new Array<R>(items.length);
+  let cursor = 0;
+  const workers = Array.from({ length: Math.max(1, Math.min(limit, items.length)) }, async () => {
+    while (cursor < items.length) {
+      const index = cursor;
+      cursor += 1;
+      results[index] = await fn(items[index] as T);
+    }
+  });
+  await Promise.all(workers);
+  return results;
+}
+
+export async function checkMediaAvailability(
+  input: MediaAuditCheckInput,
+  auth: AuthContext | null,
+) {
+  const scope = await resolveAuditScope(auth, undefined);
+  const prisma = getPrisma();
+
+  const rows = await prisma.gameMedia.findMany({ where: { id: { in: input.ids } } });
+  const rowById = new Map(rows.map((row) => [row.id, row]));
+
+  const results = await mapLimit(input.ids, CHECK_CONCURRENCY, async (id) => {
+    const row = rowById.get(id);
+    if (!row || (scope.tenantIds && !scope.tenantIds.includes(row.tenantId))) {
+      return {
+        id,
+        result: 'not_found' as const,
+        httpStatus: null,
+        detail: 'RECURSO_NO_ENCONTRADO',
+      };
+    }
+    if (!row.url) {
+      return { id, result: 'inconclusive' as const, httpStatus: null, detail: 'SIN_URL' };
+    }
+    const outcome = await safeHeadUrl(row.url, CHECK_TIMEOUT_MS);
+    return {
+      id,
+      result: outcome.result,
+      httpStatus: outcome.httpStatus,
+      detail: outcome.detail,
+    };
+  });
+
+  const summary = {
+    checked: results.length,
+    ok: results.filter((entry) => entry.result === 'ok').length,
+    error: results.filter((entry) => entry.result === 'error').length,
+    timeout: results.filter((entry) => entry.result === 'timeout').length,
+    blocked: results.filter((entry) => entry.result === 'blocked').length,
+    inconclusive: results.filter((entry) => entry.result === 'inconclusive').length,
+    notFound: results.filter((entry) => entry.result === 'not_found').length,
+  };
+
+  return { results, summary, checkedAt: new Date().toISOString() };
 }

@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useSyncExternalStore, type CSSProperties, type ReactNode } from 'react';
+import { useEffect, useState, useSyncExternalStore, type CSSProperties, type ReactNode } from 'react';
 import Link from 'next/link';
 import { AdminIcon, type AdminIconName } from './icons';
 import { hue, ini } from '@/lib/admin/format';
@@ -426,13 +426,19 @@ export function ArtThumb({
   url?: string | null;
   className?: string;
 }) {
+  const [failedUrl, setFailedUrl] = useState<string | null>(null);
+  const showImage = Boolean(url) && failedUrl !== url;
   return (
     <div
       className={`art${className ? ` ${className}` : ''}`}
       style={{ '--h': hue(title) } as CSSProperties}
     >
-      {/* eslint-disable-next-line @next/next/no-img-element -- portadas de Cloudinary; next/image exige remotePatterns */}
-      {url ? <img src={url} alt="" loading="lazy" /> : <span>{ini(title)}</span>}
+      {showImage && url ? (
+        // eslint-disable-next-line @next/next/no-img-element -- portadas de Cloudinary; next/image exige remotePatterns
+        <img src={url} alt="" loading="lazy" onError={() => setFailedUrl(url)} />
+      ) : (
+        <span>{ini(title)}</span>
+      )}
     </div>
   );
 }
