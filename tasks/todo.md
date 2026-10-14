@@ -71,10 +71,10 @@ Antes de implementar: inspeccionar rutas y componentes de admin existentes, prop
 - [x] 1.4 `TenantSettings`: phone, email, logo, socialLinks + API pública settings tenant (schema, service, route `GET /api/v1/catalog/settings`, migración aplicada en Neon, admin general con editor de redes)
 
 ## Fase 2 — Biblioteca global
-- [ ] 2.1 `BaseGame`: status, source, keywords, developer, publisher
-- [ ] 2.2 `LibraryMedia`: media maestra heredable
-- [ ] 2.3 UI biblioteca con ficha completa (`LibEditModal`)
-- [ ] 2.4 Buscador server-side + paginación
+- [x] 2.1 `BaseGame`: status, source, keywords, developer, publisher
+- [x] 2.2 `LibraryMedia`: media maestra heredable
+- [x] 2.3 UI biblioteca con ficha completa (`LibEditModal`)
+- [x] 2.4 Buscador server-side + paginación (`q` expandido + `genreId`/`platformId` + debounce 300ms + Pager real)
 
 ## Fase 3 — Herencia TenantGame
 - [ ] 3.1 Migración expand: `*Override` nullable en `TenantGame`

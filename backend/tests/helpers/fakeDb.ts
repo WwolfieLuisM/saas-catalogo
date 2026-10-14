@@ -84,6 +84,11 @@ export interface FakeBaseGame {
   sizeValue: number;
   sizeUnit: 'MB' | 'GB' | 'TB';
   releaseYear: number | null;
+  status: 'ACTIVE' | 'PENDING_ENRICHMENT' | 'INCOMPLETE';
+  source: string | null;
+  keywords: string | null;
+  developer: string | null;
+  publisher: string | null;
   categoryId: string | null;
   minimumRequirements: unknown;
   recommendedRequirements: unknown;
@@ -128,6 +133,19 @@ export interface FakeGameMedia {
   id: string;
   tenantId: string;
   gameId: string;
+  kind: 'COVER' | 'SHOT';
+  url: string | null;
+  publicId: string | null;
+  sortOrder: number;
+  status: 'OK' | 'PENDING' | 'ERROR' | 'ORPHAN';
+  createdBy: string | null;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface FakeLibraryMedia {
+  id: string;
+  baseGameId: string;
   kind: 'COVER' | 'SHOT';
   url: string | null;
   publicId: string | null;
@@ -331,7 +349,8 @@ const baseGameGenres = new Map<string, FakeBridge>();
 const baseGamePlatforms = new Map<string, FakeBridge>();
 const tenantGameGenres = new Map<string, FakeBridge>();
 const gamePlatforms = new Map<string, FakeBridge>();
-const gameMedia = new Map<string, FakeGameMedia>();
+  const gameMedia = new Map<string, FakeGameMedia>();
+  const libraryMedia = new Map<string, FakeLibraryMedia>();
 const pricingRules = new Map<string, FakePricingRule>();
 const catalogMetadata = new Map<string, FakeCatalogMetadata>();
 const backups = new Map<string, FakeBackup>();
@@ -828,6 +847,13 @@ export const fakeDb = {
     status: 'OK',
     createdBy: null,
   }),
+  libraryMedia: createRowDelegate<FakeLibraryMedia>(libraryMedia, {
+    url: null,
+    publicId: null,
+    sortOrder: 0,
+    status: 'OK',
+    createdBy: null,
+  }),
   pricingRule: createRowDelegate<FakePricingRule>(pricingRules, {
     maxSize: null,
     active: true,
@@ -863,6 +889,7 @@ export const state = {
   tenantGameGenres,
   gamePlatforms,
   gameMedia,
+  libraryMedia,
   pricingRules,
   catalogMetadata,
   backups,
@@ -884,6 +911,7 @@ export function resetFakeDb(): void {
   tenantGameGenres.clear();
   gamePlatforms.clear();
   gameMedia.clear();
+  libraryMedia.clear();
   pricingRules.clear();
   catalogMetadata.clear();
   backups.clear();
@@ -999,6 +1027,11 @@ export function addFakeBaseGame(
   const row = defaults<FakeBaseGame>(input, {
     description: null,
     releaseYear: null,
+    status: 'ACTIVE',
+    source: null,
+    keywords: null,
+    developer: null,
+    publisher: null,
     categoryId: null,
     minimumRequirements: null,
     recommendedRequirements: null,
@@ -1069,6 +1102,20 @@ export function addFakeGameMedia(
     createdBy: null,
   });
   gameMedia.set(row.id, row);
+  return row;
+}
+
+export function addFakeLibraryMedia(
+  input: Partial<FakeLibraryMedia> & { id: string; baseGameId: string; kind: 'COVER' | 'SHOT' },
+): FakeLibraryMedia {
+  const row = defaults<FakeLibraryMedia>(input, {
+    url: null,
+    publicId: null,
+    sortOrder: 0,
+    status: 'OK',
+    createdBy: null,
+  });
+  libraryMedia.set(row.id, row);
   return row;
 }
 

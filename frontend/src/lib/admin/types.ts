@@ -14,7 +14,7 @@ export type AdminRole = 'SUPER_ADMIN' | 'ADMIN';
 
 export interface TaxonomyItem {
   id: string;
-  tenantId: string;
+  tenantId: string | null;
   name: string;
   slug: string;
   description: string | null;
@@ -70,6 +70,8 @@ export interface GameItem {
   updatedAt: string;
 }
 
+export type BaseGameStatus = 'ACTIVE' | 'PENDING_ENRICHMENT' | 'INCOMPLETE';
+
 export interface BaseGameEntry {
   id: string;
   title: string;
@@ -78,6 +80,11 @@ export interface BaseGameEntry {
   sizeValue: number;
   sizeUnit: 'MB' | 'GB' | 'TB';
   releaseYear: number | null;
+  status: BaseGameStatus;
+  source: string | null;
+  keywords: string | null;
+  developer: string | null;
+  publisher: string | null;
   categoryId: string | null;
   category: TaxonomySummary | null;
   genres: TaxonomySummary[];
@@ -90,6 +97,24 @@ export interface BaseGameEntry {
   deletedBy: string | null;
   createdAt: string;
   updatedAt: string;
+}
+
+export interface LibraryMediaEntry {
+  id: string;
+  baseGameId: string;
+  kind: MediaKind;
+  url: string | null;
+  publicId: string | null;
+  sortOrder: number;
+  status: MediaStatus;
+  createdBy: string | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface LibraryMediaManifest {
+  cover: LibraryMediaEntry | null;
+  screenshots: LibraryMediaEntry[];
 }
 
 export type MediaKind = 'COVER' | 'SHOT';

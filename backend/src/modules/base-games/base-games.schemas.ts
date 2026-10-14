@@ -22,9 +22,14 @@ export const baseGamesListQuerySchema = paginationQuerySchema.extend({
     ])
     .default('-createdAt'),
   categoryId: z.string().uuid().optional(),
+  genreId: z.string().uuid().optional(),
+  platformId: z.string().uuid().optional(),
+  status: z.enum(['ACTIVE', 'PENDING_ENRICHMENT', 'INCOMPLETE']).optional(),
 });
 
 export type BaseGamesListQuery = z.infer<typeof baseGamesListQuerySchema>;
+
+export const baseGameStatusSchema = z.enum(['ACTIVE', 'PENDING_ENRICHMENT', 'INCOMPLETE']);
 
 export const createBaseGameSchema = z.object({
   title: z.string().trim().min(2).max(150),
@@ -33,6 +38,11 @@ export const createBaseGameSchema = z.object({
   sizeValue: sizeValueSchema,
   sizeUnit: sizeUnitSchema,
   releaseYear: z.number().int().min(1970).max(2100).nullish(),
+  status: baseGameStatusSchema.default('ACTIVE'),
+  source: z.string().trim().max(120).nullish(),
+  keywords: z.string().trim().max(300).nullish(),
+  developer: z.string().trim().max(120).nullish(),
+  publisher: z.string().trim().max(120).nullish(),
   categoryId: z.string().uuid().nullish(),
   genreIds: taxonomyIdsSchema.optional(),
   platformIds: taxonomyIdsSchema.optional(),
@@ -50,6 +60,11 @@ export const updateBaseGameSchema = z
     sizeValue: sizeValueSchema.optional(),
     sizeUnit: sizeUnitSchema.optional(),
     releaseYear: z.number().int().min(1970).max(2100).nullish(),
+    status: baseGameStatusSchema.optional(),
+    source: z.string().trim().max(120).nullish(),
+    keywords: z.string().trim().max(300).nullish(),
+    developer: z.string().trim().max(120).nullish(),
+    publisher: z.string().trim().max(120).nullish(),
     categoryId: z.string().uuid().nullish(),
     genreIds: taxonomyIdsSchema.optional(),
     platformIds: taxonomyIdsSchema.optional(),

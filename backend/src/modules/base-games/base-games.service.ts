@@ -95,6 +95,11 @@ export function baseGameDto(row: BaseGame, detail: BaseGameDetail) {
     sizeValue: row.sizeValue,
     sizeUnit: row.sizeUnit,
     releaseYear: row.releaseYear,
+    status: row.status,
+    source: row.source,
+    keywords: row.keywords,
+    developer: row.developer,
+    publisher: row.publisher,
     categoryId: row.categoryId,
     category: detail.category,
     genres: detail.genres,
@@ -123,17 +128,40 @@ async function findRow(id: string, includeDeleted: boolean): Promise<BaseGame> {
   return row;
 }
 
+async function bridgeIdsFor(
+  kind: 'genre' | 'platform',
+  taxonomyId: string,
+): Promise<string[]> {
+  const prisma = getPrisma();
+  const bridges =
+    kind === 'genre'
+      ? await prisma.baseGameGenre.findMany({ where: { genreId: taxonomyId } })
+      : await prisma.baseGamePlatform.findMany({ where: { platformId: taxonomyId } });
+  return bridges.map((bridge) => bridge.baseGameId);
+}
+
 export async function listBaseGames(query: BaseGamesListQuery) {
   const prisma = getPrisma();
+  const [genreBaseIds, platformBaseIds] = await Promise.all([
+    query.genreId ? bridgeIdsFor('genre', query.genreId) : Promise.resolve(null),
+    query.platformId ? bridgeIdsFor('platform', query.platformId) : Promise.resolve(null),
+  ]);
   const where: Prisma.BaseGameWhereInput = {
     AND: [
       { deletedAt: null },
       query.categoryId ? { categoryId: query.categoryId } : {},
+      query.status ? { status: query.status } : {},
+      genreBaseIds ? { id: { in: genreBaseIds } } : {},
+      platformBaseIds ? { id: { in: platformBaseIds } } : {},
       query.q
         ? {
             OR: [
               { title: { contains: query.q, mode: 'insensitive' } },
               { slug: { contains: query.q, mode: 'insensitive' } },
+              { developer: { contains: query.q, mode: 'insensitive' } },
+              { publisher: { contains: query.q, mode: 'insensitive' } },
+              { keywords: { contains: query.q, mode: 'insensitive' } },
+              { description: { contains: query.q, mode: 'insensitive' } },
             ],
           }
         : {},
@@ -204,6 +232,11 @@ export async function createBaseGame(
         sizeValue: input.sizeValue,
         sizeUnit: input.sizeUnit,
         releaseYear: input.releaseYear ?? null,
+        status: input.status,
+        source: input.source ?? null,
+        keywords: input.keywords ?? null,
+        developer: input.developer ?? null,
+        publisher: input.publisher ?? null,
         categoryId: input.categoryId ?? null,
         minimumRequirements: jsonValue(minimumRequirements),
         recommendedRequirements: jsonValue(recommendedRequirements),
@@ -288,6 +321,11 @@ export async function updateBaseGame(
     ...(input.sizeValue !== undefined ? { sizeValue: input.sizeValue } : {}),
     ...(input.sizeUnit !== undefined ? { sizeUnit: input.sizeUnit } : {}),
     ...(input.releaseYear !== undefined ? { releaseYear: input.releaseYear ?? null } : {}),
+    ...(input.status !== undefined ? { status: input.status } : {}),
+    ...(input.source !== undefined ? { source: input.source ?? null } : {}),
+    ...(input.keywords !== undefined ? { keywords: input.keywords ?? null } : {}),
+    ...(input.developer !== undefined ? { developer: input.developer ?? null } : {}),
+    ...(input.publisher !== undefined ? { publisher: input.publisher ?? null } : {}),
     ...(input.categoryId !== undefined ? { categoryId: input.categoryId ?? null } : {}),
     updatedBy: auth.id,
   };

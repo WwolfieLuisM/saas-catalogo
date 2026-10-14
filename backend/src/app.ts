@@ -11,6 +11,7 @@ import { createAuditRouter } from './modules/audit/audit.route.js';
 import { createAuthRouter } from './modules/auth/auth.route.js';
 import { createBackupsRouter } from './modules/backups/backups.route.js';
 import { createBaseGamesRouter } from './modules/base-games/base-games.route.js';
+import { createLibraryMediaRouter } from './modules/library-media/library-media.route.js';
 import { createCatalogRouter } from './modules/catalog/catalog.route.js';
 import { createConfigRouter } from './modules/config/config.route.js';
 import { createDashboardRouter } from './modules/dashboard/dashboard.route.js';
@@ -85,6 +86,7 @@ export function createApp() {
   app.use('/api/v1/admin/genres', createTaxonomyRouter(genreTaxonomy));
   app.use('/api/v1/admin/platforms', createTaxonomyRouter(platformTaxonomy));
   app.use('/api/v1/admin/base-games', createBaseGamesRouter());
+  app.use('/api/v1/admin/base-games', createLibraryMediaRouter());
   app.use('/api/v1/admin/games', createGamesRouter());
   app.use('/api/v1/admin/games', createGameMediaRouter());
   app.use('/api/v1/admin/media', createMediaRouter());

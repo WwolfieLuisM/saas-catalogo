@@ -28,7 +28,7 @@ interface ApiBody<T> {
 
 interface TaxonomyData {
   id: string;
-  tenantId: string;
+  tenantId: string | null;
   name: string;
   slug: string;
   description: string | null;
@@ -192,6 +192,25 @@ describe.each(RESOURCES)('$path', ({ path, entity, notFoundCode, slugExistsCode 
       expect(status).toBe(200);
       expect(body.meta?.total).toBe(1);
       expect(body.data?.[0]?.tenantId).toBe(T_OTRO);
+    });
+
+    it('lista taxonomía global con global=true para SUPER_ADMIN', async () => {
+      seed({ tenantId: null, name: 'Global', slug: 'global-cat' });
+      seed({ tenantId: T_JAVIER, name: 'Tenant', slug: 'tenant-cat' });
+
+      const { status, body } = await api<TaxonomyData[]>(`${base}?global=true`, {}, superToken);
+
+      expect(status).toBe(200);
+      expect(body.meta?.total).toBe(1);
+      expect(body.data?.[0]?.tenantId).toBeNull();
+      expect(body.data?.[0]?.slug).toBe('global-cat');
+    });
+
+    it('rechaza global=true para ADMIN', async () => {
+      const { status, body } = await api(`${base}?global=true`, {}, adminToken);
+
+      expect(status).toBe(403);
+      expect(body.error?.code).toBe('FORBIDDEN');
     });
 
     it('rechaza tenantId ajeno para ADMIN', async () => {

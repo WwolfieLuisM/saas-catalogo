@@ -37,6 +37,11 @@ interface BaseGameDto {
   sizeValue: number;
   sizeUnit: string;
   releaseYear: number | null;
+  status: string;
+  source: string | null;
+  keywords: string | null;
+  developer: string | null;
+  publisher: string | null;
   categoryId: string | null;
   category: { id: string; name: string; slug: string } | null;
   genres: { id: string; name: string; slug: string }[];
@@ -181,6 +186,76 @@ describe('GET /base-games', () => {
     expect(bySlug.body.meta?.total).toBe(1);
   });
 
+  it('filtra q también por developer, publisher y keywords', async () => {
+    seedBaseGame({
+      title: 'Hades',
+      slug: 'hades-dev',
+      developer: 'Supergiant Games',
+      publisher: 'Private Division',
+      keywords: 'roguelike mitología',
+    });
+    seedBaseGame({ title: 'Celeste', slug: 'celeste-pub', developer: 'Maddy Makes Games' });
+
+    const byDev = await api<BaseGameDto[]>(`${BASE}?q=supergiant`, {}, superToken);
+    expect(byDev.body.meta?.total).toBe(1);
+    expect(byDev.body.data?.[0]?.slug).toBe('hades-dev');
+
+    const byPub = await api<BaseGameDto[]>(`${BASE}?q=Private`, {}, superToken);
+    expect(byPub.body.meta?.total).toBe(1);
+
+    const byKeywords = await api<BaseGameDto[]>(`${BASE}?q=mitolog%C3%ADa`, {}, superToken);
+    expect(byKeywords.body.meta?.total).toBe(1);
+  });
+
+  it('filtra por genreId vía puente', async () => {
+    const genre = addFakeGenre({ id: randomUUID(), tenantId: null, name: 'RPG', slug: 'rpg' });
+    const other = addFakeGenre({
+      id: randomUUID(),
+      tenantId: null,
+      name: 'Indie',
+      slug: 'indie',
+    });
+    const game = seedBaseGame();
+    const celeste = seedBaseGame({ title: 'Celeste', slug: 'celeste-g' });
+    addFakeBaseGameGenre(game.id, genre.id);
+    addFakeBaseGameGenre(celeste.id, other.id);
+
+    const { status, body } = await api<BaseGameDto[]>(`${BASE}?genreId=${genre.id}`, {}, superToken);
+
+    expect(status).toBe(200);
+    expect(body.meta?.total).toBe(1);
+    expect(body.data?.[0]?.slug).toBe('hades');
+  });
+
+  it('filtra por platformId vía puente', async () => {
+    const pc = addFakePlatform({
+      id: randomUUID(),
+      tenantId: null,
+      name: 'PC',
+      slug: 'pc',
+    });
+    const ps5 = addFakePlatform({
+      id: randomUUID(),
+      tenantId: null,
+      name: 'PS5',
+      slug: 'ps5',
+    });
+    const game = seedBaseGame();
+    const celeste = seedBaseGame({ title: 'Celeste', slug: 'celeste-p' });
+    addFakeBaseGamePlatform(game.id, pc.id);
+    addFakeBaseGamePlatform(celeste.id, ps5.id);
+
+    const { status, body } = await api<BaseGameDto[]>(
+      `${BASE}?platformId=${pc.id}`,
+      {},
+      superToken,
+    );
+
+    expect(status).toBe(200);
+    expect(body.meta?.total).toBe(1);
+    expect(body.data?.[0]?.slug).toBe('hades');
+  });
+
   it('filtra por categoryId', async () => {
     const category = seedGlobalCategory();
     seedBaseGame({ categoryId: category.id });
@@ -195,6 +270,24 @@ describe('GET /base-games', () => {
     expect(status).toBe(200);
     expect(body.meta?.total).toBe(1);
     expect(body.data?.[0]?.slug).toBe('hades');
+  });
+
+  it('filtra por status', async () => {
+    seedBaseGame();
+    seedBaseGame({ title: 'Celeste', slug: 'celeste', status: 'INCOMPLETE' });
+
+    const { status, body } = await api<BaseGameDto[]>(`${BASE}?status=INCOMPLETE`, {}, superToken);
+
+    expect(status).toBe(200);
+    expect(body.meta?.total).toBe(1);
+    expect(body.data?.[0]?.slug).toBe('celeste');
+  });
+
+  it('devuelve 400 con status inválido', async () => {
+    const { status, body } = await api(`${BASE}?status=OTRO`, {}, superToken);
+
+    expect(status).toBe(400);
+    expect(body.error?.code).toBe('VALIDATION_ERROR');
   });
 
   it('ordena por sort title asc y desc', async () => {
@@ -302,6 +395,93 @@ describe('POST /base-games', () => {
       tenantId: null,
     });
     expect(log?.metadata).toMatchObject({ title: 'Hades', slug: 'hades' });
+  });
+
+  it('persiste status y metadata de procedencia con valores por defecto', async () => {
+    const { status, body } = await api<BaseGameDto>(
+      BASE,
+      {
+        method: 'POST',
+        body: JSON.stringify({
+          title: 'Hades',
+          slug: 'hades',
+          sizeValue: 15,
+          sizeUnit: 'GB',
+          status: 'PENDING_ENRICHMENT',
+          source: 'CSV inicial',
+          keywords: 'roguelike, mitología',
+          developer: 'Supergiant Games',
+          publisher: 'Supergiant Games',
+        }),
+      },
+      superToken,
+    );
+
+    expect(status).toBe(201);
+    expect(body.data).toMatchObject({
+      status: 'PENDING_ENRICHMENT',
+      source: 'CSV inicial',
+      keywords: 'roguelike, mitología',
+      developer: 'Supergiant Games',
+      publisher: 'Supergiant Games',
+    });
+
+    const bare = await api<BaseGameDto>(
+      BASE,
+      {
+        method: 'POST',
+        body: JSON.stringify({ title: 'Bare', slug: 'bare', sizeValue: 1, sizeUnit: 'GB' }),
+      },
+      superToken,
+    );
+
+    expect(bare.status).toBe(201);
+    expect(bare.body.data).toMatchObject({
+      status: 'ACTIVE',
+      source: null,
+      keywords: null,
+      developer: null,
+      publisher: null,
+    });
+  });
+
+  it('devuelve 400 con status inválido en el body', async () => {
+    const { status, body } = await api(
+      BASE,
+      {
+        method: 'POST',
+        body: JSON.stringify({
+          title: 'Malo',
+          slug: 'malo-status',
+          sizeValue: 1,
+          sizeUnit: 'GB',
+          status: 'OTRO',
+        }),
+      },
+      superToken,
+    );
+
+    expect(status).toBe(400);
+    expect(body.error?.code).toBe('VALIDATION_ERROR');
+  });
+
+  it('devuelve 400 si developer supera 120 caracteres', async () => {
+    const { status } = await api(
+      BASE,
+      {
+        method: 'POST',
+        body: JSON.stringify({
+          title: 'Largo',
+          slug: 'largo-dev',
+          sizeValue: 1,
+          sizeUnit: 'GB',
+          developer: 'x'.repeat(121),
+        }),
+      },
+      superToken,
+    );
+
+    expect(status).toBe(400);
   });
 
   it('devuelve 422 si la categoría no existe en la biblioteca', async () => {
@@ -447,6 +627,35 @@ describe('PATCH /base-games/:id', () => {
     const log = auditRow('UPDATE');
     expect(log).toMatchObject({ entity: 'BaseGame', entityId: game.id, actorId: 'u-super' });
     expect(log?.metadata).toMatchObject({ fields: ['title', 'releaseYear'] });
+  });
+
+  it('actualiza status y metadata de procedencia', async () => {
+    const game = seedBaseGame({ status: 'ACTIVE', developer: 'Viejo Dev' });
+
+    const { status, body } = await api<BaseGameDto>(
+      `${BASE}/${game.id}`,
+      {
+        method: 'PATCH',
+        body: JSON.stringify({
+          status: 'INCOMPLETE',
+          source: 'Steam',
+          keywords: 'indie, platformer',
+          developer: null,
+          publisher: 'Annapurna',
+        }),
+      },
+      superToken,
+    );
+
+    expect(status).toBe(200);
+    expect(body.data).toMatchObject({
+      status: 'INCOMPLETE',
+      source: 'Steam',
+      keywords: 'indie, platformer',
+      developer: null,
+      publisher: 'Annapurna',
+    });
+    expect(state.baseGames.get(game.id)?.developer).toBeNull();
   });
 
   it('devuelve 409 si el slug ya lo usa otro juego', async () => {

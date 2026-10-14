@@ -13,6 +13,7 @@ export const taxonomyListQuerySchema = paginationQuerySchema.extend({
     .enum(['name', '-name', 'createdAt', '-createdAt', 'updatedAt', '-updatedAt'])
     .default('-createdAt'),
   tenantId: z.string().uuid().optional(),
+  global: z.coerce.boolean().optional(),
 });
 
 export type TaxonomyListQuery = z.infer<typeof taxonomyListQuerySchema>;

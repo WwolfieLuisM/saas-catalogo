@@ -30,7 +30,7 @@ interface TaxonomyWhere {
   AND?: TaxonomyWhere[];
   OR?: TaxonomyWhere[];
   id?: string;
-  tenantId?: string;
+  tenantId?: string | null;
   slug?: string | { contains: string; mode: 'insensitive' };
   deletedAt?: Date | null;
   name?: { contains: string; mode: 'insensitive' };
@@ -162,7 +162,15 @@ export function createTaxonomyService(config: TaxonomyConfig) {
     query: TaxonomyListQuery,
     auth: AuthContext | null,
   ): Promise<{ items: TaxonomyRow[]; total: number }> {
-    const tenantId = await resolveTenantId(auth, query.tenantId);
+    let tenantId: string | null;
+    if (query.global) {
+      if (!auth || auth.role !== 'SUPER_ADMIN') {
+        throw new AppError(403, 'FORBIDDEN', 'Solo SUPER_ADMIN puede listar taxonomía global');
+      }
+      tenantId = null;
+    } else {
+      tenantId = await resolveTenantId(auth, query.tenantId);
+    }
     const { delegate } = getDb();
 
     const where: TaxonomyWhere = {

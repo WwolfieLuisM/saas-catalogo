@@ -40,6 +40,12 @@ enum MediaStatus {
   ORPHAN
 }
 
+enum BaseGameStatus {
+  ACTIVE
+  PENDING_ENRICHMENT
+  INCOMPLETE
+}
+
 model Tenant {
   id         String          @id @default(uuid())
   name       String
@@ -120,6 +126,11 @@ model BaseGame {
   sizeValue              Float
   sizeUnit               SizeUnit
   releaseYear            Int?
+  status                 BaseGameStatus @default(ACTIVE)
+  source                 String?
+  keywords               String?
+  developer              String?
+  publisher              String?
   categoryId             String?
   category               Category? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
   minimumRequirements    Json?
@@ -133,8 +144,25 @@ model BaseGame {
   genres                 BaseGameGenre[]
   platforms              BaseGamePlatform[]
   publications           TenantGame[]
+  libraryMedia           LibraryMedia[]
 
   @@index([deletedAt])
+}
+
+model LibraryMedia {
+  id         String      @id @default(uuid())
+  baseGameId String
+  baseGame   BaseGame    @relation(fields: [baseGameId], references: [id], onDelete: Cascade)
+  kind       MediaKind
+  url        String?
+  publicId   String?
+  sortOrder  Int
+  status     MediaStatus @default(OK)
+  createdBy  String?
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+
+  @@index([baseGameId])
 }
 
 model TenantGame {
