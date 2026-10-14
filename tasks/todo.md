@@ -61,14 +61,14 @@ Antes de implementar: inspeccionar rutas y componentes de admin existentes, prop
 **Entrega.** Archivos afectados, formato del manifiesto antes/después, pruebas ejecutadas y plan de migración de portadas externas.
 
 ## Fase 0 — Salvaguardas
-- [ ] 0.1 Respaldo Neon actualizado
-- [ ] 0.2 Línea base de gates en verde
+- [x] 0.1 Respaldo Neon actualizado (snapshot `pre-fase1-saas`, sustituye al de la limpieza de catálogo; plan free limita a 1)
+- [x] 0.2 Línea base de gates en verde (BUG-01; re-ejecutada al cierre de Fase 1)
 
 ## Fase 1 — Feed
-- [~] 1.1 Colección: pestaña "Todos" solo juegos con estado (`Drawers.tsx`)
-- [ ] 1.2 Separación Colección / Favoritos / Lista intacta (`storage.ts`)
-- [ ] 1.3 Contacto dinámico por tenant, sin `NEXT_PUBLIC_WHATSAPP` (`Chrome.tsx`)
-- [ ] 1.4 `TenantSettings`: phone, email, logo, socialLinks + API pública settings tenant
+- [x] 1.1 Colección: pestaña "Todos" solo juegos con estado (`Drawers.tsx`)
+- [x] 1.2 Separación Colección / Favoritos / Lista intacta (`storage.ts`) — verificado sin cambios
+- [x] 1.3 Contacto dinámico por tenant, sin `NEXT_PUBLIC_WHATSAPP` (`Chrome.tsx`, `Catalog.tsx`, `deliver.ts`, `useFeed.tsx`, `catalogApi.ts`, `types/catalog.ts`)
+- [x] 1.4 `TenantSettings`: phone, email, logo, socialLinks + API pública settings tenant (schema, service, route `GET /api/v1/catalog/settings`, migración aplicada en Neon, admin general con editor de redes)
 
 ## Fase 2 — Biblioteca global
 - [ ] 2.1 `BaseGame`: status, source, keywords, developer, publisher
