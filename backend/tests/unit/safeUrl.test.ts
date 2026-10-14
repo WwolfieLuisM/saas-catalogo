@@ -112,7 +112,7 @@ describe('safeHeadUrl', () => {
   });
 
   it('bloquea 127.0.0.1 aunque haya un servidor local real escuchando', async () => {
-    const server = createServer((req, res) => {
+    const server = createServer((_req, res) => {
       res.statusCode = 200;
       res.end();
     });

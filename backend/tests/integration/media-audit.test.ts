@@ -9,6 +9,7 @@ import {
   addFakeTenantGame,
   addFakeUser,
   resetFakeDb,
+  type FakeGameMedia,
 } from '../helpers/fakeDb.js';
 
 vi.mock('../../src/config/database.js', async () => {
@@ -136,7 +137,7 @@ function seedGame(tenantId: string, title: string) {
 function seedCover(
   tenantId: string,
   gameId: string,
-  overrides: Partial<{ url: string | null; publicId: string | null; status: string }> = {},
+  overrides: Partial<Pick<FakeGameMedia, 'url' | 'publicId' | 'status'>> = {},
 ) {
   return addFakeGameMedia({
     id: randomUUID(),
