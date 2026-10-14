@@ -1,7 +1,7 @@
 # Active Context
 
 ## Last Updated
-2026-10-12 — Incidente `1101` de Cloudflare Workers **resuelto y en producción**; documentación del memory bank completada.
+2026-10-13 — **Catálogo reconstruido en producción**: 57 juegos importados a Neon y visibles en el feed.
 
 ## Current State
 
@@ -18,7 +18,36 @@ Monorepo **Saas Catalogo** en estado de producto cerrado y desplegado:
 - **Despliegue: SOLO Cloudflare Workers.** Cloudflare Pages quedó **abandonado**. Ver "Cloudflare Workers (CD de frontend)" en `systemPatterns.md` para el porqué y el estado de limpieza.
 - **Compatibilidad Next ↔ OpenNext es una restricción dura.** No subir la versión de `next` sin verificar que `@opennextjs/cloudflare` conoce los manifiestos que esa versión genera. Detalle en `systemPatterns.md` → "Key Technical Decisions".
 - **Diferido, NO tocar sin visto bueno del usuario**: (a) borrar el proyecto Pages `saas-catalogo`; (b) borrar el Worker huérfano `saas-catalogo`; (c) rotar las credenciales Cloudflare expuestas en el chat.
-- Revisar el issue upstream **OpenNext #1355 / #1448** antes de任何 subida de Next. Cuando `@opennextjs/cloudflare` publique soporte para `preview-props.json`, se puede volver a 16.4+.
+- Revisar el issue upstream **OpenNext #1355 / #1448** antes de cualquier subida de Next. Cuando `@opennextjs/cloudflare` publique soporte para `preview-props.json`, se puede volver a 16.4+.
+
+## Catálogo reconstruido en producción (2026-10-13)
+
+### Entorno real (¡ojo: `.env` local = producción!)
+- Proyecto Neon **`rough-fire-20869032`** · rama default **`main` = `br-misty-salad-b8xwlwmc`** · database `neondb` · aws-us-east-1.
+- `backend/.env` apunta al compute `ep-little-queen-b8m1b5wl.c-14.us-east-1.aws.neon.tech`, que **coincide con el endpoint del branch main** → el importador local escribe directamente en producción. Verificado con `neon_list_branch_computes`.
+- IDs: Tenant `javier` `c5ce8dd1-2bf7-4ee5-a2a9-b9ea11990428` · SUPER_ADMIN `98894fa1-730b-47b0-a406-67f6a22d6c95` · ADMIN javier `401ef9be-5205-4031-9411-48f6d81e2476`.
+- **NO tocar** el proyecto Neon `Market-Place-Moa` (`bitter-sea-06796259`), es de otra gente.
+
+### Qué se hizo
+Se limpió el catálogo previo y se reconstruyó combinando el seed de 20 juegos de Javier (`docs/...v17...html`, objeto `DEMO.games`) con la muestra IGDB de 50, enriqueciendo tamaños desde Steam.
+
+- **57 juegos importados** en una única transacción SQL con `BEGIN`/`COMMIT` y 0 sentencias destructivas.
+- **19 tamaños del seed conservados exactamente** (verificado 1:1 contra el HTML, 0 desajustes).
+- **38 tamaños de Steam** con `steam_appid` registrado y correspondencia título↔app verificada (**nunca se asume IGDB ID = Steam AppID**). `appdetails` con `success:false` = retirado. Storage del bloque `minimum` (requisito de instalación).
+- **12 excluidos** con motivo específico, en `catalogo-exclusiones.{json,md}`: `SIN_CORRESPONDENCIA` 5 · `RETIRADO_STEAM` 2 · `MOD` 1 (Fallout: London) · `DLC` 1 (ETS2: DAF XD) · `NO_PUBLICADO` 1 (GTA VI) · `REMAKE_NO_OFICIAL` 1 · `SIN_TAMANO_PUBLICADO` 1.
+- 2 juegos que IGDB no matcheó sí existen en Steam → enriquecidos con metadata de Steam en vez de descartarse: `Oriental Dynasty` (appid 2050510) y `Galaxy Dreamer` (appid 284910).
+
+### Respaldo y reversibilidad
+- Snapshot previo **`snap-shiny-resonance-b80wg8j6`** (`backup-antes-limpieza-catalogo`, 2026-10-13T15:00:12Z, manual, 49,1 MB). Restaurable con `neon_restore_snapshot`.
+- Idempotencia: **IDs deterministas (sha256→UUID) + `ON CONFLICT (id) DO NOTHING`**, así que una reejecución no duplica.
+
+### Caché de catálogo (importante)
+`/api/v1/catalog` es **público** (sin auth, tenant por query). Usa `ETag "v<version>"` + `Cache-Control: no-cache`, y `/sync?since=N` devuelve `changed:false` si N coincide con `CatalogMetadata.version`.
+
+Como la importación fue por SQL no pasó por `planCatalogBump`, la versión seguía en **55** → clientes con el catálogo vacío cacheado recibirían `304`, y el modo offline/PWA **nunca bajaría los 57 juegos**. **Incrementada a 56** manualmente tras el import.
+
+### Artefactos (en `backend/scripts/`, gitignored, sin commitear)
+`construir-catalogo.mjs` · `enriquecer-tamanos.mjs` · `importar-catalogo.mjs` · `catalogo-reconstruido.sql` (111 KB) · `catalogo-fuentes.json` · `catalogo-exclusiones.{json,md}` · `tamanos-recuperados.csv` · `steam-enriquecimiento-extra.json`.
 
 ## Incidente resuelto: `1101` en Cloudflare Workers (2026-10-12)
 
@@ -97,11 +126,16 @@ El usuario confirmó que la fidelidad (feed Javier PC + admin Luismi Platform ·
 ## Next Steps
 
 **Pendiente de decisión del usuario (NO tocar sin su visto bueno):**
-1. Borrar el proyecto **Pages** `saas-catalogo` (ID `034b0836-eb79-431c-af4b-4107c678e7d3`, conectado al repo con `preview_deployment_setting: all`).
-2. Borrar el Worker **huérfano** `saas-catalogo` (es el que hace fallar el check `Workers Builds: saas-catalogo`).
-3. Rotar las credenciales Cloudflare expuestas en el chat (⚠️). GitHub secret `CLOUDFLARE_API_TOKEN` ya está seteado.
+1. **3 assets huérfanos de Cloudinary** de `celeste-copia`. `delete-asset` es **permanente** → esperando confirmación.
+2. **`backend/prisma/seed.ts`** sigue insertando Hades y Celeste. Si alguien ejecuta `prisma db seed`, repuebla el catálogo con esos dos y rompe los 57. Falta decidir si se retira del seed.
+3. Borrar el proyecto **Pages** `saas-catalogo` (ID `034b0836-eb79-431c-af4b-4107c678e7d3`).
+4. Borrar el Worker **huérfano** `saas-catalogo` (hace fallar el check `Workers Builds: saas-catalogo`).
+5. Rotar las credenciales Cloudflare expuestas en el chat (⚠️). GitHub secret `CLOUDFLARE_API_TOKEN` ya está seteado.
 
 **Trabajo funcional pendiente:**
 - Revisión manual del piloto IGDB (`correcto_SI_NO` en los CSV).
 - Gap de config de contacto (`whatsapp`/`footer`/`publicName`) del admin al feed.
+- Pendientes de los 12 juegos excluidos del catálogo (fuera del alcance aprobado de esta importación).
 - OpenAPI/Swagger, store de rate limit compartido, revisar D1, Docker backend, monitoring.
+
+**Sin commitear**: reconstrucción del catálogo no incluye cambios de código del repo (los scripts viven en `backend/scripts/`, gitignored).
