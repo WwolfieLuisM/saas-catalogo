@@ -12,6 +12,10 @@ export function Toast() {
 }
 
 export function ContactSection() {
+  const { settings } = useFeed();
+  const storeName = settings?.publicName || 'Javier PC';
+  const digits =
+    settings === null ? '5355555555' : (settings.whatsapp || settings.phone).replace(/\D/g, '');
   return (
     <section className="wrap" id="contact" aria-label="Contacto" style={{ paddingBottom: 8 }}>
       <div className="contact">
@@ -19,28 +23,51 @@ export function ContactSection() {
           <b>¿No encuentras un juego?</b>
           <span>Escríbenos y te ayudamos a conseguirlo al mejor precio.</span>
         </div>
-        <a
-          className="btn gold"
-          href={`https://wa.me/${(process.env.NEXT_PUBLIC_WHATSAPP ?? '5355555555').replace(/\D/g, '')}?text=${encodeURIComponent(
-            'Hola, busco un juego en el catálogo de Javier PC.',
-          )}`}
-          target="_blank"
-          rel="noreferrer"
-        >
-          Hablar por WhatsApp
-        </a>
+        {digits && (
+          <a
+            className="btn gold"
+            href={`https://wa.me/${digits}?text=${encodeURIComponent(
+              `Hola, busco un juego en el catálogo de ${storeName}.`,
+            )}`}
+            target="_blank"
+            rel="noreferrer"
+          >
+            Hablar por WhatsApp
+          </a>
+        )}
+        {settings?.email && (
+          <a className="btn" href={`mailto:${settings.email}`}>
+            Escribir por email
+          </a>
+        )}
       </div>
     </section>
   );
 }
 
 export function Footer() {
-  const { catalogVersion, setShowWelcome, showWelcome } = useFeed();
+  const { catalogVersion, setShowWelcome, showWelcome, settings } = useFeed();
   return (
     <footer className="site-footer">
       <div className="wrap">
-        <b>Javier PC</b>
-        <span>Catálogo de juegos de Javier · © 2026</span>
+        <b>{settings?.publicName || 'Javier PC'}</b>
+        <span>{settings?.footer || 'Catálogo de juegos de Javier · © 2026'}</span>
+        {settings?.socialLinks?.length ? (
+          <span>
+            {settings.socialLinks.map((s) => (
+              <a
+                key={s.url}
+                className="linklike"
+                href={s.url}
+                target="_blank"
+                rel="noreferrer"
+                style={{ marginRight: 12 }}
+              >
+                {s.label}
+              </a>
+            ))}
+          </span>
+        ) : null}
         <span>
           Catálogo v{catalogVersion ?? 1} · v12 ·{' '}
           <button

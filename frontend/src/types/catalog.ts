@@ -59,6 +59,16 @@ export interface CatalogSyncPayload {
   games?: PublicGame[];
 }
 
+export interface TenantPublicSettings {
+  publicName: string | null;
+  whatsapp: string;
+  phone: string;
+  email: string;
+  logo: string;
+  footer: string;
+  socialLinks: { label: string; url: string }[];
+}
+
 export interface ApiEnvelope<T> {
   success: true;
   data: T;

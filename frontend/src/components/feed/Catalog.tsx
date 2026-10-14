@@ -3,6 +3,7 @@
 import { useFeed } from '@/hooks/useFeed';
 import { GameCard } from './GameCard';
 import { fmt } from '@/lib/feed/format';
+import { deliver, whatsappTarget } from '@/lib/feed/deliver';
 import { SORTS, SORT_LABELS } from '@/lib/feed/filter';
 
 export function Catalog() {
@@ -34,6 +35,8 @@ export function Catalog() {
     loadError,
     stale,
     retryLoad,
+    settings,
+    toast,
   } = useFeed();
 
   const hasActiveFilters = Boolean(q || cat || genre || platform || maxPrice !== null);
@@ -191,11 +194,11 @@ export function Catalog() {
                 if (loadError && !games.length) retryLoad();
                 else if (q) {
                   const msg = `Hola, busco: ${q}`;
-                  window.open(
-                    `https://wa.me/${(process.env.NEXT_PUBLIC_WHATSAPP ?? '').replace(/\D/g, '')}?text=${encodeURIComponent(msg)}`,
-                    '_blank',
-                    'noopener',
-                  );
+                  void deliver(msg, whatsappTarget(settings)).then((mode) => {
+                    if (mode === 'clipboard' || mode === 'fallback')
+                      toast('Mensaje copiado. Pégalo en tu chat con Javier.');
+                    else if (mode === 'none') toast('No se pudo copiar el mensaje.');
+                  });
                 } else resetFilters();
               }}
             >

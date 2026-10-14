@@ -1,5 +1,10 @@
 import { fetchEnvelope, type FetchResult } from './client';
-import type { CatalogMeta, CatalogPayload, CatalogSyncPayload } from '@/types/catalog';
+import type {
+  CatalogMeta,
+  CatalogPayload,
+  CatalogSyncPayload,
+  TenantPublicSettings,
+} from '@/types/catalog';
 
 export async function getCatalog(
   etag?: string | null,
@@ -19,4 +24,8 @@ export async function getCatalogSync(
   return fetchEnvelope<CatalogSyncPayload>('/api/v1/catalog/sync', {
     query: since === undefined ? {} : { since: String(since) },
   });
+}
+
+export async function getTenantSettings(): Promise<FetchResult<TenantPublicSettings>> {
+  return fetchEnvelope<TenantPublicSettings>('/api/v1/catalog/settings');
 }

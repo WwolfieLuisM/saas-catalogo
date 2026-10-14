@@ -17,7 +17,8 @@ import type {
   CollectionFilter,
   FeedFacets,
 } from '@/types/feed';
-import { getCatalog, getCatalogVersion } from '@/lib/api/catalogApi';
+import { getCatalog, getCatalogVersion, getTenantSettings } from '@/lib/api/catalogApi';
+import type { TenantPublicSettings } from '@/types/catalog';
 import { normalizeCatalog } from '@/lib/feed/normalize';
 import { buildFacets } from '@/lib/feed/facets';
 import { filterGames } from '@/lib/feed/filter';
@@ -69,6 +70,7 @@ interface FeedState {
   showWelcome: boolean;
   facets: FeedFacets;
   filtered: FeedGame[];
+  settings: TenantPublicSettings | null;
 }
 
 interface FeedActions {
@@ -130,6 +132,7 @@ export function FeedProvider({ children }: { children: React.ReactNode }) {
   const [scrolledDown, setScrolledDown] = useState(false);
   const [showFilters, setShowFilters] = useState(false);
   const [showWelcome, setShowWelcome] = useState(false);
+  const [settings, setSettings] = useState<TenantPublicSettings | null>(null);
 
   const etagRef = useRef<string | null>(null);
   const toastTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -324,6 +327,22 @@ export function FeedProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   useEffect(() => {
+    let cancelled = false;
+    if (process.env.NEXT_PUBLIC_DEMO === 'true') return;
+    queueMicrotask(() => {
+      if (cancelled) return;
+      void getTenantSettings()
+        .then((res) => {
+          if (!cancelled && res.data) setSettings(res.data);
+        })
+        .catch(() => undefined);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  useEffect(() => {
     const onScroll = () => {
       const y = window.scrollY;
       setScrolledDown((prev) => {
@@ -459,6 +478,7 @@ export function FeedProvider({ children }: { children: React.ReactNode }) {
     showWelcome,
     facets,
     filtered,
+    settings,
     setQ,
     setCat,
     setGenre,

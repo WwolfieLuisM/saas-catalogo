@@ -4,7 +4,7 @@ import { useEffect, useRef } from 'react';
 import { useFeed } from '@/hooks/useFeed';
 import { Art } from './Art';
 import { fmt, gb } from '@/lib/feed/format';
-import { deliver, listMessage } from '@/lib/feed/deliver';
+import { deliver, listMessage, whatsappTarget } from '@/lib/feed/deliver';
 
 function useDrawerDialog(open: boolean, onClose: () => void) {
   const ref = useRef<HTMLDialogElement>(null);
@@ -49,7 +49,17 @@ function useDrawerDialog(open: boolean, onClose: () => void) {
 }
 
 export function CartDrawer() {
-  const { dialog, closeDialog, games, list, toggleList, openDetail, toast, clearList } = useFeed();
+  const {
+    dialog,
+    closeDialog,
+    games,
+    list,
+    toggleList,
+    openDetail,
+    toast,
+    clearList,
+    settings,
+  } = useFeed();
   const { ref, close, onBackdrop, onKey } = useDrawerDialog(dialog === 'cart', closeDialog);
 
   const items = list.map((id) => games.find((g) => g.id === id)).filter(Boolean);
@@ -58,7 +68,7 @@ export function CartDrawer() {
   const send = async () => {
     const gs = items.filter(Boolean) as NonNullable<(typeof items)[number]>[];
     if (!gs.length) return;
-    const mode = await deliver(listMessage(gs));
+    const mode = await deliver(listMessage(gs), whatsappTarget(settings));
     if (mode === 'clipboard' || mode === 'fallback') toast('Mensaje copiado. Pégalo en tu chat con Javier.');
     else if (mode === 'none') toast('No se pudo copiar el mensaje.');
   };
@@ -233,7 +243,7 @@ export function CollectionDrawer() {
   } = useFeed();
   const { ref, close, onBackdrop, onKey } = useDrawerDialog(dialog === 'collection', closeDialog);
 
-  const all = games;
+  const all = games.filter((g) => status[g.id] !== undefined);
   const counts: Record<CollTab, number> = {
     all: all.length,
     favorites: favorites.length,

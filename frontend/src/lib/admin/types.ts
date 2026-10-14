@@ -184,6 +184,10 @@ export interface TenantConfig {
   publicName: string | null;
   whatsapp: string;
   footer: string;
+  phone: string;
+  email: string;
+  logo: string;
+  socialLinks: { label: string; url: string }[];
   showUnavailable: boolean;
   offerOffline: boolean;
   updatedAt: string | null;
