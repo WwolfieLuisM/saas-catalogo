@@ -40,6 +40,10 @@ export interface FakeTenantSettings {
   footer: string | null;
   showUnavailable: boolean;
   offerOffline: boolean;
+  phone: string | null;
+  email: string | null;
+  logo: string | null;
+  socialLinks: unknown;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -691,6 +695,10 @@ export const fakeDb = {
         footer: null,
         showUnavailable: false,
         offerOffline: true,
+        phone: null,
+        email: null,
+        logo: null,
+        socialLinks: null,
         createdAt: new Date(),
         updatedAt: new Date(),
         ...args.data,
@@ -708,6 +716,10 @@ export const fakeDb = {
           footer: null,
           showUnavailable: false,
           offerOffline: true,
+          phone: null,
+          email: null,
+          logo: null,
+          socialLinks: null,
           createdAt: new Date(),
           updatedAt: new Date(),
           ...data,
@@ -910,6 +922,10 @@ export function addFakeTenantSettings(
     footer: null,
     showUnavailable: false,
     offerOffline: true,
+    phone: null,
+    email: null,
+    logo: null,
+    socialLinks: null,
     createdAt: new Date(),
     updatedAt: new Date(),
     ...input,

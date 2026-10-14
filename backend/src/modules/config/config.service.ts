@@ -1,8 +1,9 @@
 import { randomUUID } from 'node:crypto';
 import { getPrisma } from '../../config/database.js';
-import type { Prisma } from '../../generated/client.js';
+import { Prisma } from '../../generated/client.js';
 import type { AuthContext } from '../../middleware/auth.js';
 import type { RequestMeta } from '../../utils/requestMeta.js';
+import { normalizeSocialLinks, type SocialLink } from '../../utils/socialLinks.js';
 import { auditData } from '../audit/audit.service.js';
 import { planCatalogBump } from '../catalog/catalog.service.js';
 import { resolveTenantId } from '../games/games.service.js';
@@ -13,6 +14,10 @@ export interface ConfigDto {
   publicName: string | null;
   whatsapp: string;
   footer: string;
+  phone: string;
+  email: string;
+  logo: string;
+  socialLinks: SocialLink[];
   showUnavailable: boolean;
   offerOffline: boolean;
   updatedAt: Date | null;
@@ -23,6 +28,10 @@ interface SettingsRow {
   publicName: string | null;
   whatsapp: string | null;
   footer: string | null;
+  phone: string | null;
+  email: string | null;
+  logo: string | null;
+  socialLinks: unknown;
   showUnavailable: boolean;
   offerOffline: boolean;
   updatedAt: Date;
@@ -34,6 +43,10 @@ function settingsDto(tenantId: string, row: SettingsRow | null): ConfigDto {
     publicName: row?.publicName ?? null,
     whatsapp: row?.whatsapp ?? '',
     footer: row?.footer ?? '',
+    phone: row?.phone ?? '',
+    email: row?.email ?? '',
+    logo: row?.logo ?? '',
+    socialLinks: normalizeSocialLinks(row?.socialLinks),
     showUnavailable: row?.showUnavailable ?? false,
     offerOffline: row?.offerOffline ?? true,
     updatedAt: row?.updatedAt ?? null,
@@ -61,6 +74,14 @@ export async function updateConfig(
     ...(patch.publicName !== undefined ? { publicName: patch.publicName } : {}),
     ...(patch.whatsapp !== undefined ? { whatsapp: patch.whatsapp } : {}),
     ...(patch.footer !== undefined ? { footer: patch.footer } : {}),
+    ...(patch.phone !== undefined ? { phone: patch.phone } : {}),
+    ...(patch.email !== undefined ? { email: patch.email } : {}),
+    ...(patch.logo !== undefined ? { logo: patch.logo } : {}),
+    ...(patch.socialLinks !== undefined
+      ? {
+          socialLinks: normalizeSocialLinks(patch.socialLinks) as unknown as Prisma.InputJsonValue,
+        }
+      : {}),
     ...(patch.showUnavailable !== undefined ? { showUnavailable: patch.showUnavailable } : {}),
     ...(patch.offerOffline !== undefined ? { offerOffline: patch.offerOffline } : {}),
   };
@@ -83,6 +104,10 @@ export async function updateConfig(
           publicName: null,
           whatsapp: null,
           footer: null,
+          phone: null,
+          email: null,
+          logo: null,
+          socialLinks: Prisma.JsonNull,
           showUnavailable: false,
           offerOffline: true,
           ...data,
@@ -117,6 +142,13 @@ export async function updateConfig(
     publicName: data.publicName !== undefined ? data.publicName : (existing?.publicName ?? null),
     whatsapp: data.whatsapp !== undefined ? data.whatsapp : (existing?.whatsapp ?? null),
     footer: data.footer !== undefined ? data.footer : (existing?.footer ?? null),
+    phone: data.phone !== undefined ? data.phone : (existing?.phone ?? null),
+    email: data.email !== undefined ? data.email : (existing?.email ?? null),
+    logo: data.logo !== undefined ? data.logo : (existing?.logo ?? null),
+    socialLinks:
+      patch.socialLinks !== undefined
+        ? normalizeSocialLinks(patch.socialLinks)
+        : (existing?.socialLinks ?? null),
     showUnavailable:
       data.showUnavailable !== undefined ? data.showUnavailable : previousShowUnavailable,
     offerOffline:

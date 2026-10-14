@@ -14,6 +14,7 @@ import {
   addFakeTenant,
   addFakeTenantGame,
   addFakeTenantGameGenre,
+  addFakeTenantSettings,
   addFakeUser,
   resetFakeDb,
   state,
@@ -767,6 +768,147 @@ describe('catálogo: versionado', () => {
     expect(created.status).toBeLessThan(300);
 
     expect(await currentVersion()).toBe(4);
+  });
+});
+
+describe('catálogo: /settings', () => {
+  interface SettingsDto {
+    publicName: string | null;
+    whatsapp: string;
+    phone: string;
+    email: string;
+    logo: string;
+    footer: string;
+    socialLinks: { label: string; url: string }[];
+  }
+
+  it('devuelve 400 si falta tenant', async () => {
+    const { status, body } = await api(`${CATALOG}/settings`);
+
+    expect(status).toBe(400);
+    expect(body.error?.code).toBe('VALIDATION_ERROR');
+  });
+
+  it('devuelve 404 si el slug no existe', async () => {
+    const { status, body } = await api(`${CATALOG}/settings?tenant=inexistente`);
+
+    expect(status).toBe(404);
+    expect(body.error?.code).toBe('TENANT_NOT_FOUND');
+  });
+
+  it('devuelve defaults cuando no hay settings', async () => {
+    const { status, body } = await api<SettingsDto>(`${CATALOG}/settings?tenant=javier`);
+
+    expect(status).toBe(200);
+    expect(body.data).toEqual({
+      publicName: null,
+      whatsapp: '',
+      phone: '',
+      email: '',
+      logo: '',
+      footer: '',
+      socialLinks: [],
+    });
+  });
+
+  it('devuelve los contactos del tenant y Cache-Control no-cache', async () => {
+    addFakeTenantSettings({
+      tenantId: T_JAVIER,
+      publicName: 'Javier PC',
+      whatsapp: '+5355555555',
+      phone: '+5355555556',
+      email: 'javier@example.com',
+      logo: 'https://cdn.test/logo.png',
+      footer: 'Entrega en toda La Habana',
+      socialLinks: [
+        { label: 'Telegram', url: 'https://t.me/javier' },
+        { label: 'Instagram', url: 'https://instagram.com/javier' },
+      ],
+    });
+
+    const response = await raw(`${CATALOG}/settings?tenant=javier`);
+    const body = (await response.json()) as ApiBody<SettingsDto>;
+
+    expect(response.status).toBe(200);
+    expect(response.headers.get('cache-control')).toBe('no-cache');
+    expect(body.data).toEqual({
+      publicName: 'Javier PC',
+      whatsapp: '+5355555555',
+      phone: '+5355555556',
+      email: 'javier@example.com',
+      logo: 'https://cdn.test/logo.png',
+      footer: 'Entrega en toda La Habana',
+      socialLinks: [
+        { label: 'Telegram', url: 'https://t.me/javier' },
+        { label: 'Instagram', url: 'https://instagram.com/javier' },
+      ],
+    });
+  });
+
+  it('no mezcla settings de otro tenant', async () => {
+    addFakeTenantSettings({
+      tenantId: T_OTRO,
+      publicName: 'Ajeno',
+      whatsapp: '+5350000000',
+    });
+
+    const { status, body } = await api<SettingsDto>(`${CATALOG}/settings?tenant=javier`);
+
+    expect(status).toBe(200);
+    expect(body.data).toMatchObject({ publicName: null, whatsapp: '' });
+  });
+
+  it('normaliza socialLinks inválidos a lista vacía', async () => {
+    addFakeTenantSettings({
+      tenantId: T_JAVIER,
+      socialLinks: 'basura' as unknown as undefined,
+    });
+
+    const { status, body } = await api<SettingsDto>(`${CATALOG}/settings?tenant=javier`);
+
+    expect(status).toBe(200);
+    expect(body.data?.socialLinks).toEqual([]);
+  });
+
+  it('descarta entradas de socialLinks incompletas y limita a 6', async () => {
+    addFakeTenantSettings({
+      tenantId: T_JAVIER,
+      socialLinks: [
+        { label: 'Telegram', url: 'https://t.me/javier' },
+        { label: 'Sin url' },
+        { url: 'https://example.com/sin-label' },
+        'basura',
+        null,
+        { label: 'R1', url: 'https://example.com/1' },
+        { label: 'R2', url: 'https://example.com/2' },
+        { label: 'R3', url: 'https://example.com/3' },
+      ] as unknown as undefined,
+    });
+
+    const { status, body } = await api<SettingsDto>(`${CATALOG}/settings?tenant=javier`);
+
+    expect(status).toBe(200);
+    expect(body.data?.socialLinks).toEqual([
+      { label: 'Telegram', url: 'https://t.me/javier' },
+      { label: 'R1', url: 'https://example.com/1' },
+      { label: 'R2', url: 'https://example.com/2' },
+      { label: 'R3', url: 'https://example.com/3' },
+    ]);
+  });
+
+  it('no expone showUnavailable ni offerOffline', async () => {
+    addFakeTenantSettings({
+      tenantId: T_JAVIER,
+      showUnavailable: true,
+      offerOffline: false,
+    });
+
+    const { status, body } = await api<SettingsDto>(`${CATALOG}/settings?tenant=javier`);
+
+    expect(status).toBe(200);
+    expect(body.data).not.toHaveProperty('showUnavailable');
+    expect(body.data).not.toHaveProperty('offerOffline');
+    expect(body.data).not.toHaveProperty('tenantId');
   });
 });
 

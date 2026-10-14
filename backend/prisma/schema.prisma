@@ -68,6 +68,10 @@ model TenantSettings {
   publicName      String?
   whatsapp        String?
   footer          String?
+  phone           String?
+  email           String?
+  logo            String?
+  socialLinks     Json?
   showUnavailable Boolean  @default(false)
   offerOffline    Boolean  @default(true)
   createdAt       DateTime @default(now())

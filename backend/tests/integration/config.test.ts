@@ -28,6 +28,10 @@ interface ConfigDto {
   publicName: string | null;
   whatsapp: string;
   footer: string;
+  phone: string;
+  email: string;
+  logo: string;
+  socialLinks: { label: string; url: string }[];
   showUnavailable: boolean;
   offerOffline: boolean;
   updatedAt: string | null;
@@ -118,6 +122,10 @@ describe('GET /api/v1/admin/config', () => {
       publicName: null,
       whatsapp: '',
       footer: '',
+      phone: '',
+      email: '',
+      logo: '',
+      socialLinks: [],
       showUnavailable: false,
       offerOffline: true,
       updatedAt: null,
@@ -130,6 +138,13 @@ describe('GET /api/v1/admin/config', () => {
       publicName: 'Catálogo Javier',
       whatsapp: '+5355555555',
       footer: 'Tienda oficial',
+      phone: '+5355555556',
+      email: 'javier@example.com',
+      logo: 'https://cdn.test/logo.png',
+      socialLinks: [
+        { label: 'Telegram', url: 'https://t.me/javier' },
+        { label: 'Instagram', url: 'https://instagram.com/javier' },
+      ],
       showUnavailable: true,
       offerOffline: false,
     });
@@ -140,6 +155,13 @@ describe('GET /api/v1/admin/config', () => {
       publicName: 'Catálogo Javier',
       whatsapp: '+5355555555',
       footer: 'Tienda oficial',
+      phone: '+5355555556',
+      email: 'javier@example.com',
+      logo: 'https://cdn.test/logo.png',
+      socialLinks: [
+        { label: 'Telegram', url: 'https://t.me/javier' },
+        { label: 'Instagram', url: 'https://instagram.com/javier' },
+      ],
       showUnavailable: true,
       offerOffline: false,
     });
@@ -315,6 +337,81 @@ describe('PATCH /api/v1/admin/config', () => {
     expect(status).toBe(200);
     expect(body.data?.tenantId).toBe(T_OTRO);
     expect(body.data?.publicName).toBe('Otro Tenant');
+  });
+
+  it('guarda y devuelve phone, email, logo y socialLinks', async () => {
+    const { status, body } = await api<ConfigDto>(
+      CONFIG,
+      {
+        method: 'PATCH',
+        body: JSON.stringify({
+          phone: '+5355555557',
+          email: 'contacto@javier.cu',
+          logo: 'https://cdn.test/nuevo-logo.png',
+          socialLinks: [{ label: 'Telegram', url: 'https://t.me/javier' }],
+        }),
+      },
+      adminToken,
+    );
+
+    expect(status).toBe(200);
+    expect(body.data).toMatchObject({
+      phone: '+5355555557',
+      email: 'contacto@javier.cu',
+      logo: 'https://cdn.test/nuevo-logo.png',
+      socialLinks: [{ label: 'Telegram', url: 'https://t.me/javier' }],
+    });
+
+    const row = [...state.tenantSettings.values()].find((s) => s.tenantId === T_JAVIER);
+    expect(row?.phone).toBe('+5355555557');
+    expect(row?.email).toBe('contacto@javier.cu');
+  });
+
+  it('devuelve 400 si socialLinks supera 6 enlaces', async () => {
+    const { status, body } = await api(
+      CONFIG,
+      {
+        method: 'PATCH',
+        body: JSON.stringify({
+          socialLinks: Array.from({ length: 7 }, (_, i) => ({
+            label: `Red ${i}`,
+            url: `https://example.com/${i}`,
+          })),
+        }),
+      },
+      adminToken,
+    );
+
+    expect(status).toBe(400);
+    expect(body.error?.code).toBe('VALIDATION_ERROR');
+  });
+
+  it('devuelve 400 si un socialLink tiene url inválida', async () => {
+    const { status, body } = await api(
+      CONFIG,
+      {
+        method: 'PATCH',
+        body: JSON.stringify({ socialLinks: [{ label: 'Telegram', url: 'no-es-url' }] }),
+      },
+      adminToken,
+    );
+
+    expect(status).toBe(400);
+    expect(body.error?.code).toBe('VALIDATION_ERROR');
+  });
+
+  it('devuelve 400 si un socialLink tiene label vacío', async () => {
+    const { status, body } = await api(
+      CONFIG,
+      {
+        method: 'PATCH',
+        body: JSON.stringify({ socialLinks: [{ label: '   ', url: 'https://t.me/javier' }] }),
+      },
+      adminToken,
+    );
+
+    expect(status).toBe(400);
+    expect(body.error?.code).toBe('VALIDATION_ERROR');
   });
 });
 

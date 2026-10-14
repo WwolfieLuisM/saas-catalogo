@@ -10,6 +10,7 @@ import {
   type TenantGame,
 } from '../../generated/client.js';
 import { AppError } from '../../utils/appError.js';
+import { normalizeSocialLinks, type SocialLink } from '../../utils/socialLinks.js';
 
 interface CatalogMeta {
   version: number;
@@ -57,6 +58,30 @@ export async function resolvePublicTenant(slug: string): Promise<string> {
     throw new AppError(404, 'TENANT_NOT_FOUND', 'Catálogo no encontrado');
   }
   return tenant.id;
+}
+
+export interface PublicTenantSettings {
+  publicName: string | null;
+  whatsapp: string;
+  phone: string;
+  email: string;
+  logo: string;
+  footer: string;
+  socialLinks: SocialLink[];
+}
+
+export async function getPublicSettings(slug: string): Promise<PublicTenantSettings> {
+  const tenantId = await resolvePublicTenant(slug);
+  const row = await getPrisma().tenantSettings.findUnique({ where: { tenantId } });
+  return {
+    publicName: row?.publicName ?? null,
+    whatsapp: row?.whatsapp ?? '',
+    phone: row?.phone ?? '',
+    email: row?.email ?? '',
+    logo: row?.logo ?? '',
+    footer: row?.footer ?? '',
+    socialLinks: normalizeSocialLinks(row?.socialLinks),
+  };
 }
 
 async function readMeta(tenantId: string): Promise<CatalogMeta> {

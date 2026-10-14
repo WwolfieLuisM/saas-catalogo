@@ -1,6 +1,11 @@
 import { Router } from 'express';
 import { catalogQuerySchema, catalogSyncQuerySchema } from './catalog.schemas.js';
-import { getCatalog, getCatalogSync, getCatalogVersion } from './catalog.service.js';
+import {
+  getCatalog,
+  getCatalogSync,
+  getCatalogVersion,
+  getPublicSettings,
+} from './catalog.service.js';
 
 function etagFor(version: number): string {
   return `"v${version}"`;
@@ -55,6 +60,14 @@ export function createCatalogRouter(): Router {
     const query = catalogSyncQuerySchema.parse(req.query);
     const since = query.since === undefined ? undefined : Number(query.since);
     const data = await getCatalogSync(query.tenant as string, since);
+
+    res.setHeader('Cache-Control', 'no-cache');
+    res.json({ success: true, data });
+  });
+
+  router.get('/settings', async (req, res) => {
+    const query = catalogQuerySchema.parse(req.query);
+    const data = await getPublicSettings(query.tenant as string);
 
     res.setHeader('Cache-Control', 'no-cache');
     res.json({ success: true, data });
