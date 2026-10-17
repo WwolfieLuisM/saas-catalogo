@@ -78,8 +78,19 @@ function isBlockedV6(ip: string): boolean {
     const mapped = lower.slice('::ffff:'.length);
     if (isIP(mapped) === 4) return isBlockedV4(mapped);
   }
-  return false;
+  return SPECIAL_IPV6_PREFIXES.some((prefix) => lower.startsWith(prefix));
 }
+
+const SPECIAL_IPV6_PREFIXES = [
+  '64:ff9b:', // NAT64: puede embeber IPv4 privado (::ffff: no aplica aqui)
+  '2002:', // 6to4: transporta IPv4 dentro del payload
+  '2001:db8:', // documentacion (RFC 3849)
+  '2001:10:', // ORCHID
+  '2001:2:', // benchmark (RFC 5180)
+  '100:', // discard-only (RFC 6666)
+  '3ffe:', // 6bone, retirado
+  'fec0:', // site-local obsoleto
+];
 
 export function isBlockedHostname(hostname: string): boolean {
   const normalized = hostname.toLowerCase().replace(/\.$/, '');

@@ -107,6 +107,21 @@ describe('safeGetImage', () => {
     expect(requestedUrls).toEqual([]);
   });
 
+  it('bloquea prefijos IPv6 especiales que pueden esconder un IPv4 privado', async () => {
+    const { isBlockedAddress } = await import('../../src/utils/safeUrl.js');
+
+    for (const ip of [
+      '64:ff9b::7f00:1', // NAT64 hacia 127.0.0.1
+      '64:ff9b::a00:1', // NAT64 hacia 10.0.0.1
+      '2002:7f00:1::', // 6to4 hacia 127.0.0.1
+      '2001:db8::1', // documentacion
+      '100::1', // discard-only
+      'fec0::1', // site-local obsoleto
+    ]) {
+      expect(isBlockedAddress(ip), ip).toBe(true);
+    }
+  });
+
   it('bloquea destinos locales y privados antes de resolver DNS', async () => {
     const { safeGetImage } = await import('../../src/utils/safeUrl.js');
 
