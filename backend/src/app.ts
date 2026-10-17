@@ -21,6 +21,7 @@ import {
 } from './modules/data-transfer/data-transfer.route.js';
 import { createGamesRouter } from './modules/games/games.route.js';
 import { healthRouter } from './modules/health/health.route.js';
+import { createLibraryImportRouter } from './modules/library-import/library-import.route.js';
 import { createGameMediaRouter, createMediaRouter } from './modules/media/media.route.js';
 import { createPricingRouter } from './modules/pricing/pricing.route.js';
 import { createSessionsRouter } from './modules/sessions/sessions.route.js';
@@ -32,6 +33,7 @@ import {
   platformTaxonomy,
 } from './modules/taxonomy/taxonomy.config.js';
 import { createTaxonomyRouter } from './modules/taxonomy/taxonomy.route.js';
+import { createTenantPlatformsRouter } from './modules/tenant-platforms/tenant-platforms.route.js';
 import { AppError } from './utils/appError.js';
 
 export function createApp() {
@@ -69,6 +71,7 @@ export function createApp() {
     }),
   );
   app.use('/api/v1/admin/import', express.json({ limit: '5mb' }));
+  app.use('/api/v1/admin/library-import', express.json({ limit: '5mb' }));
   app.use(express.json({ limit: '1mb' }));
   app.use(cookieParser());
 
@@ -85,6 +88,7 @@ export function createApp() {
   app.use('/api/v1/admin/categories', createTaxonomyRouter(categoryTaxonomy));
   app.use('/api/v1/admin/genres', createTaxonomyRouter(genreTaxonomy));
   app.use('/api/v1/admin/platforms', createTaxonomyRouter(platformTaxonomy));
+  app.use('/api/v1/admin/tenant-platforms', createTenantPlatformsRouter());
   app.use('/api/v1/admin/base-games', createBaseGamesRouter());
   app.use('/api/v1/admin/base-games', createLibraryMediaRouter());
   app.use('/api/v1/admin/games', createGamesRouter());
@@ -93,6 +97,7 @@ export function createApp() {
   app.use('/api/v1/admin/pricing', createPricingRouter());
   app.use('/api/v1/admin/export', createExportRouter());
   app.use('/api/v1/admin/import', createImportRouter());
+  app.use('/api/v1/admin/library-import', createLibraryImportRouter());
   app.use('/api/v1/catalog', createCatalogRouter());
 
   app.use(notFoundHandler);

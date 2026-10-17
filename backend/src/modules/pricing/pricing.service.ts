@@ -7,6 +7,8 @@ import type { RequestMeta } from '../../utils/requestMeta.js';
 import { auditData } from '../audit/audit.service.js';
 import { planCatalogBump } from '../catalog/catalog.service.js';
 import { resolveTenantId } from '../games/games.service.js';
+import { resolveFinal } from '../games/resolution.js';
+import { loadBaseGames, loadVariants, variantKey } from '../games/resolutionData.js';
 import type { CreatePricingRuleInput, UpdatePricingRuleInput } from './pricing.schemas.js';
 
 interface RuleLike {
@@ -292,6 +294,14 @@ async function computeDiff(tenantId: string): Promise<PriceDiff> {
 
   validateRuleSet(rules);
 
+  const baseGameIds = [
+    ...new Set(games.map((game) => game.baseGameId).filter((id): id is string => id !== null)),
+  ];
+  const [baseGameById, variantByKey] = await Promise.all([
+    loadBaseGames(prisma, baseGameIds),
+    loadVariants(prisma, baseGameIds),
+  ]);
+
   const changes: PriceChange[] = [];
   const uncovered: UncoveredGame[] = [];
   let unchanged = 0;
@@ -303,13 +313,26 @@ async function computeDiff(tenantId: string): Promise<PriceDiff> {
       continue;
     }
 
-    const sizeGb = sizeToGb(game.sizeValue, game.sizeUnit);
+    const base = game.baseGameId ? baseGameById.get(game.baseGameId) : undefined;
+    const variant =
+      game.baseGameId && game.platformId
+        ? variantByKey.get(variantKey(game.baseGameId, game.platformId))
+        : undefined;
+
+    const sizeValue = resolveFinal(game, variant, base, 'sizeValue');
+    const sizeUnit = resolveFinal(game, variant, base, 'sizeUnit');
+    const sizeGb =
+      sizeValue !== null && (sizeUnit === 'MB' || sizeUnit === 'GB' || sizeUnit === 'TB')
+        ? sizeToGb(sizeValue, sizeUnit)
+        : 0;
+    const finalTitle = resolveFinal(game, variant, base, 'title');
+    const title = finalTitle ?? game.slug;
     const priceTo = calculatePrice(sizeGb, rules);
 
     if (priceTo === null) {
       uncovered.push({
         id: game.id,
-        title: game.title,
+        title,
         slug: game.slug,
         sizeGb: round2(sizeGb),
       });
@@ -322,7 +345,7 @@ async function computeDiff(tenantId: string): Promise<PriceDiff> {
     } else {
       changes.push({
         id: game.id,
-        title: game.title,
+        title,
         slug: game.slug,
         sizeGb: round2(sizeGb),
         priceFrom,

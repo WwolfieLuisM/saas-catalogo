@@ -5,11 +5,15 @@ import { afterAll, beforeAll, beforeEach, describe, expect, it, vi } from 'vites
 import { signAccessToken } from '../../src/modules/auth/auth.tokens.js';
 import type { FakeGameMedia, FakeTenantGame } from '../helpers/fakeDb.js';
 import {
+  addFakeBaseGame,
+  addFakeBaseGameGenre,
+  addFakeBaseGamePlatform,
   addFakeCatalogMetadata,
   addFakeCategory,
   addFakeGameMedia,
   addFakeGamePlatform,
   addFakeGenre,
+  addFakeLibraryMedia,
   addFakePlatform,
   addFakeTenant,
   addFakeTenantGame,
@@ -146,6 +150,12 @@ async function currentVersion(): Promise<number> {
 
 function createGameBody(overrides: Record<string, unknown> = {}) {
   return JSON.stringify({
+    platformId: addFakePlatform({
+      id: randomUUID(),
+      tenantId: null,
+      name: 'PC',
+      slug: `pc-${randomUUID().slice(0, 8)}`,
+    }).id,
     title: 'Nuevo Juego',
     slug: `nuevo-${randomUUID().slice(0, 8)}`,
     sizeValue: 12,
@@ -938,3 +948,148 @@ function addFakeTenantPlatform() {
     slug: `pc-${randomUUID().slice(0, 8)}`,
   });
 }
+
+describe('catálogo: herencia de biblioteca (fase 4)', () => {
+  function seedBaseWorld() {
+    const platform = addFakePlatform({
+      id: randomUUID(),
+      tenantId: null,
+      name: 'PC Global',
+      slug: 'pc-global',
+    });
+    const category = addFakeCategory({
+      id: randomUUID(),
+      tenantId: null,
+      name: 'Metroidvania',
+      slug: 'metroidvania',
+    });
+    const genre = addFakeGenre({
+      id: randomUUID(),
+      tenantId: null,
+      name: 'Acción',
+      slug: 'accion',
+    });
+    const base = addFakeBaseGame({
+      id: randomUUID(),
+      title: 'Doom Eternal',
+      slug: 'doom-eternal',
+      description: 'Descripción de la biblioteca',
+      sizeValue: 20,
+      sizeUnit: 'GB',
+      releaseYear: 2020,
+      categoryId: category.id,
+      minimumRequirements: { cpu: 'i5', ram: '8 GB' },
+      recommendedRequirements: { cpu: 'i9', ram: '32 GB' },
+    });
+    addFakeBaseGameGenre(base.id, genre.id);
+    addFakeBaseGamePlatform(base.id, platform.id, { sizeValue: 22, sizeUnit: 'GB' });
+    addFakeLibraryMedia({
+      id: randomUUID(),
+      baseGameId: base.id,
+      kind: 'COVER',
+      url: 'https://cdn.test/doom-cover.jpg',
+    });
+    return { base, platform, category, genre };
+  }
+
+  function seedHeir(
+    baseId: string | null,
+    platformId: string | null,
+    overrides: Partial<FakeTenantGame> = {},
+  ): FakeTenantGame {
+    return seedGame({
+      origin: baseId ? 'BIBLIOTECA' : 'PERSONALIZADO',
+      baseGameId: baseId,
+      platformId,
+      title: null,
+      description: null,
+      sizeValue: null,
+      sizeUnit: null,
+      releaseYear: null,
+      categoryId: null,
+      minimumRequirements: null,
+      recommendedRequirements: null,
+      ...overrides,
+    });
+  }
+
+  it('hereda identidad, tamaño de variante, taxonomía global, portada y requisitos', async () => {
+    const { base, platform, category, genre } = seedBaseWorld();
+    const heir = seedHeir(base.id, platform.id);
+
+    const data = await fetchCatalog();
+    const dto = data.games[0] as CatalogGameDto;
+
+    expect(dto).toMatchObject({
+      id: heir.id,
+      slug: heir.slug,
+      title: 'Doom Eternal',
+      description: 'Descripción de la biblioteca',
+      size: { value: 22, unit: 'GB', formatted: '22 GB' },
+      releaseYear: 2020,
+      category: { id: category.id, name: 'Metroidvania' },
+      genres: [{ id: genre.id, name: 'Acción' }],
+      platforms: [{ id: platform.id, name: 'PC Global' }],
+      coverImage: { url: 'https://cdn.test/doom-cover.jpg', alt: 'Doom Eternal' },
+      requirements: {
+        minimum: { cpu: 'i5', ram: '8 GB' },
+        recommended: { cpu: 'i9', ram: '32 GB' },
+      },
+    });
+  });
+
+  it('el override del tenant tapa la biblioteca sin romper el resto de la herencia', async () => {
+    const { base, platform, category } = seedBaseWorld();
+    seedHeir(base.id, platform.id, {
+      title: 'Doom (Mi Edición)',
+      description: 'Mi descripción',
+      sizeValue: 9,
+      releaseYear: 2021,
+    });
+
+    const data = await fetchCatalog();
+    const dto = data.games[0] as CatalogGameDto;
+
+    expect(dto).toMatchObject({
+      title: 'Doom (Mi Edición)',
+      description: 'Mi descripción',
+      size: { value: 9, unit: 'GB', formatted: '9 GB' },
+      releaseYear: 2021,
+      category: { id: category.id, name: 'Metroidvania' },
+      coverImage: { url: 'https://cdn.test/doom-cover.jpg', alt: 'Doom (Mi Edición)' },
+    });
+  });
+
+  it('clearedFields anula la herencia de forma selectiva', async () => {
+    const { base, platform, genre } = seedBaseWorld();
+    const heir = seedHeir(base.id, platform.id, { clearedFields: ['title', 'cover'] });
+
+    const data = await fetchCatalog();
+    const dto = data.games[0] as CatalogGameDto;
+
+    expect(dto.title).toBe(heir.slug);
+    expect(dto.coverImage).toBeNull();
+    expect(dto.genres).toEqual([{ id: genre.id, name: 'Acción' }]);
+    expect(dto.description).toBe('Descripción de la biblioteca');
+  });
+
+  it('herencia pura con catálogo vacío: defaults públicos cuando todo es null', async () => {
+    const heir = seedHeir(null, null);
+
+    const data = await fetchCatalog();
+    const dto = data.games[0] as CatalogGameDto;
+
+    expect(dto).toMatchObject({
+      id: heir.id,
+      title: heir.slug,
+      description: null,
+      size: { value: 0, unit: 'GB', formatted: '0 GB' },
+      releaseYear: null,
+      category: null,
+      genres: [],
+      platforms: [],
+      coverImage: null,
+      requirements: { minimum: {}, recommended: {} },
+    });
+  });
+});

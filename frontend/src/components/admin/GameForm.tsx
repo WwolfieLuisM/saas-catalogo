@@ -125,21 +125,18 @@ function Sel({
   options,
   emptyLabel,
   ariaLabel,
-  disabled = false,
 }: {
   value: string;
   onChange: (next: string) => void;
   options: Array<{ value: string; label: string }>;
   emptyLabel?: string;
   ariaLabel?: string;
-  disabled?: boolean;
 }) {
   const missing = value !== '' && !options.some((option) => option.value === value);
   return (
     <select
       aria-label={ariaLabel}
       value={value}
-      disabled={disabled}
       onChange={(event) => onChange(event.target.value)}
     >
       {value === '' ? <option value="">{emptyLabel ?? '—'}</option> : null}
@@ -160,11 +157,13 @@ export function GameForm({ game }: { game: GameItem | null }) {
   const router = useRouter();
   const editing = game !== null;
   const gameId = game?.id ?? '';
-  const lock = game?.origin === 'BIBLIOTECA';
+  const resolved = game?.resolved ?? null;
 
+  const effSizeValue = resolved?.sizeValue ?? game?.sizeValue ?? null;
+  const effSizeUnit = resolved?.sizeUnit ?? game?.sizeUnit ?? null;
   const initSizeGb =
-    game && game.sizeValue !== null && game.sizeValue !== undefined && game.sizeUnit
-      ? Number(sizeToGb(game.sizeValue, game.sizeUnit).toFixed(3))
+    effSizeValue !== null && effSizeUnit
+      ? Number(sizeToGb(effSizeValue, effSizeUnit).toFixed(3))
       : 10;
 
   const [cats, setCats] = useState<TaxonomyItem[] | null>(null);
@@ -174,21 +173,30 @@ export function GameForm({ game }: { game: GameItem | null }) {
   const [taxError, setTaxError] = useState(false);
   const [taxTick, setTaxTick] = useState(0);
 
-  const [title, setTitle] = useState(game?.title ?? '');
-  const [categoryId, setCategoryId] = useState(game?.categoryId ?? '');
-  const [genreId, setGenreId] = useState(game?.genres[0]?.id ?? '');
+  const [title, setTitle] = useState(resolved?.title ?? game?.title ?? '');
+  const [categoryId, setCategoryId] = useState(resolved?.categoryId ?? game?.categoryId ?? '');
+  const [genreId, setGenreId] = useState(
+    resolved?.genres[0]?.id ?? game?.genres[0]?.id ?? '',
+  );
   const [releaseYear, setReleaseYear] = useState(
-    game?.releaseYear !== null && game?.releaseYear !== undefined
-      ? String(game.releaseYear)
+    (resolved?.releaseYear ?? game?.releaseYear) !== null &&
+      (resolved?.releaseYear ?? game?.releaseYear) !== undefined
+      ? String(resolved?.releaseYear ?? game?.releaseYear)
       : String(new Date().getFullYear()),
   );
-  const [description, setDescription] = useState(game?.description ?? '');
+  const [description, setDescription] = useState(
+    resolved?.description ?? game?.description ?? '',
+  );
   const [sizeValue, setSizeValue] = useState(String(initSizeGb));
   const [platformIds, setPlatformIds] = useState<string[]>(
-    game ? game.platforms.map((platform) => platform.id) : [],
+    game ? (resolved?.platforms ?? game.platforms).map((platform) => platform.id) : [],
   );
-  const [minReq, setMinReq] = useState<ReqState>(() => hydrateReq(game?.minimumRequirements ?? null, initSizeGb));
-  const [recReq, setRecReq] = useState<ReqState>(() => hydrateRec(game?.recommendedRequirements ?? null, initSizeGb));
+  const [minReq, setMinReq] = useState<ReqState>(() =>
+    hydrateReq(resolved?.minimumRequirements ?? game?.minimumRequirements ?? null, initSizeGb),
+  );
+  const [recReq, setRecReq] = useState<ReqState>(() =>
+    hydrateRec(resolved?.recommendedRequirements ?? game?.recommendedRequirements ?? null, initSizeGb),
+  );
   const [priceMode, setPriceMode] = useState(game?.priceMode === 'MANUAL' ? 'MANUAL' : 'RULE');
   const [price, setPrice] = useState(
     game?.price !== null && game?.price !== undefined ? String(game.price) : '',
@@ -345,13 +353,11 @@ export function GameForm({ game }: { game: GameItem | null }) {
   const save = () => {
     if (busy) return;
     const nextErrors: string[] = [];
-    if (!lock) {
-      const cleanTitle = title.trim();
-      if (cleanTitle.length < 2 || cleanTitle.length > 150) nextErrors.push('Escribe el título.');
-      if (!genreId) nextErrors.push('Elige un género.');
-      if (!(sizeNum > 0)) nextErrors.push('El tamaño debe ser mayor que 0.');
-      if (platformIds.length === 0) nextErrors.push('Elige al menos una plataforma.');
-    }
+    const cleanTitle = title.trim();
+    if (cleanTitle.length < 2 || cleanTitle.length > 150) nextErrors.push('Escribe el título.');
+    if (!genreId) nextErrors.push('Elige un género.');
+    if (!(sizeNum > 0)) nextErrors.push('El tamaño debe ser mayor que 0.');
+    if (platformIds.length === 0) nextErrors.push('Elige al menos una plataforma.');
     if (priceMode === 'MANUAL' && !(parseFloat(price) >= 0 && price.trim() !== '')) {
       nextErrors.push('Escribe el precio manual.');
     }
@@ -377,17 +383,15 @@ export function GameForm({ game }: { game: GameItem | null }) {
 
     if (editing && game) {
       const patchBody: Record<string, unknown> = { ...commercial };
-      if (!lock) {
-        patchBody.title = title.trim();
-        patchBody.description = description.trim() || null;
-        patchBody.sizeValue = sizeNum;
-        patchBody.sizeUnit = 'GB';
-        if (Number.isFinite(yearNum)) patchBody.releaseYear = yearNum;
-        patchBody.genreIds = [genreId];
-        patchBody.platformIds = platformIds;
-        patchBody.minimumRequirements = requirements.minimumRequirements;
-        patchBody.recommendedRequirements = requirements.recommendedRequirements;
-      }
+      patchBody.title = title.trim();
+      patchBody.description = description.trim() || null;
+      patchBody.sizeValue = sizeNum;
+      patchBody.sizeUnit = 'GB';
+      if (Number.isFinite(yearNum)) patchBody.releaseYear = yearNum;
+      patchBody.genreIds = [genreId];
+      patchBody.platformIds = platformIds;
+      patchBody.minimumRequirements = requirements.minimumRequirements;
+      patchBody.recommendedRequirements = requirements.recommendedRequirements;
       adminFetch<GameItem>(`/admin/games/${gameId}`, { method: 'PATCH', body: patchBody })
         .then(() => {
           toast('Juego guardado');
@@ -435,15 +439,24 @@ export function GameForm({ game }: { game: GameItem | null }) {
     </details>
   );
 
-  const specBlock = (req: ReqState, setReq: (next: ReqState) => void, disabled: boolean) => {
+  const specBlock = (req: ReqState, setReq: (next: ReqState) => void) => {
     const patch = (part: Partial<ReqState>) => setReq({ ...req, ...part });
     return (
       <div className="spec">
         <Field label="Procesador">
-          <Sel value={req.cpu} onChange={(cpu) => patch({ cpu })} options={strOpts(CPU_OPTS)} ariaLabel="Procesador" disabled={disabled} />
+          <Sel
+            value={req.cpu}
+            onChange={(cpu) => patch({ cpu })}
+            options={strOpts(CPU_OPTS)}
+            ariaLabel="Procesador"
+          />
         </Field>
         <Field label="Modelo (opcional)">
-          <input value={req.cpuModel} disabled={disabled} placeholder="Ej. 4590 o 2200G" onChange={(event) => patch({ cpuModel: event.target.value })} />
+          <input
+            value={req.cpuModel}
+            placeholder="Ej. 4590 o 2200G"
+            onChange={(event) => patch({ cpuModel: event.target.value })}
+          />
         </Field>
         <Field label="RAM">
           <Sel
@@ -451,14 +464,22 @@ export function GameForm({ game }: { game: GameItem | null }) {
             onChange={(ram) => patch({ ram })}
             options={RAM_OPTS.map((n) => ({ value: String(n), label: `${n} GB` }))}
             ariaLabel="RAM"
-            disabled={disabled}
           />
         </Field>
         <Field label="Gráficos">
-          <Sel value={req.gpu} onChange={(gpu) => patch({ gpu })} options={strOpts(GPU_OPTS)} ariaLabel="Gráficos" disabled={disabled} />
+          <Sel
+            value={req.gpu}
+            onChange={(gpu) => patch({ gpu })}
+            options={strOpts(GPU_OPTS)}
+            ariaLabel="Gráficos"
+          />
         </Field>
         <Field label="Modelo (opcional)">
-          <input value={req.gpuModel} disabled={disabled} placeholder="Ej. 1050 Ti" onChange={(event) => patch({ gpuModel: event.target.value })} />
+          <input
+            value={req.gpuModel}
+            placeholder="Ej. 1050 Ti"
+            onChange={(event) => patch({ gpuModel: event.target.value })}
+          />
         </Field>
         <Field label="DirectX">
           <Sel
@@ -466,14 +487,23 @@ export function GameForm({ game }: { game: GameItem | null }) {
             onChange={(dx) => patch({ dx })}
             options={DX_OPTS.map((n) => ({ value: String(n), label: `DirectX ${n}` }))}
             ariaLabel="DirectX"
-            disabled={disabled}
           />
         </Field>
         <Field label="Sistema operativo">
-          <Sel value={req.os} onChange={(os) => patch({ os })} options={strOpts(OS_OPTS)} ariaLabel="Sistema operativo" disabled={disabled} />
+          <Sel
+            value={req.os}
+            onChange={(os) => patch({ os })}
+            options={strOpts(OS_OPTS)}
+            ariaLabel="Sistema operativo"
+          />
         </Field>
         <Field label="Almacenamiento">
-          <Sel value={req.storage} onChange={(storage) => patch({ storage })} options={strOpts(STORAGE_OPTS)} ariaLabel="Almacenamiento" disabled={disabled} />
+          <Sel
+            value={req.storage}
+            onChange={(storage) => patch({ storage })}
+            options={strOpts(STORAGE_OPTS)}
+            ariaLabel="Almacenamiento"
+          />
         </Field>
       </div>
     );
@@ -497,7 +527,7 @@ export function GameForm({ game }: { game: GameItem | null }) {
   ) => (
     <div className={`slot${kind === 'COVER' ? ' cv' : ''}`}>
       {entry?.url ? (
-        <ArtThumb title={game?.title || label} url={entry.url} />
+        <ArtThumb title={resolved?.title || game?.title || label} url={entry.url} />
       ) : (
         <div className="art none">{kind === 'COVER' ? 'Sin portada' : 'Vacío'}</div>
       )}
@@ -525,13 +555,12 @@ export function GameForm({ game }: { game: GameItem | null }) {
     </div>
   );
 
-  const sub = lock
-    ? 'Este juego viene de la biblioteca base. Puedes ajustar solo lo comercial.'
-    : 'Todo lo repetitivo se selecciona. Todo lo excepcional se escribe.';
+  const sub = 'Todo lo repetitivo se selecciona. Todo lo excepcional se escribe.';
 
   const hint = (
     <p className="hint">
-      <Link href="/admin/juegos">Juegos</Link> / {editing ? game.title : 'Nuevo'}
+      <Link href="/admin/juegos">Juegos</Link> /{' '}
+      {editing ? resolved?.title ?? game.title ?? game.slug : 'Nuevo'}
     </p>
   );
 
@@ -602,18 +631,12 @@ export function GameForm({ game }: { game: GameItem | null }) {
             </div>
           ) : null}
         </div>
-        {lock ? (
-          <div className="note">
-            Los datos base (título, requisitos, tamaño, plataformas) los mantiene la plataforma.
-            Para cambiarlos, duplica el juego como personalizado.
-          </div>
-        ) : null}
         {fsec(
           'Información básica',
           <>
             <div className="grid2">
               <Field label="Título">
-                <input value={title} disabled={lock} maxLength={90} onChange={(event) => setTitle(event.target.value)} />
+                <input value={title} maxLength={90} onChange={(event) => setTitle(event.target.value)} />
               </Field>
               <Field label="Categoría del catálogo">
                 <Sel
@@ -632,7 +655,6 @@ export function GameForm({ game }: { game: GameItem | null }) {
                   options={(gens ?? []).map((item) => ({ value: item.id, label: item.name }))}
                   emptyLabel="Elegir"
                   ariaLabel="Género"
-                  disabled={lock}
                 />
               </Field>
               <Field label="Año">
@@ -642,7 +664,6 @@ export function GameForm({ game }: { game: GameItem | null }) {
                   min={1980}
                   max={2100}
                   value={releaseYear}
-                  disabled={lock}
                   onChange={(event) => setReleaseYear(event.target.value)}
                 />
               </Field>
@@ -662,7 +683,6 @@ export function GameForm({ game }: { game: GameItem | null }) {
                     <input
                       type="checkbox"
                       checked={platformIds.includes(platform.id)}
-                      disabled={lock}
                       onChange={(event) =>
                         setPlatformIds((prev) =>
                           event.target.checked
@@ -685,7 +705,6 @@ export function GameForm({ game }: { game: GameItem | null }) {
               <textarea
                 value={description}
                 maxLength={1200}
-                disabled={lock}
                 onChange={(event) => setDescription(event.target.value)}
               />
             </Field>
@@ -697,30 +716,26 @@ export function GameForm({ game }: { game: GameItem | null }) {
                   step="0.1"
                   min="0.1"
                   value={sizeValue}
-                  disabled={lock}
                   onChange={(event) => setSizeValue(event.target.value)}
                 />
               </Field>
             </div>
           </>,
         )}
-        {fsec('Requisitos mínimos', specBlock(minReq, setMinReq, lock), !editing || !lock)}
+        {fsec('Requisitos mínimos', specBlock(minReq, setMinReq))}
         {fsec(
           'Requisitos recomendados',
           <>
-            {lock ? null : (
-              <button
-                className="btn sm"
-                type="button"
-                onClick={() => setRecReq({ ...minReq })}
-              >
-                <AdminIcon name="copy" />
-                Copiar mínimos → recomendados
-              </button>
-            )}
-            {specBlock(recReq, setRecReq, lock)}
+            <button
+              className="btn sm"
+              type="button"
+              onClick={() => setRecReq({ ...minReq })}
+            >
+              <AdminIcon name="copy" />
+              Copiar mínimos → recomendados
+            </button>
+            {specBlock(recReq, setRecReq)}
           </>,
-          !editing || !lock,
         )}
         {fsec(
           'Multimedia',

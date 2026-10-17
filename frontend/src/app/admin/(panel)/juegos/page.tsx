@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { ApiError } from '@/lib/api/client';
 import { adminFetch, adminFetchPaged } from '@/lib/admin/adminApi';
 import { nf } from '@/lib/admin/format';
+import { etiquetaPlataforma } from '@/lib/admin/gameView';
 import { toast } from '@/lib/admin/toast';
 import type { GameItem, TaxonomyItem } from '@/lib/admin/types';
 import { useAdminAuth } from '@/hooks/useAdminAuth';
@@ -254,7 +255,7 @@ function JuegosList() {
         </p>
         <ListShell
           cols="minmax(0,2.4fr) 84px 92px 118px 112px minmax(0,auto)"
-          head={['Juego', 'Tamaño', 'Precio', 'Origen', 'Plataformas', '']}
+          head={['Juego', 'Tamaño', 'Precio', 'Origen', 'Plataforma', '']}
         >
           {items.map((game) => {
             const metaLine = [game.genres[0]?.name, game.category?.name]
@@ -294,9 +295,7 @@ function JuegosList() {
                     <Badge tone="au">Personalizado</Badge>
                   )}
                 </div>
-                <div data-l="Plataformas">
-                  {game.platforms.map((platform) => platform.name).join(', ') || '—'}
-                </div>
+                <div data-l="Plataforma">{etiquetaPlataforma(game)}</div>
                 <div className="ac">
                   <Switch
                     checked={game.availability}

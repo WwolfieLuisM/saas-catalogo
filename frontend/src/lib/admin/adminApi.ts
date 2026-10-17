@@ -28,6 +28,7 @@ export interface AdminRequestOptions {
   method?: 'GET' | 'POST' | 'PATCH' | 'PUT' | 'DELETE';
   body?: unknown;
   query?: Record<string, string | number | boolean | undefined>;
+  timeoutMs?: number;
 }
 
 function resolve(deps: AdminApiDeps) {
@@ -124,7 +125,7 @@ function send(
     body,
     credentials: 'same-origin',
     cache: 'no-store',
-    signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
+    signal: AbortSignal.timeout(opts.timeoutMs ?? REQUEST_TIMEOUT_MS),
   });
 }
 

@@ -50,6 +50,7 @@ export const createGameSchema = z
   .object({
     tenantId: z.string().uuid().optional(),
     baseGameId: z.string().uuid().optional(),
+    platformId: z.string().uuid(),
     title: z.string().trim().min(2).max(150).optional(),
     slug: slugSchema.optional(),
     description: z.string().trim().max(5000).nullish(),

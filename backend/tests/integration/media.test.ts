@@ -6,6 +6,7 @@ import { destroyImage, listImages, uploadImage } from '../../src/config/cloudina
 import { signAccessToken } from '../../src/modules/auth/auth.tokens.js';
 import type { FakeGameMedia, FakeTenantGame } from '../helpers/fakeDb.js';
 import {
+  addFakeBaseGame,
   addFakeCatalogMetadata,
   addFakeGameMedia,
   addFakeTenant,
@@ -845,5 +846,62 @@ describe('versionado del catálogo en media', () => {
 
     expect(status).toBeLessThan(300);
     expect(catalogVersion()).toBe(2);
+  });
+});
+
+describe('media: títulos heredados (fase 4)', () => {
+  function seedHeirWithBase() {
+    const base = addFakeBaseGame({
+      id: randomUUID(),
+      title: 'Doom Eternal',
+      slug: 'doom-eternal',
+    });
+    const game = seedGame({
+      origin: 'BIBLIOTECA',
+      baseGameId: base.id,
+      platformId: null,
+      title: null,
+      slug: 'doom-oferta',
+    });
+    addFakeGameMedia({
+      id: randomUUID(),
+      tenantId: T_JAVIER,
+      gameId: game.id,
+      kind: 'COVER',
+      url: 'https://cdn.test/cover.jpg',
+      status: 'OK',
+    });
+    return { base, game };
+  }
+
+  it('resume el título heredado en la lista de media', async () => {
+    const { game } = seedHeirWithBase();
+
+    const { status, body } = await api<MediaListItem[]>(MEDIA, {}, adminToken);
+
+    expect(status).toBe(200);
+    expect(body.data?.[0]?.game).toMatchObject({ id: game.id, title: 'Doom Eternal' });
+  });
+
+  it('busca por título heredado con q', async () => {
+    seedHeirWithBase();
+
+    const { status, body } = await api<MediaListItem[]>(`${MEDIA}?q=DOOM`, {}, adminToken);
+
+    expect(status).toBe(200);
+    expect(body.meta?.total).toBe(1);
+  });
+
+  it('expone el título heredado en el manifest', async () => {
+    const { game } = seedHeirWithBase();
+
+    const { status, body } = await api<ManifestDto>(
+      `${GAMES}/${game.id}/media/manifest`,
+      {},
+      adminToken,
+    );
+
+    expect(status).toBe(200);
+    expect(body.data?.title).toBe('Doom Eternal');
   });
 });

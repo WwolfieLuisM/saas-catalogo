@@ -5,7 +5,10 @@ import { afterAll, beforeAll, beforeEach, describe, expect, it, vi } from 'vites
 import { signAccessToken } from '../../src/modules/auth/auth.tokens.js';
 import type { FakePricingRule, FakeTenantGame } from '../helpers/fakeDb.js';
 import {
+  addFakeBaseGame,
+  addFakeBaseGamePlatform,
   addFakePricingRule,
+  addFakePlatform,
   addFakeTenant,
   addFakeTenantGame,
   addFakeUser,
@@ -766,5 +769,69 @@ describe('pricing: apply', () => {
     );
     expect(adminCall.status).toBe(403);
     expect(adminCall.body.error?.code).toBe('FORBIDDEN');
+  });
+});
+
+describe('pricing: títulos y tamaños resueltos (fase 4)', () => {
+  it('usa el título heredado y el tamaño de la variante en preview', async () => {
+    const platform = addFakePlatform({
+      id: randomUUID(),
+      tenantId: null,
+      name: 'PC',
+      slug: 'pc-precio',
+    });
+    const base = addFakeBaseGame({
+      id: randomUUID(),
+      title: 'Hades',
+      slug: 'hades',
+      sizeValue: 15,
+      sizeUnit: 'GB',
+    });
+    addFakeBaseGamePlatform(base.id, platform.id, { sizeValue: 20, sizeUnit: 'GB' });
+    seedGame({
+      origin: 'BIBLIOTECA',
+      baseGameId: base.id,
+      platformId: platform.id,
+      title: null,
+      sizeValue: null,
+      sizeUnit: null,
+      priceMode: 'RULE',
+      price: 10,
+    });
+    seedRule({ minSize: 1, maxSize: 100, price: 60 });
+
+    const { status, body } = await api<PreviewDto>(
+      `${PRICING}/preview`,
+      { method: 'POST', body: '{}' },
+      adminToken,
+    );
+
+    expect(status).toBe(200);
+    const data = body.data as PreviewDto;
+    expect(data.changes).toHaveLength(1);
+    expect(data.changes[0]).toMatchObject({
+      title: 'Hades',
+      sizeGb: 20,
+      priceFrom: 10,
+      priceTo: 60,
+    });
+  });
+
+  it('recurre al slug cuando ni la oferta ni la biblioteca tienen título', async () => {
+    seedGame({ title: null, sizeValue: null, sizeUnit: null, priceMode: 'RULE', price: 5 });
+    seedRule({ minSize: 1, maxSize: 100, price: 60 });
+
+    const { status, body } = await api<PreviewDto>(
+      `${PRICING}/preview`,
+      { method: 'POST', body: '{}' },
+      adminToken,
+    );
+
+    expect(status).toBe(200);
+    const data = body.data as PreviewDto;
+    const game = data.uncovered[0] as UncoveredGame;
+    expect(game).toBeDefined();
+    expect(game.title).toBe(game.slug);
+    expect(game.sizeGb).toBe(0);
   });
 });

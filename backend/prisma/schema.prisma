@@ -63,8 +63,22 @@ model Tenant {
   pricingRules PricingRule[]
   catalog     CatalogMetadata?
   backups     Backup[]
+  tenantPlatforms TenantPlatform[]
 
   @@index([isActive])
+}
+
+model TenantPlatform {
+  tenantId   String
+  platformId String
+  tenant     Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  platform   Platform @relation(fields: [platformId], references: [id], onDelete: Cascade)
+  enabled    Boolean  @default(true)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@id([tenantId, platformId])
+  @@index([platformId])
 }
 
 model TenantSettings {
@@ -171,20 +185,23 @@ model TenantGame {
   tenant                 Tenant     @relation(fields: [tenantId], references: [id], onDelete: Cascade)
   baseGameId             String?
   baseGame               BaseGame?  @relation(fields: [baseGameId], references: [id], onDelete: Restrict)
+  platformId             String
+  platform               Platform   @relation(fields: [platformId], references: [id], onDelete: Restrict)
   origin                 Origin
-  title                  String
+  title                  String?
   slug                   String
   description            String?
   priceMode              PriceMode  @default(RULE)
   price                  Decimal?
   availability           Boolean    @default(true)
-  sizeValue              Float
-  sizeUnit               SizeUnit
+  sizeValue              Float?
+  sizeUnit               SizeUnit?
   releaseYear            Int?
   categoryId             String?
   category               Category?  @relation(fields: [categoryId], references: [id], onDelete: SetNull)
   minimumRequirements    Json?
   recommendedRequirements Json?
+  clearedFields          Json?
   createdBy              String?
   updatedBy              String?
   deletedBy              String?
@@ -195,8 +212,8 @@ model TenantGame {
   platforms              GamePlatform[]
   media                  GameMedia[]
 
-  @@unique([tenantId, slug])
-  @@unique([tenantId, baseGameId])
+  @@unique([tenantId, baseGameId, platformId])
+  @@unique([tenantId, platformId, slug])
   @@index([tenantId, deletedAt])
 }
 
@@ -255,6 +272,8 @@ model Platform {
   updatedAt   DateTime           @updatedAt
   baseGames   BaseGamePlatform[]
   games       GamePlatform[]
+  tenantGames TenantGame[]
+  tenantPlatforms TenantPlatform[]
 
   @@unique([tenantId, slug])
   @@index([tenantId, deletedAt])
@@ -274,6 +293,12 @@ model BaseGamePlatform {
   platformId String
   baseGame   BaseGame @relation(fields: [baseGameId], references: [id], onDelete: Cascade)
   platform   Platform @relation(fields: [platformId], references: [id], onDelete: Cascade)
+
+  sizeValue              Float?
+  sizeUnit               SizeUnit?
+  minimumRequirements    Json?
+  recommendedRequirements Json?
+  provenance             Json?
 
   @@id([baseGameId, platformId])
 }

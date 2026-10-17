@@ -104,19 +104,21 @@ export interface FakeTenantGame {
   id: string;
   tenantId: string;
   baseGameId: string | null;
+  platformId: string | null;
   origin: 'BIBLIOTECA' | 'PERSONALIZADO';
-  title: string;
+  title: string | null;
   slug: string;
   description: string | null;
   priceMode: 'RULE' | 'MANUAL';
   price: number | null;
   availability: boolean;
-  sizeValue: number;
-  sizeUnit: 'MB' | 'GB' | 'TB';
+  sizeValue: number | null;
+  sizeUnit: 'MB' | 'GB' | 'TB' | null;
   releaseYear: number | null;
   categoryId: string | null;
   minimumRequirements: unknown;
   recommendedRequirements: unknown;
+  clearedFields: unknown;
   createdBy: string | null;
   updatedBy: string | null;
   deletedBy: string | null;
@@ -126,7 +128,7 @@ export interface FakeTenantGame {
 }
 
 export interface FakeBridge {
-  [key: string]: string;
+  [key: string]: unknown;
 }
 
 export interface FakeGameMedia {
@@ -182,6 +184,14 @@ export interface FakeBackup {
   scope: string;
   status: string;
   payload: unknown;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface FakeTenantPlatform {
+  tenantId: string;
+  platformId: string;
+  enabled: boolean;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -354,6 +364,7 @@ const gamePlatforms = new Map<string, FakeBridge>();
 const pricingRules = new Map<string, FakePricingRule>();
 const catalogMetadata = new Map<string, FakeCatalogMetadata>();
 const backups = new Map<string, FakeBackup>();
+const tenantPlatforms = new Map<string, FakeTenantPlatform>();
 
 function createTaxonomyDelegate(store: Map<string, FakeTaxonomy>) {
   return {
@@ -520,11 +531,103 @@ function createBridgeDelegate(store: Map<string, FakeBridge>, key1: string, key2
       }
       return null;
     },
-    createMany: async (args: { data: Record<string, string>[] }) => {
+    createMany: async (args: { data: Record<string, unknown>[] }) => {
       for (const data of args.data) {
-        store.set(`${data[key1]}:${data[key2]}`, data);
+        store.set(`${String(data[key1])}:${String(data[key2])}`, data);
       }
       return { count: args.data.length };
+    },
+    update: async (args: { where: Record<string, unknown>; data: Record<string, unknown> }) => {
+      const entries = Object.entries(args.where);
+      const compound = entries[0]?.[1];
+      const values =
+        entries.length === 1 && compound !== null && typeof compound === 'object'
+          ? Object.values(compound as Record<string, unknown>)
+          : entries.map(([, value]) => value);
+      const key = `${String(values[0])}:${String(values[1])}`;
+      const row = store.get(key);
+      if (!row) throw new Error('bridge row not found');
+      store.set(key, { ...row, ...args.data });
+      return store.get(key);
+    },
+    deleteMany: async (args: { where?: Where } = {}) => {
+      let count = 0;
+      for (const [key, row] of [...store.entries()]) {
+        if (matches(asRow(row), args.where)) {
+          store.delete(key);
+          count += 1;
+        }
+      }
+      return { count };
+    },
+  };
+}
+
+function createTenantPlatformDelegate(store: Map<string, FakeTenantPlatform>) {
+  const compositeKey = (tenantId: string, platformId: string) => `${tenantId}:${platformId}`;
+  const asRow = (row: FakeTenantPlatform) => row as unknown as Record<string, unknown>;
+  const findTarget = (where: Where): FakeTenantPlatform | null => {
+    const target = where.tenantId_platformId as
+      | { tenantId: string; platformId: string }
+      | undefined;
+    if (target) return store.get(compositeKey(target.tenantId, target.platformId)) ?? null;
+    for (const row of store.values()) {
+      if (matches(asRow(row), where)) return row;
+    }
+    return null;
+  };
+  return {
+    findMany: async (args: FindManyArgs = {}) => {
+      const matched = queryRows([...store.values()].map(asRow), args);
+      return matched as unknown as FakeTenantPlatform[];
+    },
+    count: async (args: { where?: Where } = {}) => {
+      return [...store.values()].filter((row) => matches(asRow(row), args.where)).length;
+    },
+    findFirst: async (args: { where?: Where } = {}) => {
+      for (const row of store.values()) {
+        if (matches(asRow(row), args.where)) return row;
+      }
+      return null;
+    },
+    findUnique: async (args: { where: Where }) => findTarget(args.where),
+    create: async (args: {
+      data: Partial<FakeTenantPlatform> & { tenantId: string; platformId: string };
+    }) => {
+      const key = compositeKey(args.data.tenantId, args.data.platformId);
+      if (store.has(key)) {
+        throw new Error('Unique constraint failed on the fields: (`tenantId`,`platformId`)');
+      }
+      const row = defaults<FakeTenantPlatform>(args.data, { enabled: true });
+      store.set(key, row);
+      return row;
+    },
+    upsert: async (args: {
+      where: { tenantId_platformId: { tenantId: string; platformId: string } };
+      update: Partial<FakeTenantPlatform>;
+      create: Partial<FakeTenantPlatform> & { tenantId: string; platformId: string };
+    }) => {
+      const key = compositeKey(args.where.tenantId_platformId.tenantId, args.where.tenantId_platformId.platformId);
+      const existing = store.get(key);
+      if (existing) {
+        applyData(existing as unknown as Record<string, unknown>, args.update as Record<string, unknown>);
+        Object.assign(existing, { updatedAt: new Date() });
+        return existing;
+      }
+      const row = defaults<FakeTenantPlatform>(args.create, { enabled: true });
+      store.set(key, row);
+      return row;
+    },
+    update: async (args: {
+      where: { tenantId_platformId: { tenantId: string; platformId: string } };
+      data: Partial<FakeTenantPlatform>;
+    }) => {
+      const key = compositeKey(args.where.tenantId_platformId.tenantId, args.where.tenantId_platformId.platformId);
+      const row = store.get(key);
+      if (!row) throw new Error('tenantPlatform not found');
+      applyData(row as unknown as Record<string, unknown>, args.data as Record<string, unknown>);
+      Object.assign(row, { updatedAt: new Date() });
+      return row;
     },
     deleteMany: async (args: { where?: Where } = {}) => {
       let count = 0;
@@ -826,16 +929,19 @@ export const fakeDb = {
   }),
   tenantGame: createRowDelegate<FakeTenantGame>(tenantGames, {
     baseGameId: null,
+    platformId: null,
     origin: 'PERSONALIZADO',
     priceMode: 'RULE',
     price: null,
     availability: true,
     categoryId: null,
+    clearedFields: null,
     createdBy: null,
     updatedBy: null,
     deletedBy: null,
     deletedAt: null,
   }),
+  tenantPlatform: createTenantPlatformDelegate(tenantPlatforms),
   baseGameGenre: createBridgeDelegate(baseGameGenres, 'baseGameId', 'genreId'),
   baseGamePlatform: createBridgeDelegate(baseGamePlatforms, 'baseGameId', 'platformId'),
   tenantGameGenre: createBridgeDelegate(tenantGameGenres, 'tenantGameId', 'genreId'),
@@ -870,8 +976,72 @@ export const fakeDb = {
   $transaction: async (
     arg: Promise<unknown>[] | ((tx: unknown) => Promise<unknown>),
     _options?: unknown,
-  ): Promise<unknown> => (typeof arg === 'function' ? arg(fakeDb) : Promise.all(arg)),
+  ): Promise<unknown> => {
+    if (typeof arg !== 'function') return Promise.all(arg);
+
+    const snapshot = cloneStores();
+    try {
+      return await arg(fakeDb);
+    } catch (error) {
+      restoreStores(snapshot);
+      throw error;
+    }
+  },
 };
+
+const transactionalStores: Array<Map<string, unknown>> = [
+  users,
+  sessions,
+  tenants,
+  tenantSettings,
+  auditLogs,
+  categories,
+  genres,
+  platforms,
+  baseGames,
+  tenantGames,
+  baseGameGenres,
+  baseGamePlatforms,
+  tenantGameGenres,
+  gamePlatforms,
+  tenantPlatforms,
+  libraryMedia,
+  gameMedia,
+  pricingRules,
+  catalogMetadata,
+  backups,
+];
+
+function cloneStores(): Array<[Map<string, unknown>, Map<string, unknown>]> {
+  return transactionalStores.map((store) => [
+    store,
+    new Map([...store.entries()].map(([key, value]) => [key, clone(value)])),
+  ]);
+}
+
+function restoreStores(snapshot: Array<[Map<string, unknown>, Map<string, unknown>]>): void {
+  for (const [store, entries] of snapshot) {
+    store.clear();
+    for (const [key, value] of entries) store.set(key, value);
+  }
+}
+
+function clone<T>(value: T): T {
+  if (value === null || typeof value !== 'object') return value;
+  if (value instanceof Date) return new Date(value.getTime()) as T;
+  if (Array.isArray(value)) return value.map((entry) => clone(entry)) as unknown as T;
+  if (value instanceof Map) {
+    return new Map([...value.entries()].map(([key, entry]) => [key, clone(entry)])) as unknown as T;
+  }
+  if (value instanceof Set) {
+    return new Set([...value.values()].map((entry) => clone(entry))) as unknown as T;
+  }
+  const result: Record<string, unknown> = {};
+  for (const [key, entry] of Object.entries(value as Record<string, unknown>)) {
+    result[key] = clone(entry);
+  }
+  return result as T;
+}
 
 export const state = {
   users,
@@ -893,6 +1063,7 @@ export const state = {
   pricingRules,
   catalogMetadata,
   backups,
+  tenantPlatforms,
 };
 
 export function resetFakeDb(): void {
@@ -915,6 +1086,7 @@ export function resetFakeDb(): void {
   pricingRules.clear();
   catalogMetadata.clear();
   backups.clear();
+  tenantPlatforms.clear();
 }
 
 export function addFakeUser(
@@ -1048,19 +1220,23 @@ export function addFakeTenantGame(
   input: Partial<FakeTenantGame> & {
     id: string;
     tenantId: string;
-    title: string;
+    title: string | null;
     slug: string;
   },
 ): FakeTenantGame {
   const row = defaults<FakeTenantGame>(input, {
     baseGameId: null,
+    platformId: null,
     origin: 'PERSONALIZADO',
     priceMode: 'RULE',
     price: null,
     availability: true,
+    sizeValue: null,
+    sizeUnit: null,
     categoryId: null,
     minimumRequirements: null,
     recommendedRequirements: null,
+    clearedFields: null,
     createdBy: null,
     updatedBy: null,
     deletedBy: null,
@@ -1070,12 +1246,38 @@ export function addFakeTenantGame(
   return row;
 }
 
+export function addFakeTenantPlatform(
+  input: Partial<FakeTenantPlatform> & { tenantId: string; platformId: string },
+): FakeTenantPlatform {
+  const key = `${input.tenantId}:${input.platformId}`;
+  const existing = tenantPlatforms.get(key);
+  if (existing) {
+    applyData(existing as unknown as Record<string, unknown>, input as Record<string, unknown>);
+    return existing;
+  }
+  const row = defaults<FakeTenantPlatform>(input, { enabled: true });
+  tenantPlatforms.set(key, row);
+  return row;
+}
+
 export function addFakeBaseGameGenre(baseGameId: string, genreId: string): void {
   baseGameGenres.set(`${baseGameId}:${genreId}`, { baseGameId, genreId });
 }
 
-export function addFakeBaseGamePlatform(baseGameId: string, platformId: string): void {
-  baseGamePlatforms.set(`${baseGameId}:${platformId}`, { baseGameId, platformId });
+export interface FakeVariantAttrs {
+  sizeValue?: number | null;
+  sizeUnit?: 'MB' | 'GB' | 'TB' | null;
+  minimumRequirements?: unknown;
+  recommendedRequirements?: unknown;
+  provenance?: unknown;
+}
+
+export function addFakeBaseGamePlatform(
+  baseGameId: string,
+  platformId: string,
+  attrs: FakeVariantAttrs = {},
+): void {
+  baseGamePlatforms.set(`${baseGameId}:${platformId}`, { baseGameId, platformId, ...attrs });
 }
 
 export function addFakeTenantGameGenre(tenantGameId: string, genreId: string): void {

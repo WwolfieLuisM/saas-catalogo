@@ -236,3 +236,235 @@ export async function safeHeadUrl(
 
   return { result: 'error', httpStatus: null, detail: 'REDIRECCIONES_EXCESIVAS' };
 }
+
+export type ImageFetchResult = {
+  result: 'ok' | 'error' | 'blocked';
+  detail: string | null;
+  buffer: Buffer | null;
+  contentType: string | null;
+  httpStatus: number | null;
+};
+
+const DEFAULT_MAX_IMAGE_BYTES = 5 * 1024 * 1024;
+const IMAGE_CONTENT_TYPE = /^image\/(jpeg|png|webp|gif|avif)$/i;
+
+export interface SafeGetImageOptions {
+  timeoutMs?: number;
+  maxBytes?: number;
+  userAgent?: string;
+}
+
+function getOnce(
+  url: URL,
+  addresses: ResolvedAddress[],
+  timeoutMs: number,
+  maxBytes: number,
+  userAgent: string,
+): Promise<{
+  status: number;
+  location: string | null;
+  contentType: string | null;
+  buffer: Buffer;
+}> {
+  return new Promise((resolve, reject) => {
+    const lib = url.protocol === 'https:' ? httpsRequest : httpRequest;
+    const request = lib(
+      {
+        method: 'GET',
+        hostname: url.hostname,
+        port: url.port || (url.protocol === 'https:' ? 443 : 80),
+        path: `${url.pathname}${url.search}`,
+        headers: { 'user-agent': userAgent, accept: 'image/*' },
+        lookup: pinnedLookup(addresses),
+        timeout: timeoutMs,
+      },
+      (response) => {
+        const chunks: Buffer[] = [];
+        let size = 0;
+        let aborted = false;
+
+        response.on('data', (chunk: Buffer) => {
+          if (aborted) return;
+          size += chunk.length;
+          if (size > maxBytes) {
+            aborted = true;
+            request.destroy(new Error('too-large'));
+            return;
+          }
+          chunks.push(chunk);
+        });
+
+        response.on('end', () => {
+          if (aborted) return;
+          const status = response.statusCode ?? 0;
+          const headers = response.headers ?? {};
+          resolve({
+            status,
+            location: headers.location ?? null,
+            contentType: headers['content-type'] ?? null,
+            buffer: Buffer.concat(chunks),
+          });
+        });
+
+        response.on('error', (error: Error) => {
+          reject(error);
+        });
+      },
+    );
+
+    request.on('timeout', () => {
+      request.destroy(new Error('timeout'));
+    });
+    request.on('error', (error: Error) => {
+      reject(error);
+    });
+    request.end();
+  });
+}
+
+export async function safeGetImage(
+  rawUrl: string,
+  options: SafeGetImageOptions = {},
+): Promise<ImageFetchResult> {
+  const timeoutMs = options.timeoutMs ?? DEFAULT_TIMEOUT_MS;
+  const maxBytes = options.maxBytes ?? DEFAULT_MAX_IMAGE_BYTES;
+  const userAgent = options.userAgent ?? 'JavierCatalog-CoverFetch/1.0';
+
+  let current: URL;
+  try {
+    current = new URL(rawUrl);
+  } catch {
+    return { result: 'error', detail: 'URL_INVALIDA', buffer: null, contentType: null, httpStatus: null };
+  }
+
+  for (let hop = 0; hop <= MAX_REDIRECTS; hop += 1) {
+    if (current.protocol !== 'http:' && current.protocol !== 'https:') {
+      return {
+        result: 'blocked',
+        detail: 'PROTOCOLO_NO_PERMITIDO',
+        buffer: null,
+        contentType: null,
+        httpStatus: null,
+      };
+    }
+    if (isBlockedHostname(current.hostname)) {
+      return {
+        result: 'blocked',
+        detail: 'DESTINO_BLOQUEADO',
+        buffer: null,
+        contentType: null,
+        httpStatus: null,
+      };
+    }
+
+    let addresses: ResolvedAddress[];
+    try {
+      addresses = await resolveSafeAddresses(current.hostname);
+    } catch (error) {
+      if (error instanceof BlockedDestinationError) {
+        return {
+          result: 'blocked',
+          detail: 'DESTINO_BLOQUEADO',
+          buffer: null,
+          contentType: null,
+          httpStatus: null,
+        };
+      }
+      return { result: 'error', detail: 'DNS_ERROR', buffer: null, contentType: null, httpStatus: null };
+    }
+
+    let fetched: {
+      status: number;
+      location: string | null;
+      contentType: string | null;
+      buffer: Buffer;
+    };
+    try {
+      fetched = await getOnce(current, addresses, timeoutMs, maxBytes, userAgent);
+    } catch (error) {
+      if (error instanceof Error && error.message === 'too-large') {
+        return {
+          result: 'error',
+          detail: 'DEMASIADO_GRANDE',
+          buffer: null,
+          contentType: null,
+          httpStatus: null,
+        };
+      }
+      if (error instanceof Error && error.message === 'timeout') {
+        return { result: 'error', detail: 'TIMEOUT', buffer: null, contentType: null, httpStatus: null };
+      }
+      return {
+        result: 'error',
+        detail: 'CONEXION_FALLIDA',
+        buffer: null,
+        contentType: null,
+        httpStatus: null,
+      };
+    }
+
+    if (fetched.status >= 300 && fetched.status < 400 && fetched.location) {
+      let next: URL;
+      try {
+        next = new URL(fetched.location, current);
+      } catch {
+        return {
+          result: 'error',
+          detail: 'REDIRECT_INVALIDO',
+          buffer: null,
+          contentType: null,
+          httpStatus: fetched.status,
+        };
+      }
+      current = next;
+      continue;
+    }
+
+    if (fetched.status < 200 || fetched.status >= 300) {
+      return {
+        result: 'error',
+        detail: `HTTP_${fetched.status}`,
+        buffer: null,
+        contentType: null,
+        httpStatus: fetched.status,
+      };
+    }
+
+    if (fetched.buffer.length === 0) {
+      return {
+        result: 'error',
+        detail: 'RESPUESTA_VACIA',
+        buffer: null,
+        contentType: null,
+        httpStatus: fetched.status,
+      };
+    }
+
+    const mediaType = (fetched.contentType ?? '').split(';')[0]?.trim() ?? '';
+    if (!IMAGE_CONTENT_TYPE.test(mediaType)) {
+      return {
+        result: 'error',
+        detail: 'CONTENIDO_NO_PERMITIDO',
+        buffer: null,
+        contentType: null,
+        httpStatus: fetched.status,
+      };
+    }
+
+    return {
+      result: 'ok',
+      detail: null,
+      buffer: fetched.buffer,
+      contentType: fetched.contentType,
+      httpStatus: fetched.status,
+    };
+  }
+
+  return {
+    result: 'error',
+    detail: 'REDIRECCIONES_EXCESIVAS',
+    buffer: null,
+    contentType: null,
+    httpStatus: null,
+  };
+}

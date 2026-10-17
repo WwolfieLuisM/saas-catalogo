@@ -18,6 +18,8 @@ import type { RequestMeta } from '../../utils/requestMeta.js';
 import { auditData } from '../audit/audit.service.js';
 import { planCatalogBump } from '../catalog/catalog.service.js';
 import { resolveTenantId } from '../games/games.service.js';
+import { resolveFinal } from '../games/resolution.js';
+import { loadBaseGames, loadVariants, variantKey } from '../games/resolutionData.js';
 import type {
   MediaAuditCheckInput,
   MediaAuditQuery,
@@ -73,6 +75,31 @@ async function loadGame(gameId: string, auth: AuthContext | null): Promise<Tenan
     throw new AppError(404, 'GAME_NOT_FOUND', 'Juego no encontrado');
   }
   return row;
+}
+
+async function loadResolvedTitles(rows: TenantGame[]): Promise<Map<string, string>> {
+  const prisma = getPrisma();
+  const titles = new Map<string, string>();
+  if (rows.length === 0) return titles;
+
+  const baseGameIds = [
+    ...new Set(rows.map((row) => row.baseGameId).filter((id): id is string => id !== null)),
+  ];
+  const [baseGameById, variantByKey] = await Promise.all([
+    loadBaseGames(prisma, baseGameIds),
+    loadVariants(prisma, baseGameIds),
+  ]);
+
+  for (const row of rows) {
+    const base = row.baseGameId ? baseGameById.get(row.baseGameId) : undefined;
+    const variant =
+      row.baseGameId && row.platformId
+        ? variantByKey.get(variantKey(row.baseGameId, row.platformId))
+        : undefined;
+    const finalTitle = resolveFinal(row, variant, base, 'title');
+    titles.set(row.id, finalTitle ?? row.slug);
+  }
+  return titles;
 }
 
 function publicIdFor(game: TenantGame, kind: 'COVER' | 'SHOT', sortOrder: number): string {
@@ -451,6 +478,7 @@ export async function reorderScreenshots(
 export async function getMediaManifest(gameId: string, auth: AuthContext | null) {
   const game = await loadGame(gameId, auth);
   const prisma = getPrisma();
+  const titleByGame = await loadResolvedTitles([game]);
   const rows = await prisma.gameMedia.findMany({
     where: { tenantId: game.tenantId, gameId: game.id },
     orderBy: [{ kind: 'asc' }, { sortOrder: 'asc' }],
@@ -469,7 +497,7 @@ export async function getMediaManifest(gameId: string, auth: AuthContext | null)
   return {
     gameId: game.id,
     slug: game.slug,
-    title: game.title,
+    title: titleByGame.get(game.id) ?? game.slug,
     prefix: `tenants/${game.tenantId}/games/${game.slug}`,
     cover: cover ? mediaDto(cover) : null,
     screenshots: screenshots.map(mediaDto),
@@ -500,14 +528,16 @@ export async function listMedia(query: MediaListQuery, auth: AuthContext | null)
     ? await prisma.tenantGame.findMany({ where: { id: { in: gameIds } } })
     : [];
   const gameById = new Map(games.map((game) => [game.id, game]));
+  const titleByGame = await loadResolvedTitles(games);
 
   const needle = query.q?.toLowerCase();
   const filtered = needle
     ? rows.filter((row) => {
         const game = gameById.get(row.gameId);
+        const title = game ? titleByGame.get(game.id) ?? game.slug : null;
         return (
           (row.publicId?.toLowerCase().includes(needle) ?? false) ||
-          game?.title.toLowerCase().includes(needle) === true ||
+          (title?.toLowerCase().includes(needle) ?? false) ||
           game?.slug.toLowerCase().includes(needle) === true
         );
       })
@@ -522,7 +552,13 @@ export async function listMedia(query: MediaListQuery, auth: AuthContext | null)
       const game = gameById.get(row.gameId);
       return {
         ...mediaDto(row),
-        game: game ? { id: game.id, title: game.title, slug: game.slug } : null,
+        game: game
+          ? {
+              id: game.id,
+              title: titleByGame.get(game.id) ?? game.slug,
+              slug: game.slug,
+            }
+          : null,
       };
     }),
     total,

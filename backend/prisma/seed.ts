@@ -55,6 +55,77 @@ async function main() {
   const globalGenreAventura = await ensureTaxonomy(prisma.genre, null, 'Aventura', 'aventura');
   const globalPlatformPc = await ensureTaxonomy(prisma.platform, null, 'PC', 'pc');
   const globalPlatformPs5 = await ensureTaxonomy(prisma.platform, null, 'PlayStation 5', 'ps5');
+  const globalPlatformPs4 = await ensureTaxonomy(prisma.platform, null, 'PlayStation 4', 'ps4');
+  const globalPlatformXboxSeries = await ensureTaxonomy(
+    prisma.platform,
+    null,
+    'Xbox Series X',
+    'xbox-series-x',
+  );
+  const globalPlatformXboxOne = await ensureTaxonomy(prisma.platform, null, 'Xbox One', 'xbox-one');
+  const globalPlatformSwitch = await ensureTaxonomy(
+    prisma.platform,
+    null,
+    'Nintendo Switch',
+    'switch',
+  );
+
+  const globalPlatforms = [
+    globalPlatformPc,
+    globalPlatformPs5,
+    globalPlatformPs4,
+    globalPlatformXboxSeries,
+    globalPlatformXboxOne,
+    globalPlatformSwitch,
+  ];
+
+  const tenants = await prisma.tenant.findMany({ select: { id: true, slug: true } });
+
+  for (const target of tenants) {
+    for (const platformId of globalPlatforms) {
+      await prisma.tenantPlatform.upsert({
+        where: { tenantId_platformId: { tenantId: target.id, platformId } },
+        update: {},
+        create: { tenantId: target.id, platformId, enabled: true },
+      });
+    }
+  }
+
+  const globalDictionaryGenres: Array<[string, string]> = [
+    ['Arcade', 'arcade'],
+    ['Aventura', 'aventura'],
+    ['Carreras', 'carreras'],
+    ['Cartas', 'cartas'],
+    ['Deportes', 'deportes'],
+    ['Estrategia', 'estrategia'],
+    ['Indie', 'indie'],
+    ['Lucha', 'lucha'],
+    ['Música', 'musica'],
+    ['Plataformas', 'plataformas'],
+    ['Puzzle', 'puzzle'],
+    ['Rol', 'rol'],
+    ['Shooter', 'shooter'],
+    ['Simulación', 'simulacion'],
+  ];
+
+  const globalDictionaryCategories: Array<[string, string]> = [
+    ['Acción', 'accion'],
+    ['Aventura', 'aventura'],
+    ['Deportes', 'deportes'],
+    ['Puzzle', 'puzzle'],
+    ['Rol', 'rol'],
+    ['Sigilo', 'sigilo'],
+    ['Simulación', 'simulacion'],
+    ['Terror', 'terror'],
+  ];
+
+  for (const [name, slug] of globalDictionaryGenres) {
+    await ensureTaxonomy(prisma.genre, null, name, slug);
+  }
+
+  for (const [name, slug] of globalDictionaryCategories) {
+    await ensureTaxonomy(prisma.category, null, name, slug);
+  }
 
   const tenantCategoryAccion = await ensureTaxonomy(prisma.category, tenant.id, 'Acción', 'accion');
   const tenantGenreRpg = await ensureTaxonomy(prisma.genre, tenant.id, 'RPG', 'rpg');
@@ -158,6 +229,7 @@ async function main() {
 
   interface TenantGameInput {
     baseGameId: string | null;
+    platformId: string;
     origin: 'BIBLIOTECA' | 'PERSONALIZADO';
     title: string;
     slug: string;
@@ -179,6 +251,7 @@ async function main() {
     const data = {
       tenantId: tenant.id,
       baseGameId: input.baseGameId,
+      platformId: input.platformId,
       origin: input.origin,
       title: input.title,
       slug: input.slug,
@@ -225,6 +298,7 @@ async function main() {
 
   await ensureTenantGame({
     baseGameId: hadesId,
+    platformId: globalPlatformPc,
     origin: 'BIBLIOTECA',
     title: 'Hades',
     slug: 'hades',
@@ -244,6 +318,7 @@ async function main() {
 
   await ensureTenantGame({
     baseGameId: null,
+    platformId: globalPlatformPc,
     origin: 'PERSONALIZADO',
     title: 'Pack Mods Javier',
     slug: 'pack-mods-javier',

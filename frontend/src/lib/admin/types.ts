@@ -41,6 +41,20 @@ export interface GameRequirements {
   storage: string;
 }
 
+export interface ResolvedGameSummary {
+  title: string | null;
+  description: string | null;
+  sizeValue: number | null;
+  sizeUnit: string | null;
+  releaseYear: number | null;
+  categoryId: string | null;
+  minimumRequirements: GameRequirements | null;
+  recommendedRequirements: GameRequirements | null;
+  genres: TaxonomySummary[];
+  platforms: TaxonomySummary[];
+  category: TaxonomySummary | null;
+}
+
 export interface GameItem {
   id: string;
   tenantId: string;
@@ -62,6 +76,10 @@ export interface GameItem {
   platforms: TaxonomySummary[];
   minimumRequirements: GameRequirements | null;
   recommendedRequirements: GameRequirements | null;
+  platformId: string;
+  platform: TaxonomySummary | null;
+  clearedFields: string[];
+  resolved: ResolvedGameSummary;
   deletedAt: string | null;
   createdBy: string | null;
   updatedBy: string | null;

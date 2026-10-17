@@ -47,6 +47,58 @@ export const importGameEntrySchema = z.strictObject({
 
 export type ImportGameEntry = z.infer<typeof importGameEntrySchema>;
 
+export const CATALOG_SCHEMA_V1 = 'luismi-platform/catalog@1';
+
+export const CATALOG_SCHEMA = 'luismi-platform/catalog@2';
+
+const clearableFields = [
+  'title',
+  'description',
+  'sizeValue',
+  'sizeUnit',
+  'releaseYear',
+  'categoryId',
+  'minimumRequirements',
+  'recommendedRequirements',
+] as const;
+
+const strictRequirements = z.strictObject({
+  cpu: z.string().trim().max(150).optional(),
+  gpu: z.string().trim().max(150).optional(),
+  ram: z.string().trim().max(50).optional(),
+  os: z.string().trim().max(100).optional(),
+  directX: z.string().trim().max(50).optional(),
+  storage: z.string().trim().max(100).optional(),
+});
+
+export const catalogOfferSchema = z.strictObject({
+  baseGameSlug: slugSchema,
+  platformSlug: refSlugSchema,
+  slug: slugSchema.optional(),
+  priceMode: priceModeSchema.optional(),
+  price: z.number().positive().max(1000000000).nullish(),
+  availability: z.boolean().optional(),
+  title: z.string().trim().min(2).max(150).nullish(),
+  description: z.string().trim().max(5000).nullish(),
+  releaseYear: z.number().int().min(1970).max(2100).nullish(),
+  sizeValue: sizeValueSchema.nullish(),
+  sizeUnit: sizeUnitSchema.nullish(),
+  minimumRequirements: strictRequirements.nullish(),
+  recommendedRequirements: strictRequirements.nullish(),
+  clearedFields: z.array(z.enum(clearableFields)).max(clearableFields.length).nullish(),
+});
+
+export type CatalogOffer = z.infer<typeof catalogOfferSchema>;
+
+export const catalogImportSchema = z.strictObject({
+  schema: z.string().trim().min(1),
+  generatedAt: z.string().trim().optional(),
+  source: z.string().trim().min(1).max(300).optional(),
+  offers: z.array(z.unknown()).max(5000),
+});
+
+export type CatalogImport = z.infer<typeof catalogImportSchema>;
+
 export const validateImportSchema = z.object({
   tenantId: z.string().uuid().optional(),
   catalog: z.unknown(),

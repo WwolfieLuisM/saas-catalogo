@@ -2,15 +2,26 @@ import { randomUUID } from 'node:crypto';
 import { getPrisma } from '../../config/database.js';
 import {
   Prisma,
+  type BaseGame,
+  type BaseGamePlatform,
   type Category,
   type GameMedia,
   type Genre,
+  type LibraryMedia,
   type Platform,
   type PrismaClient,
   type TenantGame,
 } from '../../generated/client.js';
 import { AppError } from '../../utils/appError.js';
 import { normalizeSocialLinks, type SocialLink } from '../../utils/socialLinks.js';
+import { resolveCover, resolveFinal, resolveGenres, resolvePlatformIds } from '../games/resolution.js';
+import {
+  loadBaseGames,
+  loadBaseGenreIds,
+  loadLibraryMedia,
+  loadVariants,
+  variantKey,
+} from '../games/resolutionData.js';
 
 interface CatalogMeta {
   version: number;
@@ -49,6 +60,10 @@ interface Snapshot {
   genreIdsByGame: Map<string, string[]>;
   platformIdsByGame: Map<string, string[]>;
   mediaByGame: Map<string, GameMedia[]>;
+  baseGameById: Map<string, BaseGame>;
+  variantByKey: Map<string, BaseGamePlatform>;
+  baseGenreIdsByBase: Map<string, string[]>;
+  libraryMediaByBase: Map<string, LibraryMedia[]>;
 }
 
 export async function resolvePublicTenant(slug: string): Promise<string> {
@@ -112,6 +127,22 @@ async function readSnapshot(tenantId: string): Promise<Snapshot> {
       ]);
 
       const gameIds = games.map((game) => game.id);
+      const baseGameIds = [
+        ...new Set(
+          games
+            .map((game) => game.baseGameId)
+            .filter((baseGameId): baseGameId is string => baseGameId !== null),
+        ),
+      ];
+
+      const [baseGameById, variantByKey, baseGenreIdsByBase, libraryMediaByBase] =
+        await Promise.all([
+          loadBaseGames(tx, baseGameIds),
+          loadVariants(tx, baseGameIds),
+          loadBaseGenreIds(tx, baseGameIds),
+          loadLibraryMedia(tx, baseGameIds),
+        ]);
+
       let genreBridges: { tenantGameId: string; genreId: string }[] = [];
       let platformBridges: { tenantGameId: string; platformId: string }[] = [];
       if (gameIds.length) {
@@ -127,28 +158,6 @@ async function readSnapshot(tenantId: string): Promise<Snapshot> {
         ]);
       }
 
-      const categoryIds = [
-        ...new Set(
-          games
-            .map((game) => game.categoryId)
-            .filter((categoryId): categoryId is string => categoryId !== null),
-        ),
-      ];
-      const genreIds = [...new Set(genreBridges.map((bridge) => bridge.genreId))];
-      const platformIds = [...new Set(platformBridges.map((bridge) => bridge.platformId))];
-
-      const [categories, genres, platforms] = await Promise.all([
-        categoryIds.length
-          ? tx.category.findMany({ where: { id: { in: categoryIds }, deletedAt: null } })
-          : Promise.resolve([]),
-        genreIds.length
-          ? tx.genre.findMany({ where: { id: { in: genreIds }, deletedAt: null } })
-          : Promise.resolve([]),
-        platformIds.length
-          ? tx.platform.findMany({ where: { id: { in: platformIds }, deletedAt: null } })
-          : Promise.resolve([]),
-      ]);
-
       const genreIdsByGame = new Map<string, string[]>();
       for (const bridge of genreBridges) {
         const list = genreIdsByGame.get(bridge.tenantGameId) ?? [];
@@ -162,6 +171,48 @@ async function readSnapshot(tenantId: string): Promise<Snapshot> {
         list.push(bridge.platformId);
         platformIdsByGame.set(bridge.tenantGameId, list);
       }
+
+      const categoryIds = new Set<string>();
+      const genreIds = new Set<string>();
+      const platformIds = new Set<string>();
+
+      for (const game of games) {
+        const base = game.baseGameId ? baseGameById.get(game.baseGameId) : undefined;
+        const variant =
+          game.baseGameId && game.platformId
+            ? variantByKey.get(variantKey(game.baseGameId, game.platformId))
+            : undefined;
+
+        const finalCategoryId = resolveFinal(game, variant, base, 'categoryId');
+        if (finalCategoryId) categoryIds.add(finalCategoryId);
+
+        for (const genreId of resolveGenres(
+          genreIdsByGame.get(game.id) ?? [],
+          game.baseGameId ? baseGenreIdsByBase.get(game.baseGameId) ?? [] : [],
+          game.clearedFields,
+        )) {
+          genreIds.add(genreId);
+        }
+
+        for (const platformId of resolvePlatformIds(
+          game.platformId,
+          platformIdsByGame.get(game.id) ?? [],
+        )) {
+          platformIds.add(platformId);
+        }
+      }
+
+      const [categories, genres, platforms] = await Promise.all([
+        categoryIds.size
+          ? tx.category.findMany({ where: { id: { in: [...categoryIds] }, deletedAt: null } })
+          : Promise.resolve([]),
+        genreIds.size
+          ? tx.genre.findMany({ where: { id: { in: [...genreIds] }, deletedAt: null } })
+          : Promise.resolve([]),
+        platformIds.size
+          ? tx.platform.findMany({ where: { id: { in: [...platformIds] }, deletedAt: null } })
+          : Promise.resolve([]),
+      ]);
 
       const mediaByGame = new Map<string, GameMedia[]>();
       for (const row of media) {
@@ -179,6 +230,10 @@ async function readSnapshot(tenantId: string): Promise<Snapshot> {
         genreIdsByGame,
         platformIdsByGame,
         mediaByGame,
+        baseGameById,
+        variantByKey,
+        baseGenreIdsByBase,
+        libraryMediaByBase,
       };
     },
     { isolationLevel: Prisma.TransactionIsolationLevel.RepeatableRead },
@@ -197,35 +252,63 @@ function refsFor(ids: string[], source: Map<string, { id: string; name: string }
 }
 
 function publicGameDto(row: TenantGame, snapshot: Snapshot): PublicGame {
+  const base = row.baseGameId ? snapshot.baseGameById.get(row.baseGameId) : undefined;
+  const variant =
+    row.baseGameId && row.platformId
+      ? snapshot.variantByKey.get(variantKey(row.baseGameId, row.platformId))
+      : undefined;
+
+  const finalTitle = resolveFinal(row, variant, base, 'title');
+  const finalDescription = resolveFinal(row, variant, base, 'description');
+  const sizeValue = resolveFinal(row, variant, base, 'sizeValue');
+  const sizeUnit = resolveFinal(row, variant, base, 'sizeUnit');
+  const finalReleaseYear = resolveFinal(row, variant, base, 'releaseYear');
+  const finalCategoryId = resolveFinal(row, variant, base, 'categoryId');
+  const minimum = resolveFinal(row, variant, base, 'minimumRequirements');
+  const recommended = resolveFinal(row, variant, base, 'recommendedRequirements');
+
+  const title = finalTitle ?? row.slug;
   const media = snapshot.mediaByGame.get(row.id) ?? [];
-  const cover = media.find((item) => item.kind === 'COVER' && item.url !== null) ?? null;
+  const libraryMedia = row.baseGameId
+    ? snapshot.libraryMediaByBase.get(row.baseGameId) ?? []
+    : [];
+  const cover = resolveCover(media, libraryMedia, row.clearedFields);
   const screenshots = media
     .filter((item) => item.kind === 'SHOT' && item.url !== null)
     .sort((a, b) => a.sortOrder - b.sortOrder);
-  const categoryRow = row.categoryId ? snapshot.categories.get(row.categoryId) : undefined;
+  const categoryRow = finalCategoryId ? snapshot.categories.get(finalCategoryId) : undefined;
+
+  const genreIds = resolveGenres(
+    snapshot.genreIdsByGame.get(row.id) ?? [],
+    row.baseGameId ? snapshot.baseGenreIdsByBase.get(row.baseGameId) ?? [] : [],
+    row.clearedFields,
+  );
+  const platformIds = resolvePlatformIds(
+    row.platformId,
+    snapshot.platformIdsByGame.get(row.id) ?? [],
+  );
 
   return {
     id: row.id,
-    title: row.title,
+    title,
     slug: row.slug,
-    description: row.description,
+    description: finalDescription,
     price: row.price === null ? null : Number(row.price),
     currency: 'CUP',
     availability: row.availability,
-    size: {
-      value: row.sizeValue,
-      unit: row.sizeUnit,
-      formatted: `${row.sizeValue} ${row.sizeUnit}`,
-    },
-    releaseYear: row.releaseYear,
+    size:
+      sizeValue !== null && (sizeUnit === 'MB' || sizeUnit === 'GB' || sizeUnit === 'TB')
+        ? { value: sizeValue, unit: sizeUnit, formatted: `${sizeValue} ${sizeUnit}` }
+        : { value: 0, unit: 'GB', formatted: '0 GB' },
+    releaseYear: finalReleaseYear,
     category: categoryRow ? { id: categoryRow.id, name: categoryRow.name } : null,
-    genres: refsFor(snapshot.genreIdsByGame.get(row.id) ?? [], snapshot.genres),
-    platforms: refsFor(snapshot.platformIdsByGame.get(row.id) ?? [], snapshot.platforms),
-    coverImage: cover?.url ? { url: cover.url, alt: row.title } : null,
+    genres: refsFor(genreIds, snapshot.genres),
+    platforms: refsFor(platformIds, snapshot.platforms),
+    coverImage: cover?.url ? { url: cover.url, alt: title } : null,
     screenshots: screenshots.map((item) => ({ url: item.url as string })),
     requirements: {
-      minimum: row.minimumRequirements ?? {},
-      recommended: row.recommendedRequirements ?? {},
+      minimum: minimum ?? {},
+      recommended: recommended ?? {},
     },
   };
 }

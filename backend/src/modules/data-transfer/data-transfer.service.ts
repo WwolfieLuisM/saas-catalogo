@@ -1,5 +1,4 @@
 import { createHash, randomUUID } from 'node:crypto';
-import { z } from 'zod';
 import { getPrisma } from '../../config/database.js';
 import type { Prisma, PrismaClient } from '../../generated/client.js';
 import type { AuthContext } from '../../middleware/auth.js';
@@ -9,18 +8,17 @@ import type { RequestMeta } from '../../utils/requestMeta.js';
 import { auditData } from '../audit/audit.service.js';
 import { createBackup } from '../backups/backups.service.js';
 import { planCatalogBump } from '../catalog/catalog.service.js';
-import { jsonValue } from '../games/game.shared.js';
+import { jsonValue, slugSchema } from '../games/game.shared.js';
 import { resolveTenantId } from '../games/games.service.js';
 import type {
+  CatalogOffer,
   ExportQuery,
   ImportBackupInput,
-  ImportGameEntry,
   RunImportInput,
   ValidateImportInput,
 } from './data-transfer.schemas.js';
-import { importGameEntrySchema } from './data-transfer.schemas.js';
+import { CATALOG_SCHEMA, catalogOfferSchema } from './data-transfer.schemas.js';
 
-const CATALOG_SCHEMA = 'luismi-platform/catalog@1';
 const MEDIA_MANIFEST_SCHEMA = 'luismi-platform/media-manifest@1';
 
 type DbClient = PrismaClient | Prisma.TransactionClient;
@@ -32,39 +30,43 @@ interface ExportResult {
 
 interface PreparedCreate {
   index: number;
-  title: string;
+  baseGameId: string;
+  platformId: string;
+  platformSlug: string;
+  title: string | null;
   slug: string;
   description: string | null;
   priceMode: 'RULE' | 'MANUAL';
   price: number | null;
   availability: boolean;
-  sizeValue: number;
-  sizeUnit: 'MB' | 'GB' | 'TB';
+  sizeValue: number | null;
+  sizeUnit: 'MB' | 'GB' | 'TB' | null;
   releaseYear: number | null;
-  categoryId: string | null;
-  genreIds: string[];
-  platformIds: string[];
-  baseGameId: string | null;
   origin: 'BIBLIOTECA' | 'PERSONALIZADO';
   minimumRequirements: unknown;
   recommendedRequirements: unknown;
+  clearedFields: string[];
 }
 
 interface PreparedUpdate {
   index: number;
   id: string;
-  title: string;
+  title: string | null;
   slug: string;
+  platform: string;
   fields: string[];
   patch: Prisma.TenantGameUpdateInput;
-  genreIds?: string[];
-  platformIds?: string[];
-  categoryId?: string | null;
 }
 
 interface PreparedDelete {
   id: string;
-  title: string;
+  title: string | null;
+  slug: string;
+}
+
+interface ParsedOffer {
+  index: number;
+  data: CatalogOffer;
   slug: string;
 }
 
@@ -129,37 +131,38 @@ async function computeFingerprint(tenantId: string, client: DbClient): Promise<s
   return createHash('sha256').update(payload).digest('hex');
 }
 
-function groupIdsByGame(
-  bridges: { tenantGameId: string; genreId?: string; platformId?: string }[],
-  key: 'genreId' | 'platformId',
-): Map<string, string[]> {
-  const grouped = new Map<string, string[]>();
-  for (const bridge of bridges) {
-    const id = bridge[key];
-    if (!id) continue;
-    const list = grouped.get(bridge.tenantGameId) ?? [];
-    list.push(id);
-    grouped.set(bridge.tenantGameId, list);
-  }
-  return grouped;
+const OVERRIDE_FIELDS = [
+  'title',
+  'description',
+  'sizeValue',
+  'sizeUnit',
+  'releaseYear',
+  'minimumRequirements',
+  'recommendedRequirements',
+] as const;
+
+function sameJson(left: unknown, right: unknown): boolean {
+  return JSON.stringify(canonicalJson(left ?? null)) === JSON.stringify(canonicalJson(right ?? null));
 }
 
-function sameIds(left: string[], right: string[]): boolean {
-  if (left.length !== right.length) return false;
-  const set = new Set(left);
-  return right.every((id) => set.has(id));
+function absent(value: unknown): boolean {
+  return value === null || value === undefined;
 }
 
-function analyzeEntries(
-  entries: unknown[],
+function deriveSlug(offer: Pick<CatalogOffer, 'baseGameSlug' | 'platformSlug' | 'slug'>): string {
+  return offer.slug ?? `${offer.baseGameSlug}-${offer.platformSlug}`;
+}
+
+function analyzeOffers(
+  offers: unknown[],
   warnings: string[],
-): { errors: string[]; parsed: { index: number; data: ImportGameEntry; idHint: string | null }[] } {
+): { errors: string[]; parsed: ParsedOffer[] } {
   const errors: string[] = [];
-  const parsed: { index: number; data: ImportGameEntry; idHint: string | null }[] = [];
+  const parsed: ParsedOffer[] = [];
 
-  entries.forEach((entry, position) => {
-    const prefix = `Juego ${position + 1}: `;
-    const result = importGameEntrySchema.safeParse(entry);
+  offers.forEach((raw, position) => {
+    const prefix = `Oferta ${position + 1}: `;
+    const result = catalogOfferSchema.safeParse(raw);
 
     if (!result.success) {
       for (const issue of result.error.issues) {
@@ -168,55 +171,41 @@ function analyzeEntries(
       return;
     }
 
-    let idHint: string | null = null;
-    if (result.data.id !== undefined) {
-      if (z.string().uuid().safeParse(result.data.id).success) {
-        idHint = result.data.id;
-      } else {
-        warnings.push(`${prefix}id no válido; se emparejará por slug.`);
-      }
+    const data = result.data;
+    const slug = deriveSlug(data);
+
+    const validSlug = slugSchema.safeParse(slug);
+    if (!validSlug.success) {
+      errors.push(
+        `${prefix}el slug '${slug}' no es válido: usa un "slug" explícito de hasta 50 caracteres.`,
+      );
+      return;
     }
 
-    parsed.push({ index: position, data: result.data, idHint });
+    if (absent(data.sizeValue) !== absent(data.sizeUnit)) {
+      errors.push(`${prefix}sizeValue y sizeUnit van siempre en pareja.`);
+      return;
+    }
+
+    parsed.push({ index: position, data, slug });
   });
 
-  const seenIds = new Map<string, number>();
-  const seenSlugs = new Map<string, number>();
+  const seen = new Map<string, number>();
 
   for (const item of parsed) {
-    const prefix = `Juego ${item.index + 1}: `;
-
-    if (item.idHint) {
-      const previous = seenIds.get(item.idHint);
-      if (previous !== undefined) {
-        errors.push(`${prefix}duplicado (id del juego ${previous + 1}).`);
-      } else {
-        seenIds.set(item.idHint, item.index);
-      }
-    }
-
-    const previousSlug = seenSlugs.get(item.data.slug);
-    if (previousSlug !== undefined) {
-      errors.push(`${prefix}duplicado (slug '${item.data.slug}', juego ${previousSlug + 1}).`);
+    const key = `${item.data.baseGameSlug}|${item.data.platformSlug}`;
+    const previous = seen.get(key);
+    if (previous !== undefined) {
+      errors.push(
+        `Oferta ${item.index + 1}: ya existe una oferta de '${item.data.baseGameSlug}' en '${item.data.platformSlug}' (oferta ${previous + 1}).`,
+      );
     } else {
-      seenSlugs.set(item.data.slug, item.index);
+      seen.set(key, item.index);
     }
+  }
 
-    for (const [listKey, label] of [
-      ['genreSlugs', 'género'],
-      ['platformSlugs', 'plataforma'],
-    ] as const) {
-      const list = item.data[listKey];
-      if (!list) continue;
-      const seenList = new Set<string>();
-      for (const slug of list) {
-        if (seenList.has(slug)) {
-          errors.push(`${prefix}${label} duplicado '${slug}'.`);
-        } else {
-          seenList.add(slug);
-        }
-      }
-    }
+  if (errors.length > 0) {
+    warnings.push('Ninguna oferta se evaluó: el archivo tiene errores de formato.');
   }
 
   return { errors, parsed };
@@ -226,25 +215,36 @@ async function analyzeImport(tenantId: string, raw: unknown): Promise<ImportAnal
   const errors: string[] = [];
   const warnings: string[] = [];
 
-  let entries: unknown[];
-  let payloadObject: Record<string, unknown> | null = null;
-
-  if (Array.isArray(raw)) {
-    entries = raw;
-  } else if (raw && typeof raw === 'object' && Array.isArray((raw as { games?: unknown }).games)) {
-    payloadObject = raw as Record<string, unknown>;
-    entries = (raw as { games: unknown[] }).games;
-  } else {
-    throw new AppError(422, 'IMPORT_FORMAT_INVALID', 'El archivo debe contener una lista "games"');
+  if (raw === null || typeof raw !== 'object' || Array.isArray(raw)) {
+    throw new AppError(
+      400,
+      'CATALOG_SCHEMA_UNSUPPORTED',
+      `El archivo debe ser un objeto con "schema": "${CATALOG_SCHEMA}". Regenera el catálogo con el contrato nuevo: cada oferta es una entrada con una única "platformSlug".`,
+    );
   }
 
-  if (payloadObject && payloadObject['tenantId'] !== undefined) {
+  const rawSchema = (raw as { schema?: unknown }).schema;
+  const declared = typeof rawSchema === 'string' ? rawSchema : null;
+  const offers = (raw as { offers?: unknown }).offers;
+
+  if (declared !== CATALOG_SCHEMA || !Array.isArray(offers)) {
+    throw new AppError(
+      400,
+      'CATALOG_SCHEMA_UNSUPPORTED',
+      `El archivo declara ${declared ? `"${declared}"` : 'sin "schema"'} y este importador solo admite "${CATALOG_SCHEMA}" con su lista "offers". Regenera el catálogo con el contrato nuevo: cada oferta es una entrada con una única "platformSlug".`,
+    );
+  }
+
+  const entries = offers;
+  const payloadObject = raw as Record<string, unknown>;
+
+  if (payloadObject['tenantId'] !== undefined) {
     warnings.push(
       'El archivo incluye un tenantId. Se ignora: el servidor siempre usa el de tu sesión.',
     );
   }
 
-  const structural = analyzeEntries(entries, warnings);
+  const structural = analyzeOffers(entries, warnings);
   errors.push(...structural.errors);
   const parsed = structural.parsed;
 
@@ -253,70 +253,47 @@ async function analyzeImport(tenantId: string, raw: unknown): Promise<ImportAnal
   }
 
   const prisma = getPrisma();
-  const [active, allRows] = await Promise.all([
-    prisma.tenantGame.findMany({ where: { tenantId, deletedAt: null }, orderBy: { id: 'asc' } }),
-    prisma.tenantGame.findMany({ where: { tenantId }, orderBy: { id: 'asc' } }),
+  const baseGameSlugs = uniqueSorted(parsed.map((item) => item.data.baseGameSlug));
+  const platformSlugs = uniqueSorted(parsed.map((item) => item.data.platformSlug));
+
+  const [baseGames, platforms] = await Promise.all([
+    baseGameSlugs.length
+      ? prisma.baseGame.findMany({ where: { slug: { in: baseGameSlugs }, deletedAt: null } })
+      : Promise.resolve([]),
+    platformSlugs.length
+      ? prisma.platform.findMany({
+          where: { tenantId: null, slug: { in: platformSlugs }, deletedAt: null },
+        })
+      : Promise.resolve([]),
   ]);
 
-  const categorySlugs = new Set<string>();
-  const genreSlugs = new Set<string>();
-  const platformSlugs = new Set<string>();
-  const baseGameSlugs = new Set<string>();
+  const baseGameBySlug = new Map(baseGames.map((row) => [row.slug, row]));
+  const platformBySlug = new Map(platforms.map((row) => [row.slug, row]));
 
-  for (const item of parsed) {
-    if (item.data.categorySlug) categorySlugs.add(item.data.categorySlug);
-    for (const slug of item.data.genreSlugs ?? []) genreSlugs.add(slug);
-    for (const slug of item.data.platformSlugs ?? []) platformSlugs.add(slug);
-    if (item.data.baseGameSlug) baseGameSlugs.add(item.data.baseGameSlug);
+  const enabledPlatforms = new Set<string>();
+  if (platforms.length) {
+    const rows = await prisma.tenantPlatform.findMany({
+      where: { tenantId, platformId: { in: platforms.map((row) => row.id) } },
+    });
+    for (const row of rows) {
+      if (row.enabled) enabledPlatforms.add(row.platformId);
+    }
   }
 
-  const [categories, genres, platforms, baseGames] = await Promise.all([
-    categorySlugs.size
-      ? prisma.category.findMany({
-          where: { tenantId, slug: { in: [...categorySlugs] }, deletedAt: null },
-        })
-      : Promise.resolve([]),
-    genreSlugs.size
-      ? prisma.genre.findMany({
-          where: { tenantId, slug: { in: [...genreSlugs] }, deletedAt: null },
-        })
-      : Promise.resolve([]),
-    platformSlugs.size
-      ? prisma.platform.findMany({
-          where: { tenantId, slug: { in: [...platformSlugs] }, deletedAt: null },
-        })
-      : Promise.resolve([]),
-    baseGameSlugs.size
-      ? prisma.baseGame.findMany({ where: { slug: { in: [...baseGameSlugs] }, deletedAt: null } })
-      : Promise.resolve([]),
-  ]);
-
-  const categoryBySlug = new Map(categories.map((row) => [row.slug, row]));
-  const genreBySlug = new Map(genres.map((row) => [row.slug, row]));
-  const platformBySlug = new Map(platforms.map((row) => [row.slug, row]));
-  const baseGameBySlug = new Map(baseGames.map((row) => [row.slug, row]));
-
   for (const item of parsed) {
-    const prefix = `Juego ${item.index + 1}: `;
-    const data = item.data;
+    const prefix = `Oferta ${item.index + 1}: `;
+    const { baseGameSlug, platformSlug } = item.data;
 
-    if (data.categorySlug && !categoryBySlug.has(data.categorySlug)) {
-      errors.push(`${prefix}la categoría '${data.categorySlug}' no existe en este catálogo.`);
+    if (!baseGameBySlug.has(baseGameSlug)) {
+      errors.push(`${prefix}'${baseGameSlug}' no existe en la biblioteca o está eliminado.`);
     }
-    if (data.baseGameSlug && !baseGameBySlug.has(data.baseGameSlug)) {
+    const platform = platformBySlug.get(platformSlug);
+    if (!platform) {
+      errors.push(`${prefix}'${platformSlug}' no existe en el catálogo global de plataformas.`);
+    } else if (!enabledPlatforms.has(platform.id)) {
       errors.push(
-        `${prefix}el juego de biblioteca '${data.baseGameSlug}' no existe o está eliminado.`,
+        `${prefix}la plataforma '${platformSlug}' no está habilitada en tu catálogo. Actívala antes de importar.`,
       );
-    }
-    for (const slug of data.genreSlugs ?? []) {
-      if (!genreBySlug.has(slug)) {
-        errors.push(`${prefix}el género '${slug}' no existe en este catálogo.`);
-      }
-    }
-    for (const slug of data.platformSlugs ?? []) {
-      if (!platformBySlug.has(slug)) {
-        errors.push(`${prefix}la plataforma '${slug}' no existe en este catálogo.`);
-      }
     }
   }
 
@@ -324,216 +301,150 @@ async function analyzeImport(tenantId: string, raw: unknown): Promise<ImportAnal
     return { errors, warnings, changes: null };
   }
 
-  const activeIds = active.map((row) => row.id);
-  const [genreBridges, platformBridges] = await Promise.all([
-    activeIds.length
-      ? prisma.tenantGameGenre.findMany({ where: { tenantGameId: { in: activeIds } } })
-      : Promise.resolve([]),
-    activeIds.length
-      ? prisma.gamePlatform.findMany({ where: { tenantGameId: { in: activeIds } } })
-      : Promise.resolve([]),
+  const [active, allRows] = await Promise.all([
+    prisma.tenantGame.findMany({ where: { tenantId, deletedAt: null }, orderBy: { id: 'asc' } }),
+    prisma.tenantGame.findMany({ where: { tenantId }, orderBy: { id: 'asc' } }),
   ]);
-  const genreIdsByGame = groupIdsByGame(genreBridges, 'genreId');
-  const platformIdsByGame = groupIdsByGame(platformBridges, 'platformId');
 
-  const activeBaseIds = [
-    ...new Set(active.map((row) => row.baseGameId).filter((id): id is string => id !== null)),
-  ];
-  const activeBases = activeBaseIds.length
-    ? await prisma.baseGame.findMany({ where: { id: { in: activeBaseIds } } })
-    : [];
-  const baseById = new Map(activeBases.map((row) => [row.id, row]));
-  const publishedBaseIds = new Set(
-    allRows.map((row) => row.baseGameId).filter((id): id is string => id !== null),
-  );
+  const identityKey = (baseGameId: string, platformId: string): string => `${baseGameId}:${platformId}`;
+  const slugKey = (platformId: string, slug: string): string => `${platformId}:${slug}`;
 
-  const activeById = new Map(active.map((row) => [row.id, row]));
-  const activeBySlug = new Map(active.map((row) => [row.slug, row]));
-  const rowsBySlugAll = new Map(allRows.map((row) => [row.slug, row]));
+  const activeByIdentity = new Map<string, (typeof active)[number]>();
+  const activeBySlug = new Map<string, (typeof active)[number]>();
+  const allByIdentity = new Map<string, (typeof allRows)[number]>();
+  const allBySlug = new Map<string, (typeof allRows)[number]>();
+
+  for (const row of allRows) {
+    if (!row.platformId) continue;
+    allBySlug.set(slugKey(row.platformId, row.slug), row);
+    if (row.baseGameId) allByIdentity.set(identityKey(row.baseGameId, row.platformId), row);
+  }
+  for (const row of active) {
+    if (!row.platformId) continue;
+    activeBySlug.set(slugKey(row.platformId, row.slug), row);
+    if (row.baseGameId) activeByIdentity.set(identityKey(row.baseGameId, row.platformId), row);
+  }
+
+  const changes: ImportChanges = { create: [], update: [], delete: [], unchanged: 0 };
   const hit = new Set<string>();
-
-  const changes: ImportChanges = {
-    create: [],
-    update: [],
-    delete: [],
-    unchanged: 0,
-  };
-
-  const lockedWarning = (prefix: string, field: string): void => {
-    warnings.push(`${prefix}campo de biblioteca '${field}' ignorado (origen BIBLIOTECA).`);
-  };
+  const declaredPlatformIds = new Set<string>();
 
   for (const item of parsed) {
-    const prefix = `Juego ${item.index + 1}: `;
+    const prefix = `Oferta ${item.index + 1}: `;
     const data = item.data;
+    const base = baseGameBySlug.get(data.baseGameSlug);
+    const platform = platformBySlug.get(data.platformSlug);
+
+    if (!base || !platform) {
+      continue;
+    }
+
+    declaredPlatformIds.add(platform.id);
+
+    const identity = identityKey(base.id, platform.id);
     const match =
-      (item.idHint ? activeById.get(item.idHint) : undefined) ?? activeBySlug.get(data.slug);
+      activeByIdentity.get(identity) ?? activeBySlug.get(slugKey(platform.id, item.slug));
+
+    if (match && match.baseGameId !== base.id) {
+      errors.push(
+        match.baseGameId
+          ? `${prefix}el slug '${item.slug}' ya pertenece a otra oferta de biblioteca.`
+          : `${prefix}el slug '${item.slug}' pertenece a una oferta personalizada; retírala del archivo o cámbiale el slug.`,
+      );
+      continue;
+    }
+
+    if (match && data.slug && data.slug !== match.slug) {
+      warnings.push(
+        `${prefix}slug '${data.slug}' ignorado: la identidad de una oferta no se renombra (sigue '${match.slug}').`,
+      );
+    }
+
+    const targetMode = data.priceMode ?? match?.priceMode ?? 'RULE';
+    let targetPrice: number | null;
+    if (targetMode === 'RULE') {
+      if (data.price !== undefined && data.price !== null) {
+        errors.push(`${prefix}price solo aplica cuando priceMode es MANUAL.`);
+        continue;
+      }
+      targetPrice = null;
+    } else if (data.price !== undefined && data.price !== null) {
+      targetPrice = data.price;
+    } else {
+      targetPrice = match?.price === null || match?.price === undefined ? null : Number(match.price);
+      if (targetPrice === null) {
+        errors.push(`${prefix}price es obligatorio cuando priceMode es MANUAL.`);
+        continue;
+      }
+    }
+
+    const overrides = OVERRIDE_FIELDS.filter((field) => !absent(data[field])) as (typeof OVERRIDE_FIELDS)[number][];
+    const cleared = uniqueSorted((data.clearedFields ?? []) as string[]);
+    const hasOverride = overrides.length > 0 || cleared.length > 0;
 
     if (!match) {
-      const owner = rowsBySlugAll.get(data.slug);
-      if (owner && owner.deletedAt) {
+      const retired =
+        allByIdentity.get(identity) ?? allBySlug.get(slugKey(platform.id, item.slug));
+      if (retired?.deletedAt) {
         errors.push(
-          `${prefix}el slug '${data.slug}' pertenece a un juego eliminado; restáuralo antes de importar.`,
+          `${prefix}ya existe una oferta retirada para '${data.baseGameSlug}' en '${data.platformSlug}' (slug '${retired.slug}'); restáuralo antes de importar.`,
         );
         continue;
       }
 
-      const priceMode = data.priceMode ?? 'RULE';
-      let price: number | null;
-      if (priceMode === 'RULE') {
-        if (data.price !== undefined && data.price !== null) {
-          errors.push(`${prefix}price solo aplica cuando priceMode es MANUAL.`);
-          continue;
-        }
-        price = null;
-      } else {
-        price = data.price ?? null;
-        if (price === null) {
-          errors.push(`${prefix}price es obligatorio cuando priceMode es MANUAL.`);
-          continue;
-        }
-      }
-
-      let baseGameId: string | null = null;
-      let origin: 'BIBLIOTECA' | 'PERSONALIZADO' = 'PERSONALIZADO';
-      if (data.baseGameSlug) {
-        const base = baseGameBySlug.get(data.baseGameSlug);
-        if (!base) {
-          errors.push(
-            `${prefix}el juego de biblioteca '${data.baseGameSlug}' no existe o está eliminado.`,
-          );
-          continue;
-        }
-        if (publishedBaseIds.has(base.id)) {
-          errors.push(
-            `${prefix}la biblioteca '${data.baseGameSlug}' ya está publicada en este catálogo.`,
-          );
-          continue;
-        }
-        baseGameId = base.id;
-        origin = 'BIBLIOTECA';
-      }
-
       changes.create.push({
         index: item.index,
-        title: data.title,
-        slug: data.slug,
+        baseGameId: base.id,
+        platformId: platform.id,
+        platformSlug: platform.slug,
+        title: data.title ?? null,
+        slug: item.slug,
         description: data.description ?? null,
-        priceMode,
-        price,
+        priceMode: targetMode,
+        price: targetPrice,
         availability: data.availability ?? true,
-        sizeValue: data.sizeValue,
-        sizeUnit: data.sizeUnit,
+        sizeValue: data.sizeValue ?? null,
+        sizeUnit: data.sizeUnit ?? null,
         releaseYear: data.releaseYear ?? null,
-        categoryId: data.categorySlug ? (categoryBySlug.get(data.categorySlug)?.id ?? null) : null,
-        genreIds: uniqueSorted(
-          (data.genreSlugs ?? []).map((slug) => genreBySlug.get(slug)?.id ?? ''),
-        ).filter(Boolean),
-        platformIds: uniqueSorted(
-          (data.platformSlugs ?? []).map((slug) => platformBySlug.get(slug)?.id ?? ''),
-        ).filter(Boolean),
-        baseGameId,
-        origin,
+        origin: hasOverride ? 'PERSONALIZADO' : 'BIBLIOTECA',
         minimumRequirements: data.minimumRequirements ?? null,
         recommendedRequirements: data.recommendedRequirements ?? null,
+        clearedFields: cleared,
       });
       continue;
     }
 
     hit.add(match.id);
 
-    if (data.slug !== match.slug) {
-      const owner = rowsBySlugAll.get(data.slug);
-      if (owner && owner.id !== match.id) {
-        errors.push(
-          owner.deletedAt
-            ? `${prefix}el slug '${data.slug}' pertenece a un juego eliminado; restáuralo antes de importar.`
-            : `${prefix}el slug '${data.slug}' ya pertenece a otro juego.`,
-        );
-        continue;
-      }
-    }
-
     const patch: Prisma.TenantGameUpdateInput = {};
     const fields: string[] = [];
-    const isLibrary = match.origin === 'BIBLIOTECA';
+    const currentPrice = match.price === null ? null : Number(match.price);
 
-    if (data.title !== match.title) {
-      if (isLibrary) {
-        lockedWarning(prefix, 'title');
-      } else {
-        fields.push('title');
-        patch.title = data.title;
+    if (targetMode !== match.priceMode) {
+      fields.push('priceMode');
+      patch.priceMode = targetMode;
+    }
+    if (targetPrice !== currentPrice) {
+      fields.push('price');
+      patch.price = targetPrice;
+    }
+
+    for (const field of overrides) {
+      const changed =
+        field === 'minimumRequirements' || field === 'recommendedRequirements'
+          ? !sameJson(data[field], match[field])
+          : !(
+              data[field] === match[field] ||
+              (absent(data[field]) && absent(match[field]))
+            );
+      if (!changed) {
+        continue;
       }
-    }
-
-    if (data.slug !== match.slug && !isLibrary) {
-      fields.push('slug');
-      patch.slug = data.slug;
-    }
-
-    if (data.description !== undefined && (data.description ?? null) !== match.description) {
-      if (isLibrary) {
-        lockedWarning(prefix, 'description');
+      fields.push(field);
+      if (field === 'minimumRequirements' || field === 'recommendedRequirements') {
+        patch[field] = jsonValue(data[field]);
       } else {
-        fields.push('description');
-        patch.description = data.description ?? null;
-      }
-    }
-
-    if (data.sizeValue !== match.sizeValue) {
-      if (isLibrary) {
-        lockedWarning(prefix, 'sizeValue');
-      } else {
-        fields.push('sizeValue');
-        patch.sizeValue = data.sizeValue;
-      }
-    }
-
-    if (data.sizeUnit !== match.sizeUnit) {
-      if (isLibrary) {
-        lockedWarning(prefix, 'sizeUnit');
-      } else {
-        fields.push('sizeUnit');
-        patch.sizeUnit = data.sizeUnit;
-      }
-    }
-
-    if (
-      data.releaseYear !== undefined &&
-      (data.releaseYear ?? null) !== (match.releaseYear ?? null)
-    ) {
-      if (isLibrary) {
-        lockedWarning(prefix, 'releaseYear');
-      } else {
-        fields.push('releaseYear');
-        patch.releaseYear = data.releaseYear ?? null;
-      }
-    }
-
-    if (
-      data.minimumRequirements !== undefined &&
-      JSON.stringify(canonicalJson(data.minimumRequirements ?? null)) !==
-        JSON.stringify(canonicalJson(match.minimumRequirements ?? null))
-    ) {
-      if (isLibrary) {
-        lockedWarning(prefix, 'minimumRequirements');
-      } else {
-        fields.push('minimumRequirements');
-        patch.minimumRequirements = jsonValue(data.minimumRequirements ?? null);
-      }
-    }
-
-    if (
-      data.recommendedRequirements !== undefined &&
-      JSON.stringify(canonicalJson(data.recommendedRequirements ?? null)) !==
-        JSON.stringify(canonicalJson(match.recommendedRequirements ?? null))
-    ) {
-      if (isLibrary) {
-        lockedWarning(prefix, 'recommendedRequirements');
-      } else {
-        fields.push('recommendedRequirements');
-        patch.recommendedRequirements = jsonValue(data.recommendedRequirements ?? null);
+        (patch as Record<string, unknown>)[field] = data[field];
       }
     }
 
@@ -542,81 +453,16 @@ async function analyzeImport(tenantId: string, raw: unknown): Promise<ImportAnal
       patch.availability = data.availability;
     }
 
-    const newPriceMode = data.priceMode ?? match.priceMode;
-    let targetPrice: number | null;
-    if (newPriceMode === 'RULE') {
-      if (data.price !== undefined && data.price !== null) {
-        errors.push(`${prefix}price solo aplica cuando priceMode es MANUAL.`);
-        continue;
-      }
-      targetPrice = null;
-    } else {
-      targetPrice = data.price ?? (match.price === null ? null : Number(match.price));
-      if (targetPrice === null) {
-        errors.push(`${prefix}price es obligatorio cuando priceMode es MANUAL.`);
-        continue;
-      }
+    if (data.clearedFields !== undefined && !sameJson(match.clearedFields, cleared)) {
+      fields.push('clearedFields');
+      patch.clearedFields = jsonValue(cleared);
     }
 
-    const currentPrice = match.price === null ? null : Number(match.price);
-    if (newPriceMode !== match.priceMode) {
-      fields.push('priceMode');
-      patch.priceMode = newPriceMode;
-    }
-    if (targetPrice !== currentPrice) {
-      fields.push('price');
-      patch.price = targetPrice;
-    }
-
-    let genreIds: string[] | undefined;
-    if (data.genreSlugs !== undefined) {
-      genreIds = uniqueSorted(
-        data.genreSlugs.map((slug) => genreBySlug.get(slug)?.id ?? ''),
-      ).filter(Boolean);
-      const currentIds = genreIdsByGame.get(match.id) ?? [];
-      if (!sameIds(currentIds, genreIds)) {
-        fields.push('genreSlugs');
-      } else {
-        genreIds = undefined;
-      }
-    }
-
-    let platformIds: string[] | undefined;
-    if (data.platformSlugs !== undefined) {
-      platformIds = uniqueSorted(
-        data.platformSlugs.map((slug) => platformBySlug.get(slug)?.id ?? ''),
-      ).filter(Boolean);
-      const currentIds = platformIdsByGame.get(match.id) ?? [];
-      if (!sameIds(currentIds, platformIds)) {
-        fields.push('platformSlugs');
-      } else {
-        platformIds = undefined;
-      }
-    }
-
-    let categoryIdPatch: string | null | undefined;
-    if (data.categorySlug !== undefined) {
-      const categoryId = data.categorySlug
-        ? (categoryBySlug.get(data.categorySlug)?.id ?? null)
-        : null;
-      if (categoryId !== match.categoryId) {
-        fields.push('categorySlug');
-        categoryIdPatch = categoryId;
-      }
-    }
-
-    if (data.baseGameSlug !== undefined && data.baseGameSlug !== null) {
-      const owner = match.baseGameId ? baseById.get(match.baseGameId) : undefined;
-      if (!owner) {
-        errors.push(`${prefix}el juego es personalizado y no puede vincularse a la biblioteca.`);
-        continue;
-      }
-      if (owner.slug !== data.baseGameSlug) {
-        errors.push(`${prefix}no se puede cambiar el juego de biblioteca asociado.`);
-        continue;
-      }
-    } else if (data.baseGameSlug === null && match.origin === 'BIBLIOTECA') {
-      warnings.push(`${prefix}sin referencia de biblioteca; se conserva la referencia actual.`);
+    const origin: 'BIBLIOTECA' | 'PERSONALIZADO' =
+      match.origin === 'PERSONALIZADO' || hasOverride ? 'PERSONALIZADO' : 'BIBLIOTECA';
+    if (origin !== match.origin) {
+      fields.push('origin');
+      patch.origin = origin;
     }
 
     if (fields.length > 0) {
@@ -625,11 +471,9 @@ async function analyzeImport(tenantId: string, raw: unknown): Promise<ImportAnal
         id: match.id,
         title: match.title,
         slug: match.slug,
+        platform: platform.slug,
         fields,
         patch,
-        genreIds,
-        platformIds,
-        ...(categoryIdPatch !== undefined ? { categoryId: categoryIdPatch } : {}),
       });
     } else {
       changes.unchanged += 1;
@@ -640,10 +484,28 @@ async function analyzeImport(tenantId: string, raw: unknown): Promise<ImportAnal
     return { errors, warnings, changes: null };
   }
 
+  const conservedPlatformIds = new Set<string>();
   for (const row of active) {
-    if (!hit.has(row.id)) {
+    if (hit.has(row.id) || !row.platformId) continue;
+    if (declaredPlatformIds.has(row.platformId)) {
       changes.delete.push({ id: row.id, title: row.title, slug: row.slug });
+    } else {
+      conservedPlatformIds.add(row.platformId);
     }
+  }
+
+  if (conservedPlatformIds.size > 0) {
+    const conserved = active.filter((row) => row.platformId && conservedPlatformIds.has(row.platformId));
+    const rows = await prisma.platform.findMany({
+      where: { id: { in: [...conservedPlatformIds] } },
+    });
+    const names = rows
+      .map((row) => row.slug)
+      .sort()
+      .join(', ');
+    warnings.push(
+      `Se conservan ${conserved.length} oferta(s) de plataformas que el archivo no declara (${names}). Solo se retiran ofertas de las plataformas incluidas en el archivo.`,
+    );
   }
 
   return { errors, warnings, changes };
@@ -673,79 +535,83 @@ export async function exportCatalog(
     where: { tenantId, deletedAt: null },
     orderBy: [{ createdAt: 'asc' }, { id: 'asc' }],
   });
-  const gameIds = games.map((row) => row.id);
+  const metaRow = await prisma.catalogMetadata.findFirst({ where: { tenantId } });
 
-  const [genreBridges, platformBridges, metaRow] = await Promise.all([
-    gameIds.length
-      ? prisma.tenantGameGenre.findMany({ where: { tenantGameId: { in: gameIds } } })
-      : Promise.resolve([]),
-    gameIds.length
-      ? prisma.gamePlatform.findMany({ where: { tenantGameId: { in: gameIds } } })
-      : Promise.resolve([]),
-    prisma.catalogMetadata.findFirst({ where: { tenantId } }),
-  ]);
-
-  const categoryIds = [
-    ...new Set(games.map((row) => row.categoryId).filter((id): id is string => id !== null)),
-  ];
-  const genreIds = [...new Set(genreBridges.map((bridge) => bridge.genreId))];
-  const platformIds = [...new Set(platformBridges.map((bridge) => bridge.platformId))];
   const baseGameIds = [
     ...new Set(games.map((row) => row.baseGameId).filter((id): id is string => id !== null)),
   ];
+  const platformIds = [
+    ...new Set(games.map((row) => row.platformId).filter((id): id is string => id !== null)),
+  ];
 
-  const [categories, genres, platforms, baseGames] = await Promise.all([
-    categoryIds.length
-      ? prisma.category.findMany({ where: { id: { in: categoryIds }, deletedAt: null } })
-      : Promise.resolve([]),
-    genreIds.length
-      ? prisma.genre.findMany({ where: { id: { in: genreIds }, deletedAt: null } })
+  const [baseGames, platforms] = await Promise.all([
+    baseGameIds.length
+      ? prisma.baseGame.findMany({ where: { id: { in: baseGameIds }, deletedAt: null } })
       : Promise.resolve([]),
     platformIds.length
       ? prisma.platform.findMany({ where: { id: { in: platformIds }, deletedAt: null } })
       : Promise.resolve([]),
-    baseGameIds.length
-      ? prisma.baseGame.findMany({ where: { id: { in: baseGameIds }, deletedAt: null } })
-      : Promise.resolve([]),
   ]);
 
-  const categoryById = new Map(categories.map((row) => [row.id, row]));
-  const genreById = new Map(genres.map((row) => [row.id, row]));
-  const platformById = new Map(platforms.map((row) => [row.id, row]));
   const baseGameById = new Map(baseGames.map((row) => [row.id, row]));
+  const platformById = new Map(platforms.map((row) => [row.id, row]));
 
-  const genreIdsByGame = groupIdsByGame(genreBridges, 'genreId');
-  const platformIdsByGame = groupIdsByGame(platformBridges, 'platformId');
+  const offers: Record<string, unknown>[] = [];
+  const skipped: { slug: string; reason: string }[] = [];
 
-  const payload: Record<string, unknown> = {
-    schema: CATALOG_SCHEMA,
-    exportedAt: new Date().toISOString(),
-    tenant: tenant.slug,
-    version: metaRow?.version ?? 0,
-    games: games.map((row) => ({
-      id: row.id,
-      title: row.title,
+  for (const row of games) {
+    const base = row.baseGameId ? baseGameById.get(row.baseGameId) : undefined;
+    const platform = row.platformId ? platformById.get(row.platformId) : undefined;
+
+    if (!base) {
+      skipped.push({
+        slug: row.slug,
+        reason: 'la oferta no tiene juego de biblioteca (catalog@2 solo admite ofertas de biblioteca)',
+      });
+      continue;
+    }
+    if (!platform || platform.tenantId !== null) {
+      skipped.push({
+        slug: row.slug,
+        reason: 'la plataforma de la oferta no pertenece al catálogo global',
+      });
+      continue;
+    }
+
+    const cleared = Array.isArray(row.clearedFields)
+      ? (row.clearedFields.filter((item): item is string => typeof item === 'string') as string[])
+          .slice()
+          .sort()
+      : [];
+
+    offers.push({
+      baseGameSlug: base.slug,
+      platformSlug: platform.slug,
       slug: row.slug,
-      description: row.description,
       priceMode: row.priceMode,
       price: row.price === null ? null : Number(row.price),
       availability: row.availability,
+      title: row.title,
+      description: row.description,
+      releaseYear: row.releaseYear,
       sizeValue: row.sizeValue,
       sizeUnit: row.sizeUnit,
-      releaseYear: row.releaseYear,
-      categorySlug: row.categoryId ? (categoryById.get(row.categoryId)?.slug ?? null) : null,
-      genreSlugs: (genreIdsByGame.get(row.id) ?? [])
-        .map((id) => genreById.get(id)?.slug)
-        .filter((slug): slug is string => slug !== undefined)
-        .sort(),
-      platformSlugs: (platformIdsByGame.get(row.id) ?? [])
-        .map((id) => platformById.get(id)?.slug)
-        .filter((slug): slug is string => slug !== undefined)
-        .sort(),
-      baseGameSlug: row.baseGameId ? (baseGameById.get(row.baseGameId)?.slug ?? null) : null,
-      minimumRequirements: row.minimumRequirements,
-      recommendedRequirements: row.recommendedRequirements,
-    })),
+      minimumRequirements: row.minimumRequirements ?? null,
+      recommendedRequirements: row.recommendedRequirements ?? null,
+      ...(cleared.length ? { clearedFields: cleared } : {}),
+    });
+  }
+
+  const payload: Record<string, unknown> = {
+    schema: CATALOG_SCHEMA,
+    generatedAt: new Date().toISOString(),
+    source: `catalogo-${tenant.slug}`,
+    notice:
+      'Exportación de ofertas por plataforma. Las ofertas listadas en "skipped" no se incluyen en "offers" ' +
+      'porque catalog@2 solo admite ofertas con juego de biblioteca y plataforma global. El importador ignora ' +
+      '"notice" y "skipped".',
+    skipped,
+    offers,
   };
 
   await prisma.auditLog.create({
@@ -754,7 +620,12 @@ export async function exportCatalog(
       action: 'CATALOG_EXPORTED',
       entity: 'TenantGame',
       tenantId,
-      metadata: { format: 'json', games: games.length, version: payload['version'] },
+      metadata: {
+        format: 'json',
+        games: offers.length,
+        skipped: skipped.length,
+        version: metaRow?.version ?? 0,
+      },
       ipAddress: meta.ipAddress,
       userAgent: meta.userAgent,
     }),
@@ -881,6 +752,7 @@ export async function previewImport(input: ValidateImportInput, auth: AuthContex
         index: item.index,
         title: item.title,
         slug: item.slug,
+        platform: item.platformSlug,
         availability: item.availability,
       })),
       update: analysis.changes.update.map((item) => ({
@@ -888,6 +760,7 @@ export async function previewImport(input: ValidateImportInput, auth: AuthContex
         id: item.id,
         title: item.title,
         slug: item.slug,
+        platform: item.platform,
         fields: item.fields,
       })),
       delete: analysis.changes.delete,
@@ -985,6 +858,7 @@ export async function runImport(
           id,
           tenantId,
           baseGameId: item.baseGameId,
+          platformId: item.platformId,
           origin: item.origin,
           title: item.title,
           slug: item.slug,
@@ -995,50 +869,20 @@ export async function runImport(
           sizeValue: item.sizeValue,
           sizeUnit: item.sizeUnit,
           releaseYear: item.releaseYear,
-          categoryId: item.categoryId,
           minimumRequirements: jsonValue(item.minimumRequirements),
           recommendedRequirements: jsonValue(item.recommendedRequirements),
+          clearedFields: jsonValue(item.clearedFields),
           createdBy: auth?.id ?? null,
           updatedBy: auth?.id ?? null,
         },
       });
-
-      if (item.genreIds.length) {
-        await tx.tenantGameGenre.createMany({
-          data: item.genreIds.map((genreId) => ({ tenantGameId: id, genreId })),
-        });
-      }
-      if (item.platformIds.length) {
-        await tx.gamePlatform.createMany({
-          data: item.platformIds.map((platformId) => ({ tenantGameId: id, platformId })),
-        });
-      }
     }
 
     for (const item of plan.update) {
-      const data: Prisma.TenantGameUpdateInput = {
-        ...item.patch,
-        ...(item.categoryId !== undefined ? { categoryId: item.categoryId } : {}),
-        updatedBy: auth?.id ?? null,
-      };
-      await tx.tenantGame.update({ where: { id: item.id }, data });
-
-      if (item.genreIds !== undefined) {
-        await tx.tenantGameGenre.deleteMany({ where: { tenantGameId: item.id } });
-        if (item.genreIds.length) {
-          await tx.tenantGameGenre.createMany({
-            data: item.genreIds.map((genreId) => ({ tenantGameId: item.id, genreId })),
-          });
-        }
-      }
-      if (item.platformIds !== undefined) {
-        await tx.gamePlatform.deleteMany({ where: { tenantGameId: item.id } });
-        if (item.platformIds.length) {
-          await tx.gamePlatform.createMany({
-            data: item.platformIds.map((platformId) => ({ tenantGameId: item.id, platformId })),
-          });
-        }
-      }
+      await tx.tenantGame.update({
+        where: { id: item.id },
+        data: { ...item.patch, updatedBy: auth?.id ?? null },
+      });
     }
 
     for (const item of plan.delete) {

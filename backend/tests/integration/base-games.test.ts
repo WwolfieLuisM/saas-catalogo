@@ -629,6 +629,20 @@ describe('PATCH /base-games/:id', () => {
     expect(log?.metadata).toMatchObject({ fields: ['title', 'releaseYear'] });
   });
 
+  it('ADMIN de tenant no puede editar la biblioteca (403)', async () => {
+    const game = seedBaseGame();
+
+    const { status, body } = await api(
+      `${BASE}/${game.id}`,
+      { method: 'PATCH', body: JSON.stringify({ title: 'No autorizado' }) },
+      adminToken,
+    );
+
+    expect(status).toBe(403);
+    expect(body.error?.code).toBe('FORBIDDEN');
+    expect(state.baseGames.get(game.id)?.title).not.toBe('No autorizado');
+  });
+
   it('actualiza status y metadata de procedencia', async () => {
     const game = seedBaseGame({ status: 'ACTIVE', developer: 'Viejo Dev' });
 

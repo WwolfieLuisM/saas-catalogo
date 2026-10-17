@@ -1,13 +1,15 @@
 import { randomUUID } from 'node:crypto';
 import { getPrisma } from '../../config/database.js';
 import type { AuthContext } from '../../middleware/auth.js';
-import type { Prisma, TenantGame } from '../../generated/client.js';
+import type { BaseGame, BaseGamePlatform, Prisma, TenantGame } from '../../generated/client.js';
 import { AppError } from '../../utils/appError.js';
 import type { RequestMeta } from '../../utils/requestMeta.js';
 import { auditData } from '../audit/audit.service.js';
 import { planCatalogBump } from '../catalog/catalog.service.js';
 import { assertTaxonomyRefs, jsonValue, resolveRequirements } from './game.shared.js';
 import type { CreateGameInput, GamesListQuery, UpdateGameInput } from './games.schemas.js';
+import { resolveFinal, resolveGenres, resolvePlatformIds } from './resolution.js';
+import { loadBaseGenreIds, loadVariants, variantKey } from './resolutionData.js';
 
 interface TaxonomySummary {
   id: string;
@@ -15,11 +17,35 @@ interface TaxonomySummary {
   slug: string;
 }
 
+interface ResolvedSummary {
+  title: string | null;
+  description: string | null;
+  sizeValue: number | null;
+  sizeUnit: string | null;
+  releaseYear: number | null;
+  categoryId: string | null;
+  minimumRequirements: unknown;
+  recommendedRequirements: unknown;
+  genres: TaxonomySummary[];
+  platforms: TaxonomySummary[];
+  category: TaxonomySummary | null;
+}
+
 interface GameDetail {
   category: TaxonomySummary | null;
   genres: TaxonomySummary[];
   platforms: TaxonomySummary[];
+  platform: TaxonomySummary | null;
   baseGame: { id: string; slug: string; title: string } | null;
+  resolved: ResolvedSummary;
+}
+
+interface ResolvedRefs {
+  base: BaseGame | undefined;
+  variant: BaseGamePlatform | undefined;
+  categoryId: string | null;
+  genreIds: string[];
+  platformIds: string[];
 }
 
 function summary(
@@ -83,57 +109,136 @@ async function loadDetails(rows: TenantGame[]): Promise<Map<string, GameDetail>>
 
   const ids = rows.map((row) => row.id);
   const tenantIds = [...new Set(rows.map((row) => row.tenantId))];
-  const [genreBridges, platformBridges] = await Promise.all([
-    prisma.tenantGameGenre.findMany({ where: { tenantGameId: { in: ids } } }),
-    prisma.gamePlatform.findMany({ where: { tenantGameId: { in: ids } } }),
-  ]);
-
-  const genreIds = [...new Set(genreBridges.map((bridge) => bridge.genreId))];
-  const platformIds = [...new Set(platformBridges.map((bridge) => bridge.platformId))];
-  const categoryIds = [
-    ...new Set(rows.map((row) => row.categoryId).filter((id): id is string => id !== null)),
-  ];
   const baseGameIds = [
     ...new Set(rows.map((row) => row.baseGameId).filter((id): id is string => id !== null)),
   ];
 
-  const [genres, platforms, categories, baseGames] = await Promise.all([
-    genreIds.length
-      ? prisma.genre.findMany({ where: { id: { in: genreIds }, tenantId: { in: tenantIds } } })
+  const [genreBridges, platformBridges, baseRows, variantByKey, baseGenreIdsByBase] =
+    await Promise.all([
+      prisma.tenantGameGenre.findMany({ where: { tenantGameId: { in: ids } } }),
+      prisma.gamePlatform.findMany({ where: { tenantGameId: { in: ids } } }),
+      baseGameIds.length
+        ? prisma.baseGame.findMany({ where: { id: { in: baseGameIds } } })
+        : Promise.resolve([]),
+      loadVariants(prisma, baseGameIds),
+      loadBaseGenreIds(prisma, baseGameIds),
+    ]);
+
+  const genreIdsByGame = new Map<string, string[]>();
+  for (const bridge of genreBridges) {
+    const list = genreIdsByGame.get(bridge.tenantGameId) ?? [];
+    list.push(bridge.genreId);
+    genreIdsByGame.set(bridge.tenantGameId, list);
+  }
+
+  const platformIdsByGame = new Map<string, string[]>();
+  for (const bridge of platformBridges) {
+    const list = platformIdsByGame.get(bridge.tenantGameId) ?? [];
+    list.push(bridge.platformId);
+    platformIdsByGame.set(bridge.tenantGameId, list);
+  }
+
+  const genreIdPool = new Set<string>();
+  const platformIdPool = new Set<string>();
+  const categoryIdPool = new Set<string>();
+  const resolvedByRow = new Map<string, ResolvedRefs>();
+  const baseGameById = new Map(
+    baseRows.filter((game) => game.deletedAt === null).map((game) => [game.id, game]),
+  );
+
+  for (const row of rows) {
+    const base = row.baseGameId ? baseGameById.get(row.baseGameId) : undefined;
+    const variant =
+      row.baseGameId && row.platformId
+        ? variantByKey.get(variantKey(row.baseGameId, row.platformId))
+        : undefined;
+
+    const resolvedCategoryId = resolveFinal(row, variant, base, 'categoryId');
+    const resolvedGenreIds = resolveGenres(
+      genreIdsByGame.get(row.id) ?? [],
+      row.baseGameId ? baseGenreIdsByBase.get(row.baseGameId) ?? [] : [],
+      row.clearedFields,
+    );
+    const resolvedPlatformIds = resolvePlatformIds(
+      row.platformId,
+      platformIdsByGame.get(row.id) ?? [],
+    );
+
+    if (row.categoryId) categoryIdPool.add(row.categoryId);
+    if (resolvedCategoryId) categoryIdPool.add(resolvedCategoryId);
+    for (const genreId of genreIdsByGame.get(row.id) ?? []) genreIdPool.add(genreId);
+    for (const genreId of resolvedGenreIds) genreIdPool.add(genreId);
+    for (const platformId of platformIdsByGame.get(row.id) ?? []) platformIdPool.add(platformId);
+    for (const platformId of resolvedPlatformIds) platformIdPool.add(platformId);
+
+    resolvedByRow.set(row.id, {
+      base,
+      variant,
+      categoryId: resolvedCategoryId,
+      genreIds: resolvedGenreIds,
+      platformIds: resolvedPlatformIds,
+    });
+  }
+
+  const tenantScope = {
+    OR: [{ tenantId: null }, { tenantId: { in: tenantIds } }],
+  };
+
+  const [genres, platforms, categories] = await Promise.all([
+    genreIdPool.size
+      ? prisma.genre.findMany({ where: { id: { in: [...genreIdPool] }, ...tenantScope } })
       : Promise.resolve([]),
-    platformIds.length
-      ? prisma.platform.findMany({
-          where: { id: { in: platformIds }, tenantId: { in: tenantIds } },
-        })
+    platformIdPool.size
+      ? prisma.platform.findMany({ where: { id: { in: [...platformIdPool] }, ...tenantScope } })
       : Promise.resolve([]),
-    categoryIds.length
-      ? prisma.category.findMany({
-          where: { id: { in: categoryIds }, tenantId: { in: tenantIds } },
-        })
-      : Promise.resolve([]),
-    baseGameIds.length
-      ? prisma.baseGame.findMany({ where: { id: { in: baseGameIds } } })
+    categoryIdPool.size
+      ? prisma.category.findMany({ where: { id: { in: [...categoryIdPool] }, ...tenantScope } })
       : Promise.resolve([]),
   ]);
 
   const genreById = new Map(genres.map((genre) => [genre.id, genre]));
   const platformById = new Map(platforms.map((platform) => [platform.id, platform]));
   const categoryById = new Map(categories.map((category) => [category.id, category]));
-  const baseGameById = new Map(baseGames.map((game) => [game.id, game]));
+  const rawBaseGameById = new Map(baseRows.map((game) => [game.id, game]));
 
   for (const row of rows) {
-    const base = row.baseGameId ? baseGameById.get(row.baseGameId) : undefined;
+    const refs = resolvedByRow.get(row.id) as ResolvedRefs;
+    const rawBase = row.baseGameId ? rawBaseGameById.get(row.baseGameId) : undefined;
+    const rawGenreIds = genreIdsByGame.get(row.id) ?? [];
+    const rawPlatformIds = platformIdsByGame.get(row.id) ?? [];
+
     details.set(row.id, {
       category: summary(categoryById.get(row.categoryId ?? '')) ?? null,
-      genres: genreBridges
-        .filter((bridge) => bridge.tenantGameId === row.id)
-        .map((bridge) => summary(genreById.get(bridge.genreId)))
+      genres: rawGenreIds
+        .map((genreId) => summary(genreById.get(genreId)))
         .filter((value): value is TaxonomySummary => value !== null),
-      platforms: platformBridges
-        .filter((bridge) => bridge.tenantGameId === row.id)
-        .map((bridge) => summary(platformById.get(bridge.platformId)))
+      platforms: rawPlatformIds
+        .map((platformId) => summary(platformById.get(platformId)))
         .filter((value): value is TaxonomySummary => value !== null),
-      baseGame: base ? { id: base.id, slug: base.slug, title: base.title } : null,
+      platform: summary(platformById.get(row.platformId)) ?? null,
+      baseGame: rawBase ? { id: rawBase.id, slug: rawBase.slug, title: rawBase.title } : null,
+      resolved: {
+        title: resolveFinal(row, refs.variant, refs.base, 'title'),
+        description: resolveFinal(row, refs.variant, refs.base, 'description'),
+        sizeValue: resolveFinal(row, refs.variant, refs.base, 'sizeValue'),
+        sizeUnit: resolveFinal(row, refs.variant, refs.base, 'sizeUnit'),
+        releaseYear: resolveFinal(row, refs.variant, refs.base, 'releaseYear'),
+        categoryId: refs.categoryId,
+        minimumRequirements: resolveFinal(row, refs.variant, refs.base, 'minimumRequirements'),
+        recommendedRequirements: resolveFinal(
+          row,
+          refs.variant,
+          refs.base,
+          'recommendedRequirements',
+        ),
+        genres: refs.genreIds
+          .map((genreId) => summary(genreById.get(genreId)))
+          .filter((value): value is TaxonomySummary => value !== null),
+        platforms: refs.platformIds
+          .map((platformId) => summary(platformById.get(platformId)))
+          .filter((value): value is TaxonomySummary => value !== null),
+        category: summary(categoryById.get(refs.categoryId ?? '')) ?? null,
+      },
     });
   }
 
@@ -160,8 +265,12 @@ export function tenantGameDto(row: TenantGame, detail: GameDetail) {
     category: detail.category,
     genres: detail.genres,
     platforms: detail.platforms,
+    platform: detail.platform,
     minimumRequirements: row.minimumRequirements,
     recommendedRequirements: row.recommendedRequirements,
+    platformId: row.platformId,
+    clearedFields: row.clearedFields,
+    resolved: detail.resolved,
     deletedAt: row.deletedAt,
     createdBy: row.createdBy,
     updatedBy: row.updatedBy,
@@ -230,6 +339,20 @@ export async function getGame(id: string, auth: AuthContext | null) {
   return tenantGameDto(row, details.get(row.id) as GameDetail);
 }
 
+async function assertGlobalPlatform(platformId: string): Promise<void> {
+  const prisma = getPrisma();
+  const platform = await prisma.platform.findFirst({
+    where: { id: platformId, tenantId: null, deletedAt: null },
+  });
+  if (!platform) {
+    throw new AppError(
+      422,
+      'PLATFORM_NOT_FOUND',
+      'La plataforma indicada no existe en el catálogo global',
+    );
+  }
+}
+
 async function publishFromLibrary(
   input: CreateGameInput,
   tenantId: string,
@@ -237,6 +360,7 @@ async function publishFromLibrary(
   meta: RequestMeta,
 ) {
   const prisma = getPrisma();
+  await assertGlobalPlatform(input.platformId);
   const base = await prisma.baseGame.findFirst({
     where: { id: input.baseGameId as string, deletedAt: null },
   });
@@ -281,11 +405,10 @@ async function publishFromLibrary(
 
   let categoryId = input.categoryId ?? null;
   let genreIds = input.genreIds ?? null;
-  let platformIds = input.platformIds ?? null;
-  const missing: { categories: string[]; genres: string[]; platforms: string[] } = {
+  const platformIds = input.platformIds ?? null;
+  const missing: { categories: string[]; genres: string[] } = {
     categories: [],
     genres: [],
-    platforms: [],
   };
 
   if (categoryId === null && input.categoryId === undefined) {
@@ -328,29 +451,7 @@ async function publishFromLibrary(
     genreIds = resolved;
   }
 
-  if (platformIds === null && input.platformIds === undefined) {
-    const bridges = await prisma.baseGamePlatform.findMany({ where: { baseGameId: base.id } });
-    const platformIdList = bridges.map((bridge) => bridge.platformId);
-    const resolved: string[] = [];
-    if (platformIdList.length) {
-      const globalPlatforms = await prisma.platform.findMany({
-        where: { id: { in: platformIdList }, tenantId: null, deletedAt: null },
-      });
-      for (const globalPlatform of globalPlatforms) {
-        const tenantPlatform = await prisma.platform.findFirst({
-          where: { tenantId, slug: globalPlatform.slug, deletedAt: null },
-        });
-        if (tenantPlatform) {
-          resolved.push(tenantPlatform.id);
-        } else {
-          missing.platforms.push(globalPlatform.slug);
-        }
-      }
-    }
-    platformIds = resolved;
-  }
-
-  if (missing.categories.length || missing.genres.length || missing.platforms.length) {
+  if (missing.categories.length || missing.genres.length) {
     throw new AppError(
       422,
       'TAXONOMY_MAPPING_INCOMPLETE',
@@ -366,6 +467,7 @@ async function publishFromLibrary(
         id,
         tenantId,
         baseGameId: base.id,
+        platformId: input.platformId,
         origin: 'BIBLIOTECA',
         title: base.title,
         slug: base.slug,
@@ -435,6 +537,7 @@ export async function createGame(
   if (input.baseGameId) {
     row = await publishFromLibrary(input, tenantId, auth, meta);
   } else {
+    await assertGlobalPlatform(input.platformId);
     const slugTaken = await prisma.tenantGame.findFirst({ where: { tenantId, slug: input.slug } });
     if (slugTaken) {
       throw new AppError(409, 'GAME_SLUG_EXISTS', 'Ya existe un juego con ese slug en el catálogo');
@@ -458,6 +561,7 @@ export async function createGame(
           id,
           tenantId,
           baseGameId: null,
+          platformId: input.platformId,
           origin: 'PERSONALIZADO',
           title: input.title as string,
           slug: input.slug as string,
@@ -528,30 +632,7 @@ export async function updateGame(
   assertRowAccess(row, auth);
   const prisma = getPrisma();
 
-  const libraryLockedKeys = [
-    'title',
-    'slug',
-    'description',
-    'sizeValue',
-    'sizeUnit',
-    'releaseYear',
-    'minimumRequirements',
-    'recommendedRequirements',
-  ] as const;
-
-  if (row.origin === 'BIBLIOTECA') {
-    const touched = libraryLockedKeys.filter((key) => input[key] !== undefined);
-    if (touched.length > 0) {
-      throw new AppError(
-        422,
-        'LIBRARY_FIELDS_IMMUTABLE',
-        'Los metadatos de la biblioteca no se pueden modificar desde el catálogo',
-        { fields: touched },
-      );
-    }
-  }
-
-  if (row.origin === 'PERSONALIZADO' && input.slug !== undefined && input.slug !== row.slug) {
+  if (input.slug !== undefined && input.slug !== row.slug) {
     const existing = await prisma.tenantGame.findFirst({
       where: { tenantId: row.tenantId, slug: input.slug, id: { not: row.id } },
     });
@@ -801,7 +882,8 @@ export async function duplicateGame(id: string, auth: AuthContext | null, meta: 
   }
 
   const titleSuffix = ' (copia)';
-  const copyTitle = `${source.title.slice(0, 150 - titleSuffix.length).trimEnd()}${titleSuffix}`;
+  const baseTitle = source.title ?? source.slug;
+  const copyTitle = `${baseTitle.slice(0, 150 - titleSuffix.length).trimEnd()}${titleSuffix}`;
 
   const [genreBridges, platformBridges] = await Promise.all([
     prisma.tenantGameGenre.findMany({ where: { tenantGameId: source.id } }),
@@ -817,6 +899,7 @@ export async function duplicateGame(id: string, auth: AuthContext | null, meta: 
         id: newId,
         tenantId: source.tenantId,
         baseGameId: null,
+        platformId: source.platformId,
         origin: 'PERSONALIZADO',
         title: copyTitle,
         slug: candidate,

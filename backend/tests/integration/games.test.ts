@@ -8,7 +8,8 @@ import {
   addFakeBaseGame,
   addFakeBaseGameGenre,
   addFakeBaseGamePlatform,
-  addFakeCategory,
+addFakeCategory,
+  addFakeGamePlatform,
   addFakeGenre,
   addFakePlatform,
   addFakeTenant,
@@ -41,6 +42,7 @@ interface GameDto {
   id: string;
   tenantId: string;
   baseGameId: string | null;
+  platformId: string | null;
   baseGame: { id: string; slug: string; title: string } | null;
   origin: 'BIBLIOTECA' | 'PERSONALIZADO';
   title: string;
@@ -78,6 +80,7 @@ let server: Server;
 let baseUrl: string;
 let superToken: string;
 let adminToken: string;
+let PC: string;
 
 async function api<T = Record<string, unknown>>(
   path: string,
@@ -190,6 +193,7 @@ beforeEach(() => {
   addFakeUser({ id: 'u-admin', username: 'javier-admin', role: 'ADMIN', tenantId: T_JAVIER });
   addFakeTenant({ id: T_JAVIER, name: 'Javier', slug: 'javier' });
   addFakeTenant({ id: T_OTRO, name: 'Otro', slug: 'otro' });
+  PC = globalPlatform('pc-principal', 'PC').id;
 });
 
 describe('GET /games', () => {
@@ -330,6 +334,7 @@ describe('POST /games (personalizado)', () => {
       {
         method: 'POST',
         body: JSON.stringify({
+          platformId: PC,
           title: 'Mod Pack',
           slug: 'mod-pack',
           sizeValue: 500,
@@ -351,6 +356,7 @@ describe('POST /games (personalizado)', () => {
       origin: 'PERSONALIZADO',
       title: 'Mod Pack',
       slug: 'mod-pack',
+      platformId: PC,
       priceMode: 'MANUAL',
       price: 4.99,
       createdBy: 'u-admin',
@@ -372,12 +378,74 @@ describe('POST /games (personalizado)', () => {
     expect(log?.metadata).toMatchObject({ origin: 'PERSONALIZADO', slug: 'mod-pack' });
   });
 
+  it('devuelve 400 si falta platformId', async () => {
+    const { status, body } = await api(
+      BASE,
+      {
+        method: 'POST',
+        body: JSON.stringify({
+          title: 'Nuevo',
+          slug: 'nuevo',
+          sizeValue: 1,
+          sizeUnit: 'GB',
+        }),
+      },
+      adminToken,
+    );
+
+    expect(status).toBe(400);
+    expect(body.error?.code).toBe('VALIDATION_ERROR');
+  });
+
+  it('devuelve 422 si la plataforma no existe en el catálogo global', async () => {
+    const { status, body } = await api(
+      BASE,
+      {
+        method: 'POST',
+        body: JSON.stringify({
+          platformId: randomUUID(),
+          title: 'Nuevo',
+          slug: 'nuevo',
+          sizeValue: 1,
+          sizeUnit: 'GB',
+        }),
+      },
+      adminToken,
+    );
+
+    expect(status).toBe(422);
+    expect(body.error?.code).toBe('PLATFORM_NOT_FOUND');
+  });
+
+  it('devuelve 422 si la plataforma es del tenant y no del catálogo global', async () => {
+    const propia = tenantPlatform('propia', 'Propia');
+
+    const { status, body } = await api(
+      BASE,
+      {
+        method: 'POST',
+        body: JSON.stringify({
+          platformId: propia.id,
+          title: 'Nuevo',
+          slug: 'nuevo',
+          sizeValue: 1,
+          sizeUnit: 'GB',
+        }),
+      },
+      adminToken,
+    );
+
+    expect(status).toBe(422);
+    expect(body.error?.code).toBe('PLATFORM_NOT_FOUND');
+  });
+
   it('SUPER_ADMIN crea en el tenant indicado', async () => {
     const { status, body } = await api<GameDto>(
       BASE,
       {
         method: 'POST',
         body: JSON.stringify({
+          platformId: PC,
           tenantId: T_OTRO,
           title: 'Ajeno',
           slug: 'ajeno',
@@ -398,6 +466,7 @@ describe('POST /games (personalizado)', () => {
       {
         method: 'POST',
         body: JSON.stringify({
+          platformId: PC,
           title: 'Sin tenant',
           slug: 'sin-tenant',
           sizeValue: 1,
@@ -417,6 +486,7 @@ describe('POST /games (personalizado)', () => {
       {
         method: 'POST',
         body: JSON.stringify({
+          platformId: PC,
           tenantId: T_OTRO,
           title: 'Ajeno',
           slug: 'ajeno',
@@ -438,7 +508,13 @@ describe('POST /games (personalizado)', () => {
       BASE,
       {
         method: 'POST',
-        body: JSON.stringify({ title: 'Duplicado', slug: 'ocupado', sizeValue: 1, sizeUnit: 'GB' }),
+        body: JSON.stringify({
+          platformId: PC,
+          title: 'Duplicado',
+          slug: 'ocupado',
+          sizeValue: 1,
+          sizeUnit: 'GB',
+        }),
       },
       adminToken,
     );
@@ -454,7 +530,13 @@ describe('POST /games (personalizado)', () => {
       BASE,
       {
         method: 'POST',
-        body: JSON.stringify({ title: 'Propio', slug: 'repetido', sizeValue: 1, sizeUnit: 'GB' }),
+        body: JSON.stringify({
+          platformId: PC,
+          title: 'Propio',
+          slug: 'repetido',
+          sizeValue: 1,
+          sizeUnit: 'GB',
+        }),
       },
       adminToken,
     );
@@ -471,6 +553,7 @@ describe('POST /games (personalizado)', () => {
       {
         method: 'POST',
         body: JSON.stringify({
+          platformId: PC,
           title: 'Nuevo',
           slug: 'nuevo',
           sizeValue: 1,
@@ -491,6 +574,7 @@ describe('POST /games (personalizado)', () => {
       {
         method: 'POST',
         body: JSON.stringify({
+          platformId: PC,
           title: 'Nuevo',
           slug: 'nuevo',
           sizeValue: 1,
@@ -512,7 +596,12 @@ describe('POST /games (personalizado)', () => {
       BASE,
       {
         method: 'POST',
-        body: JSON.stringify({ title: 'Sin unidad', slug: 'sin-unidad', sizeValue: 10 }),
+        body: JSON.stringify({
+          platformId: PC,
+          title: 'Sin unidad',
+          slug: 'sin-unidad',
+          sizeValue: 10,
+        }),
       },
       adminToken,
     );
@@ -527,6 +616,7 @@ describe('POST /games (personalizado)', () => {
       {
         method: 'POST',
         body: JSON.stringify({
+          platformId: PC,
           title: 'Sin precio',
           slug: 'sin-precio',
           sizeValue: 1,
@@ -546,6 +636,7 @@ describe('POST /games (personalizado)', () => {
       {
         method: 'POST',
         body: JSON.stringify({
+          platformId: PC,
           title: 'Con precio',
           slug: 'con-precio',
           sizeValue: 1,
@@ -569,7 +660,7 @@ describe('POST /games (publicación desde biblioteca)', () => {
       BASE,
       {
         method: 'POST',
-        body: JSON.stringify({ baseGameId: fixture.base.id, priceMode: 'MANUAL', price: 19.99 }),
+        body: JSON.stringify({ platformId: fixture.gPlat.id, baseGameId: fixture.base.id, priceMode: 'MANUAL', price: 19.99 }),
       },
       adminToken,
     );
@@ -590,10 +681,11 @@ describe('POST /games (publicación desde biblioteca)', () => {
       releaseYear: 2020,
       categoryId: fixture.tCat.id,
     });
-    expect(body.data?.baseGame).toMatchObject({ id: fixture.base.id, slug: 'hades' });
+expect(body.data?.baseGame).toMatchObject({ id: fixture.base.id, slug: 'hades' });
     expect(body.data?.category).toMatchObject({ id: fixture.tCat.id, slug: 'accion' });
     expect(body.data?.genres).toEqual([expect.objectContaining({ id: fixture.tGenre.id })]);
-    expect(body.data?.platforms).toEqual([expect.objectContaining({ id: fixture.tPlat.id })]);
+    expect(body.data?.platforms).toEqual([]);
+    expect(body.data?.platformId).toBe(fixture.gPlat.id);
     expect(body.data?.minimumRequirements).toEqual({ cpu: 'i5', ram: '8 GB' });
     expect(body.data?.recommendedRequirements).toEqual({ cpu: 'i7', ram: '16 GB' });
 
@@ -612,7 +704,7 @@ describe('POST /games (publicación desde biblioteca)', () => {
 
     const { status, body } = await api<GameDto>(
       BASE,
-      { method: 'POST', body: JSON.stringify({ baseGameId: fixture.base.id, categoryId: null }) },
+      { method: 'POST', body: JSON.stringify({ platformId: fixture.gPlat.id, baseGameId: fixture.base.id, categoryId: null }) },
       adminToken,
     );
 
@@ -627,7 +719,7 @@ describe('POST /games (publicación desde biblioteca)', () => {
 
     const { status, body } = await api(
       BASE,
-      { method: 'POST', body: JSON.stringify({ baseGameId: base.id }) },
+      { method: 'POST', body: JSON.stringify({ platformId: PC, baseGameId: base.id }) },
       adminToken,
     );
 
@@ -644,7 +736,7 @@ describe('POST /games (publicación desde biblioteca)', () => {
 
     const { status, body } = await api(
       BASE,
-      { method: 'POST', body: JSON.stringify({ baseGameId: base.id }) },
+      { method: 'POST', body: JSON.stringify({ platformId: PC, baseGameId: base.id }) },
       adminToken,
     );
 
@@ -661,7 +753,7 @@ describe('POST /games (publicación desde biblioteca)', () => {
       BASE,
       {
         method: 'POST',
-        body: JSON.stringify({ baseGameId: fixture.base.id, categoryId: randomUUID() }),
+        body: JSON.stringify({ platformId: fixture.gPlat.id, baseGameId: fixture.base.id, categoryId: randomUUID() }),
       },
       adminToken,
     );
@@ -673,7 +765,7 @@ describe('POST /games (publicación desde biblioteca)', () => {
   it('devuelve 422 si el juego de biblioteca no existe', async () => {
     const { status, body } = await api(
       BASE,
-      { method: 'POST', body: JSON.stringify({ baseGameId: randomUUID() }) },
+      { method: 'POST', body: JSON.stringify({ platformId: PC, baseGameId: randomUUID() }) },
       adminToken,
     );
 
@@ -687,7 +779,7 @@ describe('POST /games (publicación desde biblioteca)', () => {
 
     const { status, body } = await api(
       BASE,
-      { method: 'POST', body: JSON.stringify({ baseGameId: fixture.base.id }) },
+      { method: 'POST', body: JSON.stringify({ platformId: fixture.gPlat.id, baseGameId: fixture.base.id }) },
       adminToken,
     );
 
@@ -701,7 +793,7 @@ describe('POST /games (publicación desde biblioteca)', () => {
 
     const { status, body } = await api(
       BASE,
-      { method: 'POST', body: JSON.stringify({ baseGameId: fixture.base.id }) },
+      { method: 'POST', body: JSON.stringify({ platformId: fixture.gPlat.id, baseGameId: fixture.base.id }) },
       adminToken,
     );
 
@@ -714,7 +806,7 @@ describe('POST /games (publicación desde biblioteca)', () => {
 
     const { status, body } = await api(
       BASE,
-      { method: 'POST', body: JSON.stringify({ baseGameId: fixture.base.id, title: 'Hackeado' }) },
+      { method: 'POST', body: JSON.stringify({ platformId: fixture.gPlat.id, baseGameId: fixture.base.id, title: 'Hackeado' }) },
       adminToken,
     );
 
@@ -795,35 +887,32 @@ describe('PATCH /games/:id', () => {
     expect(log?.metadata).toMatchObject({ fields: ['priceMode', 'price', 'availability'] });
   });
 
-  it('bloquea title en juegos de biblioteca con LIBRARY_FIELDS_IMMUTABLE', async () => {
+  it('permite editar title en juegos de biblioteca como override de tenant', async () => {
     const game = seedGame({ origin: 'BIBLIOTECA', baseGameId: randomUUID(), slug: 'hades' });
 
-    const { status, body } = await api(
+    const { status, body } = await api<GameDto>(
       `${BASE}/${game.id}`,
       { method: 'PATCH', body: JSON.stringify({ title: 'Hackeado' }) },
       adminToken,
     );
 
-    expect(status).toBe(422);
-    expect(body.error?.code).toBe('LIBRARY_FIELDS_IMMUTABLE');
-    const details = body.error?.details as MissingDetails;
-    expect(details.fields).toContain('title');
-    expect(state.tenantGames.get(game.id)?.title).toBe('Juego');
+    expect(status).toBe(200);
+    expect(body.data).toMatchObject({ title: 'Hackeado' });
+    expect(state.tenantGames.get(game.id)?.title).toBe('Hackeado');
   });
 
-  it('bloquea slug en juegos de biblioteca', async () => {
+  it('permite editar slug en juegos de biblioteca', async () => {
     const game = seedGame({ origin: 'BIBLIOTECA', baseGameId: randomUUID(), slug: 'hades' });
 
-    const { status, body } = await api(
+    const { status, body } = await api<GameDto>(
       `${BASE}/${game.id}`,
       { method: 'PATCH', body: JSON.stringify({ slug: 'otro-slug' }) },
       adminToken,
     );
 
-    expect(status).toBe(422);
-    expect(body.error?.code).toBe('LIBRARY_FIELDS_IMMUTABLE');
-    const details = body.error?.details as MissingDetails;
-    expect(details.fields).toContain('slug');
+    expect(status).toBe(200);
+    expect(body.data).toMatchObject({ slug: 'otro-slug' });
+    expect(state.tenantGames.get(game.id)?.slug).toBe('otro-slug');
   });
 
   it('actualiza campos de juegos personalizados y audita', async () => {
@@ -1055,7 +1144,8 @@ describe('tenant inexistente (SUPER_ADMIN)', () => {
       BASE,
       {
         method: 'POST',
-        body: JSON.stringify({
+body: JSON.stringify({
+          platformId: PC,
           tenantId: '99999999-9999-4999-8999-999999999999',
           title: 'Huerfano',
           slug: 'huerfano',
@@ -1070,5 +1160,163 @@ describe('tenant inexistente (SUPER_ADMIN)', () => {
 
     expect(status).toBe(422);
     expect(body.error?.code).toBe('TENANT_NOT_FOUND');
+  });
+});
+
+interface ResolvedGameDto extends GameDto {
+  platformId: string | null;
+  platform: TaxonomySummary | null;
+  clearedFields: string[] | null;
+  resolved: {
+    title: string | null;
+    description: string | null;
+    sizeValue: number | null;
+    sizeUnit: string | null;
+    releaseYear: number | null;
+    categoryId: string | null;
+    minimumRequirements: unknown;
+    recommendedRequirements: unknown;
+    genres: TaxonomySummary[];
+    platforms: TaxonomySummary[];
+    category: TaxonomySummary | null;
+  };
+}
+
+describe('GET /games/:id: resolución de herencia (fase 4)', () => {
+  function seedWorld() {
+    const platform = tenantPlatform('pc', 'PC');
+    const category = globalCategory('metroidvania', 'Metroidvania');
+    const genre = globalGenre('accion', 'Acción');
+    const base = seedBaseGame({
+      title: 'Hollow Knight',
+      slug: 'hollow-knight',
+      description: 'Aventura indie',
+      sizeValue: 8,
+      sizeUnit: 'GB',
+      releaseYear: 2017,
+      categoryId: category.id,
+      minimumRequirements: { cpu: 'i3', ram: '4 GB' },
+      recommendedRequirements: { cpu: 'i7', ram: '16 GB' },
+    });
+    addFakeBaseGameGenre(base.id, genre.id);
+    addFakeBaseGamePlatform(base.id, platform.id, { sizeValue: 12, sizeUnit: 'GB' });
+    return { base, platform, category, genre };
+  }
+
+  function seedHeir(
+    baseId: string | null,
+    platformId: string | null,
+    overrides: Partial<FakeTenantGame> = {},
+  ): FakeTenantGame {
+    return seedGame({
+      origin: baseId ? 'BIBLIOTECA' : 'PERSONALIZADO',
+      baseGameId: baseId,
+      platformId,
+      title: null,
+      description: null,
+      sizeValue: null,
+      sizeUnit: null,
+      releaseYear: null,
+      categoryId: null,
+      minimumRequirements: null,
+      recommendedRequirements: null,
+      ...overrides,
+    });
+  }
+
+  it('expone resolved con la herencia efectiva y conserva los valores crudos', async () => {
+    const { base, platform, category, genre } = seedWorld();
+    const heir = seedHeir(base.id, platform.id);
+
+    const { status, body } = await api<ResolvedGameDto>(`${BASE}/${heir.id}`, {}, adminToken);
+
+    expect(status).toBe(200);
+    const dto = body.data as ResolvedGameDto;
+    expect(dto.title).toBeNull();
+    expect(dto.platformId).toBe(platform.id);
+    expect(dto.clearedFields).toBeNull();
+    expect(dto.resolved).toMatchObject({
+      title: 'Hollow Knight',
+      description: 'Aventura indie',
+      sizeValue: 12,
+      sizeUnit: 'GB',
+      releaseYear: 2017,
+      categoryId: category.id,
+      minimumRequirements: { cpu: 'i3', ram: '4 GB' },
+      recommendedRequirements: { cpu: 'i7', ram: '16 GB' },
+      genres: [{ id: genre.id, name: 'Acción', slug: genre.slug }],
+      platforms: [{ id: platform.id, name: 'PC', slug: platform.slug }],
+      category: { id: category.id, name: 'Metroidvania', slug: category.slug },
+    });
+  });
+
+  it('expone la plataforma de la oferta en platform aunque no haya puentes legacy', async () => {
+    const { base, platform } = seedWorld();
+    const heir = seedHeir(base.id, platform.id);
+
+    const { status, body } = await api<ResolvedGameDto>(`${BASE}/${heir.id}`, {}, adminToken);
+
+    expect(status).toBe(200);
+    const dto = body.data as ResolvedGameDto;
+    expect(dto.platform).toEqual({ id: platform.id, name: 'PC', slug: platform.slug });
+    expect(dto.platforms).toEqual([]);
+  });
+
+  it('platform y platforms cuentan historias distintas: la oferta manda, el puente no', async () => {
+    const { base, platform } = seedWorld();
+    const legacy = tenantPlatform('ps4', 'PS4');
+    const heir = seedHeir(base.id, platform.id);
+    addFakeGamePlatform(heir.id, legacy.id);
+
+    const { body } = await api<ResolvedGameDto>(`${BASE}/${heir.id}`, {}, adminToken);
+    const dto = body.data as ResolvedGameDto;
+
+    expect(dto.platform?.slug).toBe(platform.slug);
+    expect(dto.platforms.map((item) => item.slug)).toEqual([legacy.slug]);
+  });
+
+  it('platform es null en una oferta personalizada sin plataforma heredada', async () => {
+    const { base } = seedWorld();
+    const custom = seedHeir(null, null);
+
+    const { body } = await api<ResolvedGameDto>(`${BASE}/${custom.id}`, {}, adminToken);
+    const dto = body.data as ResolvedGameDto;
+
+    expect(dto.platform).toBeNull();
+    expect(base.slug).toBe('hollow-knight');
+  });
+
+  it('refleja clearedFields y anula el campo resuelto', async () => {
+    const { base, platform } = seedWorld();
+    const heir = seedHeir(base.id, platform.id, { clearedFields: ['title', 'cover'] });
+
+    const { body } = await api<ResolvedGameDto>(`${BASE}/${heir.id}`, {}, adminToken);
+    const dto = body.data as ResolvedGameDto;
+
+    expect(dto.clearedFields).toEqual(['title', 'cover']);
+    expect(dto.resolved.title).toBeNull();
+    expect(dto.resolved.description).toBe('Aventura indie');
+  });
+
+  it('herencia pura con catálogo vacío: resolved todo null con listas vacías', async () => {
+    const orphan = seedHeir(null, null);
+
+    const { status, body } = await api<ResolvedGameDto>(`${BASE}/${orphan.id}`, {}, adminToken);
+
+    expect(status).toBe(200);
+    const dto = body.data as ResolvedGameDto;
+    expect(dto.resolved).toEqual({
+      title: null,
+      description: null,
+      sizeValue: null,
+      sizeUnit: null,
+      releaseYear: null,
+      categoryId: null,
+      minimumRequirements: null,
+      recommendedRequirements: null,
+      genres: [],
+      platforms: [],
+      category: null,
+    });
   });
 });
