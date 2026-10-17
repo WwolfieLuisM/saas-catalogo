@@ -59,6 +59,7 @@ export default function ConfigDatosPage() {
   const [fileName, setFileName] = useState<string | null>(null);
   const [plan, setPlan] = useState<PlanOfertas | null>(null);
   const [previewError, setPreviewError] = useState<string | null>(null);
+  const [runError, setRunError] = useState<string | null>(null);
   const [catalog, setCatalog] = useState<unknown>(null);
   const [fingerprint, setFingerprint] = useState<string | null>(null);
   const [confirmado, setConfirmado] = useState(false);
@@ -92,6 +93,7 @@ export default function ConfigDatosPage() {
     setFingerprint(null);
     setConfirmado(false);
     setAplicado(null);
+    setRunError(null);
     setFileName(file.name);
     setStatus('loading');
     setResult(EMPTY_RESULT);
@@ -152,7 +154,7 @@ export default function ConfigDatosPage() {
     if (!catalog || !fingerprint || !plan) return;
 
     setEjecutando(true);
-    setPreviewError(null);
+    setRunError(null);
 
     try {
       const backup = await adminFetch<BackupResponse>('/admin/import/backup', {
@@ -177,7 +179,7 @@ export default function ConfigDatosPage() {
       setConfirmado(false);
       setStatus('done');
     } catch (error) {
-      setPreviewError(
+      setRunError(
         error instanceof Error ? error.message : 'La importación no pudo ejecutarse',
       );
     } finally {
@@ -375,6 +377,12 @@ export default function ConfigDatosPage() {
               </button>
             </div>
           </div>
+        )}
+
+        {runError && (
+          <StateBox icon="alert" title="No se pudo ejecutar la importación">
+            <p className="hint">{runError}</p>
+          </StateBox>
         )}
 
         {status === 'running' && (
