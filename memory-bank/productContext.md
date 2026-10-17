@@ -1,35 +1,31 @@
 # Product Context
 
 ## Why This Project Exists
-Los negocios de videojuegos (tiendas, catálogos, servicios de entrega) necesitan presencia online con catálogo gestionable. Cada negocio empezando de cero duplica el mismo software. Esta plataforma resuelve eso: un solo código multi-tenant donde cada negocio ("tenant") paga por tener su catálogo sin construir su propia plataforma. El primer caso de uso real es Javier.
+Javier PC necesita vender catálogos de juegos por negocio (catálogo propio con precios y disponibilidad propios) sin duplicar el trabajo de mantener el catálogo base. La V2 introduce biblioteca global compartida + personalización por tenant, para escalar a más negocios sin rehacer datos.
 
 ## Target Users
-- **Usuario final (de Javier)** — browses catálogo de juegos, busca/filtra, guarda favoritos y "Mi Lista" (pedido por mensaje). Conexión potencialmente inestable → necesita offline/cache.
-- **ADMIN de tenant** — gestiona su catálogo: juegos, categorías, precios, media, importación de datos.
-- **SUPER_ADMIN (Luismi)** — administra tenants, biblioteca base, y la plataforma.
+- **SUPER_ADMIN (Luismi):** cura la biblioteca global, importa catálogos, gestiona tenants y plataformas globales.
+- **ADMIN de tenant (ej. Javier):** gestiona su negocio: precios, disponibilidad, plataforma habilitadas, contacto; no toca la biblioteca global.
+- **Cliente final (feed):** navega el catálogo del negocio (filtrado por plataforma, precio, estado).
 
 ## User Experience Goals
-- Frontend público: "Gaming oscuro, limpio y rápido". Render rápido, pocas pesquisas, imágenes optimizadas, funciona offline con cache.
-- Admin: tablas→cards en móvil, sin overflow horizontal, touch targets grandes.
-- Offline: mostrar catálogo cacheado, buscar localmente, avisar "Sin conexión", sincronizar al reconectar.
+- Feed rápido y por-negocio; contacto/logos del tenant, nunca globales.
+- Biblioteca con ficha completa y buscador/paginación server-side reales.
+- Importar JSON: subir → preview con errores por registro → confirmar → resultado auditable.
+- Sin candados confusos: el tenant edita su oferta con overrides (sin bloqueos visibles).
 
 ## How It Should Work
-1. Usuario final visita el catálogo de su tenant (ej. branding JAVIER).
-2. Navega/juega busca → el frontend cachea el catálogo vía `catalog/version`.
-3. Añade juegos a favoritos (marcador local) y a Mi Lista (pedido, se envía por mensaje).
-4. Admin gestiona el catálogo desde `/admin` contra la API real.
-5. El backend calcula precios según reglas del tenant; el frontend solo los muestra.
+1. SUPER_ADMIN importa `library-import@2` → `BaseGame` + variantes `BaseGamePlatform` (validate → import, idempotente).
+2. El tenant habilita plataformas (`TenantPlatform`) e importa/edita su catálogo (`catalog@2` o UI) → `TenantGame` por plataforma.
+3. Las APIs de catálogo resuelven valor final: override → variante → identidad.
+4. El feed público muestra el negocio activo con su valor final.
 
 ## Key Features
-- Catálogo público: búsqueda, filtros (género/categoría/plataforma), ordenamiento.
-- Detalle de juego: portada, screenshots, requisitos, plataformas, precio.
-- Favoritos, Mi Lista (pedido), Mi Colección (biblioteca personal con estados).
-- Cache local + offline + sincronización por versión de catálogo.
-- Admin: juegos, biblioteca base, taxonomías, multimedia (Cloudinary), precios, administradores, auditoría, sesiones, import/export, configuración.
-- API versionada `/api/v1` con endpoints públicos y admin.
+- Herencia con overrides y "borrado explícito" (tricampo) por campo.
+- Oferta por plataforma (precio, dispo, tamaño, requisitos PC en su fila).
+- Importadores con preview, idempotencia, procedencia y auditoría.
+- Portadas gestionadas en Cloudinary (no hotlink), con auditoría de portadas (BUG-01.C).
+- Soft delete/suspensión de tenants; selector global de tenant (SUPER_ADMIN).
 
 ## What Success Looks Like
-- Javier opera su catálogo completo sin intervención de Luismi.
-- Un segundo tenant se incorpora sin cambios de código (solo datos).
-- El usuario final con mala conexión puede browse y armar su Mi Lista igualmente.
-- Auditoría completa de acciones admin; aislamiento de tenant verificado.
+- Criterios §14 de `Decisiones-Arquitectonicas-v1.md` todos verdes + catálogo de Javier idéntico post-migración + demo de herencia en checkpoint Fase 4.

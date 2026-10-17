@@ -2,6 +2,8 @@
 
 Estado: **aprobado**. Decisiones cerradas el 2026-10-13.
 
+> **2026-10-14 — Rediseño por plataforma.** El plan completo de implementación ahora vive en **`tasks/plan-detallado.md`** (fases 1–10 con índices, criterios de aceptación, dependencias y gates), según `tasks/Decisiones-Arquitectonicas-v1.md` y el orden de `tasks/generador-impprtador.md`. Las fases 3, 4 y 5 de este documento quedan **rediseñadas** allí; esto queda como legado de las decisiones de diseño y el registro de fases 0–2.
+
 ## Decisiones de diseño (cerradas)
 
 1. **Herencia con override por campo** — `BaseGame` → `TenantGame` con sobrescrituras nullable.

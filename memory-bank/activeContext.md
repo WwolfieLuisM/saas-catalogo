@@ -1,141 +1,44 @@
 # Active Context
 
-## Last Updated
-2026-10-13 — **Catálogo reconstruido en producción**: 57 juegos importados a Neon y visibles en el feed.
+## Date
+2026-10-16
 
-## Current State
+## Current Focus
+**Fase 6.2-B cerrada** (importador de catálogo `catalog@2` + export migrado a `@2`). Gates verdes: backend 775/775 · `tsc` con **4** errores (los de Fase 6, bajados de 7) · eslint `src tests` 0 · frontend typecheck/lint 89 tests/build OK. **Próximo bloque: 6.2-C** (modelo de lectura del panel + botón que ejecute `/import/run` + cierre de los 4 `tsc` de `platformId`). El árbol sigue **sin commitear** salvo que el usuario lo pida en esta sesión.
 
-Monorepo **Saas Catalogo** en estado de producto cerrado y desplegado:
+## Recent Changes
+- **Fase 5 (V2) completa 2026-10-15/16:** `library-import@2` (validate/import/SSRF/UI 5.1–5.5) + revisión en navegador (arregló el `fetch` crudo sin `/api/v1` que rompía exportar catálogo, exportar manifiesto e importar, y el `.brand` recortado).
+- **6.2-A 2026-10-16:** envelope `@2` exigido; `catalog@1` y manifiesto rechazados con 400 `CATALOG_SCHEMA_UNSUPPORTED`.
+- **6.2-B 2026-10-16 (esta sesión):** reescritura de `data-transfer.service.ts` al modelo de ofertas por plataforma.
+  - **El spec se escribió antes que el código:** `import-export.test.ts` reescrito entero (53 tests), RED con 29 fallos, y solo entonces el servicio.
+  - **Corrección importante al estado anterior:** los tests **no** estaban migrados a `@2` (solo las cadenas `schema` y el helper `offer()`); los cuerpos tenían campos v1 y había **15 tests en rojo**. La nota de `todo.md` que decía lo contrario era inexacta.
+  - `analyzeEntries` → `analyzeOffers` (`catalogOfferSchema`, strictObject): identidad `(tenantId, baseGameId, platformId)` (único en BD) con fallback `(platformId, slug)` para ofertas antiguas sin `baseGameId`; plataformas **globales** (`tenantId: null`) + `TenantPlatform.enabled`; `slug` derivado `<base>-<platform>` con error si supera 50; `origin` derivado y reparado; `clearedFields` que reemplaza; `null`/ausentes no borran; `SIZE_PAIR_INVALID`; taxonomía fuera del import (se hereda de biblioteca vía `resolveGenres`/`resolveFinal`); **retiradas acotadas a las plataformas declaradas en el archivo**; `platformId` escrito en el create (cierra 3 de los 7 `tsc`).
+  - Export migrado a `catalog@2`: payload estrictamente importable (sin `tenantId`/`tenant`/`version`/`games[]`), **valores crudos** (herencia no se convierte en copia), `skipped`/`notice` informativos → **roundtrip exportar→importar cerrado** (0 cambios, con test).
+  - Gates: **backend 775/775** · `tsc` solo 4 (`seed.ts:246`, `games.service.ts:471,563,900` → 6.2-C) · eslint 0 · frontend typecheck 0, lint 0 (1 warning preexistente de fuentes), 89/89 tests, build OK.
 
-- **Backend** — Express 5 + TypeScript (ESM) + Prisma 7 (adapter-pg) sobre PostgreSQL (Neon). Fases 0–13 completas. **575/575 tests** en verde. Desplegado en **Render**: `https://saas-catalogo-api.onrender.com`.
-- **Frontend** — Next.js App Router + React. Fidelidad visual/funcional completa (feed Javier PC + admin Luismi Platform · Admin V2). **80/80 tests** en verde. Desplegado en **Cloudflare Workers**: `https://saas-catalogo-frontend.luisiking89.workers.dev`.
-- **CI/CD** — `ci.yml` (frontend+backend checks) y `deploy-frontend.yml` (auto-deploy a Workers en push a `main` con paths `frontend/**`). Backend con autoDeploy en Render.
-
-**Los 4 gates del frontend están en verde**: `node --test` 80/80, `tsc --noEmit` 0, `eslint .` 0 errores, `next build` 28 rutas + `npm run cf:build` (OpenNext).
-
-## Active Decisions And Considerations
-
-- **Despliegue: SOLO Cloudflare Workers.** Cloudflare Pages quedó **abandonado**. Ver "Cloudflare Workers (CD de frontend)" en `systemPatterns.md` para el porqué y el estado de limpieza.
-- **Compatibilidad Next ↔ OpenNext es una restricción dura.** No subir la versión de `next` sin verificar que `@opennextjs/cloudflare` conoce los manifiestos que esa versión genera. Detalle en `systemPatterns.md` → "Key Technical Decisions".
-- **Diferido, NO tocar sin visto bueno del usuario**: (a) borrar el proyecto Pages `saas-catalogo`; (b) borrar el Worker huérfano `saas-catalogo`; (c) rotar las credenciales Cloudflare expuestas en el chat.
-- Revisar el issue upstream **OpenNext #1355 / #1448** antes de cualquier subida de Next. Cuando `@opennextjs/cloudflare` publique soporte para `preview-props.json`, se puede volver a 16.4+.
-
-## Catálogo reconstruido en producción (2026-10-13)
-
-### Entorno real (¡ojo: `.env` local = producción!)
-- Proyecto Neon **`rough-fire-20869032`** · rama default **`main` = `br-misty-salad-b8xwlwmc`** · database `neondb` · aws-us-east-1.
-- `backend/.env` apunta al compute `ep-little-queen-b8m1b5wl.c-14.us-east-1.aws.neon.tech`, que **coincide con el endpoint del branch main** → el importador local escribe directamente en producción. Verificado con `neon_list_branch_computes`.
-- IDs: Tenant `javier` `c5ce8dd1-2bf7-4ee5-a2a9-b9ea11990428` · SUPER_ADMIN `98894fa1-730b-47b0-a406-67f6a22d6c95` · ADMIN javier `401ef9be-5205-4031-9411-48f6d81e2476`.
-- **NO tocar** el proyecto Neon `Market-Place-Moa` (`bitter-sea-06796259`), es de otra gente.
-
-### Qué se hizo
-Se limpió el catálogo previo y se reconstruyó combinando el seed de 20 juegos de Javier (`docs/...v17...html`, objeto `DEMO.games`) con la muestra IGDB de 50, enriqueciendo tamaños desde Steam.
-
-- **57 juegos importados** en una única transacción SQL con `BEGIN`/`COMMIT` y 0 sentencias destructivas.
-- **19 tamaños del seed conservados exactamente** (verificado 1:1 contra el HTML, 0 desajustes).
-- **38 tamaños de Steam** con `steam_appid` registrado y correspondencia título↔app verificada (**nunca se asume IGDB ID = Steam AppID**). `appdetails` con `success:false` = retirado. Storage del bloque `minimum` (requisito de instalación).
-- **12 excluidos** con motivo específico, en `catalogo-exclusiones.{json,md}`: `SIN_CORRESPONDENCIA` 5 · `RETIRADO_STEAM` 2 · `MOD` 1 (Fallout: London) · `DLC` 1 (ETS2: DAF XD) · `NO_PUBLICADO` 1 (GTA VI) · `REMAKE_NO_OFICIAL` 1 · `SIN_TAMANO_PUBLICADO` 1.
-- 2 juegos que IGDB no matcheó sí existen en Steam → enriquecidos con metadata de Steam en vez de descartarse: `Oriental Dynasty` (appid 2050510) y `Galaxy Dreamer` (appid 284910).
-
-### Respaldo y reversibilidad
-- Snapshot previo **`snap-shiny-resonance-b80wg8j6`** (`backup-antes-limpieza-catalogo`, 2026-10-13T15:00:12Z, manual, 49,1 MB). Restaurable con `neon_restore_snapshot`.
-- Idempotencia: **IDs deterministas (sha256→UUID) + `ON CONFLICT (id) DO NOTHING`**, así que una reejecución no duplica.
-
-### Caché de catálogo (importante)
-`/api/v1/catalog` es **público** (sin auth, tenant por query). Usa `ETag "v<version>"` + `Cache-Control: no-cache`, y `/sync?since=N` devuelve `changed:false` si N coincide con `CatalogMetadata.version`.
-
-Como la importación fue por SQL no pasó por `planCatalogBump`, la versión seguía en **55** → clientes con el catálogo vacío cacheado recibirían `304`, y el modo offline/PWA **nunca bajaría los 57 juegos**. **Incrementada a 56** manualmente tras el import.
-
-### Artefactos (en `backend/scripts/`, gitignored, sin commitear)
-`construir-catalogo.mjs` · `enriquecer-tamanos.mjs` · `importar-catalogo.mjs` · `catalogo-reconstruido.sql` (111 KB) · `catalogo-fuentes.json` · `catalogo-exclusiones.{json,md}` · `tamanos-recuperados.csv` · `steam-enriquecimiento-extra.json`.
-
-## Incidente resuelto: `1101` en Cloudflare Workers (2026-10-12)
-
-### Síntoma
-Toda ruta del frontend devolvía **`Error 1101`** de Cloudflare Workers. Solo `/api/v1/*` respondía, porque va por rewrite externo al backend de Render y nunca toca el bundle del Worker.
-
-### Causa raíz
-**Next 16.4.0** introdujo un manifiesto nuevo en el build: **`.next/server/preview-props.json`** (soporte de preview props en App Router).
-
-`@opennextjs/cloudflare@1.20.10` tiene una **whitelist de manifiestos** que copia al generar el bundle del Worker
-(`node_modules/@opennextjs/cloudflare/dist/cli/build/patches/plugins/load-manifest.js`). `preview-props.json` **no está en esa lista**.
-Al importar `handler.mjs` en el Worker se produce:
-
-```
-Unexpected loadManifest(/.next/server/preview-props.json) call!
-```
-
-Ese `throw` mata el módulo en tiempo de arranque → Cloudflare responde **1101** en todas las rutas.
-
-Issues upstream: **OpenNext #1355** y **#1448**. `@opennextjs/cloudflare@1.20.10` era ya la última versión disponible, así que **no había fix de dependencia**.
-
-### Evidencia
-| Versión | Apariciones de `preview-props.json` |
-|---|---|
-| Next **16.4.0** | 1 |
-| Next **16.3.8** | **0** |
-
-Verificación empírica tras el fix (build real):
-- `preview-props.json` **no existe** en `.next/` ni en `.open-next/`.
-- Manifiestos generados = **7**, todos en la whitelist: `app-paths`, `functions-config`, `middleware`, `next-font`, `pages`, `prefetch-hints`, `server-reference`.
-- Única mención de "preview-props" en `handler.mjs` es el módulo interno `get-edge-preview-props.js` (inofensivo, no es el manifiesto).
-
-### Solución aplicada
-Degradar a **Next 16.3.8** (la última versión anterior al cambio). Pasos:
-
-1. Regenerado `frontend/package-lock.json` con next 16.3.8 y restaurado `npm ci` en `ci.yml` y `deploy-frontend.yml` (commit `5dcb391`).
-2. Instalación **offline** extrayendo `C:\Users\Luis\Desktop\next-16.3.8.tgz` a `frontend/node_modules/next` (npm se cuelga con árboles grandes en esta máquina; el proyecto ya usa instalación offline por diseño). Versiones alineadas: `next` 16.3.8, `@next/swc-win32-x64-msvc` 16.3.8, `@next/env` 16.3.8, react/react-dom 19.1.7, eslint 9.39.2, typescript 6.0.3, `@opennextjs/cloudflare` 1.20.10, wrangler 4.149.0.
-3. **Fix de lint**: añadido `.open-next/**` a `globalIgnores` en `frontend/eslint.config.mjs` — antes eslint linteara los artefactos de build y daba 937 errores locales (en CI pasaba solo porque el checkout era limpio). Commit `74520b6`.
-4. Revertido `frontend/next-env.d.ts` (artefacto del dev server que apuntaba a `.next/dev/types/`).
-
-### Resultado
-- **PR #5 fusionado** a `main` con merge commit **`1346f22`** (incluye `63204e9`, `5182378`, `5dcb391`, `74520b6`).
-- **Deploy automático exitoso**: workflow `Deploy frontend a Cloudflare` run **`38309988424`**. Worker Version ID **`39e76e93-f64e-48ba-915d-0df034580062`**.
-- **Producción verificada**: `/`, `/admin`, `/admin/login`, `/admin/juegos`, `/robots.txt`, `/sitemap.xml` → **200**. Sin `1101`, sin `loadManifest`. `/api/v1/health` → 200 JSON desde Render.
-
-### Nota sobre la fidelidad de ChatGPT
-El usuario confirmó que la fidelidad (feed Javier PC + admin Luismi Platform · Admin V2) **ya estaba íntegra en `main`**: todos los archivos de frontend (`styles/feed.css`, `feed/Catalog.tsx`, `feed/GameCard.tsx`, `globals.css`, `lib/admin/dashboardView.ts`) son **byte a byte idénticos** entre `origin/main` y `origin/feat/fidelidad-luismi-platform-javier-pc`. Solo diferían archivos de config/CI. **No hubo que traer nada** de esa rama.
-
-## Project
-
-### Important Directives
-- **NO comentarios en el código.**
-- **NO modificar `docs/`.**
-- **NO commitear**: `.gitignore`, `backend/scripts/`, archivo `ADMIN`.
-- PowerShell 5.1: sin `&&` (usar `;`); paths con espacios siempre entrecomillados.
-- npm tiende a `ECONNRESET`/timeouts → el proyecto usa instalación offline (`tools/install-offline.ps1` + `vendor/`).
-- `main` local puede quedar **desactualizado** respecto a `origin/main`; siempre hacer `git pull` antes de trabajar.
-- Repo público `WwolfieLuisM/saas-catalogo`. `main` **sin protección de rama** → checks fallidos no bloquean merges.
-
-### Credenciales seed (solo locales)
-- `dev-admin` / `change-me-in-local-only` → SUPER_ADMIN
-- `javier-admin` / `change-me-javier-local-only` → ADMIN
-
-### URLs
-- Frontend (vivo): `https://saas-catalogo-frontend.luisiking89.workers.dev`
-- Backend (Render): `https://saas-catalogo-api.onrender.com`
-- Pages (en desuso): `https://saas-catalogo.pages.dev`
-
-### Workers en la cuenta Cloudflare
-| Worker | Estado |
-|---|---|
-| `saas-catalogo-frontend` | **el vivo** (nuestro) |
-| `saas-catalogo` | **huérfano**, sin dominios, subdominio desactivado → es el del check fallido `Workers Builds: saas-catalogo` |
-| `moa-frontend`, `spring-lake-0bfe` | ajenos al proyecto |
+## Active Decisions
+- §12 completa (8 decisiones) — `plan-detallado.md` §12, `dudas.md` §8.
+- **2026-10-16 (6.2-B), documentadas en `tasks/catalog-import-contrato.md` §2.1.1/§4.1/§4.2/§5.1:**
+  1. **Retiradas acotadas a las plataformas del archivo.** El importador sigue siendo espejo, pero un archivo de PC no borra PS4/Xbox; las de plataformas no declaradas se conservan con aviso quantificado. Un `offers: []` no hace nada.
+  2. **El export@2 excluye las ofertas que no puede representar** (sin `baseGameId` o plataforma no global) a `skipped` con motivo, en vez de emitirlas y romper su propio roundtrip.
+  3. **La identidad de una oferta no se renombra nunca**: `slug` explícito distinto del de la fila emparejada → aviso y se ignora (renombrar cambia la ruta pública). Slug de otra oferta o de una personalizada → error de registro. Identidad ocupada por una oferta retirada → error pidiendo restaurarla.
+  4. **`clearedFields` presente reemplaza** la lista completa (única forma de dejar de limpiar un campo); ausente → no cambia.
+  5. **`origin` se recalcula y se repara**: `BIBLIOTECA` solo sin overrides ni `clearedFields`; nunca degrada a `BIBLIOTECA`.
+  6. Ausentes y `null` **no** borran (a diferencia del panel, donde `description: null` significa heredar); limpiar es con `clearedFields`.
+- Decisiones previas que siguen vigentes: `publishFromLibrary` sigue sin decidir (¿herencia pura en vez de copia?); `clearedFields` en `TenantGame`; slug único `(tenantId, platformId, slug)`; ACTIVE exige título+slug+desc+≥1 plataforma+≥1 size+portada; taxonomía desconocida = error por registro sin auto-crear.
+- Orden: plataforma → respaldos → limpieza → herencia → importador A → importador B → TenantPlatform → tenants → validación → **generador al final**.
 
 ## Next Steps
+1. **6.2-C:** modelo de lectura del panel (ofertas con plataforma y origen visibles) + **botón que ejecute `/import/run`** (hoy `configuracion/datos` solo llama a `/import/validate`: el roundtrip es técnico pero no operable) + cierre de los 4 `tsc` (`seed.ts:246`, `games.service.ts:471,563,900`).
+2. **Commit:** el usuario autorizó commitear al cerrar 6.2-B en verde; **no se ha hecho todavía** (no volver a preguntar si lo pide explícitamente; sin push nunca).
+3. Follow-ups post-4.4: mostrar `resolved?.title` en list/detail admin; `media.auditMedia` usa título raw; `game.shared.ts` tiene **acentos corruptos ya commiteados** (en el mensaje de `slugSchema` y en los de `assertTaxonomyRefs`): es texto visible al usuario.
+4. Decisión `publishFromLibrary` + demo/revisión humana del checkpoint de Fase 4 (sigue pendiente).
 
-**Pendiente de decisión del usuario (NO tocar sin su visto bueno):**
-1. **3 assets huérfanos de Cloudinary** de `celeste-copia`. `delete-asset` es **permanente** → esperando confirmación.
-2. **`backend/prisma/seed.ts`** sigue insertando Hades y Celeste. Si alguien ejecuta `prisma db seed`, repuebla el catálogo con esos dos y rompe los 57. Falta decidir si se retira del seed.
-3. Borrar el proyecto **Pages** `saas-catalogo` (ID `034b0836-eb79-431c-af4b-4107c678e7d3`).
-4. Borrar el Worker **huérfano** `saas-catalogo` (hace fallar el check `Workers Builds: saas-catalogo`).
-5. Rotar las credenciales Cloudflare expuestas en el chat (⚠️). GitHub secret `CLOUDFLARE_API_TOKEN` ya está seteado.
+## Open Questions / Blockers
+- **CRUD manual (`games.service` creates) bajo Modelo A → 6.2-C:** son los 4 `tsc` restantes.
+- El panel **no tiene** botón de importar catálogo (bloquea la operabilidad del importador B desde la UI).
+- BUG-01.D pendiente de decisión. `LibraryMedia = 0` (sin portadas biblioteca — coherente con 12.7 exigiéndolas en imports).
+- Recordatorios: rutas públicas por slug (12.2) revisar al llegar datos; contract 4.5 solo con bake time; generador = última OC.
 
-**Trabajo funcional pendiente:**
-- Revisión manual del piloto IGDB (`correcto_SI_NO` en los CSV).
-- Gap de config de contacto (`whatsapp`/`footer`/`publicName`) del admin al feed.
-- Pendientes de los 12 juegos excluidos del catálogo (fuera del alcance aprobado de esta importación).
-- OpenAPI/Swagger, store de rate limit compartido, revisar D1, Docker backend, monitoring.
-
-**Sin commitear**: reconstrucción del catálogo no incluye cambios de código del repo (los scripts viven en `backend/scripts/`, gitignored).
+## Session Notes
+Reglas del usuario: skills según encaje · dudas cruciales antes de seguir · memory-bank+progress al final de sesión o fase · testear cada tarea · "continue" = seguir sin preguntar salvo blocker · migraciones destructivas siempre con aprobación explícita · sin push/commit sin permiso (6.2-B: commit autorizado al cerrar en verde) · NO comentarios en código · NO tocar `docs/` · NO commitear `.gitignore`/`backend/scripts/`/ADMIN · NO imprimir secretos · repo Market-Place-Moa intocado. **Lección repetida:** al tocar un fichero UTF-8 usar `edit`/`write`; un `git checkout` ya se llevó trabajo sin commitear una vez.
