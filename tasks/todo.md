@@ -185,9 +185,9 @@ Antes de implementar: inspeccionar rutas y componentes de admin existentes, prop
 - [ ] 8.3 Selector de tenant global en header (SUPER_ADMIN)
 
 ### Fase 9 — Validación final
-- [ ] 9.1 Criterios de aceptación §14 (aislamiento, oferta por plataforma, herencia, idempotencia, media, respaldos)
-- [ ] 9.2 Gates globales backend+frontend en verde
-- [ ] 9.3 Revisión seguridad (RBAC imports, SSRF)
+- [x] 9.1 Criterios de aceptación §14 — **mapa de evidencia en `tasks/aceptacion.md` (2026-10-16).** 8 de 9 criterios tienen test que los cubre; el 9º (media reintentable) también. **Criterio 6 (migraciones conservan registros y relaciones) es el único sin test automático** y se verificó a mano en la BD tras aplicar la migración de 8.1: 0 relaciones rotas en 4 direcciones, 61 `BaseGame`, 8 `Platform`, 12 `TenantPlatform`, 2 `Tenant`, 18 `Backup`. Queda por cerrar el criterio 8 (auditorías) con la revisión de 9.3, y decidir si el 6 se acepta como verificación manual documentada o se Automatiza.
+- [x] 9.2 Gates globales — **2026-10-16.** Backend `vitest` **804/804**, `tsc` 0, `eslint src tests prisma` 0. Frontend `typecheck` 0, `lint` 0 errores (1 warning preexistente de fuentes), **103/103** tests, `build` OK y **`cf:build` (OpenNext → Cloudflare) OK por primera vez** — ese build es el que corre en el auto-deploy al hacer push a `main`, así que era el gate que faltaba de verdad. `check-encoding` OK.
+- [x] 9.3 Revisión de seguridad — **`tasks/seguridad-9.3.md`.** RBAC de ambos importadores correcto (biblioteca = `SUPER_ADMIN`; catálogo = `resolveTenantId` que fuerza al `ADMIN` a su tenant). Aislamiento correcto, y el payload `strictObject` cierra el IDOR por identificador. **SSRF fuerte** (DNS con todas las IP, rechazo de cualquier IP privada, **IP fijada en el socket** → cierra el DNS-rebinding, redirecciones revalidadas, tope de 5MB, Content-Type de imagen). **Hueco encontrado y corregido:** `isBlockedV6` no enumeraba prefijos IPv6 de propósito especial (NAT64 `64:ff9b::/96`, 6to4 `2002::/16`, `2001:db8::/32`, `100::/64`, `fec0::/10`), con test nuevo. Fuera de alcance y **señalado**: `npm audit` (es gate de release), cabeceras/CORS del frontend, y dos rangos IPv4 residuales que no apuntan a red interna.
 
 ### Fase 10 — Generador (otra OC, el último)
 - [ ] 10.1 Regenerar piloto contra `library-import@2` (sin OST/DLC/secuela, variantes, reqs solo PC)
