@@ -249,6 +249,92 @@ describe('GET /api/v1/admin/tenants/:id', () => {
   });
 });
 
+describe('DELETE /api/v1/admin/tenants/:id (borrado logico)', () => {
+  it('no borra la fila: marca deletedAt y desactiva el tenant', async () => {
+    const { status, body } = await api(
+      `/api/v1/admin/tenants/${T_JAVIER}`,
+      { method: 'DELETE' },
+      superToken,
+    );
+
+    expect(status).toBe(200);
+    const fila = state.tenants.get(T_JAVIER);
+    expect(fila).toBeDefined();
+    expect(fila?.deletedAt).toBeInstanceOf(Date);
+    expect(fila?.isActive).toBe(false);
+    expect(body.data).toMatchObject({ id: T_JAVIER });
+  });
+
+  it('deja de aparecer en el listado por defecto', async () => {
+    await api(`/api/v1/admin/tenants/${T_JAVIER}`, { method: 'DELETE' }, superToken);
+
+    const { body } = await api<TenantData[]>('/api/v1/admin/tenants', {}, superToken);
+
+    const slugs = (body.data ?? []).map((item) => item.slug);
+    expect(slugs).not.toContain('javier');
+  });
+
+  it('sigue consultable con includeDeleted, para poder auditar el historico', async () => {
+    await api(`/api/v1/admin/tenants/${T_JAVIER}`, { method: 'DELETE' }, superToken);
+
+    const { status, body } = await api<TenantData[]>(
+      '/api/v1/admin/tenants?includeDeleted=true',
+      {},
+      superToken,
+    );
+
+    expect(status).toBe(200);
+    const slugs = (body.data ?? []).map((item) => item.slug);
+    expect(slugs).toContain('javier');
+  });
+
+  it('devuelve 404 al eliminar dos veces', async () => {
+    await api(`/api/v1/admin/tenants/${T_JAVIER}`, { method: 'DELETE' }, superToken);
+
+    const { status, body } = await api(
+      `/api/v1/admin/tenants/${T_JAVIER}`,
+      { method: 'DELETE' },
+      superToken,
+    );
+
+    expect(status).toBe(404);
+    expect(body.error?.code).toBe('TENANT_NOT_FOUND');
+  });
+
+  it('un ADMIN no puede eliminar un tenant', async () => {
+    const { status } = await api(
+      `/api/v1/admin/tenants/${T_JAVIER}`,
+      { method: 'DELETE' },
+      adminToken,
+    );
+
+    expect(status).toBe(403);
+    expect(state.tenants.get(T_JAVIER)?.deletedAt).toBeNull();
+  });
+
+  it('escribe auditoria al eliminar', async () => {
+    await api(`/api/v1/admin/tenants/${T_JAVIER}`, { method: 'DELETE' }, superToken);
+
+    const acciones = [...state.auditLogs.values()].map((row) => row.action);
+    expect(acciones).toContain('DELETE');
+  });
+
+  it('suspender no es eliminar: isActive=false pero sigue en el listado', async () => {
+    const { status } = await api(
+      `/api/v1/admin/tenants/${T_JAVIER}`,
+      { method: 'PATCH', body: JSON.stringify({ isActive: false }) },
+      superToken,
+    );
+
+    expect(status).toBe(200);
+    expect(state.tenants.get(T_JAVIER)?.deletedAt).toBeNull();
+
+    const { body } = await api<TenantData[]>('/api/v1/admin/tenants', {}, superToken);
+    const slugs = (body.data ?? []).map((item) => item.slug);
+    expect(slugs).toContain('javier');
+  });
+});
+
 describe('PATCH /api/v1/admin/tenants/:id', () => {
   it('actualiza name e isActive y audita', async () => {
     const { status, body } = await api<TenantData>(

@@ -13,6 +13,7 @@ export function tenantDto(tenant: Tenant) {
     name: tenant.name,
     slug: tenant.slug,
     isActive: tenant.isActive,
+    deletedAt: tenant.deletedAt,
     createdAt: tenant.createdAt,
     updatedAt: tenant.updatedAt,
   };
@@ -34,6 +35,7 @@ export async function listTenants(
           }
         : {},
       query.isActive !== undefined ? { isActive: query.isActive } : {},
+      query.includeDeleted ? {} : { deletedAt: null },
     ],
   };
 
@@ -53,11 +55,44 @@ export async function listTenants(
 export async function getTenant(id: string): Promise<Tenant> {
   const tenant = await getPrisma().tenant.findUnique({ where: { id } });
 
-  if (!tenant) {
+  if (!tenant || tenant.deletedAt) {
     throw new AppError(404, 'TENANT_NOT_FOUND', 'Tenant no encontrado');
   }
 
   return tenant;
+}
+
+export async function deleteTenant(
+  id: string,
+  auth: AuthContext | null,
+  meta: RequestMeta,
+): Promise<Tenant> {
+  const prisma = getPrisma();
+  const tenant = await prisma.tenant.findUnique({ where: { id } });
+
+  if (!tenant || tenant.deletedAt) {
+    throw new AppError(404, 'TENANT_NOT_FOUND', 'Tenant no encontrado');
+  }
+
+  const deleted = await prisma.tenant.update({
+    where: { id },
+    data: { deletedAt: new Date(), isActive: false },
+  });
+
+  await prisma.auditLog.create({
+    data: auditData({
+      actor: auth,
+      action: 'DELETE',
+      entity: 'Tenant',
+      entityId: id,
+      tenantId: id,
+      metadata: { slug: tenant.slug, borradoLogico: true },
+      ipAddress: meta.ipAddress,
+      userAgent: meta.userAgent,
+    }),
+  });
+
+  return deleted;
 }
 
 export async function createTenant(

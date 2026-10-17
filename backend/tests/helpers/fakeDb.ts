@@ -28,6 +28,7 @@ export interface FakeTenant {
   name: string;
   slug: string;
   isActive: boolean;
+  deletedAt: Date | null;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -1107,7 +1108,7 @@ export function addFakeUser(
 export function addFakeTenant(
   input: Partial<FakeTenant> & { id: string; name: string; slug: string },
 ): FakeTenant {
-  const tenant = defaults<FakeTenant>(input, { isActive: true });
+  const tenant = defaults<FakeTenant>(input, { isActive: true, deletedAt: null });
   tenants.set(tenant.id, tenant);
   return tenant;
 }

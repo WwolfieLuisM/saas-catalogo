@@ -51,6 +51,7 @@ model Tenant {
   name       String
   slug       String          @unique
   isActive   Boolean         @default(true)
+  deletedAt  DateTime?
   createdAt  DateTime        @default(now())
   updatedAt  DateTime        @updatedAt
   settings   TenantSettings?
@@ -66,6 +67,7 @@ model Tenant {
   tenantPlatforms TenantPlatform[]
 
   @@index([isActive])
+@@index([deletedAt])
 }
 
 model TenantPlatform {

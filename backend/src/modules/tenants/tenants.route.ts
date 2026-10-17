@@ -48,5 +48,12 @@ export function createTenantsRouter(): Router {
     res.json({ success: true, data: tenantsService.tenantDto(tenant) });
   });
 
+  router.delete('/:id', async (req, res) => {
+    const { id } = tenantIdParamSchema.parse(req.params);
+    const tenant = await tenantsService.deleteTenant(id, req.auth ?? null, requestMeta(req));
+
+    res.json({ success: true, data: tenantsService.tenantDto(tenant) });
+  });
+
   return router;
 }

@@ -6,6 +6,10 @@ export const tenantListQuerySchema = paginationQuerySchema.extend({
     .enum(['true', 'false'])
     .optional()
     .transform((value) => (value === undefined ? undefined : value === 'true')),
+  includeDeleted: z
+    .enum(['true', 'false'])
+    .optional()
+    .transform((value) => value === 'true'),
 });
 
 export type TenantListQuery = z.infer<typeof tenantListQuerySchema>;
