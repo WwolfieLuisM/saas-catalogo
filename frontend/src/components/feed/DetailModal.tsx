@@ -57,7 +57,14 @@ export function DetailModal() {
 
   const menuItems = [
     {
-      label: st === 'pending' ? '✓ Pendiente' : 'Marcar pendiente',
+      label: 'Favorito',
+      pressed: isFav,
+      onClick: () => toggleFavorite(g.id),
+    },
+    { sep: true },
+    { label: 'Mi colección' },
+    {
+      label: 'Pendiente',
       pressed: st === 'pending',
       onClick: () => {
         setStatus(g.id, st === 'pending' ? undefined : 'pending');
@@ -65,7 +72,7 @@ export function DetailModal() {
       },
     },
     {
-      label: st === 'played' ? '✓ Jugado' : 'Marcar jugado',
+      label: 'Jugado',
       pressed: st === 'played',
       onClick: () => {
         setStatus(g.id, st === 'played' ? undefined : 'played');
@@ -73,19 +80,24 @@ export function DetailModal() {
       },
     },
     {
-      label: st === 'won' ? '★ Ganado' : 'Marcar ganado',
+      label: 'Ganado',
       pressed: st === 'won',
       onClick: () => {
         setStatus(g.id, st === 'won' ? undefined : 'won');
         toast(st === 'won' ? 'Estado quitado' : 'Marcado como ganado');
       },
     },
-    { sep: true },
-    {
-      label: isFav ? '♥ Quitar de favoritos' : '♡ Añadir a favoritos',
-      pressed: isFav,
-      onClick: () => toggleFavorite(g.id),
-    },
+    ...(st
+      ? [
+          {
+            label: 'Quitar estado',
+            onClick: () => {
+              setStatus(g.id, undefined);
+              toast('Estado quitado');
+            },
+          },
+        ]
+      : []),
   ] as const;
 
   return (
@@ -127,17 +139,15 @@ export function DetailModal() {
                 <i />
               </span>
             </button>
-            <div className="detail-menu" role="menu" hidden>
-              <span className="dm-label">Estado</span>
+            <div className="detail-menu" hidden>
               {menuItems.map((it, i) =>
                 'sep' in it ? (
                   <span key={i} className="dm-sep" />
-                ) : (
+                ) : 'onClick' in it ? (
                   <button
                     key={i}
                     type="button"
-                    role="menuitemcheckbox"
-                    aria-checked={it.pressed}
+                    aria-pressed={'pressed' in it ? it.pressed : undefined}
                     onClick={() => {
                       it.onClick();
                       menuRef.current?.querySelector('.detail-menu')?.setAttribute('hidden', '');
@@ -146,6 +156,10 @@ export function DetailModal() {
                   >
                     {it.label}
                   </button>
+                ) : (
+                  <span key={i} className="dm-label">
+                    {it.label}
+                  </span>
                 ),
               )}
             </div>
@@ -209,7 +223,9 @@ export function DetailModal() {
                 <span className="available-label">● {g.available ? 'Disponible' : 'No disponible'}</span>
               </>
             )}
-            <div className="detail-actions">
+          </div>
+
+          <div className="detail-actions">
               <button
                 className="btn gold"
                 type="button"
@@ -228,7 +244,6 @@ export function DetailModal() {
                 {isFav ? 'En favoritos' : '♡ Favorito'}
               </button>
             </div>
-          </div>
 
           {shots.length > 0 && (
             <div className="shots" aria-label="Capturas">

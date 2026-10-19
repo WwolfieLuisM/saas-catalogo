@@ -234,9 +234,6 @@ export function CollectionDrawer() {
     games,
     favorites,
     status,
-    list,
-    toggleFavorite,
-    toggleList,
     openDetail,
     collectionFilter,
     setCollectionFilter,
@@ -262,9 +259,9 @@ export function CollectionDrawer() {
   const tabs: { id: CollTab; label: string }[] = [
     { id: 'all', label: 'Todos' },
     { id: 'favorites', label: 'Favoritos' },
-    { id: 'pending', label: 'Pendientes' },
-    { id: 'played', label: 'Jugados' },
-    { id: 'won', label: 'Ganados' },
+    { id: 'pending', label: 'Pendiente' },
+    { id: 'played', label: 'Jugado' },
+    { id: 'won', label: 'Ganado' },
   ];
 
   return (
@@ -279,9 +276,7 @@ export function CollectionDrawer() {
       <div className="drawer-in">
         <div className="drawer-head">
           <h2>Mi colección</h2>
-          <span className="collection-count">
-            {counts[collectionFilter as CollTab] ?? filtered.length}
-          </span>
+          <span className="collection-count">Tu biblioteca personal</span>
           <button className="close" type="button" aria-label="Cerrar colección" onClick={close}>
             ×
           </button>
@@ -292,9 +287,7 @@ export function CollectionDrawer() {
               key={t.id}
               className="collection-tab"
               type="button"
-              role="tab"
-              aria-selected={collectionFilter === t.id}
-              data-active={collectionFilter === t.id}
+              aria-pressed={collectionFilter === t.id}
               onClick={() => setCollectionFilter(t.id)}
             >
               {t.label}
@@ -303,7 +296,10 @@ export function CollectionDrawer() {
           ))}
         </div>
         {filtered.length === 0 ? (
-          <div className="collection-empty">No hay juegos en esta vista.</div>
+          <div className="collection-empty">
+            <b>{tabs.find((t) => t.id === collectionFilter)?.label ?? 'Todos'}</b>
+            Marca juegos como favoritos, pendientes, jugados o ganados desde su detalle.
+          </div>
         ) : (
           <ul className="collection-list">
             {filtered.map((g) =>
@@ -320,9 +316,11 @@ export function CollectionDrawer() {
                   >
                     <Art game={g} w={138} h={186} showTitle={false} />
                   </button>
-                  <div className="meta" style={{ minWidth: 0 }}>
+                  <div className="meta">
                     <b>{g.name}</b>
                     <span>
+                      {favorites.includes(g.id) && status[g.id] ? 'Favorito · ' : ''}
+                      {favorites.includes(g.id) && !status[g.id] ? 'Favorito' : ''}
                       {status[g.id] === 'played'
                         ? 'Jugado'
                         : status[g.id] === 'won'
@@ -331,27 +329,11 @@ export function CollectionDrawer() {
                             ? 'Pendiente'
                             : g.soon
                               ? 'Próximamente'
-                              : `${fmt(g.price ?? 0)} CUP`}
-                      {list.includes(g.id) ? ' · en lista' : ''}
+                              : ''}
                     </span>
-                    <div style={{ display: 'flex', gap: 6, marginTop: 4 }}>
-                      <button
-                        className="mini"
-                        type="button"
-                        aria-pressed={list.includes(g.id)}
-                        onClick={() => toggleList(g.id)}
-                      >
-                        {list.includes(g.id) ? '− Lista' : '+ Lista'}
-                      </button>
-                      <button
-                        className="mini"
-                        type="button"
-                        aria-pressed={favorites.includes(g.id)}
-                        onClick={() => toggleFavorite(g.id)}
-                      >
-                        {favorites.includes(g.id) ? '♥' : '♡'}
-                      </button>
-                    </div>
+                    <span>
+                      {g.sizeGb ? `${gb(g.sizeGb)} GB` : '-'} · {fmt(g.price ?? 0)} CUP
+                    </span>
                   </div>
                 </li>
               ) : null,
@@ -359,8 +341,8 @@ export function CollectionDrawer() {
           </ul>
         )}
         <div className="drawer-foot">
-          <button className="btn ghost" type="button" onClick={close}>
-            Cerrar
+          <button className="btn" type="button" onClick={close}>
+            Seguir explorando
           </button>
         </div>
       </div>
