@@ -41,10 +41,7 @@ export default function AdminPanelLayout({ children }: { children: ReactNode }) 
   const close = () => setDrawer(false);
   const toggle = () => setDrawer((open) => !open);
   const groups = navGroupsFor(user.role);
-  const tenantName =
-    scope.tenants?.find((tenant) => tenant.id === scope.tenantId)?.name ??
-    user.tenantId ??
-    '—';
+  const tenantName = scope.tenantName ?? 'Tu negocio';
 
   return (
     <TopbarTitleProvider value={setTitle}>
@@ -102,7 +99,23 @@ export default function AdminPanelLayout({ children }: { children: ReactNode }) 
             </button>
             <div className="tt">{title}</div>
             <div className="sp" />
-            <span className="pill tnt-t">Tenant actual: {tenantName}</span>
+            {scope.isSa && scope.tenants && scope.tenants.length > 0 ? (
+              <select
+                className="tntsel"
+                aria-label="Seleccionar negocio"
+                value={scope.tenantId}
+                disabled={scope.loading}
+                onChange={(event) => scope.setTenantId(event.target.value)}
+              >
+                {scope.tenants.map((tenant) => (
+                  <option key={tenant.id} value={tenant.id}>
+                    {tenant.name}
+                  </option>
+                ))}
+              </select>
+            ) : (
+              <span className="pill tnt-t">Tenant actual: {tenantName}</span>
+            )}
             <button
               className="me"
               type="button"
@@ -174,8 +187,10 @@ export default function AdminPanelLayout({ children }: { children: ReactNode }) 
             </div>
             {user.tenantId ? (
               <div>
-                <div className="gr">Tenant</div>
-                <span className="mono">{user.tenantId}</span>
+                <div className="gr">
+                  <b>{tenantName}</b>
+                </div>
+                <small className="mono">{user.tenantId}</small>
               </div>
             ) : null}
           </div>

@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState } from 'react';
 import { adminFetch } from '@/lib/admin/adminApi';
-import type { TenantEntry } from '@/lib/admin/types';
+import type { TenantConfig, TenantEntry } from '@/lib/admin/types';
 import { useAdminAuth } from './useAdminAuth';
 
 const STORAGE_KEY = 'admin.tenantId';
@@ -11,6 +11,7 @@ export interface TenantScope {
   isSa: boolean;
   tenants: TenantEntry[] | null;
   tenantId: string;
+  tenantName: string | null;
   scopeId: string | undefined;
   ready: boolean;
   noTenants: boolean;
@@ -25,6 +26,7 @@ export function useTenantScope(): TenantScope {
   const isSa = user?.role === 'SUPER_ADMIN';
   const [tenants, setTenants] = useState<TenantEntry[] | null>(null);
   const [tenantId, setTenantIdState] = useState('');
+  const [ownName, setOwnName] = useState<string | null>(null);
   const [attempt, setAttempt] = useState(0);
   const [error, setError] = useState(false);
 
@@ -65,6 +67,25 @@ export function useTenantScope(): TenantScope {
     }
   }, []);
 
+  const ownTenantId = isSa ? null : (user?.tenantId ?? null);
+
+  useEffect(() => {
+    if (!ownTenantId) return;
+    let cancelled = false;
+    queueMicrotask(() => {
+      adminFetch<TenantConfig>('/admin/config', { query: { tenantId: ownTenantId } })
+        .then((config) => {
+          if (!cancelled) setOwnName(config.publicName || null);
+        })
+        .catch(() => {
+          if (!cancelled) setOwnName(null);
+        });
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [ownTenantId]);
+
   const reload = useCallback(() => {
     setTenants(null);
     setError(false);
@@ -76,6 +97,9 @@ export function useTenantScope(): TenantScope {
     isSa,
     tenants,
     tenantId: resolved,
+    tenantName: isSa
+      ? (tenants?.find((tenant) => tenant.id === resolved)?.name ?? null)
+      : ownName,
     scopeId: isSa ? tenantId || undefined : undefined,
     ready: isSa ? tenantId !== '' : true,
     noTenants: isSa && tenants !== null && tenants.length === 0,
