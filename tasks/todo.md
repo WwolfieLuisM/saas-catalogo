@@ -149,7 +149,7 @@ Antes de implementar: inspeccionar rutas y componentes de admin existentes, prop
 
 ### Fase 6 — Importador de catálogo por tenant (B, adaptado)
 - [x] 6.1 Contrato `luismi-platform/catalog@2` (entrada con plataforma; `catalog@1` → rechazo con mensaje claro) - **hecho 2026-10-15**: `tasks/catalog-import-contrato.md` + `catalogImportSchema`/`catalogOfferSchema` aditivos.
-- [ ] 6.2 Adaptar `data-transfer` validate/import: ofertas por plataforma, plataforma habilitada, aislamiento tenant
+- [x] 6.2 Adaptar `data-transfer` validate/import: ofertas por plataforma, plataforma habilitada, aislamiento tenant — **cerrada con 6.2-A, 6.2-B y 6.2-C.** A: envelope `@2` exigido con `400 CATALOG_SCHEMA_UNSUPPORTED`. B: `analyzeEntries` → `analyzeOffers`, identidad `(tenantId, baseGameId, platformId)` con fallback `(platformId, slug)`, `clearedFields`. C: `LibraryImportSection` + `LibraryImportView`, `previewError`/`runError` separados, y el flujo `validate → preview → backup → run → resultado` verificado en navegador. **La casilla madre seguía sin marcar.**
   - [x] **6.2-A (mínima viable) 2026-10-16:** envelope `@2` exigido + `400 CATALOG_SCHEMA_UNSUPPORTED` ante `@1`/schema/`offers` ausente. Gates 763/763, eslint 0, tsc sin errores nuevos.
 - [x] **6.2-B 2026-10-16:** `analyzeEntries` → `analyzeOffers` (`catalogOfferSchema`), identidad `(tenantId, baseGameId, platformId)` con fallback `(platformId, slug)`, plataformas **globales** + `TenantPlatform.enabled`, `slug` derivado `<base>-<platform>` (error si >50), `origin` derivado, `clearedFields` que reemplaza, `null`/ausentes que no borran, `SIZE_PAIR_INVALID`, taxononomía fuera del import (hereda de biblioteca), **retiradas acotadas a las plataformas declaradas** (decisión), export migrado a `catalog@2` (valores crudos + `skipped`/`notice` → **roundtrip cerrado**), sin puentes `genre`/`platform` ni `categoryId` en el import. **Cierra 3 de los 7 tsc** (los de `data-transfer`): quedan **4** (`seed.ts:246` · `games.service.ts:471,563,900`) → 6.2-C. Gates: **backend 775/775** · `tsc` solo 4 (F6) · `eslint src tests` 0.
     - **Decisiones tomadas 2026-10-16 (documentadas en `catalog-import-contrato.md` §2.1.1, §4.1, §4.2, §5.1):** (1) borrar solo en plataformas declaradas; (2) export@2 excluye ofertas sin biblioteca con `skipped` + motivo; (3) `slug` no se renombra nunca (aviso); (4) `clearedFields` reemplaza en vez de acumular; (5) `origin` se repara a `PERSONALIZADO` si la fila tiene overrides pero dice `BIBLIOTECA`.
@@ -180,7 +180,7 @@ Antes de implementar: inspeccionar rutas y componentes de admin existentes, prop
 - [ ] 7.3 Filtro de conveniencia en listados/imports
 
 ### Fase 8 — Gestión de tenants (Fase 5 legada)
-- [ ] 8.1 `Tenant.deletedAt` + soft delete backend
+- [x] 8.1 `Tenant.deletedAt` + soft delete backend — **commit `2c22d0e`.** `DELETE /api/v1/admin/tenants/:id` hace borrado lógico con auditoría; el listado lo oculta y `?includeDeleted=true` conserva el histórico. Migración `20261017120000_fase8_tenant_deletedat` aplicada con `prisma migrate deploy`. Verificado a mano tras aplicarla: 0 relaciones rotas en 4 direcciones. **La casilla estaba sin marcar; el trabajo sí estaba hecho.**
 - [ ] 8.2 Panel Negocios: "Eliminar" separado de "Suspender"
 - [ ] 8.3 Selector de tenant global en header (SUPER_ADMIN)
 
@@ -190,8 +190,21 @@ Antes de implementar: inspeccionar rutas y componentes de admin existentes, prop
 - [x] 9.3 Revisión de seguridad — **`tasks/seguridad-9.3.md`.** RBAC de ambos importadores correcto (biblioteca = `SUPER_ADMIN`; catálogo = `resolveTenantId` que fuerza al `ADMIN` a su tenant). Aislamiento correcto, y el payload `strictObject` cierra el IDOR por identificador. **SSRF fuerte** (DNS con todas las IP, rechazo de cualquier IP privada, **IP fijada en el socket** → cierra el DNS-rebinding, redirecciones revalidadas, tope de 5MB, Content-Type de imagen). **Hueco encontrado y corregido:** `isBlockedV6` no enumeraba prefijos IPv6 de propósito especial (NAT64 `64:ff9b::/96`, 6to4 `2002::/16`, `2001:db8::/32`, `100::/64`, `fec0::/10`), con test nuevo. Fuera de alcance y **señalado**: `npm audit` (es gate de release), cabeceras/CORS del frontend, y dos rangos IPv4 residuales que no apuntan a red interna.
 
 ### Fase 10 — Generador (otra OC, el último)
-- [ ] 10.1 Regenerar piloto contra `library-import@2` (sin OST/DLC/secuela, variantes, reqs solo PC)
+- [ ] 10.1 Regenerar piloto contra `library-import@2` (sin OST/DLC/secuela, variantes, reqs solo PC). **Prompt canónico escrito y listo**: `tasks/generador-prompt-v2.md`, contra el contrato `library-import@2`. El generador entrega el JSON y lo valida contra un backend real (`summary.error == 0`), porque `library-import-pilot.test.ts` **se auto-migra el fixture v1 y pasa aunque el JSON siga en `@1`** — no sirve de gate para esto.
 - [ ] 10.2 Validar con `validate` real e importar piloto completo
+
+## Pasada de fidelidad del feed (2026-10-17, fuera de las fases)
+
+Trabajo no contemplado en el plan por fases: `main` se había hecho a medias con otra herramienta y había que dejar el feed igual que la referencia. Spec en `tasks/spec-fidelidad-feed.md`.
+
+- [x] Especificación de fidelidad extraída del HTML de referencia — 12 tokens, 19 bloques `@media`, 310 selectores, 5 cortes (700/880/1020/1280) y los comportamientos firma. **Aviso: el HTML es un híbrido de dos capas** y hay que implementar el resultado de la cascada, no la capa antigua.
+- [x] Merge de `origin/main` (12 commits de otra persona) — 1 conflicto, en `admin.css`, resuelto a favor de `main` por ser el arreglo más preciso. Sin push.
+- [x] Fidelidad definitiva v1 — commit `971b17d`. Detalle móvil como hoja inferior, lista móvil a una columna, menú de tres puntitos con `aria-pressed` y "Quitar estado", "Mi colección" como en la referencia, titulares al tamaño real, difuminado de cabecera recuperado, elevación y borde dorado de la tarjeta.
+- [ ] **Cortes 700px y 880px sin revisar** — pendientes de UI en `tasks/ui-admin.md`.
+- [ ] **Miniaturas recortadas en "Mi colección"** — pendiente de UI.
+- [ ] **Requisitos que empiezan por `"texto:"`** — pendiente de **datos**, no de UI: el catálogo entrega la cadena suelta en lugar de `os`/`cpu`/`gpu`/`ram`.
+
+**Causa raíz de por qué `main` quedó a medias:** `feed.css` tiene reglas duplicadas. El valor correcto estaba escrito y tres reglas posteriores lo pisaban. No faltaban reglas, faltaba que ganara la buena. Por eso un diff automático de CSS no sirve: ve la declaración, no quién manda.
 
 ## Verificación final
 - [ ] Backend 654/654, frontend completo (`tsc`, `eslint`, tests, `build`, `cf:build`) en verde
