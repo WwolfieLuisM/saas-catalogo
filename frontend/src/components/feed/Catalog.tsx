@@ -101,24 +101,8 @@ export function Catalog() {
         >
           Filtros
         </button>
-        <label>
-          <span className="sr">Ordenar por</span>
-          <select value={sort} onChange={(e) => setSort(e.target.value as typeof sort)} aria-label="Ordenar por">
-            {SORTS.map((s) => (
-              <option key={s} value={s}>
-                {SORT_LABELS[s]}
-              </option>
-            ))}
-          </select>
-        </label>
-        {hasActiveFilters && (
-          <button className="linklike" type="button" onClick={resetFilters}>
-            Limpiar filtros
-          </button>
-        )}
-      </div>
 
-      <div className={`more${showFilters ? ' open' : ''}`} id="moreFilters" role="group" aria-label="Filtros avanzados">
+        <div className={`more${showFilters ? ' open' : ''}`} id="moreFilters" role="group" aria-label="Filtros avanzados">
         <label>
           Género{' '}
           <select value={genre} onChange={(e) => setGenre(e.target.value)}>
@@ -171,6 +155,21 @@ export function Catalog() {
             Borrar búsqueda
           </button>
         )}
+        <button className="btn ghost" type="button" onClick={resetFilters}>
+          Limpiar filtros
+        </button>
+        </div>
+
+        <label className="sort-control">
+          <span className="sr">Ordenar por</span>
+          <select value={sort} onChange={(e) => setSort(e.target.value as typeof sort)} aria-label="Ordenar por">
+            {SORTS.map((s) => (
+              <option key={s} value={s}>
+                {SORT_LABELS[s]}
+              </option>
+            ))}
+          </select>
+        </label>
       </div>
 
       <div className="grid" id="catalog-grid" aria-busy={catalogLoading}>

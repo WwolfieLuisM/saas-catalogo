@@ -69,7 +69,7 @@ export function Footer() {
           </span>
         ) : null}
         <span>
-          Catálogo v{catalogVersion ?? 1} · v12 ·{' '}
+          Catálogo v{catalogVersion ?? 1} · Feed v17 ·{' '}
           <button
             className="linklike"
             type="button"
