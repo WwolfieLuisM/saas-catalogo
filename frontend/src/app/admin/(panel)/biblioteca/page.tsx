@@ -53,6 +53,9 @@ function LibAddModal({
   onSaved: () => void;
 }) {
   const [categoryId, setCategoryId] = useState(cats[0]?.id ?? '');
+  const [platformId, setPlatformId] = useState(
+    game.platforms.find((platform) => platform.slug === 'pc')?.id ?? game.platforms[0]?.id ?? '',
+  );
   const [availability, setAvailability] = useState('1');
   const [busy, setBusy] = useState(false);
   const sizeGb = sizeToGb(game.sizeValue, game.sizeUnit);
@@ -64,6 +67,7 @@ function LibAddModal({
       method: 'POST',
       body: {
         baseGameId: game.id,
+        platformId,
         ...(categoryId ? { categoryId } : {}),
         availability: availability === '1',
         priceMode: 'RULE',
@@ -89,7 +93,7 @@ function LibAddModal({
           <button className="btn" type="button" onClick={onClose} disabled={busy}>
             Cancelar
           </button>
-          <button className="btn pri" type="button" onClick={submit} disabled={busy}>
+          <button className="btn pri" type="button" onClick={submit} disabled={busy || !platformId}>
             <AdminIcon name="plus" />
             Agregar
           </button>
@@ -110,6 +114,20 @@ function LibAddModal({
             ))}
           </select>
         </Field>
+        <Field label="Plataforma">
+          <select
+            value={platformId}
+            onChange={(event) => setPlatformId(event.target.value)}
+            disabled={game.platforms.length === 0}
+          >
+            {game.platforms.length === 0 ? <option value="">Sin plataformas</option> : null}
+            {game.platforms.map((platform) => (
+              <option key={platform.id} value={platform.id}>
+                {platform.name}
+              </option>
+            ))}
+          </select>
+        </Field>
         <Field label="Disponibilidad">
           <select value={availability} onChange={(event) => setAvailability(event.target.value)}>
             <option value="1">Disponible</option>
@@ -117,10 +135,17 @@ function LibAddModal({
           </select>
         </Field>
       </div>
-      <p className="hint" style={{ marginTop: '12px' }}>
-        Precio según tus reglas: <b>{sug === null ? 'sin regla aplicable' : `${sug} CUP`}</b>. Podrás
-        cambiarlo después.
-      </p>
+      {game.platforms.length === 0 ? (
+        <p className="hint" style={{ marginTop: '12px' }}>
+          Este juego de la biblioteca no tiene plataformas asignadas. Añádele una antes de agregarlo
+          a tu catálogo.
+        </p>
+      ) : (
+        <p className="hint" style={{ marginTop: '12px' }}>
+          Precio según tus reglas: <b>{sug === null ? 'sin regla aplicable' : `${sug} CUP`}</b>.
+          Podrás cambiarlo después.
+        </p>
+      )}
     </Modal>
   );
 }
