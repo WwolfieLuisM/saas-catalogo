@@ -206,5 +206,20 @@ Trabajo no contemplado en el plan por fases: `main` se había hecho a medias con
 
 **Causa raíz de por qué `main` quedó a medias:** `feed.css` tiene reglas duplicadas. El valor correcto estaba escrito y tres reglas posteriores lo pisaban. No faltaban reglas, faltaba que ganara la buena. Por eso un diff automático de CSS no sirve: ve la declaración, no quién manda.
 
+## Reinicio del catálogo (2026-10-20, fuera de las fases)
+
+Operación pedida por el usuario tras tener desplegadas en producción todas las fases funcionales. Registro completo, reglas y vuelta atrás en **`tasks/reinicio-catalogo.md`**.
+
+**Reglas decididas:** R1 taxonomía global por tipo · R2 slug fijo (minúsculas, guiones, sin acentos, únicos globalmente) · R3 géneros y categorías globales, sin excepción por negocio · R4 `CatalogMetadata` se conserva (el ETag es `"v${version}"`, bajarla a 1 daría 304 y contenido viejo en caché) · R5 **el carro está parado, no se importa nada** · medios no se tocan.
+
+- [x] **Fase A — respaldo.** Plan gratuito de Neon: **no cabe snapshot** (solo 1 y lo ocupaba `pre-fase3-borrado`, que además es anterior a las fases 4–11 y no serviría). Respaldo lógico local: `backend/scripts/respaldo-pre-reinicio-2026-10-20T02-15-10.json`, 135 KB, sha256 `fe354fac…`, 10 tablas / 376 filas.
+- [x] **Fase B — vaciado.** Una transacción, 8 `DELETE` en orden de claves foráneas. 12 tablas a 0; intactos tenants, usuarios, sesiones, auditoría, respaldos, reglas de precios y metadatos. Se comprobó que una sentencia fallida revierte todo.
+- [x] **Fase C — taxonomía canónica.** 35 géneros + 10 categorías + 6 plataformas, todas globales. Fusiones: `Shooter`→`Disparos`, `RPG`→`Rol`, `Plataforma`→`Plataformas`, `Cartas`→`Cartas y mesa`, `Puzle`→`Puzzle`. Restaurado `TenantPlatform` (2 negocios × 6 = 12 filas).
+- [x] **Fase D — verificación.** Base: 0 slugs duplicados, todo global. Web: catálogo `0 juegos` y pie `Catálogo v 89` (la versión no bajó).
+- [x] **Vuelta atrás probada.** `backend/scripts/restaurar-catalogo.mjs`, probado en `--dry-run`: lee las 10 tablas, 376 filas, sin avisos de columnas.
+- [ ] **Fase D (resto) — panel de administración sin verificar.** `/admin/generos`, `/admin/categorias`, `/admin/plataformas` y los interruptores de `/admin/negocios`. Requiere sesión; la contraseña la introduce el usuario.
+- [ ] **Fase E — importar.** **Parada a propósito por R5.** El catálogo está vacío a propósito.
+- [ ] **El respaldo vive solo en un disco** (`backend/scripts/` está gitignorado). Decidir si pasa a git o a un sitio con respaldo — `tasks/dudas.md` #14.
+
 ## Verificación final
 - [ ] Backend 654/654, frontend completo (`tsc`, `eslint`, tests, `build`, `cf:build`) en verde

@@ -94,15 +94,36 @@ Esta última operación requerirá una representación explícita para evitar co
 
 ## 4. Taxonomía
 
-Los géneros y las plataformas utilizarán un diccionario controlado de valores canónicos.
+> **Actualizado 2026-10-20 (R1 + R3 del reinicio).** Este párrafo anterior contradecía la decisión tomada: «las categorías globales y las categorías particulares de un tenant se mantendrán diferenciadas cuando ambas sean necesarias». **Ya no es así.** Ver `tasks/reinicio-catalogo.md`.
+
+Las taxonomías son **globales**, una sola lista por tipo, compartida por todos los negocios:
+
+- `Platform`, `Genre` y `Category` se crean con `tenantId = NULL`.
+- **Un negocio no puede tener un género, categoría o plataforma propio.** Si algo es específico de un negocio, no pertenece a la taxonomía.
+- La columna `tenantId` se mantiene en el esquema por compatibilidad, pero se usa siempre con `NULL`.
+
+El alcance de cada negocio se expresa por otra vía: **`TenantPlatform`** (`tenantId`, `platformId`, `enabled`) indica qué plataformas usa. No existe equivalente para géneros ni categorías: todos son visibles para todos.
+
+### 4.1 Regla fija de slug
+
+Todos los slugs cumplen: **minúsculas, guiones en vez de espacios, sin acentos** y **únicos globalmente dentro de su tipo**. No hay excepciones ni slugs inventados en importaciones.
+
+### 4.2 Categoría frente a género
+
+No son lo mismo aunque compartan nombres:
+
+- **`Category`** — el *balde* principal de un juego. Un solo valor por juego (`baseGame.categoryId`). Es el estante de la tienda.
+- **`Genre`** — las *etiquetas*. Relación muchos-a-muchos (`BaseGameGenre`). Un juego puede tener varias.
 
 Las importaciones podrán utilizar entradas existentes y crear nuevas entradas únicamente cuando estén aprobadas por las reglas de administración global.
 
 Los valores desconocidos no se crearán automáticamente sin control: deberán resolverse o aprobarse antes de completar la importación.
 
-Las categorías globales y las categorías particulares de un tenant se mantendrán diferenciadas cuando ambas sean necesarias.
-
 Las relaciones muchos-a-muchos se utilizarán donde una entidad pueda tener varios géneros o plataformas.
+
+### 4.3 Orden al reconstruir
+
+El validador de importación rechaza las ofertas cuya plataforma **no está habilitada** en el negocio. Por tanto, al reconstruir la base hay que poblar la taxonomía global **y** `TenantPlatform` **antes** de importar; con `TenantPlatform` vacío, la importación entera falla.
 
 ## 5. Biblioteca multimedia
 

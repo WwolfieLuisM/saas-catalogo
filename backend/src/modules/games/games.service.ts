@@ -407,58 +407,23 @@ async function publishFromLibrary(
   let categoryId = input.categoryId ?? null;
   let genreIds = input.genreIds ?? null;
   const platformIds = input.platformIds ?? null;
-  const missing: { categories: string[]; genres: string[] } = {
-    categories: [],
-    genres: [],
-  };
 
-  if (categoryId === null && input.categoryId === undefined) {
-    if (base.categoryId) {
-      const globalCategory = await prisma.category.findFirst({
-        where: { id: base.categoryId, tenantId: null, deletedAt: null },
-      });
-      if (globalCategory) {
-        const tenantCategory = await prisma.category.findFirst({
-          where: { tenantId, slug: globalCategory.slug, deletedAt: null },
-        });
-        if (tenantCategory) {
-          categoryId = tenantCategory.id;
-        } else {
-          missing.categories.push(globalCategory.slug);
-        }
-      }
-    }
+  if (categoryId === null && input.categoryId === undefined && base.categoryId) {
+    const globalCategory = await prisma.category.findFirst({
+      where: { id: base.categoryId, tenantId: null, deletedAt: null },
+    });
+    categoryId = globalCategory?.id ?? null;
   }
 
   if (genreIds === null && input.genreIds === undefined) {
     const bridges = await prisma.baseGameGenre.findMany({ where: { baseGameId: base.id } });
     const genreIdList = bridges.map((bridge) => bridge.genreId);
-    const resolved: string[] = [];
-    if (genreIdList.length) {
-      const globalGenres = await prisma.genre.findMany({
-        where: { id: { in: genreIdList }, tenantId: null, deletedAt: null },
-      });
-      for (const globalGenre of globalGenres) {
-        const tenantGenre = await prisma.genre.findFirst({
-          where: { tenantId, slug: globalGenre.slug, deletedAt: null },
-        });
-        if (tenantGenre) {
-          resolved.push(tenantGenre.id);
-        } else {
-          missing.genres.push(globalGenre.slug);
-        }
-      }
-    }
-    genreIds = resolved;
-  }
-
-  if (missing.categories.length || missing.genres.length) {
-    throw new AppError(
-      422,
-      'TAXONOMY_MAPPING_INCOMPLETE',
-      'El catálogo no tiene equivalencias para toda la taxonomía de la biblioteca',
-      { missing },
-    );
+    const globalGenres = genreIdList.length
+      ? await prisma.genre.findMany({
+          where: { id: { in: genreIdList }, tenantId: null, deletedAt: null },
+        })
+      : [];
+    genreIds = globalGenres.map((genre) => genre.id);
   }
 
   const id = randomUUID();

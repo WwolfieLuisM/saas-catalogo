@@ -84,6 +84,7 @@ const T_OTRO = '22222222-2222-4222-8222-222222222222';
 let server: Server;
 let baseUrl: string;
 let adminToken: string;
+let superToken: string;
 
 async function api<T = Record<string, unknown>>(
   path: string,
@@ -173,6 +174,7 @@ beforeAll(async () => {
   const address = server.address() as AddressInfo;
   baseUrl = `http://127.0.0.1:${address.port}`;
   adminToken = await signAccessToken({ id: 'u-admin', role: 'ADMIN', tenantId: T_JAVIER });
+  superToken = await signAccessToken({ id: 'u-super', role: 'SUPER_ADMIN', tenantId: null });
 });
 
 afterAll(async () => {
@@ -715,16 +717,8 @@ describe('catálogo: versionado', () => {
     seedCatalog(7);
 
     const [first, second] = await Promise.all([
-      api(
-        `${GENRES}`,
-        { method: 'POST', body: JSON.stringify({ name: 'Accion', slug: 'accion' }) },
-        adminToken,
-      ),
-      api(
-        `${GENRES}`,
-        { method: 'POST', body: JSON.stringify({ name: 'RPG', slug: 'rpg' }) },
-        adminToken,
-      ),
+      api(GAMES, { method: 'POST', body: createGameBody() }, adminToken),
+      api(GAMES, { method: 'POST', body: createGameBody() }, adminToken),
     ]);
     expect(first.status).toBeLessThan(300);
     expect(second.status).toBeLessThan(300);
@@ -732,39 +726,39 @@ describe('catálogo: versionado', () => {
     expect(await currentVersion()).toBe(9);
   });
 
-  it('incrementa la versión al crear taxonomía tenant', async () => {
+  it('no incrementa la versión al crear taxonomía global', async () => {
     seedCatalog(1);
 
     const created = await api(
       `${GENRES}`,
       { method: 'POST', body: JSON.stringify({ name: 'Aventura', slug: 'aventura' }) },
-      adminToken,
+      superToken,
     );
     expect(created.status).toBeLessThan(300);
 
-    expect(await currentVersion()).toBe(2);
+    expect(await currentVersion()).toBe(1);
   });
 
-  it('no incrementa si solo cambia la descripción de taxonomía', async () => {
+  it('no incrementa al crear taxonomía global ni al cambiar solo la descripción', async () => {
     seedCatalog(6);
 
     const created = await api(
       `${GENRES}`,
       { method: 'POST', body: JSON.stringify({ name: 'Roguelike', slug: 'roguelike' }) },
-      adminToken,
+      superToken,
     );
     expect(created.status).toBeLessThan(300);
     const genreId = (created.body.data as { id: string }).id;
-    expect(await currentVersion()).toBe(7);
+    expect(await currentVersion()).toBe(6);
 
     const patched = await api(
       `${GENRES}/${genreId}`,
       { method: 'PATCH', body: JSON.stringify({ description: 'Solo descripción' }) },
-      adminToken,
+      superToken,
     );
     expect(patched.status).toBe(200);
 
-    expect(await currentVersion()).toBe(7);
+    expect(await currentVersion()).toBe(6);
   });
 
   it('no incrementa al crear una regla de precio', async () => {

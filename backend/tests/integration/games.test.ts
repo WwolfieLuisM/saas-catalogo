@@ -152,15 +152,12 @@ function seedGame(overrides: Partial<FakeTenantGame> = {}): FakeTenantGame {
 
 function seedPublishFixture() {
   const gCat = globalCategory('accion', 'Acción');
-  const tCat = tenantCategory('accion', 'Acción');
   const gGenre = globalGenre('rpg', 'RPG');
-  const tGenre = tenantGenre('rpg', 'RPG');
   const gPlat = globalPlatform('pc', 'PC');
-  const tPlat = tenantPlatform('pc', 'PC');
   const base = seedBaseGame({ categoryId: gCat.id });
   addFakeBaseGameGenre(base.id, gGenre.id);
   addFakeBaseGamePlatform(base.id, gPlat.id);
-  return { gCat, tCat, gGenre, tGenre, gPlat, tPlat, base };
+  return { gCat, gGenre, gPlat, base };
 }
 
 function auditRow(action: string) {
@@ -664,7 +661,7 @@ describe('POST /games (personalizado)', () => {
 });
 
 describe('POST /games (publicación desde biblioteca)', () => {
-  it('publica mapeando taxonomía global por slug hacia el tenant', async () => {
+  it('publica enlazando la taxonomía global directamente en el catálogo del tenant', async () => {
     const fixture = seedPublishFixture();
 
     const { status, body } = await api<GameDto>(
@@ -690,11 +687,11 @@ describe('POST /games (publicación desde biblioteca)', () => {
       sizeValue: 15,
       sizeUnit: 'GB',
       releaseYear: 2020,
-      categoryId: fixture.tCat.id,
+      categoryId: fixture.gCat.id,
     });
-expect(body.data?.baseGame).toMatchObject({ id: fixture.base.id, slug: 'hades' });
-    expect(body.data?.category).toMatchObject({ id: fixture.tCat.id, slug: 'accion' });
-    expect(body.data?.genres).toEqual([expect.objectContaining({ id: fixture.tGenre.id })]);
+    expect(body.data?.baseGame).toMatchObject({ id: fixture.base.id, slug: 'hades' });
+    expect(body.data?.category).toMatchObject({ id: fixture.gCat.id, slug: 'accion' });
+    expect(body.data?.genres).toEqual([expect.objectContaining({ id: fixture.gGenre.id })]);
     expect(body.data?.platforms).toEqual([]);
     expect(body.data?.platformId).toBe(fixture.gPlat.id);
     expect(body.data?.minimumRequirements).toEqual({ cpu: 'i5', ram: '8 GB' });
@@ -703,7 +700,7 @@ expect(body.data?.baseGame).toMatchObject({ id: fixture.base.id, slug: 'hades' }
     const bridges = [...state.tenantGameGenres.values()].filter(
       (row) => row.tenantGameId === body.data?.id,
     );
-    expect(bridges.map((row) => row.genreId)).toEqual([fixture.tGenre.id]);
+    expect(bridges.map((row) => row.genreId)).toEqual([fixture.gGenre.id]);
 
     const log = auditRow('CREATE');
     expect(log).toMatchObject({ entity: 'TenantGame', tenantId: T_JAVIER, actorId: 'u-admin' });
@@ -724,37 +721,36 @@ expect(body.data?.baseGame).toMatchObject({ id: fixture.base.id, slug: 'hades' }
     expect(body.data?.category).toBeNull();
   });
 
-  it('devuelve 422 TAXONOMY_MAPPING_INCOMPLETE si falta la equivalencia de categoría', async () => {
+  it('publica enlazando la categoría global sin necesidad de un clon por tenant', async () => {
     const global = globalCategory('sim', 'Sim');
     const base = seedBaseGame({ categoryId: global.id });
 
-    const { status, body } = await api(
+    const { status, body } = await api<GameDto>(
       BASE,
       { method: 'POST', body: JSON.stringify({ platformId: PC, baseGameId: base.id }) },
       adminToken,
     );
 
-    expect(status).toBe(422);
-    expect(body.error?.code).toBe('TAXONOMY_MAPPING_INCOMPLETE');
-    const details = body.error?.details as MissingDetails;
-    expect(details.missing?.categories).toEqual(['sim']);
+    expect(status).toBe(201);
+    expect(body.data?.categoryId).toBe(global.id);
   });
 
-  it('devuelve 422 TAXONOMY_MAPPING_INCOMPLETE si falta la equivalencia de género', async () => {
+  it('publica enlazando los géneros globales sin necesidad de un clon por tenant', async () => {
     const global = globalGenre('terra', 'Terra');
     const base = seedBaseGame();
     addFakeBaseGameGenre(base.id, global.id);
 
-    const { status, body } = await api(
+    const { status, body } = await api<GameDto>(
       BASE,
       { method: 'POST', body: JSON.stringify({ platformId: PC, baseGameId: base.id }) },
       adminToken,
     );
 
-    expect(status).toBe(422);
-    expect(body.error?.code).toBe('TAXONOMY_MAPPING_INCOMPLETE');
-    const details = body.error?.details as MissingDetails;
-    expect(details.missing?.genres).toEqual(['terra']);
+    expect(status).toBe(201);
+    const bridges = [...state.tenantGameGenres.values()].filter(
+      (row) => row.tenantGameId === body.data?.id,
+    );
+    expect(bridges.map((row) => row.genreId)).toEqual([global.id]);
   });
 
   it('devuelve 422 si la taxonomía explícita no existe en el tenant', async () => {
@@ -1109,22 +1105,25 @@ describe('DELETE /games/:id y restore', () => {
 });
 
 describe('visibilidad de la taxonomía global', () => {
-  it('la lista de categorías del tenant no incluye filas globales', async () => {
+  it('la lista de categorías del tenant es la taxonomía global', async () => {
     globalCategory('accion', 'Acción Global');
-    tenantCategory('deportes', 'Deportes');
 
-    const adminList = await api<{ slug: string }[]>('/api/v1/admin/categories', {}, adminToken);
+    const adminList = await api<{ slug: string; tenantId: string | null }[]>(
+      '/api/v1/admin/categories',
+      {},
+      adminToken,
+    );
     expect(adminList.status).toBe(200);
     expect(adminList.body.meta?.total).toBe(1);
-    expect(adminList.body.data?.[0]?.slug).toBe('deportes');
+    expect(adminList.body.data?.[0]).toMatchObject({ slug: 'accion', tenantId: null });
 
     const superList = await api<{ slug: string }[]>(
-      `/api/v1/admin/categories?tenantId=${T_JAVIER}`,
+      '/api/v1/admin/categories',
       {},
       superToken,
     );
     expect(superList.body.meta?.total).toBe(1);
-    expect(superList.body.data?.[0]?.slug).toBe('deportes');
+    expect(superList.body.data?.[0]?.slug).toBe('accion');
   });
 
   it('la taxonomía global no rompe la lista de juegos del tenant', async () => {

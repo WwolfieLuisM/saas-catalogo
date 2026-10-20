@@ -129,7 +129,7 @@ describe.each(RESOURCES)('$path', ({ path, entity, notFoundCode, slugExistsCode 
   function seed(overrides: Partial<FakeTaxonomy> = {}): FakeTaxonomy {
     return ADD[path]({
       id: randomUUID(),
-      tenantId: T_JAVIER,
+      tenantId: null,
       name: 'Accion',
       slug: randomUUID(),
       ...overrides,
@@ -150,16 +150,25 @@ describe.each(RESOURCES)('$path', ({ path, entity, notFoundCode, slugExistsCode 
       expect(body.error?.code).toBe('UNAUTHENTICATED');
     });
 
-    it('lista solo el tenant de la sesión ADMIN con meta', async () => {
+    it('lista la taxonomía global con meta para ADMIN', async () => {
       seed({ name: 'Propia', slug: 'propia' });
-      seed({ tenantId: T_OTRO, name: 'Ajena', slug: 'ajena' });
+      seed({ name: 'Otra', slug: 'otra' });
 
       const { status, body } = await api<TaxonomyData[]>(base, {}, adminToken);
 
       expect(status).toBe(200);
-      expect(body.meta).toEqual({ page: 1, pageSize: 20, total: 1, totalPages: 1 });
-      expect(body.data).toHaveLength(1);
-      expect(body.data?.[0]).toMatchObject({ name: 'Propia', tenantId: T_JAVIER });
+      expect(body.meta).toEqual({ page: 1, pageSize: 20, total: 2, totalPages: 1 });
+      expect(body.data).toHaveLength(2);
+      expect(body.data?.[0]).toMatchObject({ name: 'Propia', tenantId: null });
+    });
+
+    it('excluye los registros por tenant heredados del modelo antiguo', async () => {
+      seed({ tenantId: T_OTRO, name: 'Heredada', slug: 'heredada' });
+
+      const { status, body } = await api<TaxonomyData[]>(base, {}, adminToken);
+
+      expect(status).toBe(200);
+      expect(body.meta?.total).toBe(0);
     });
 
     it('excluye registros eliminados', async () => {
@@ -171,62 +180,6 @@ describe.each(RESOURCES)('$path', ({ path, entity, notFoundCode, slugExistsCode 
       expect(status).toBe(200);
       expect(body.meta?.total).toBe(1);
       expect(body.data?.[0]?.name).toBe('Activa');
-    });
-
-    it('exige tenantId para SUPER_ADMIN', async () => {
-      const { status, body } = await api(base, {}, superToken);
-
-      expect(status).toBe(400);
-      expect(body.error?.code).toBe('VALIDATION_ERROR');
-    });
-
-    it('lista el tenant indicado para SUPER_ADMIN', async () => {
-      seed({ tenantId: T_OTRO, name: 'Ajena', slug: 'ajena' });
-
-      const { status, body } = await api<TaxonomyData[]>(
-        `${base}?tenantId=${T_OTRO}`,
-        {},
-        superToken,
-      );
-
-      expect(status).toBe(200);
-      expect(body.meta?.total).toBe(1);
-      expect(body.data?.[0]?.tenantId).toBe(T_OTRO);
-    });
-
-    it('lista taxonomía global con global=true para SUPER_ADMIN', async () => {
-      seed({ tenantId: null, name: 'Global', slug: 'global-cat' });
-      seed({ tenantId: T_JAVIER, name: 'Tenant', slug: 'tenant-cat' });
-
-      const { status, body } = await api<TaxonomyData[]>(`${base}?global=true`, {}, superToken);
-
-      expect(status).toBe(200);
-      expect(body.meta?.total).toBe(1);
-      expect(body.data?.[0]?.tenantId).toBeNull();
-      expect(body.data?.[0]?.slug).toBe('global-cat');
-    });
-
-    it('rechaza global=true para ADMIN', async () => {
-      const { status, body } = await api(`${base}?global=true`, {}, adminToken);
-
-      expect(status).toBe(403);
-      expect(body.error?.code).toBe('FORBIDDEN');
-    });
-
-    it('rechaza tenantId ajeno para ADMIN', async () => {
-      const { status, body } = await api(`${base}?tenantId=${T_OTRO}`, {}, adminToken);
-
-      expect(status).toBe(403);
-      expect(body.error?.code).toBe('FORBIDDEN');
-    });
-
-    it('acepta tenantId propio para ADMIN', async () => {
-      seed({ name: 'Propia', slug: 'propia' });
-
-      const { status, body } = await api(`${base}?tenantId=${T_JAVIER}`, {}, adminToken);
-
-      expect(status).toBe(200);
-      expect(body.meta?.total).toBe(1);
     });
 
     it('filtra q case-insensitive en name y slug', async () => {
@@ -283,24 +236,24 @@ describe.each(RESOURCES)('$path', ({ path, entity, notFoundCode, slugExistsCode 
       expect(status).toBe(401);
     });
 
-    it('ADMIN crea en su tenant sin enviar tenantId y audita', async () => {
+    it('SUPER_ADMIN crea un registro global sin enviar tenantId y audita', async () => {
       const { status, body } = await api<TaxonomyData>(
         base,
         {
           method: 'POST',
           body: JSON.stringify({ name: 'Nueva', slug: 'nueva', description: 'texto' }),
         },
-        adminToken,
+        superToken,
       );
 
       expect(status).toBe(201);
       expect(body.data).toMatchObject({
-        tenantId: T_JAVIER,
+        tenantId: null,
         name: 'Nueva',
         slug: 'nueva',
         description: 'texto',
-        createdBy: 'u-admin',
-        updatedBy: 'u-admin',
+        createdBy: 'u-super',
+        updatedBy: 'u-super',
         deletedAt: null,
       });
 
@@ -308,34 +261,17 @@ describe.each(RESOURCES)('$path', ({ path, entity, notFoundCode, slugExistsCode 
       expect(log).toMatchObject({
         entity,
         entityId: body.data?.id,
-        actorId: 'u-admin',
-        actorRole: 'ADMIN',
-        tenantId: T_JAVIER,
+        actorId: 'u-super',
+        actorRole: 'SUPER_ADMIN',
+        tenantId: null,
       });
       expect(log?.metadata).toMatchObject({ name: 'Nueva', slug: 'nueva' });
     });
 
-    it('ADMIN acepta tenantId propio en el cuerpo', async () => {
-      const { status, body } = await api<TaxonomyData>(
-        base,
-        {
-          method: 'POST',
-          body: JSON.stringify({ name: 'Nueva', slug: 'nueva', tenantId: T_JAVIER }),
-        },
-        adminToken,
-      );
-
-      expect(status).toBe(201);
-      expect(body.data?.tenantId).toBe(T_JAVIER);
-    });
-
-    it('ADMIN recibe 403 con tenantId ajeno en el cuerpo', async () => {
+    it('ADMIN recibe 403 al crear: la taxonomía la gestiona SUPER_ADMIN', async () => {
       const { status, body } = await api(
         base,
-        {
-          method: 'POST',
-          body: JSON.stringify({ name: 'Nueva', slug: 'nueva', tenantId: T_OTRO }),
-        },
+        { method: 'POST', body: JSON.stringify({ name: 'Nueva', slug: 'nueva' }) },
         adminToken,
       );
 
@@ -343,55 +279,30 @@ describe.each(RESOURCES)('$path', ({ path, entity, notFoundCode, slugExistsCode 
       expect(body.error?.code).toBe('FORBIDDEN');
     });
 
-    it('exige tenantId para SUPER_ADMIN', async () => {
-      const { status, body } = await api(
-        base,
-        { method: 'POST', body: JSON.stringify({ name: 'Nueva', slug: 'nueva' }) },
-        superToken,
-      );
-
-      expect(status).toBe(400);
-      expect(body.error?.code).toBe('VALIDATION_ERROR');
-    });
-
-    it('SUPER_ADMIN crea en el tenant indicado', async () => {
-      const { status, body } = await api<TaxonomyData>(
-        base,
-        {
-          method: 'POST',
-          body: JSON.stringify({ name: 'Ajena', slug: 'ajena', tenantId: T_OTRO }),
-        },
-        superToken,
-      );
-
-      expect(status).toBe(201);
-      expect(body.data).toMatchObject({ tenantId: T_OTRO, createdBy: 'u-super' });
-    });
-
-    it('devuelve 409 si el slug ya existe en el mismo tenant', async () => {
+    it('devuelve 409 si el slug ya existe en la taxonomía global', async () => {
       seed({ slug: 'ocupado' });
 
       const { status, body } = await api(
         base,
         { method: 'POST', body: JSON.stringify({ name: 'Duplicada', slug: 'ocupado' }) },
-        adminToken,
+        superToken,
       );
 
       expect(status).toBe(409);
       expect(body.error?.code).toBe(slugExistsCode);
     });
 
-    it('permite el mismo slug en otro tenant', async () => {
+    it('devuelve 409 si el slug ya lo usa un registro heredado de otro tenant (unicidad global, R2)', async () => {
       seed({ tenantId: T_OTRO, slug: 'repetido' });
 
-      const { status, body } = await api<TaxonomyData>(
+      const { status, body } = await api(
         base,
-        { method: 'POST', body: JSON.stringify({ name: 'Propia', slug: 'repetido' }) },
-        adminToken,
+        { method: 'POST', body: JSON.stringify({ name: 'Nueva', slug: 'repetido' }) },
+        superToken,
       );
 
-      expect(status).toBe(201);
-      expect(body.data?.tenantId).toBe(T_JAVIER);
+      expect(status).toBe(409);
+      expect(body.error?.code).toBe(slugExistsCode);
     });
 
     it('devuelve 400 con slug inválido', async () => {
@@ -467,7 +378,7 @@ describe.each(RESOURCES)('$path', ({ path, entity, notFoundCode, slugExistsCode 
           method: 'PATCH',
           body: JSON.stringify({ name: 'Nueva', slug: 'nuevo-slug', description: 'ok' }),
         },
-        adminToken,
+        superToken,
       );
 
       expect(status).toBe(200);
@@ -475,12 +386,12 @@ describe.each(RESOURCES)('$path', ({ path, entity, notFoundCode, slugExistsCode 
         name: 'Nueva',
         slug: 'nuevo-slug',
         description: 'ok',
-        updatedBy: 'u-admin',
+        updatedBy: 'u-super',
       });
       expect(rows().get(row.id)?.name).toBe('Nueva');
 
       const log = auditRow('UPDATE');
-      expect(log).toMatchObject({ entity, entityId: row.id, actorId: 'u-admin' });
+      expect(log).toMatchObject({ entity, entityId: row.id, actorId: 'u-super' });
       expect(log?.metadata).toMatchObject({ fields: ['name', 'slug', 'description'] });
     });
 
@@ -503,7 +414,7 @@ describe.each(RESOURCES)('$path', ({ path, entity, notFoundCode, slugExistsCode 
       const { status, body } = await api(
         `${base}/${row.id}`,
         { method: 'PATCH', body: JSON.stringify({ slug: 'ocupado' }) },
-        adminToken,
+        superToken,
       );
 
       expect(status).toBe(409);
@@ -542,22 +453,22 @@ describe.each(RESOURCES)('$path', ({ path, entity, notFoundCode, slugExistsCode 
       const { status, body } = await api<TaxonomyData>(
         `${base}/${row.id}`,
         { method: 'DELETE' },
-        adminToken,
+        superToken,
       );
 
       expect(status).toBe(200);
       expect(body.data?.deletedAt).toBeTruthy();
-      expect(body.data?.deletedBy).toBe('u-admin');
-      expect(rows().get(row.id)?.deletedBy).toBe('u-admin');
+      expect(body.data?.deletedBy).toBe('u-super');
+      expect(rows().get(row.id)?.deletedBy).toBe('u-super');
 
-      const list = await api(`${base}`, {}, adminToken);
+      const list = await api(`${base}`, {}, superToken);
       expect(list.body.meta?.total).toBe(0);
 
-      const get = await api(`${base}/${row.id}`, {}, adminToken);
+      const get = await api(`${base}/${row.id}`, {}, superToken);
       expect(get.status).toBe(404);
 
       const log = auditRow('DELETE');
-      expect(log).toMatchObject({ entity, entityId: row.id, actorId: 'u-admin' });
+      expect(log).toMatchObject({ entity, entityId: row.id, actorId: 'u-super' });
       expect(log?.metadata).toMatchObject({ name: 'Borrar', slug: 'borrar' });
     });
 
@@ -587,12 +498,12 @@ describe.each(RESOURCES)('$path', ({ path, entity, notFoundCode, slugExistsCode 
 
   describe('POST /:id/restore', () => {
     it('restaura un registro eliminado y audita', async () => {
-      const row = seed({ deletedAt: new Date(), deletedBy: 'u-admin' });
+      const row = seed({ deletedAt: new Date(), deletedBy: 'u-super' });
 
       const { status, body } = await api<TaxonomyData>(
         `${base}/${row.id}/restore`,
         { method: 'POST' },
-        adminToken,
+        superToken,
       );
 
       expect(status).toBe(200);
@@ -601,7 +512,7 @@ describe.each(RESOURCES)('$path', ({ path, entity, notFoundCode, slugExistsCode 
       expect(rows().get(row.id)?.deletedAt).toBeNull();
 
       const log = auditRow('RESTORE');
-      expect(log).toMatchObject({ entity, entityId: row.id, actorId: 'u-admin' });
+      expect(log).toMatchObject({ entity, entityId: row.id, actorId: 'u-super' });
     });
 
     it('devuelve 409 si no está eliminado', async () => {
@@ -610,7 +521,7 @@ describe.each(RESOURCES)('$path', ({ path, entity, notFoundCode, slugExistsCode 
       const { status, body } = await api(
         `${base}/${row.id}/restore`,
         { method: 'POST' },
-        adminToken,
+        superToken,
       );
 
       expect(status).toBe(409);
@@ -638,34 +549,102 @@ describe.each(RESOURCES)('$path', ({ path, entity, notFoundCode, slugExistsCode 
   });
 });
 
-describe('tenant inexistente (SUPER_ADMIN)', () => {
-  const MISSING_TENANT = '99999999-9999-4999-8999-999999999999';
+describe('modelo R3(a): taxonomía global única', () => {
+  const base = '/api/v1/admin/genres';
 
-  it.each(['categories', 'genres', 'platforms'])(
-    'GET /%s con tenantId inexistente devuelve 422 TENANT_NOT_FOUND',
-    async (path) => {
-      const { status, body } = await api(
-        `/api/v1/admin/${path}?tenantId=${MISSING_TENANT}`,
-        {},
-        superToken,
-      );
+  function seedGlobal(name: string, slug: string): FakeTaxonomy {
+    return addFakeGenre({ id: randomUUID(), tenantId: null, name, slug });
+  }
 
-      expect(status).toBe(422);
-      expect(body.error?.code).toBe('TENANT_NOT_FOUND');
-    },
-  );
+  it('GET / como ADMIN devuelve la taxonomía global', async () => {
+    seedGlobal('Rol', 'rol');
 
-  it('POST /categories con tenantId inexistente devuelve 422 TENANT_NOT_FOUND', async () => {
-    const { status, body } = await api(
-      '/api/v1/admin/categories',
-      {
-        method: 'POST',
-        body: JSON.stringify({ tenantId: MISSING_TENANT, name: 'Xx', slug: 'x-missing' }),
-      },
+    const { status, body } = await api<TaxonomyData[]>(base, {}, adminToken);
+
+    expect(status).toBe(200);
+    expect(body.meta?.total).toBe(1);
+    expect(body.data?.[0]).toMatchObject({ slug: 'rol', tenantId: null });
+  });
+
+  it('GET / como SUPER_ADMIN devuelve la taxonomía global sin enviar parámetros', async () => {
+    seedGlobal('Rol', 'rol');
+
+    const { status, body } = await api<TaxonomyData[]>(base, {}, superToken);
+
+    expect(status).toBe(200);
+    expect(body.meta?.total).toBe(1);
+    expect(body.data?.[0]?.slug).toBe('rol');
+  });
+
+  it('POST / como SUPER_ADMIN crea un registro global sin enviar tenantId', async () => {
+    const { status, body } = await api<TaxonomyData>(
+      base,
+      { method: 'POST', body: JSON.stringify({ name: 'Terror', slug: 'terror' }) },
       superToken,
     );
 
-    expect(status).toBe(422);
-    expect(body.error?.code).toBe('TENANT_NOT_FOUND');
+    expect(status).toBe(201);
+    expect(body.data?.tenantId).toBeNull();
+    expect(body.data?.slug).toBe('terror');
+  });
+
+  it('POST / como ADMIN devuelve 403: la taxonomía es compartida y la gestiona SUPER_ADMIN', async () => {
+    const { status, body } = await api(
+      base,
+      { method: 'POST', body: JSON.stringify({ name: 'Terror', slug: 'terror' }) },
+      adminToken,
+    );
+
+    expect(status).toBe(403);
+    expect(body.error?.code).toBe('FORBIDDEN');
+  });
+
+  it('POST / devuelve 409 si el slug ya lo usa otro tenant (unicidad global, R2)', async () => {
+    addFakeGenre({ id: randomUUID(), tenantId: T_OTRO, name: 'Rol', slug: 'rol' });
+
+    const { status, body } = await api(
+      base,
+      { method: 'POST', body: JSON.stringify({ name: 'Rol', slug: 'rol' }) },
+      superToken,
+    );
+
+    expect(status).toBe(409);
+    expect(body.error?.code).toBe('GENRE_SLUG_EXISTS');
+  });
+
+  it('PATCH /:id como ADMIN devuelve 403', async () => {
+    const row = seedGlobal('Rol', 'rol');
+
+    const { status, body } = await api(
+      `${base}/${row.id}`,
+      { method: 'PATCH', body: JSON.stringify({ name: 'Juego de rol' }) },
+      adminToken,
+    );
+
+    expect(status).toBe(403);
+    expect(body.error?.code).toBe('FORBIDDEN');
+    expect(state.genres.get(row.id)?.name).toBe('Rol');
+  });
+
+  it('DELETE /:id como ADMIN devuelve 403', async () => {
+    const row = seedGlobal('Rol', 'rol');
+
+    const { status } = await api(`${base}/${row.id}`, { method: 'DELETE' }, adminToken);
+
+    expect(status).toBe(403);
+  });
+
+  it('POST /:id/restore como ADMIN devuelve 403', async () => {
+    const row = addFakeGenre({
+      id: randomUUID(),
+      tenantId: null,
+      name: 'Rol',
+      slug: 'rol',
+      deletedAt: new Date(),
+    });
+
+    const { status } = await api(`${base}/${row.id}/restore`, { method: 'POST' }, adminToken);
+
+    expect(status).toBe(403);
   });
 });

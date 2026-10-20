@@ -137,33 +137,40 @@ Detalle pendiente en implementación: allowlist de hosts (anti-SSRF), reintento 
 
 ## 5. Dudas abiertas — Plataformas
 
-### 5.1 Plataformas globales hoy (producción)
+### 5.1 Plataformas globales — ~~hoy (producción)~~ **CERRADO 2026-10-20**
+
+> **Este bloque estaba obsoleto.** Describía `ps4` como «solo de javier» y el seed creando solo `pc` y `ps5`. Tras el reinicio del catálogo (`tasks/reinicio-catalogo.md`) ya no aplica: se vació la tabla y se recreó canónica. Se deja el texto original tachado solo como histórico.
+
 | slug | name | tenantId |
 |---|---|---|
-| `pc` | PC | global |
-| `ps5` | PlayStation 5 | global |
-| `ps4` | PS4 | **solo javier** (no global) |
+| ~~`ps4`~~ | ~~PS4~~ | ~~**solo javier** (no global)~~ |
 
-Seed solo crea `pc` y `ps5` globales.
+**Estado real desde 2026-10-20:** las 6 plataformas son globales, sin duplicados ni huérfanos. Ver 5.2.
 
-### 5.2 Lista canónica deseada (por confirmar)
-El usuario quiere la biblioteca organizada como:
+### 5.2 Lista canónica — **CERRADA 2026-10-20**
 
-`pc · ps5 · ps4 · xbox-series-x · xbox-one · switch` (+ futuras)
+**Resuelta por el usuario: las 6 globales (`tenantId: null`), ninguna solo de un tenant.**
 
-**Pregunta:** ¿cada una va como plataforma **global** (`tenantId: null`)? ¿Alguna solo de un tenant?
-**Pregunta:** ¿el `ps4` actual de javier se migra a global, o se crea un global nuevo y se re-mapea?
+`pc · ps5 · ps4 · xbox-series-x · xbox-one · switch`
+
+El `ps4` que era de javier se eliminó con el vaciado; la entrada global ocupa su sitio y no hay duplicado.
+
+Queda fijada además la **regla de slug (R2)**: minúsculas, guiones en vez de espacios, sin acentos, **únicos globalmente dentro de su tipo**. Aplica también a `Genre` y `Category`.
 
 ### 5.3 Diccionario de alias para la otra OC (cerrado en el prompt)
 
 Canónico permitido: `pc`, `ps5`, `ps4`, `xbox-series-x`, `xbox-one`, `switch` (tabla de aliases en el prompt). Fuera de tabla → `report.platformsUnknown`, nunca slug inventado.
 
-**Estado:** escrito en `backend\scripts\library-import-prompt.md`. Falta cerrar 5.1/5.2 (sembrar los globales que hoy no existen: `ps4` hoy es solo de javier).
+**Estado:** escrito en `backend\scripts\library-import-prompt.md`. ~~Falta cerrar 5.1/5.2 (sembrar los globales que hoy no existen: `ps4` hoy es solo de javier).~~ **5.1/5.2 cerradas 2026-10-20** — las 6 plataformas globales existen ya en la base, sin duplicados.
 
-### 5.4 TenantPlatform (Fase 5.4)
+### 5.4 TenantPlatform — **implementada (Fase 7) y poblada 2026-10-20**
 - `TenantPlatform(tenantId, platformId, enabled)` sobre plataformas globales.
-- Filtro de conveniencia: "este negocio solo quiere PC y PS5", **no** restricción dura.
-- Aún no existe; afecta a 4.4 (import por plataforma) y a 5.3 (editar plataformas del negocio).
+- Filtro de conveniencia: "este negocio solo quiere PC y PS5".
+- ~~Aún no existe; afecta a 4.4 (import por plataforma) y a 5.3 (editar plataformas del negocio).~~ **Existe.** Ruta en `backend/src/modules/tenant-platforms/tenant-platforms.route.ts`; edición masiva en `/admin/negocios`; el filtro del 7.3 lo consume en `juegos` y `biblioteca`.
+
+**Matiz importante — no es solo cortesía:** aunque a nivel de UI sea un filtro de conveniencia, el **validador de importación rechaza las ofertas cuya plataforma no está habilitada** en el negocio (`data-transfer.service.ts`). Es una restricción dura a la hora de importar.
+
+> **Bucle de dependencia que hay que respetar al reconstruir la base:** con `TenantPlatform` vacío, la importación entera falla. Hay que recrear la taxonomía global **y** poblar `TenantPlatform` **antes** de importar. Documentado en `tasks/reinicio-catalogo.md` §7.
 
 ---
 
@@ -251,6 +258,7 @@ Canónico permitido: `pc`, `ps5`, `ps4`, `xbox-series-x`, `xbox-one`, `switch` (
 | 11 | **Catálogo por plataforma RDR2 (6.4)** | Schema + Fase 3 + imports + UI | A fila por plataforma / B oferta hija | **Cerrada 2026-10-14: A = Modelo A** (Decisiones-Arquitectonicas-v1 + 12.1 `clearedFields`, 12.2 unique triple) |
 | 12 | **Ofertas existentes de Javier (57)** | Fase 3 | Migrar split / borrar limpio | **Cerrada 2026-10-14: borrar y empezar limpio** (12.3, demo sin peso) |
 | 13 | **Condición de ACTIVE** | Fase 5 | base / +portada obligatoria | **Cerrada 2026-10-14: portada obligatoria** (12.7) |
+| 14 | **¿Dónde vive el respaldo del reinicio?** | Recuperación | Un solo disco / git (con gitignore) / nube | **ABierta 2026-10-20.** Hoy solo en `backend/scripts/` (gitignorado). Si muere el equipo, se pierde la vuelta atrás |
 
 **Cerradas (2026-10-14):** piloto = primeras 50 del CSV; IGDB vivo solo para eses 50; salida a `backend\scripts\*.json/md`; sin tamaño → `INCOMPLETE` sin placeholder (R1.1); fuentes de tamaño Steam/PS; portadas via `coverUrl` → Cloudinary (4.3-B).
 
@@ -268,3 +276,4 @@ Canónico permitido: `pc`, `ps5`, `ps4`, `xbox-series-x`, `xbox-one`, `switch` (
 - 2026-10-14 (2): piloto de 50 ejecutado (50/50, 48 `missing_size`, 0 fuera de diccionario). Cerrado: fuentes de tamaño (Steam para PC, PlayStation Store para PS4/PS5, Microsoft/eShop secundarios), R1.1 confirmada en uso, 4.3 cambiado de A a B (`coverUrl` en JSON → backend a Cloudinary), IGDB vivo solo con autorización explícita. Prompt actualizado con todo.
 - 2026-10-14 (3): **§12 de `plan-detallado.md` cerrada con el usuario** (8 decisiones, ver sección 8). Plan rediseñado: Fase 3 pasa de "migrar 57" a "borrar ofertas demo + remodelar constraints con tabla vacía"; Fase 4 sin backfill; ACTIVE exige portada; contrato `library-import@2`. Plan completo por índices en `tasks/plan-detallado.md`, `todo.md` y memory-bank actualizados.
 - 2026-10-15 (4): **Fases 2 + 3.1–3.3 ejecutadas.** Snapshot sustituido: `snap-orange-violet-b8nxp2p4` "pre-fase3-borrado" (borrado el viejo `pre-fase1-saas`, no servía de rollback por ser anterior a Fase 1; plan free = 1). Dump `backend/scripts/dump-fase3.json` (62/164/64/57, 0 huérfanos, conteos = BD). 3.2 en rama temp `br-silent-sunset-b8zzgmvi` verificada. **Dos decisiones del usuario (pre-3.4):** (1) **ventana de escrituras aceptada** — sin push hasta que Fases 4+ estén listas y solo con permiso; (2) **los 14 errores de tsc que abre el schema nuevo se diferían a Fases 4/6 según §13** — lista en `todo.md` item 3.5 (NO OLVIDAR: seed, games, catalog, data-transfer, media, pricing).
+- 2026-10-20 (5): **§5 resuelta y corregida por estar obsoleta.** 5.1/5.2 cerradas: las 6 plataformas globales existen ya en la base (el `ps4` dejavier ya no existe, lo sustituye la entrada global). Fija la **regla de slug R2**. 5.4 corregida: `TenantPlatform` sí existe y **no es solo cortesía** — el validador de importación rechaza ofertas en plataformas no habilitadas, lo que crea un bucle de dependencia al reconstruir la base. Nueva duda abierta **#14** (el respaldo del reinicio vive solo en un disco). Operación completa, decisiones R1–R5 y procedimiento de vuelta atrás en **`tasks/reinicio-catalogo.md`**.

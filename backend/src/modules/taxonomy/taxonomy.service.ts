@@ -4,7 +4,6 @@ import type { AuthContext } from '../../middleware/auth.js';
 import { AppError } from '../../utils/appError.js';
 import type { RequestMeta } from '../../utils/requestMeta.js';
 import { auditData } from '../audit/audit.service.js';
-import { planCatalogBump } from '../catalog/catalog.service.js';
 import type { TaxonomyConfig } from './taxonomy.config.js';
 import type {
   CreateTaxonomyInput,
@@ -45,7 +44,7 @@ interface TaxonomyFindManyArgs {
 
 interface TaxonomyCreateData {
   id: string;
-  tenantId: string;
+  tenantId: string | null;
   name: string;
   slug: string;
   description: string | null;
@@ -91,45 +90,16 @@ export function taxonomyDto(row: TaxonomyRow) {
   };
 }
 
-async function resolveTenantId(
-  auth: AuthContext | null,
-  requested: string | undefined,
-): Promise<string> {
+function assertAuthenticated(auth: AuthContext | null): asserts auth is AuthContext {
   if (!auth) {
     throw new AppError(401, 'UNAUTHENTICATED', 'Autenticación requerida');
   }
-
-  if (auth.role === 'ADMIN') {
-    if (!auth.tenantId) {
-      throw new AppError(403, 'FORBIDDEN', 'Cuenta ADMIN sin tenant asignado');
-    }
-    if (requested && requested !== auth.tenantId) {
-      throw new AppError(403, 'FORBIDDEN', 'No puedes operar sobre otro tenant');
-    }
-    return auth.tenantId;
-  }
-
-  if (auth.role === 'SUPER_ADMIN') {
-    if (!requested) {
-      throw new AppError(400, 'VALIDATION_ERROR', 'tenantId es obligatorio para SUPER_ADMIN');
-    }
-    const tenant = await getPrisma().tenant.findUnique({ where: { id: requested } });
-
-    if (!tenant) {
-      throw new AppError(422, 'TENANT_NOT_FOUND', 'El tenant indicado no existe');
-    }
-    return requested;
-  }
-
-  throw new AppError(403, 'FORBIDDEN', 'Rol no autorizado');
 }
 
-function assertRowAccess(row: TaxonomyRow, auth: AuthContext | null, notFoundCode: string): void {
-  if (!auth) {
-    throw new AppError(401, 'UNAUTHENTICATED', 'Autenticación requerida');
-  }
-  if (auth.role === 'ADMIN' && row.tenantId !== auth.tenantId) {
-    throw new AppError(404, notFoundCode, 'Recurso no encontrado');
+function assertSuperAdmin(auth: AuthContext | null): asserts auth is AuthContext {
+  assertAuthenticated(auth);
+  if (auth.role !== 'SUPER_ADMIN') {
+    throw new AppError(403, 'FORBIDDEN', 'Solo SUPER_ADMIN puede gestionar la taxonomía global');
   }
 }
 
@@ -148,7 +118,7 @@ export function createTaxonomyService(config: TaxonomyConfig) {
   async function findRow(id: string, includeDeleted: boolean): Promise<TaxonomyRow> {
     const { delegate } = getDb();
     const row = await delegate.findFirst({
-      where: includeDeleted ? { id } : { id, deletedAt: null },
+      where: includeDeleted ? { id, tenantId: null } : { id, tenantId: null, deletedAt: null },
     });
 
     if (!row) {
@@ -162,20 +132,12 @@ export function createTaxonomyService(config: TaxonomyConfig) {
     query: TaxonomyListQuery,
     auth: AuthContext | null,
   ): Promise<{ items: TaxonomyRow[]; total: number }> {
-    let tenantId: string | null;
-    if (query.global) {
-      if (!auth || auth.role !== 'SUPER_ADMIN') {
-        throw new AppError(403, 'FORBIDDEN', 'Solo SUPER_ADMIN puede listar taxonomía global');
-      }
-      tenantId = null;
-    } else {
-      tenantId = await resolveTenantId(auth, query.tenantId);
-    }
+    assertAuthenticated(auth);
     const { delegate } = getDb();
 
     const where: TaxonomyWhere = {
       AND: [
-        { tenantId },
+        { tenantId: null },
         { deletedAt: null },
         query.q
           ? {
@@ -202,9 +164,8 @@ export function createTaxonomyService(config: TaxonomyConfig) {
   }
 
   async function get(id: string, auth: AuthContext | null): Promise<TaxonomyRow> {
-    const row = await findRow(id, false);
-    assertRowAccess(row, auth, config.notFoundCode);
-    return row;
+    assertAuthenticated(auth);
+    return findRow(id, false);
   }
 
   async function create(
@@ -212,10 +173,10 @@ export function createTaxonomyService(config: TaxonomyConfig) {
     auth: AuthContext | null,
     meta: RequestMeta,
   ): Promise<TaxonomyRow> {
-    const tenantId = await resolveTenantId(auth, input.tenantId);
+    assertSuperAdmin(auth);
     const { db, delegate } = getDb();
 
-    const existing = await delegate.findFirst({ where: { tenantId, slug: input.slug } });
+    const existing = await delegate.findFirst({ where: { slug: input.slug } });
     if (existing) {
       throw new AppError(409, config.slugExistsCode, 'Ya existe un registro con ese slug');
     }
@@ -225,12 +186,12 @@ export function createTaxonomyService(config: TaxonomyConfig) {
       delegate.create({
         data: {
           id,
-          tenantId,
+          tenantId: null,
           name: input.name,
           slug: input.slug,
           description: input.description ?? null,
-          createdBy: auth?.id ?? null,
-          updatedBy: auth?.id ?? null,
+          createdBy: auth.id,
+          updatedBy: auth.id,
         },
       }),
       db.auditLog.create({
@@ -239,17 +200,13 @@ export function createTaxonomyService(config: TaxonomyConfig) {
           action: 'CREATE',
           entity: config.entity,
           entityId: id,
-          tenantId,
+          tenantId: null,
           metadata: { name: input.name, slug: input.slug },
           ipAddress: meta.ipAddress,
           userAgent: meta.userAgent,
         }),
       }),
     ];
-
-    if (tenantId) {
-      ops.push((await planCatalogBump(tenantId)).op);
-    }
 
     const [row] = await db.$transaction(ops);
 
@@ -263,26 +220,22 @@ export function createTaxonomyService(config: TaxonomyConfig) {
     meta: RequestMeta,
   ): Promise<TaxonomyRow> {
     const row = await findRow(id, false);
-    assertRowAccess(row, auth, config.notFoundCode);
+    assertSuperAdmin(auth);
     const { db, delegate } = getDb();
 
     if (input.slug !== undefined && input.slug !== row.slug) {
       const existing = await delegate.findFirst({
-        where: { tenantId: row.tenantId, slug: input.slug },
+        where: { slug: input.slug },
       });
       if (existing) {
         throw new AppError(409, config.slugExistsCode, 'Ya existe un registro con ese slug');
       }
     }
 
-    const nameOrSlugChanged =
-      (input.name !== undefined && input.name !== row.name) ||
-      (input.slug !== undefined && input.slug !== row.slug);
-
     const ops: Promise<unknown>[] = [
       delegate.update({
         where: { id: row.id },
-        data: { ...input, updatedBy: auth?.id ?? null },
+        data: { ...input, updatedBy: auth.id },
       }),
       db.auditLog.create({
         data: auditData({
@@ -290,17 +243,13 @@ export function createTaxonomyService(config: TaxonomyConfig) {
           action: 'UPDATE',
           entity: config.entity,
           entityId: row.id,
-          tenantId: row.tenantId,
+          tenantId: null,
           metadata: { fields: Object.keys(input) },
           ipAddress: meta.ipAddress,
           userAgent: meta.userAgent,
         }),
       }),
     ];
-
-    if (row.tenantId && nameOrSlugChanged) {
-      ops.push((await planCatalogBump(row.tenantId)).op);
-    }
 
     const [updated] = await db.$transaction(ops);
 
@@ -313,13 +262,13 @@ export function createTaxonomyService(config: TaxonomyConfig) {
     meta: RequestMeta,
   ): Promise<TaxonomyRow> {
     const row = await findRow(id, false);
-    assertRowAccess(row, auth, config.notFoundCode);
+    assertSuperAdmin(auth);
 
     const { db, delegate } = getDb();
     const ops: Promise<unknown>[] = [
       delegate.update({
         where: { id: row.id },
-        data: { deletedAt: new Date(), deletedBy: auth?.id ?? null, updatedBy: auth?.id ?? null },
+        data: { deletedAt: new Date(), deletedBy: auth.id, updatedBy: auth.id },
       }),
       db.auditLog.create({
         data: auditData({
@@ -327,17 +276,13 @@ export function createTaxonomyService(config: TaxonomyConfig) {
           action: 'DELETE',
           entity: config.entity,
           entityId: row.id,
-          tenantId: row.tenantId,
+          tenantId: null,
           metadata: { name: row.name, slug: row.slug },
           ipAddress: meta.ipAddress,
           userAgent: meta.userAgent,
         }),
       }),
     ];
-
-    if (row.tenantId) {
-      ops.push((await planCatalogBump(row.tenantId)).op);
-    }
 
     const [deleted] = await db.$transaction(ops);
 
@@ -350,7 +295,7 @@ export function createTaxonomyService(config: TaxonomyConfig) {
     meta: RequestMeta,
   ): Promise<TaxonomyRow> {
     const row = await findRow(id, true);
-    assertRowAccess(row, auth, config.notFoundCode);
+    assertSuperAdmin(auth);
 
     if (!row.deletedAt) {
       throw new AppError(409, 'NOT_DELETED', 'El registro no está eliminado');
@@ -360,7 +305,7 @@ export function createTaxonomyService(config: TaxonomyConfig) {
     const ops: Promise<unknown>[] = [
       delegate.update({
         where: { id: row.id },
-        data: { deletedAt: null, deletedBy: null, updatedBy: auth?.id ?? null },
+        data: { deletedAt: null, deletedBy: null, updatedBy: auth.id },
       }),
       db.auditLog.create({
         data: auditData({
@@ -368,17 +313,13 @@ export function createTaxonomyService(config: TaxonomyConfig) {
           action: 'RESTORE',
           entity: config.entity,
           entityId: row.id,
-          tenantId: row.tenantId,
+          tenantId: null,
           metadata: { name: row.name, slug: row.slug },
           ipAddress: meta.ipAddress,
           userAgent: meta.userAgent,
         }),
       }),
     ];
-
-    if (row.tenantId) {
-      ops.push((await planCatalogBump(row.tenantId)).op);
-    }
 
     const [restored] = await db.$transaction(ops);
 

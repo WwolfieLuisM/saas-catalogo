@@ -12,8 +12,6 @@ export const taxonomyListQuerySchema = paginationQuerySchema.extend({
   sort: z
     .enum(['name', '-name', 'createdAt', '-createdAt', 'updatedAt', '-updatedAt'])
     .default('-createdAt'),
-  tenantId: z.string().uuid().optional(),
-  global: z.coerce.boolean().optional(),
 });
 
 export type TaxonomyListQuery = z.infer<typeof taxonomyListQuerySchema>;
@@ -22,7 +20,6 @@ export const createTaxonomySchema = z.object({
   name: z.string().trim().min(2).max(100),
   slug: slugSchema,
   description: z.string().trim().max(500).nullish(),
-  tenantId: z.string().uuid().optional(),
 });
 
 export type CreateTaxonomyInput = z.infer<typeof createTaxonomySchema>;
