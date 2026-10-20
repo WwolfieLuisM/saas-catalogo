@@ -1,13 +1,12 @@
 'use client';
 
 import { useEffect, useState, type ReactNode } from 'react';
-import Link from 'next/link';
 import { ApiError } from '@/lib/api/client';
 import { adminFetch } from '@/lib/admin/adminApi';
 import { fetchAllGames, taxonomyCounts } from '@/lib/admin/counts';
 import { slugify } from '@/lib/admin/format';
 import { toast } from '@/lib/admin/toast';
-import type { TaxonomyItem, TenantEntry } from '@/lib/admin/types';
+import type { TaxonomyItem } from '@/lib/admin/types';
 import { useAdminAuth } from '@/hooks/useAdminAuth';
 import { useAdminList } from '@/hooks/useAdminList';
 import { AdminIcon } from './icons';
@@ -39,13 +38,11 @@ type ModalState = { mode: 'create' } | { mode: 'edit'; item: TaxonomyItem } | nu
 function TaxonomyFormModal({
   config,
   item,
-  tenantId,
   onClose,
   onSaved,
 }: {
   config: TaxonomyPageConfig;
   item: TaxonomyItem | null;
-  tenantId: string;
   onClose: () => void;
   onSaved: () => void;
 }) {
@@ -72,10 +69,7 @@ function TaxonomyFormModal({
     const request =
       editing && item
         ? adminFetch(`${config.api}/${item.id}`, { method: 'PATCH', body })
-        : adminFetch(config.api, {
-            method: 'POST',
-            body: { ...body, ...(tenantId ? { tenantId } : {}) },
-          });
+        : adminFetch(config.api, { method: 'POST', body });
     request
       .then(() => {
         toast(editing ? 'Guardado' : 'Agregado');
@@ -138,40 +132,18 @@ function TaxonomyFormModal({
 export function TaxonomyPage({ config }: { config: TaxonomyPageConfig }) {
   const { user } = useAdminAuth();
   const isSa = user?.role === 'SUPER_ADMIN';
-  const [tenants, setTenants] = useState<TenantEntry[] | null>(null);
-  const [tenantId, setTenantId] = useState('');
+  // R3(a): la taxonomía es global. Solo SUPER_ADMIN la escribe; el resto solo lee.
+  const canWrite = config.editable && isSa;
   const [page, setPage] = useState(1);
   const [counts, setCounts] = useState<Record<string, number> | null | undefined>(undefined);
   const [modal, setModal] = useState<ModalState>(null);
   const [removing, setRemoving] = useState<TaxonomyItem | null>(null);
   const [removingBusy, setRemovingBusy] = useState(false);
-  const needsTenant = isSa;
-  const ready = !needsTenant || tenantId !== '';
 
   useEffect(() => {
-    if (!needsTenant) return;
     let cancelled = false;
     queueMicrotask(() => {
-      adminFetch<TenantEntry[]>('/admin/tenants', { query: { limit: 100 } })
-        .then((rows) => {
-          if (cancelled) return;
-          setTenants(rows);
-          setTenantId((current) => current || rows[0]?.id || '');
-        })
-        .catch(() => {
-          if (!cancelled) setTenants([]);
-        });
-    });
-    return () => {
-      cancelled = true;
-    };
-  }, [needsTenant]);
-
-  useEffect(() => {
-    if (!ready) return;
-    let cancelled = false;
-    queueMicrotask(() => {
-      fetchAllGames(needsTenant ? tenantId : undefined)
+      fetchAllGames()
         .then((games) => {
           if (!cancelled) setCounts(taxonomyCounts(games, config.kind));
         })
@@ -182,49 +154,24 @@ export function TaxonomyPage({ config }: { config: TaxonomyPageConfig }) {
     return () => {
       cancelled = true;
     };
-  }, [config.kind, needsTenant, ready, tenantId]);
+  }, [config.kind]);
 
-  const { items, meta, error, reload } = useAdminList<TaxonomyItem>(
-    config.api,
-    {
-      page,
-      limit: 20,
-      sort: '-createdAt',
-      tenantId: needsTenant ? tenantId : undefined,
-    },
-    { enabled: ready },
-  );
+  const { items, meta, error, reload } = useAdminList<TaxonomyItem>(config.api, {
+    page,
+    limit: 20,
+    sort: '-createdAt',
+  });
 
-  const sub = needsTenant
-    ? `${config.sub} Pertenecen solo al negocio seleccionado.`
-    : `${config.sub} Pertenecen solo a tu negocio.`;
+  const sub = isSa
+    ? `${config.sub} Son globales: las usan todos los negocios y las gestionas tú.`
+    : `${config.sub} Son globales y las gestiona el administrador de la plataforma.`;
 
-  const actions = (
-    <>
-      {needsTenant && tenants ? (
-        <select
-          aria-label="Negocio"
-          value={tenantId}
-          onChange={(event) => {
-            setTenantId(event.target.value);
-            setPage(1);
-          }}
-        >
-          {tenants.map((tenant) => (
-            <option key={tenant.id} value={tenant.id}>
-              {tenant.name}
-            </option>
-          ))}
-        </select>
-      ) : null}
-      {config.editable ? (
-        <button className="btn pri" type="button" onClick={() => setModal({ mode: 'create' })}>
-          <AdminIcon name="plus" />
-          Agregar {config.one}
-        </button>
-      ) : null}
-    </>
-  );
+  const actions = canWrite ? (
+    <button className="btn pri" type="button" onClick={() => setModal({ mode: 'create' })}>
+      <AdminIcon name="plus" />
+      Agregar {config.one}
+    </button>
+  ) : null;
 
   const onRemove = (row: TaxonomyItem) => {
     const count = counts ? (counts[row.id] ?? 0) : 0;
@@ -252,37 +199,11 @@ export function TaxonomyPage({ config }: { config: TaxonomyPageConfig }) {
 
   const titleLower = config.title.toLowerCase();
   const emptyTitle = `Aún no hay ${titleLower}`;
-  const addActionButton = (
+  const addActionButton = canWrite ? (
     <button className="btn pri" type="button" onClick={() => setModal({ mode: 'create' })}>
       Agregar {config.one}
     </button>
-  );
-
-  if (needsTenant && tenants === null) {
-    return (
-      <>
-        <PageHead title={config.title} sub={sub} />
-        <Skeleton rows={5} />
-      </>
-    );
-  }
-
-  if (needsTenant && tenants && tenants.length === 0) {
-    return (
-      <>
-        <PageHead title={config.title} sub={sub} />
-        <EmptyBox
-          title="Aún no hay negocios"
-          text="Crea un negocio para operar esta taxonomía."
-          action={
-            <Link className="btn" href="/admin/negocios">
-              Ir a negocios
-            </Link>
-          }
-        />
-      </>
-    );
-  }
+  ) : undefined;
 
   let content: ReactNode;
   if (error) {
@@ -291,18 +212,14 @@ export function TaxonomyPage({ config }: { config: TaxonomyPageConfig }) {
     content = <Skeleton rows={5} />;
   } else if (items.length === 0) {
     content = (
-      <EmptyBox
-        title={emptyTitle}
-        text={config.emptyText}
-        action={config.editable ? addActionButton : undefined}
-      />
+      <EmptyBox title={emptyTitle} text={config.emptyText} action={addActionButton} />
     );
   } else {
     content = (
       <>
         <ListShell
-          cols={config.editable ? 'minmax(0,2fr) 110px 110px' : 'minmax(0,2fr) 110px'}
-          head={config.editable ? ['Nombre', 'Juegos', ''] : ['Nombre', 'Juegos']}
+          cols={canWrite ? 'minmax(0,2fr) 110px 110px' : 'minmax(0,2fr) 110px'}
+          head={canWrite ? ['Nombre', 'Juegos', ''] : ['Nombre', 'Juegos']}
         >
           {items.map((row) => {
             const count =
@@ -313,7 +230,7 @@ export function TaxonomyPage({ config }: { config: TaxonomyPageConfig }) {
                   <b>{row.name}</b>
                 </div>
                 <div data-l="Juegos">{count}</div>
-                {config.editable ? (
+                {canWrite ? (
                   <div className="ac">
                     <button
                       className="ib"
@@ -357,7 +274,6 @@ export function TaxonomyPage({ config }: { config: TaxonomyPageConfig }) {
         <TaxonomyFormModal
           config={config}
           item={modal.mode === 'edit' ? modal.item : null}
-          tenantId={tenantId}
           onClose={() => setModal(null)}
           onSaved={reload}
         />
