@@ -31,6 +31,7 @@ export const gamesListQuerySchema = paginationQuerySchema.extend({
     .optional()
     .transform((value) => (value === undefined ? undefined : value === 'true')),
   categoryId: z.string().uuid().optional(),
+  platformId: z.string().uuid().optional(),
 });
 
 export type GamesListQuery = z.infer<typeof gamesListQuerySchema>;

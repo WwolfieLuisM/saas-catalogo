@@ -304,6 +304,7 @@ export async function listGames(query: GamesListQuery, auth: AuthContext | null)
       query.origin ? { origin: query.origin } : {},
       query.availability !== undefined ? { availability: query.availability } : {},
       query.categoryId ? { categoryId: query.categoryId } : {},
+      query.platformId ? { platformId: query.platformId } : {},
       query.q
         ? {
             OR: [

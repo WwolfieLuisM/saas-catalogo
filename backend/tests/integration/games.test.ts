@@ -284,6 +284,17 @@ describe('GET /games', () => {
     expect(byCategory.body.meta?.total).toBe(1);
   });
 
+  it('filtra por platformId', async () => {
+    const pc = globalPlatform('pc-filtro', 'PC');
+    const switch_ = globalPlatform('switch-filtro', 'Switch');
+    seedGame({ slug: 'en-pc', platformId: pc.id });
+    seedGame({ slug: 'en-switch', platformId: switch_.id });
+
+    const byPlatform = await api<GameDto[]>(`${BASE}?platformId=${pc.id}`, {}, adminToken);
+    expect(byPlatform.body.meta?.total).toBe(1);
+    expect(byPlatform.body.data?.[0]?.slug).toBe('en-pc');
+  });
+
   it('ordena por sort title asc y desc', async () => {
     seedGame({ title: 'Zeta', slug: 'zeta' });
     seedGame({ title: 'Alfa', slug: 'alfa' });
