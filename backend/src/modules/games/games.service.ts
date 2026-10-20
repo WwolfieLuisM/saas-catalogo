@@ -10,6 +10,7 @@ import { assertTaxonomyRefs, jsonValue, resolveRequirements } from './game.share
 import type { CreateGameInput, GamesListQuery, UpdateGameInput } from './games.schemas.js';
 import { resolveFinal, resolveGenres, resolvePlatformIds } from './resolution.js';
 import { loadBaseGenreIds, loadVariants, variantKey } from './resolutionData.js';
+import { calculatePrice, sizeToGb } from '../pricing/pricing.core.js';
 
 interface TaxonomySummary {
   id: string;
@@ -354,6 +355,12 @@ async function assertGlobalPlatform(platformId: string): Promise<void> {
   }
 }
 
+async function priceFromRules(tenantId: string, sizeGb: number): Promise<number | null> {
+  const prisma = getPrisma();
+  const rules = await prisma.pricingRule.findMany({ where: { tenantId } });
+  return calculatePrice(sizeGb, rules);
+}
+
 async function publishFromLibrary(
   input: CreateGameInput,
   tenantId: string,
@@ -427,6 +434,10 @@ async function publishFromLibrary(
   }
 
   const id = randomUUID();
+  const price =
+    input.priceMode === 'MANUAL'
+      ? (input.price ?? null)
+      : await priceFromRules(tenantId, sizeToGb(base.sizeValue, base.sizeUnit));
   const ops: Prisma.PrismaPromise<unknown>[] = [
     prisma.tenantGame.create({
       data: {
@@ -439,7 +450,7 @@ async function publishFromLibrary(
         slug: base.slug,
         description: base.description,
         priceMode: input.priceMode,
-        price: input.price ?? null,
+        price,
         availability: input.availability,
         sizeValue: base.sizeValue,
         sizeUnit: base.sizeUnit,
@@ -521,6 +532,13 @@ export async function createGame(
     );
 
     const id = randomUUID();
+    const price =
+      input.priceMode === 'MANUAL'
+        ? (input.price ?? null)
+        : await priceFromRules(
+            tenantId,
+            sizeToGb(input.sizeValue as number, input.sizeUnit as 'MB' | 'GB' | 'TB'),
+          );
     const ops: Prisma.PrismaPromise<unknown>[] = [
       prisma.tenantGame.create({
         data: {
@@ -533,7 +551,7 @@ export async function createGame(
           slug: input.slug as string,
           description: input.description ?? null,
           priceMode: input.priceMode,
-          price: input.price ?? null,
+          price,
           availability: input.availability,
           sizeValue: input.sizeValue as number,
           sizeUnit: input.sizeUnit as 'MB' | 'GB' | 'TB',

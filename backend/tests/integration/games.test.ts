@@ -12,6 +12,7 @@ addFakeCategory,
   addFakeGamePlatform,
   addFakeGenre,
   addFakePlatform,
+  addFakePricingRule,
   addFakeTenant,
   addFakeTenantGame,
   addFakeTenantGameGenre,
@@ -415,6 +416,37 @@ describe('POST /games (personalizado)', () => {
     expect(body.data?.platforms.map((row) => row.id)).toContain(platform.id);
   });
 
+  it('sella el precio con la regla del negocio al crear en modo RULE', async () => {
+    addFakePricingRule({
+      id: randomUUID(),
+      tenantId: T_JAVIER,
+      minSize: 1,
+      maxSize: 1000,
+      price: 150,
+      active: true,
+    });
+
+    const { status, body } = await api<GameDto>(
+      BASE,
+      {
+        method: 'POST',
+        body: JSON.stringify({
+          platformId: PC,
+          title: 'Por reglas',
+          slug: 'por-reglas',
+          sizeValue: 40,
+          sizeUnit: 'GB',
+          priceMode: 'RULE',
+        }),
+      },
+      adminToken,
+    );
+
+    expect(status).toBe(201);
+    expect(body.data?.priceMode).toBe('RULE');
+    expect(body.data?.price).toBe(150);
+  });
+
   it('devuelve 400 si falta platformId', async () => {
     const { status, body } = await api(
       BASE,
@@ -810,6 +842,49 @@ describe('POST /games (publicación desde biblioteca)', () => {
     expect(bridges.map((row) => row.genreId).sort()).toEqual(
       [fixture.gGenre.id, extraGenre.id].sort(),
     );
+  });
+
+  it('sella el precio con la regla del negocio al publicar en modo RULE', async () => {
+    const fixture = seedPublishFixture();
+    addFakePricingRule({
+      id: randomUUID(),
+      tenantId: T_JAVIER,
+      minSize: 11,
+      maxSize: 20,
+      price: 250,
+      active: true,
+    });
+
+    const { status, body } = await api<GameDto>(
+      BASE,
+      { method: 'POST', body: JSON.stringify({ platformId: fixture.gPlat.id, baseGameId: fixture.base.id }) },
+      adminToken,
+    );
+
+    expect(status).toBe(201);
+    expect(body.data?.priceMode).toBe('RULE');
+    expect(body.data?.price).toBe(250);
+  });
+
+  it('deja el precio en null al publicar en modo RULE si ninguna regla cubre el tamaño', async () => {
+    const fixture = seedPublishFixture();
+    addFakePricingRule({
+      id: randomUUID(),
+      tenantId: T_JAVIER,
+      minSize: 101,
+      maxSize: 150,
+      price: 250,
+      active: true,
+    });
+
+    const { status, body } = await api<GameDto>(
+      BASE,
+      { method: 'POST', body: JSON.stringify({ platformId: fixture.gPlat.id, baseGameId: fixture.base.id }) },
+      adminToken,
+    );
+
+    expect(status).toBe(201);
+    expect(body.data?.price).toBeNull();
   });
 
   it('devuelve 422 si la taxonomía explícita no existe en el tenant', async () => {

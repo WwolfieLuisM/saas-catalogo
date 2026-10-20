@@ -10,6 +10,9 @@ import { resolveTenantId } from '../games/games.service.js';
 import { resolveFinal } from '../games/resolution.js';
 import { loadBaseGames, loadVariants, variantKey } from '../games/resolutionData.js';
 import type { CreatePricingRuleInput, UpdatePricingRuleInput } from './pricing.schemas.js';
+import { calculatePrice, sizeToGb } from './pricing.core.js';
+
+export { calculatePrice, sizeToGb };
 
 interface RuleLike {
   id: string;
@@ -34,22 +37,8 @@ interface UncoveredGame {
   sizeGb: number;
 }
 
-export function sizeToGb(sizeValue: number, sizeUnit: 'MB' | 'GB' | 'TB'): number {
-  if (sizeUnit === 'MB') return sizeValue / 1000;
-  if (sizeUnit === 'TB') return sizeValue * 1000;
-  return sizeValue;
-}
-
 function round2(value: number): number {
   return Math.round(value * 100) / 100;
-}
-
-export function calculatePrice(sizeGb: number, rules: PricingRule[]): number | null {
-  const ordered = rules.filter((rule) => rule.active).sort((a, b) => a.minSize - b.minSize);
-  const match = ordered.find(
-    (rule) => sizeGb >= rule.minSize && (rule.maxSize === null || sizeGb <= rule.maxSize),
-  );
-  return match ? Number(match.price) : null;
 }
 
 function validateRuleSet(rows: RuleLike[]): void {
