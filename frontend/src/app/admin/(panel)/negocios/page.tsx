@@ -5,7 +5,7 @@ import { ApiError } from '@/lib/api/client';
 import { adminFetch, adminFetchPaged } from '@/lib/admin/adminApi';
 import { slugify } from '@/lib/admin/format';
 import { toast } from '@/lib/admin/toast';
-import type { TenantEntry } from '@/lib/admin/types';
+import type { TenantEntry, TenantPlatform } from '@/lib/admin/types';
 import { useAdminAuth } from '@/hooks/useAdminAuth';
 import { useAdminList } from '@/hooks/useAdminList';
 import { AdminIcon } from '@/components/admin/icons';
@@ -108,9 +108,207 @@ function NewTenantModal({ onClose, onSaved }: { onClose: () => void; onSaved: ()
   );
 }
 
+type SavePhase = 'saving' | 'saved' | 'error';
+
+function EditTenantModal({
+  tenant,
+  onClose,
+}: {
+  tenant: TenantEntry;
+  onClose: () => void;
+}) {
+  const [platforms, setPlatforms] = useState<TenantPlatform[] | null>(null);
+  const [loadError, setLoadError] = useState<string | null>(null);
+  const [savingId, setSavingId] = useState<string | null>(null);
+  const [phases, setPhases] = useState<Record<string, SavePhase>>({});
+  const [retry, setRetry] = useState<{ platformId: string; next: boolean } | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    adminFetch<TenantPlatform[]>('/admin/tenant-platforms', {
+      query: { tenantId: tenant.id },
+    })
+      .then((data) => {
+        if (cancelled) return;
+        setPlatforms(data);
+      })
+      .catch((error_: unknown) => {
+        if (cancelled) return;
+        setLoadError(error_ instanceof ApiError ? error_.message : 'No se pudieron cargar las plataformas');
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [tenant.id]);
+
+  const apply = (platformId: string, next: boolean) => {
+    const current = platforms?.find((p) => p.id === platformId);
+    if (!current) return;
+    const previous = current.enabled;
+    if (savingId) return;
+    setSavingId(platformId);
+    setPhases((prev) => ({ ...prev, [platformId]: 'saving' }));
+    setPlatforms((prev) =>
+      prev ? prev.map((p) => (p.id === platformId ? { ...p, enabled: next } : p)) : prev,
+    );
+    adminFetch(`/admin/tenant-platforms/${platformId}`, {
+      method: 'PATCH',
+      query: { tenantId: tenant.id },
+      body: { enabled: next },
+    })
+      .then(() => {
+        setSavingId(null);
+        setRetry(null);
+        setPhases((prev) => ({ ...prev, [platformId]: 'saved' }));
+      })
+      .catch((error_: unknown) => {
+        setSavingId(null);
+        setPlatforms((prev) =>
+          prev ? prev.map((p) => (p.id === platformId ? { ...p, enabled: previous } : p)) : prev,
+        );
+        setRetry({ platformId, next });
+        setPhases((prev) => ({ ...prev, [platformId]: 'error' }));
+        toast(error_ instanceof ApiError ? error_.message : 'No se pudo guardar el cambio', 'bd');
+      });
+  };
+
+  const [confirming, setConfirming] = useState(false);
+  const [confirmText, setConfirmText] = useState('');
+  const [deleting, setDeleting] = useState(false);
+
+  const remove = () => {
+    if (confirmText.trim() !== tenant.slug || deleting) return;
+    setDeleting(true);
+    adminFetch(`/admin/tenants/${tenant.id}`, { method: 'DELETE' })
+      .then(() => {
+        toast(`${tenant.name} archivado`);
+        onClose();
+      })
+      .catch((error_: unknown) => {
+        setDeleting(false);
+        toast(error_ instanceof ApiError ? error_.message : 'No se pudo archivar el negocio', 'bd');
+      });
+  };
+
+  const enabledCount = platforms?.filter((p) => p.enabled).length ?? 0;
+  const showWarning = platforms !== null && enabledCount === 0;
+
+  let body: ReactNode;
+  if (loadError) {
+    body = <ErrorBox onRetry={onClose} />;
+  } else if (platforms === null) {
+    body = <Skeleton rows={4} />;
+  } else {
+    body = (
+      <>
+        {showWarning ? (
+          <div className="note wn">
+            Este negocio no tiene ninguna plataforma activa. No podrá recibir ofertas hasta que actives
+            al menos una. <b>PC</b> suele ser el punto de partida.
+          </div>
+        ) : null}
+        <div className="rows">
+          {platforms.map((platform) => {
+            const phase = phases[platform.id];
+            return (
+              <div key={platform.id}>
+                <div className="gr">
+                  <b>{platform.name}</b>
+                  <small className="mono">{platform.slug}</small>
+                </div>
+                <div className="ac">
+                  {phase === 'error' && retry?.platformId === platform.id ? (
+                    <button
+                      className="btn sm"
+                      type="button"
+                      onClick={() => apply(retry.platformId, retry.next)}
+                    >
+                      Reintentar
+                    </button>
+                  ) : (
+                    <span className="cnt">
+                      {phase === 'saving' ? 'Guardando…' : phase === 'saved' ? 'Guardado' : ''}
+                    </span>
+                  )}
+                  <label className="tgl">
+                    <input
+                      type="checkbox"
+                      aria-label={`Plataforma ${platform.name}`}
+                      checked={platform.enabled}
+                      disabled={savingId !== null}
+                      onChange={(e) => apply(platform.id, e.target.checked)}
+                    />
+                    <span className="trk" aria-hidden="true" />
+                  </label>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </>
+    );
+  }
+
+  return (
+    <Modal
+      title={`Editar ${tenant.name}`}
+      onClose={onClose}
+      footer={
+        <button className="btn pri" type="button" onClick={onClose}>
+          Cerrar
+        </button>
+      }
+    >
+      <div className="note">
+        Identificador <b className="mono">{tenant.slug}</b>. Los cambios se guardan solos.
+      </div>
+      {body}
+      <div className="hr" />
+      <div className="note bd">
+        <b>Archivar negocio.</b> Se oculta del listado y del feed, deja de servir su catálogo y sus
+        administradores pierden el acceso. El borrado es lógico, así que los datos siguen en la base
+        de datos y queda registrado en la auditoría, <b>pero no hay forma de recuperarlo desde este
+        panel</b>.
+      </div>
+      {confirming ? (
+        <div className="f">
+          <label htmlFor="confirm-archivar">
+            Escribe <b className="mono">{tenant.slug}</b> para confirmar
+          </label>
+          <input
+            id="confirm-archivar"
+            value={confirmText}
+            autoComplete="off"
+            disabled={deleting}
+            onChange={(event) => setConfirmText(event.target.value)}
+          />
+          <div className="pa">
+            <button className="btn" type="button" onClick={() => setConfirming(false)} disabled={deleting}>
+              Cancelar
+            </button>
+            <button
+              className="btn dng"
+              type="button"
+              onClick={remove}
+              disabled={confirmText.trim() !== tenant.slug || deleting}
+            >
+              {deleting ? 'Archivando…' : 'Archivar definitivamente'}
+            </button>
+          </div>
+        </div>
+      ) : (
+        <button className="btn dng" type="button" onClick={() => setConfirming(true)}>
+          Archivar negocio
+        </button>
+      )}
+    </Modal>
+  );
+}
+
 function NegociosList() {
   const [page, setPage] = useState(1);
   const [creating, setCreating] = useState(false);
+  const [editing, setEditing] = useState<TenantEntry | null>(null);
   const [counts, setCounts] = useState<Record<string, TenantCounts> | null>(null);
 
   const { items, meta, error, reload } = useAdminList<TenantEntry>('/admin/tenants', {
@@ -192,7 +390,7 @@ function NegociosList() {
     content = (
       <>
         <ListShell
-          cols="minmax(0,1.6fr) 140px 90px 110px 120px 120px"
+          cols="minmax(0,1.6fr) 140px 90px 110px 120px 200px"
           head={['Negocio', 'Identificador', 'Juegos', 'Admins', 'Estado', '']}
         >
           {items.map((entry) => (
@@ -219,6 +417,9 @@ function NegociosList() {
                 </Badge>
               </div>
               <div className="ac">
+                <button className="btn sm" type="button" onClick={() => setEditing(entry)}>
+                  Editar
+                </button>
                 <button className="btn sm" type="button" onClick={() => toggle(entry)}>
                   {entry.isActive ? 'Suspender' : 'Activar'}
                 </button>
@@ -240,6 +441,7 @@ function NegociosList() {
       />
       {content}
       {creating ? <NewTenantModal onClose={() => setCreating(false)} onSaved={reload} /> : null}
+      {editing ? <EditTenantModal tenant={editing} onClose={() => setEditing(null)} /> : null}
     </>
   );
 }

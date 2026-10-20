@@ -222,6 +222,13 @@ export interface TenantEntry {
   updatedAt: string;
 }
 
+export interface TenantPlatform {
+  id: string;
+  name: string;
+  slug: string;
+  enabled: boolean;
+}
+
 export interface TenantConfig {
   tenantId: string;
   publicName: string | null;
