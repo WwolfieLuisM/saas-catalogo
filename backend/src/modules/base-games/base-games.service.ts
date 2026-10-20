@@ -210,7 +210,7 @@ export async function createBaseGame(
     );
   }
 
-  await assertTaxonomyRefs(null, {
+  await assertTaxonomyRefs({
     categoryId: input.categoryId,
     genreIds: input.genreIds,
     platformIds: input.platformIds,
@@ -308,7 +308,7 @@ export async function updateBaseGame(
     }
   }
 
-  await assertTaxonomyRefs(null, {
+  await assertTaxonomyRefs({
     categoryId: input.categoryId ?? undefined,
     genreIds: input.genreIds,
     platformIds: input.platformIds,

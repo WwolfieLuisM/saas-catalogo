@@ -52,15 +52,12 @@ export interface TaxonomyRefsInput {
   platformIds?: string[];
 }
 
-export async function assertTaxonomyRefs(
-  tenantId: string | null,
-  refs: TaxonomyRefsInput,
-): Promise<void> {
+export async function assertTaxonomyRefs(refs: TaxonomyRefsInput): Promise<void> {
   const prisma = getPrisma();
 
   if (refs.categoryId) {
     const category = await prisma.category.findFirst({
-      where: { id: refs.categoryId, tenantId, deletedAt: null },
+      where: { id: refs.categoryId, tenantId: null, deletedAt: null },
     });
     if (!category) {
       throw new AppError(422, 'CATEGORY_NOT_FOUND', 'La categoría indicada no existe');
@@ -69,7 +66,7 @@ export async function assertTaxonomyRefs(
 
   if (refs.genreIds?.length) {
     const genres = await prisma.genre.findMany({
-      where: { id: { in: refs.genreIds }, tenantId, deletedAt: null },
+      where: { id: { in: refs.genreIds }, tenantId: null, deletedAt: null },
       select: { id: true },
     });
     if (genres.length !== refs.genreIds.length) {
@@ -81,7 +78,7 @@ export async function assertTaxonomyRefs(
 
   if (refs.platformIds?.length) {
     const platforms = await prisma.platform.findMany({
-      where: { id: { in: refs.platformIds }, tenantId, deletedAt: null },
+      where: { id: { in: refs.platformIds }, tenantId: null, deletedAt: null },
       select: { id: true },
     });
     if (platforms.length !== refs.platformIds.length) {

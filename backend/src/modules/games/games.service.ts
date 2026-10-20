@@ -397,7 +397,7 @@ async function publishFromLibrary(
     explicit.genreIds !== undefined ||
     explicit.platformIds !== undefined
   ) {
-    await assertTaxonomyRefs(tenantId, {
+    await assertTaxonomyRefs({
       categoryId: explicit.categoryId ?? undefined,
       genreIds: explicit.genreIds,
       platformIds: explicit.platformIds,
@@ -509,7 +509,7 @@ export async function createGame(
       throw new AppError(409, 'GAME_SLUG_EXISTS', 'Ya existe un juego con ese slug en el catálogo');
     }
 
-    await assertTaxonomyRefs(tenantId, {
+    await assertTaxonomyRefs({
       categoryId: input.categoryId,
       genreIds: input.genreIds,
       platformIds: input.platformIds,
@@ -621,7 +621,7 @@ export async function updateGame(
     throw new AppError(422, 'PRICE_REQUIRED', 'price es obligatorio cuando priceMode es MANUAL');
   }
 
-  await assertTaxonomyRefs(row.tenantId, {
+  await assertTaxonomyRefs({
     categoryId: input.categoryId ?? undefined,
     genreIds: input.genreIds,
     platformIds: input.platformIds,

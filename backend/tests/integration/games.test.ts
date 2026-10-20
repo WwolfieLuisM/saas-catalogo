@@ -333,9 +333,9 @@ describe('POST /games (personalizado)', () => {
   });
 
   it('ADMIN crea en su tenant sin enviar tenantId, audita y copia requirements', async () => {
-    const category = tenantCategory('rpg', 'RPG');
-    const genre = tenantGenre('indie', 'Indie');
-    const platform = tenantPlatform('pc', 'PC');
+    const category = globalCategory('rpg', 'RPG');
+    const genre = globalGenre('indie', 'Indie');
+    const platform = globalPlatform('pc', 'PC');
 
     const { status, body } = await api<GameDto>(
       BASE,
@@ -384,6 +384,35 @@ describe('POST /games (personalizado)', () => {
       tenantId: T_JAVIER,
     });
     expect(log?.metadata).toMatchObject({ origin: 'PERSONALIZADO', slug: 'mod-pack' });
+  });
+
+  it('acepta taxonomía global al crear (R3a: la taxonomía ya no es por tenant)', async () => {
+    const category = globalCategory('accion', 'Acción');
+    const genre = globalGenre('aventura', 'Aventura');
+    const platform = globalPlatform('ps5', 'PlayStation 5');
+
+    const { status, body } = await api<GameDto>(
+      BASE,
+      {
+        method: 'POST',
+        body: JSON.stringify({
+          platformId: PC,
+          title: 'Ficha global',
+          slug: 'ficha-global',
+          sizeValue: 10,
+          sizeUnit: 'GB',
+          categoryId: category.id,
+          genreIds: [genre.id],
+          platformIds: [platform.id],
+        }),
+      },
+      adminToken,
+    );
+
+    expect(status).toBe(201);
+    expect(body.data?.categoryId).toBe(category.id);
+    expect(body.data?.genres.map((row) => row.id)).toEqual([genre.id]);
+    expect(body.data?.platforms.map((row) => row.id)).toContain(platform.id);
   });
 
   it('devuelve 400 si falta platformId', async () => {
@@ -751,6 +780,36 @@ describe('POST /games (publicación desde biblioteca)', () => {
       (row) => row.tenantGameId === body.data?.id,
     );
     expect(bridges.map((row) => row.genreId)).toEqual([global.id]);
+  });
+
+  it('publica con categoryId, genreIds y platformIds globales explícitos', async () => {
+    const fixture = seedPublishFixture();
+    const extraGenre = globalGenre('western', 'Western');
+    const extraPlat = globalPlatform('xbox-one', 'Xbox One');
+
+    const { status, body } = await api<GameDto>(
+      BASE,
+      {
+        method: 'POST',
+        body: JSON.stringify({
+          platformId: fixture.gPlat.id,
+          baseGameId: fixture.base.id,
+          categoryId: fixture.gCat.id,
+          genreIds: [fixture.gGenre.id, extraGenre.id],
+          platformIds: [fixture.gPlat.id, extraPlat.id],
+        }),
+      },
+      adminToken,
+    );
+
+    expect(status).toBe(201);
+    expect(body.data?.categoryId).toBe(fixture.gCat.id);
+    const bridges = [...state.tenantGameGenres.values()].filter(
+      (row) => row.tenantGameId === body.data?.id,
+    );
+    expect(bridges.map((row) => row.genreId).sort()).toEqual(
+      [fixture.gGenre.id, extraGenre.id].sort(),
+    );
   });
 
   it('devuelve 422 si la taxonomía explícita no existe en el tenant', async () => {
