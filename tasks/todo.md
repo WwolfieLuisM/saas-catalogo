@@ -221,5 +221,50 @@ Operación pedida por el usuario tras tener desplegadas en producción todas las
 - [ ] **Fase E — importar.** **Parada a propósito por R5.** El catálogo está vacío a propósito.
 - [ ] **El respaldo vive solo en un disco** (`backend/scripts/` está gitignorado). Decidir si pasa a git o a un sitio con respaldo — `tasks/dudas.md` #14.
 
+## Migración de taxonomía a R3(a) (2026-10-20)
+
+Trabajo empezado por la causa raíz de «Javier no puede crear juegos» y **parado a medio camino**. Esto es lo que está y lo que falta, con líneas exactas para retomarlo sin rehacer el diagnóstico.
+
+### Desplegado y verificado en producción
+
+Commits `9b7a3f6` (backend, Render `live`) y `e658847` (frontend, Cloudflare). Verificado en navegador con sesión real.
+
+- [x] **`GET /` de taxonomía devuelve la global a cualquier rol autenticado.** Antes el `taxonomy.service` filtraba por `tenantId` exacto y un `ADMIN` recibía `data: []`, que vaciaba los desplegables de `/admin/juegos/nuevo`. Ahora salen 10 categorías, 35 géneros y 6 plataformas con `tenantId: null`.
+- [x] **Escritura de taxonomía solo para `SUPER_ADMIN`**, con slug comprobado único globalmente (R2). `findRow` filtra también `tenantId: null`, así que los registros heredados por tenant no se tocan por API.
+- [x] **Frontend de taxonomía en solo lectura para `ADMIN`.** `frontend/src/components/admin/TaxonomyPage.tsx`: se quita el selector de negocio (con taxonomía global no hay nada que filtrar), se ocultan Agregar/Editar/Eliminar a quien no sea `SUPER_ADMIN`, y se corrige el copy «Pertenecen solo a tu negocio», que era falso.
+- [x] **`publishFromLibrary` enlaza la taxonomía global directamente** y ya no exige el clon por tenant que lanzaba `422 TAXONOMY_MAPPING_INCOMPLETE`.
+
+### No acabado: lo que bloquea publicar y crear juegos
+
+- [ ] **`assertTaxonomyRefs` sigue validando por tenant.** `backend/src/modules/games/game.shared.ts:63`, `:72` y `:84` buscan categoría, géneros y plataformas con `where: { ..., tenantId, deletedAt: null }`, pasando el tenant del negocio. En R3(a) toda la taxonomía es global (`tenantId: null`), así que **esa comprobación falla siempre**: `422 CATEGORY_NOT_FOUND`, `GENRE_NOT_FOUND` o `PLATFORM_NOT_FOUND` con ids que la propia API acaba de devolver.
+  - Las llamadas son `backend/src/modules/games/games.service.ts:400` (crear), `:512` y `:624` (actualizar). Todas pasan `tenantId`.
+  - La referencia correcta ya está en el mismo repo: `backend/src/modules/base-games/service` (`base-games.service.ts:213` y `:311`) llama a `assertTaxonomyRefs(null, …)`, y `assertGlobalPlatform` (`games.service.ts:346`) también mira `tenantId: null`. **La biblioteca estaba migrada; la de juegos, no.**
+  - Consecuencia: afecta tanto a **publicar desde biblioteca** como a **crear un juego personalizado** desde `/admin/juegos/nuevo` con categoría o géneros. Los desplegables ya se llenan, pero guardar da 422.
+  - Falta el test que lo cubre: los existentes (`tests/integration/games.test.ts:576`, `:597`, `:769`) solo prueban que una taxonomía de **otro** tenant da 422, que seguirá siendo cierto. **Nadie prueba crear con taxonomía global**, que es lo que hace producción.
+- [ ] **El modal «Agregar al catálogo» no manda `platformId`.** `frontend/src/app/admin/(panel)/biblioteca/page.tsx:65` envía `{ baseGameId, categoryId, availability, priceMode }`, pero `createGameSchema` lo exige (`backend/src/modules/games/games.schemas.ts:54`, `platformId: z.string().uuid()`). Resultado: `400 VALIDATION_ERROR: expected string, received undefined`.
+  - **Este 400 salta antes que el 422**: la validación del esquema corre en la ruta, antes del servicio. El botón estaba roto por dos motivos y solo se ha desbloqueado el segundo.
+  - RDR2 ofrece PC, PlayStation 4 y PlayStation 5 y el modal ni siquiera deja elegir. Falta añadir el desplegable.
+  - Al publicar, usar **`platformId` (singular) y no `platformIds`**: el plural pasa por `game.shared.ts:84` y ahí las plataformas se buscan por tenant.
+- [ ] **`TaxonomyPage` ya no envía `tenantId`, pero otros sí.** `GameForm.tsx:220`, `LibEditModal.tsx`, `biblioteca/page.tsx` y `juegos/page.tsx` siguen mandando `tenantId` en la query. Hoy es inofensivo porque `z.object` descarta claves desconocidas, pero es un parámetro muerto que sugiere un modelo que ya no existe.
+
+### Red Dead Redemption 2
+
+Creada en la biblioteca y **no publicada**. Ficha `a1f72f29-443f-4ef2-9f6c-262b5dde909f` con todos los campos y portada en Cloudinary (`library/games/red-dead-redemption-2/cover`, sacada de `backend/scripts/piloto_resultado.csv`, columna `portada`).
+
+- Categoría Acción · géneros Acción, Aventura, Mundo abierto, Western · plataformas PC, PlayStation 4, PlayStation 5 · 120 GB · 2018 · Rockstar Games · fuente IGDB.
+- Publicarla es el paso que prueba el arreglo, y está pendiente de los dos puntos anteriores.
+
+### Cómo seguir
+
+1. TDD: test rojo que cree un juego con categoría y géneros **globales**.
+2. Cambiar `assertTaxonomyRefs` para que valide contra `tenantId: null` en `games.service.ts:400`, `:512` y `:624` (o pasarle `null` desde esas llamadas, como ya hace la biblioteca).
+3. Añadir el desplegable de plataforma al `LibAddModal`.
+4. `npx vitest run`, `npm run typecheck`, gate de codificación, push y verificar en navegador publicando RDR2.
+
+### Deuda que quedó abierta
+
+- [ ] Los dos tests de `tests/integration/library-import-pilot.test.ts` siguen fallando (`expected 48 to be 50`): son el fixture de datos, no la taxonomía. Ya fallaban antes de todo esto.
+- [ ] `Xbox One` no está entre las plataformas de RDR2 en producción. El usuario dijo que lo modificaba él; conviene comprobar que no se perdió.
+
 ## Verificación final
 - [ ] Backend 654/654, frontend completo (`tsc`, `eslint`, tests, `build`, `cf:build`) en verde
