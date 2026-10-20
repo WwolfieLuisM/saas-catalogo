@@ -12,6 +12,7 @@ import type {
   GameItem,
   PricingRule,
   TaxonomyItem,
+  TenantPlatform,
 } from '@/lib/admin/types';
 import { useAdminList } from '@/hooks/useAdminList';
 import { useTenantScope } from '@/hooks/useTenantScope';
@@ -138,7 +139,7 @@ export default function BibliotecaPage() {
   const [catalogIds, setCatalogIds] = useState<Set<string> | null>(null);
   const [cats, setCats] = useState<TaxonomyItem[]>([]);
   const [gens, setGens] = useState<TaxonomyItem[]>([]);
-  const [plats, setPlats] = useState<TaxonomyItem[]>([]);
+  const [plats, setPlats] = useState<{ id: string; name: string }[]>([]);
   const [rules, setRules] = useState<PricingRule[]>([]);
 
   useEffect(() => {
@@ -202,9 +203,15 @@ export default function BibliotecaPage() {
         adminFetchPaged<TaxonomyItem>('/admin/genres', {
           query: { page: 1, limit: 100, sort: 'name', global: true },
         }),
-        adminFetchPaged<TaxonomyItem>('/admin/platforms', {
-          query: { page: 1, limit: 100, sort: 'name', global: true },
-        }),
+        isSa && !scope.scopeId
+          ? adminFetchPaged<TaxonomyItem>('/admin/platforms', {
+              query: { page: 1, limit: 100, sort: 'name', global: true },
+            })
+          : adminFetch<TenantPlatform[]>('/admin/tenant-platforms', {
+              query: { tenantId: scope.scopeId },
+            }).then((rows) => ({
+              data: rows.filter((row) => row.enabled).map(({ id, name }) => ({ id, name })),
+            })),
         isSa
           ? Promise.resolve(null)
           : adminFetch<PricingRule[]>('/admin/pricing/rules', {
@@ -215,7 +222,7 @@ export default function BibliotecaPage() {
           if (cancelled) return;
           setCats(catRows.data);
           setGens(genRows.data);
-          setPlats(platRows.data);
+          setPlats(platRows.data.map(({ id, name }) => ({ id, name })));
           setRules(ruleRows ?? []);
         })
         .catch(() => {

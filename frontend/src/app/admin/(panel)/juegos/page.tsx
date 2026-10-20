@@ -8,7 +8,7 @@ import { adminFetch, adminFetchPaged } from '@/lib/admin/adminApi';
 import { nf } from '@/lib/admin/format';
 import { etiquetaPlataforma } from '@/lib/admin/gameView';
 import { toast } from '@/lib/admin/toast';
-import type { GameItem, TaxonomyItem } from '@/lib/admin/types';
+import type { GameItem, TaxonomyItem, TenantPlatform } from '@/lib/admin/types';
 import { useAdminAuth } from '@/hooks/useAdminAuth';
 import { useAdminList } from '@/hooks/useAdminList';
 import { useTenantScope } from '@/hooks/useTenantScope';
@@ -42,6 +42,8 @@ function JuegosList() {
   const [cat, setCat] = useState('');
   const [av, setAv] = useState('');
   const [origin, setOrigin] = useState('');
+  const [plat, setPlat] = useState('');
+  const [plats, setPlats] = useState<{ id: string; name: string }[]>([]);
   const [sort, setSort] = useState('title');
   const [cats, setCats] = useState<TaxonomyItem[] | null>(null);
   const [history, setHistory] = useState<GameItem | null>(null);
@@ -57,20 +59,33 @@ function JuegosList() {
     if (!scope.ready) return;
     let cancelled = false;
     queueMicrotask(() => {
-      adminFetchPaged<TaxonomyItem>('/admin/categories', {
-        query: { page: 1, limit: 100, sort: 'name', tenantId: scope.scopeId },
-      })
-        .then((result) => {
+      Promise.all([
+        adminFetchPaged<TaxonomyItem>('/admin/categories', {
+          query: { page: 1, limit: 100, sort: 'name', tenantId: scope.scopeId },
+        }),
+        scope.isSa && !scope.scopeId
+          ? adminFetchPaged<TaxonomyItem>('/admin/platforms', {
+              query: { page: 1, limit: 100, sort: 'name', global: true },
+            })
+          : adminFetch<TenantPlatform[]>('/admin/tenant-platforms', {
+              query: { tenantId: scope.scopeId },
+            }).then((rows) => ({
+              data: rows.filter((row) => row.enabled).map(({ id, name }) => ({ id, name })),
+            })),
+      ])
+        .then(([result, platResult]) => {
           if (!cancelled) setCats(result.data);
+          if (!cancelled) setPlats(platResult.data.map(({ id, name }) => ({ id, name })));
         })
         .catch(() => {
           if (!cancelled) setCats([]);
+          if (!cancelled) setPlats([]);
         });
     });
     return () => {
       cancelled = true;
     };
-  }, [scope.ready, scope.scopeId, scope.tenantId]);
+  }, [scope.isSa, scope.ready, scope.scopeId, scope.tenantId]);
 
   const { items, meta, error, reload } = useAdminList<GameItem>(
     '/admin/games',
@@ -81,13 +96,15 @@ function JuegosList() {
       sort,
       tenantId: scope.scopeId,
       categoryId: cat || undefined,
+      platformId: plat || undefined,
       availability: av || undefined,
       origin: origin || undefined,
     },
     { enabled: scope.ready },
   );
 
-  const hasFilters = debouncedQ !== '' || cat !== '' || av !== '' || origin !== '';
+  const hasFilters =
+    debouncedQ !== '' || cat !== '' || av !== '' || origin !== '' || plat !== '';
 
   const clearFilters = () => {
     setQ('');
@@ -95,6 +112,7 @@ function JuegosList() {
     setCat('');
     setAv('');
     setOrigin('');
+    setPlat('');
   };
 
   const toggleAvailability = (game: GameItem) => {
@@ -402,6 +420,16 @@ function JuegosList() {
             <option value="">Todos</option>
             <option value="BIBLIOTECA">Biblioteca</option>
             <option value="PERSONALIZADO">Personalizado</option>
+          </select>
+        </Field>
+        <Field label="Plataforma">
+          <select value={plat} onChange={(event) => { setPlat(event.target.value); setPage(1); }}>
+            <option value="">Todas</option>
+            {plats.map((platform) => (
+              <option key={platform.id} value={platform.id}>
+                {platform.name}
+              </option>
+            ))}
           </select>
         </Field>
         <Field label="Ordenar por">
