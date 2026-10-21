@@ -38,6 +38,31 @@ const GENERO_STEAM = {
   Fighting: 'lucha',
 };
 
+// Genero de IGDB -> diccionario global (mapa aprobado en tasks/mapa-generos-import.md:
+// TBS con doble slug; Visual Novel se descarta por no tener equivalencia).
+const GENERO_IGDB = {
+  Adventure: ['aventura'],
+  Indie: ['indie'],
+  'Role-playing (RPG)': ['rol'],
+  Simulator: ['simulacion'],
+  Strategy: ['estrategia'],
+  Shooter: ['disparos'],
+  "Hack and slash/Beat 'em up": ['hack-and-slash'],
+  Puzzle: ['puzzle'],
+  Platform: ['plataformas'],
+  'Real Time Strategy (RTS)': ['estrategia-en-tiempo-real'],
+  Racing: ['carreras'],
+  Arcade: ['arcade'],
+  Tactical: ['tactico'],
+  Fighting: ['lucha'],
+  Sport: ['deportes'],
+  'Turn-based strategy (TBS)': ['por-turnos', 'estrategia'],
+  'Point-and-click': ['point-and-click'],
+  'Card & Board Game': ['cartas-y-mesa'],
+  Music: ['musica'],
+  MOBA: ['moba'],
+};
+
 // Genero -> categoria. Solo donde la equivalencia es directa; el resto queda en 'otros'.
 const CATEGORIA_POR_GENERO = {
   accion: 'accion', disparos: 'accion', lucha: 'accion', 'hack-and-slash': 'accion',
@@ -119,11 +144,13 @@ function main() {
 
     for (const n of s.generos_steam ?? []) nombresSteam.add(n);
 
-    // --- generos: union de ambas fuentes, ya traducidos al diccionario global
+    // --- generos: union de las tres fuentes, ya traducidos al diccionario global
     const desdeSteam = (s.generos_steam ?? []).map((n) => GENERO_STEAM[n]).filter(Boolean);
     const desdeRawg = g.generos ?? [];
-    const generos = [...new Set([...desdeSteam, ...desdeRawg])].filter((x) => GENEROS.includes(x));
-    if (generos.length !== new Set([...desdeSteam, ...desdeRawg]).size) {
+    const desdeIgdb = String(fila.generos ?? '').split('|').map((t) => GENERO_IGDB[t.trim()] ?? []).flat();
+    const union = [...new Set([...desdeSteam, ...desdeRawg, ...desdeIgdb])];
+    const generos = union.filter((x) => GENEROS.includes(x));
+    if (generos.length !== union.length) {
       avisos.push(`${titulo}: se descartaron generos fuera del diccionario`);
     }
 
@@ -140,14 +167,17 @@ function main() {
     // --- size (solo Steam; RAWG no lo publica)
     const sizeGb = typeof s.size_gb === 'number' && s.size_gb > 0 ? s.size_gb : null;
 
-    // --- requisitos (solo Steam)
-    const minReq = presentes(s.requisitos_min ?? {}) ?? (g.requisitos_min ? presentes(g.requisitos_min) : null);
-    const recReq = presentes(s.requisitos_rec ?? {}) ?? minReq;
+    // --- requisitos (solo Steam; se prefiere la variante en espanol del pase ES)
+    const minReq = presentes(s.requisitos_min_es ?? s.requisitos_min ?? {})
+      ?? (g.requisitos_min ? presentes(g.requisitos_min) : null);
+    const recReq = presentes(s.requisitos_rec_es ?? s.requisitos_rec ?? {}) ?? minReq;
 
-    // --- descripcion / desarrollador / editor: Steam primero, RAWG como respaldo
-    const descripcion = cortar(s.descripcion ?? g.descripcion, 5000);
+    // --- descripcion / desarrollador / editor: Steam primero (ES si existe; EN de
+    // respaldo), RAWG al final. El catalogo es en espanol.
+    const descripcion = cortar(s.descripcion_es ?? s.descripcion ?? g.descripcion, 5000);
     const desarrollador = cortar(s.developer ?? g.developer, 150);
     const editor = cortar(s.publisher ?? g.publisher, 150);
+    const portadaUrl = s.portada_steam ?? fila.portada;
 
     const fuenteMeta = s.steam_appid ? 'steam' : (g.rawg_id ? 'rawg' : null);
     const urlFuente = s.steam_appid
@@ -196,7 +226,7 @@ function main() {
       sizeUnit: sizeGb ? 'GB' : null,
       minimumRequirements: minReq,
       recommendedRequirements: recReq,
-      coverUrl: fila.portada && fila.portada.startsWith('https://') ? fila.portada : null,
+      coverUrl: portadaUrl && portadaUrl.startsWith('https://') ? portadaUrl : null,
       platformVariants: [variante],
     };
 

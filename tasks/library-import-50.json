@@ -19,14 +19,14 @@
       "sizeValue": 7,
       "sizeUnit": "GB",
       "minimumRequirements": {
-        "os": "AMD Radeon R9 200 Series or equivalent",
+        "os": "Win7 SP1, Windows 8.1, Windows 10",
         "cpu": "Intel(R) Core(TM) i3-6300 CPU",
         "gpu": "AMD Radeon R9 200 Series or equivalent",
         "ram": "4 GB de RAM",
         "storage": "7 GB de espacio disponible"
       },
       "recommendedRequirements": {
-        "os": "AMD Radeon R9 200 Series or equivalent",
+        "os": "Win7 SP1, Windows 8.1, Windows 10",
         "cpu": "Intel(R) Core(TM) i3-6300 CPU",
         "gpu": "AMD Radeon R9 200 Series or equivalent",
         "ram": "4 GB de RAM",
@@ -39,14 +39,14 @@
           "sizeValue": 7,
           "sizeUnit": "GB",
           "minimumRequirements": {
-            "os": "AMD Radeon R9 200 Series or equivalent",
+            "os": "Win7 SP1, Windows 8.1, Windows 10",
             "cpu": "Intel(R) Core(TM) i3-6300 CPU",
             "gpu": "AMD Radeon R9 200 Series or equivalent",
             "ram": "4 GB de RAM",
             "storage": "7 GB de espacio disponible"
           },
           "recommendedRequirements": {
-            "os": "AMD Radeon R9 200 Series or equivalent",
+            "os": "Win7 SP1, Windows 8.1, Windows 10",
             "cpu": "Intel(R) Core(TM) i3-6300 CPU",
             "gpu": "AMD Radeon R9 200 Series or equivalent",
             "ram": "4 GB de RAM",
@@ -77,14 +77,14 @@
       "sizeValue": 14,
       "sizeUnit": "GB",
       "minimumRequirements": {
-        "os": "NVIDIA GeForce GTX 750",
+        "os": "Windows 7+",
         "cpu": "Intel Core i5-760 @ 2.8 GHz",
         "gpu": "NVIDIA GeForce GTX 750",
         "ram": "4 GB de RAM",
         "storage": "14 GB de espacio disponible"
       },
       "recommendedRequirements": {
-        "os": "NVIDIA GeForce GTX 960",
+        "os": "Windows 7+",
         "cpu": "Intel Core i5-4460 @ 3.4 GHz",
         "gpu": "NVIDIA GeForce GTX 960",
         "ram": "6 GB de RAM",
@@ -97,14 +97,14 @@
           "sizeValue": 14,
           "sizeUnit": "GB",
           "minimumRequirements": {
-            "os": "NVIDIA GeForce GTX 750",
+            "os": "Windows 7+",
             "cpu": "Intel Core i5-760 @ 2.8 GHz",
             "gpu": "NVIDIA GeForce GTX 750",
             "ram": "4 GB de RAM",
             "storage": "14 GB de espacio disponible"
           },
           "recommendedRequirements": {
-            "os": "NVIDIA GeForce GTX 960",
+            "os": "Windows 7+",
             "cpu": "Intel Core i5-4460 @ 3.4 GHz",
             "gpu": "NVIDIA GeForce GTX 960",
             "ram": "6 GB de RAM",
@@ -195,13 +195,13 @@
       "sizeValue": 0.512,
       "sizeUnit": "GB",
       "minimumRequirements": {
-        "os": "GeForce GTX 670 or Radeon HD 7850",
+        "os": "Windows 8",
         "cpu": "Intel i5-2500 3.3 Ghz",
         "gpu": "GeForce GTX 670 or Radeon HD 7850",
         "storage": "512 MB de espacio disponible"
       },
       "recommendedRequirements": {
-        "os": "GeForce GTX 670 or Radeon HD 7850",
+        "os": "Windows 8",
         "cpu": "Intel i5-2500 3.3 Ghz",
         "gpu": "GeForce GTX 670 or Radeon HD 7850",
         "storage": "512 MB de espacio disponible"
@@ -213,13 +213,13 @@
           "sizeValue": 0.512,
           "sizeUnit": "GB",
           "minimumRequirements": {
-            "os": "GeForce GTX 670 or Radeon HD 7850",
+            "os": "Windows 8",
             "cpu": "Intel i5-2500 3.3 Ghz",
             "gpu": "GeForce GTX 670 or Radeon HD 7850",
             "storage": "512 MB de espacio disponible"
           },
           "recommendedRequirements": {
-            "os": "GeForce GTX 670 or Radeon HD 7850",
+            "os": "Windows 8",
             "cpu": "Intel i5-2500 3.3 Ghz",
             "gpu": "GeForce GTX 670 or Radeon HD 7850",
             "storage": "512 MB de espacio disponible"
@@ -249,14 +249,14 @@
       "sizeValue": 16,
       "sizeUnit": "GB",
       "minimumRequirements": {
-        "os": "NVIDIA GeForce GTX 950 or Radeon HD 7970",
+        "os": "Windows 10 (64 Bit)",
         "cpu": "Intel Core i5 or AMD Ryzen 5",
         "gpu": "NVIDIA GeForce GTX 950 or Radeon HD 7970",
         "ram": "8 GB de RAM",
         "storage": "16 GB de espacio disponible"
       },
       "recommendedRequirements": {
-        "os": "NVIDIA GeForce GTX 1060 or AMD Radeon RX 580",
+        "os": "Windows 10 (64 Bit)",
         "cpu": "Intel Core i7 or AMD Ryzen 7",
         "gpu": "NVIDIA GeForce GTX 1060 or AMD Radeon RX 580",
         "ram": "16 GB de RAM",
@@ -269,14 +269,14 @@
           "sizeValue": 16,
           "sizeUnit": "GB",
           "minimumRequirements": {
-            "os": "NVIDIA GeForce GTX 950 or Radeon HD 7970",
+            "os": "Windows 10 (64 Bit)",
             "cpu": "Intel Core i5 or AMD Ryzen 5",
             "gpu": "NVIDIA GeForce GTX 950 or Radeon HD 7970",
             "ram": "8 GB de RAM",
             "storage": "16 GB de espacio disponible"
           },
           "recommendedRequirements": {
-            "os": "NVIDIA GeForce GTX 1060 or AMD Radeon RX 580",
+            "os": "Windows 10 (64 Bit)",
             "cpu": "Intel Core i7 or AMD Ryzen 7",
             "gpu": "NVIDIA GeForce GTX 1060 or AMD Radeon RX 580",
             "ram": "16 GB de RAM",
@@ -310,14 +310,14 @@
       "sizeValue": 6,
       "sizeUnit": "GB",
       "minimumRequirements": {
-        "os": "GeForce GTX 760 or better",
+        "os": "Windows 7",
         "cpu": "4 threads, 2.5+ Ghz",
         "gpu": "GeForce GTX 760 or better",
         "ram": "4 GB de RAM",
         "storage": "6 GB de espacio disponible"
       },
       "recommendedRequirements": {
-        "os": "GeForce GTX 1050",
+        "os": "Windows 10",
         "cpu": "4 cores, 3+ Ghz",
         "gpu": "GeForce GTX 1050",
         "ram": "6 GB de RAM",
@@ -330,14 +330,14 @@
           "sizeValue": 6,
           "sizeUnit": "GB",
           "minimumRequirements": {
-            "os": "GeForce GTX 760 or better",
+            "os": "Windows 7",
             "cpu": "4 threads, 2.5+ Ghz",
             "gpu": "GeForce GTX 760 or better",
             "ram": "4 GB de RAM",
             "storage": "6 GB de espacio disponible"
           },
           "recommendedRequirements": {
-            "os": "GeForce GTX 1050",
+            "os": "Windows 10",
             "cpu": "4 cores, 3+ Ghz",
             "gpu": "GeForce GTX 1050",
             "ram": "6 GB de RAM",
@@ -371,14 +371,14 @@
       "sizeValue": 23,
       "sizeUnit": "GB",
       "minimumRequirements": {
-        "os": "NVIDIA GeForce 560 / AMD Radeon 7770 or similar, at least 2 GB of VRAM",
+        "os": "Win 7, 8, 10, 32bit",
         "cpu": "2.8 Ghz Dual Core CPU",
         "gpu": "NVIDIA GeForce 560 / AMD Radeon 7770 or similar, at least 2 GB of VRAM",
         "ram": "4 GB de RAM",
         "storage": "23 GB de espacio disponible"
       },
       "recommendedRequirements": {
-        "os": "NVIDIA GeForce GTX 750 Ti / AMD Radeon R7 370 or similar, at least 4 GB of VRAM",
+        "os": "Win 7, 8, 10, 64bit",
         "cpu": "3 Ghz Quad Core CPU",
         "gpu": "NVIDIA GeForce GTX 750 Ti / AMD Radeon R7 370 or similar, at least 4 GB of VRAM",
         "ram": "8 GB de RAM",
@@ -391,14 +391,14 @@
           "sizeValue": 23,
           "sizeUnit": "GB",
           "minimumRequirements": {
-            "os": "NVIDIA GeForce 560 / AMD Radeon 7770 or similar, at least 2 GB of VRAM",
+            "os": "Win 7, 8, 10, 32bit",
             "cpu": "2.8 Ghz Dual Core CPU",
             "gpu": "NVIDIA GeForce 560 / AMD Radeon 7770 or similar, at least 2 GB of VRAM",
             "ram": "4 GB de RAM",
             "storage": "23 GB de espacio disponible"
           },
           "recommendedRequirements": {
-            "os": "NVIDIA GeForce GTX 750 Ti / AMD Radeon R7 370 or similar, at least 4 GB of VRAM",
+            "os": "Win 7, 8, 10, 64bit",
             "cpu": "3 Ghz Quad Core CPU",
             "gpu": "NVIDIA GeForce GTX 750 Ti / AMD Radeon R7 370 or similar, at least 4 GB of VRAM",
             "ram": "8 GB de RAM",
@@ -467,14 +467,14 @@
       "sizeValue": 3,
       "sizeUnit": "GB",
       "minimumRequirements": {
-        "os": "DirectX compatible card",
+        "os": "WIndows XP or higher",
         "cpu": "2.0 GHz Core 2 Duo",
         "gpu": "DirectX compatible card",
         "ram": "2 GB de RAM",
         "storage": "3 GB de espacio disponible"
       },
       "recommendedRequirements": {
-        "os": "DirectX compatible card",
+        "os": "WIndows XP or higher",
         "cpu": "2.0 GHz Core 2 Duo",
         "gpu": "DirectX compatible card",
         "ram": "2 GB de RAM",
@@ -487,14 +487,14 @@
           "sizeValue": 3,
           "sizeUnit": "GB",
           "minimumRequirements": {
-            "os": "DirectX compatible card",
+            "os": "WIndows XP or higher",
             "cpu": "2.0 GHz Core 2 Duo",
             "gpu": "DirectX compatible card",
             "ram": "2 GB de RAM",
             "storage": "3 GB de espacio disponible"
           },
           "recommendedRequirements": {
-            "os": "DirectX compatible card",
+            "os": "WIndows XP or higher",
             "cpu": "2.0 GHz Core 2 Duo",
             "gpu": "DirectX compatible card",
             "ram": "2 GB de RAM",
@@ -527,14 +527,14 @@
       "sizeValue": 14,
       "sizeUnit": "GB",
       "minimumRequirements": {
-        "os": "Radeon Vega 8 or Intel Iris Pro 580",
+        "os": "Windows 7 64-bit",
         "cpu": "AMD Phenom II X4 945 or Intel Core i3-2100",
         "gpu": "Radeon Vega 8 or Intel Iris Pro 580",
         "ram": "4 GB de RAM",
         "storage": "14 GB de espacio disponible"
       },
       "recommendedRequirements": {
-        "os": "Radeon HD 7870 or GeForce GTX 660",
+        "os": "Windows 10",
         "cpu": "AMD A12-9800 or Intel Core i5-2300",
         "gpu": "Radeon HD 7870 or GeForce GTX 660",
         "ram": "4 GB de RAM",
@@ -547,14 +547,14 @@
           "sizeValue": 14,
           "sizeUnit": "GB",
           "minimumRequirements": {
-            "os": "Radeon Vega 8 or Intel Iris Pro 580",
+            "os": "Windows 7 64-bit",
             "cpu": "AMD Phenom II X4 945 or Intel Core i3-2100",
             "gpu": "Radeon Vega 8 or Intel Iris Pro 580",
             "ram": "4 GB de RAM",
             "storage": "14 GB de espacio disponible"
           },
           "recommendedRequirements": {
-            "os": "Radeon HD 7870 or GeForce GTX 660",
+            "os": "Windows 10",
             "cpu": "AMD A12-9800 or Intel Core i5-2300",
             "gpu": "Radeon HD 7870 or GeForce GTX 660",
             "ram": "4 GB de RAM",
@@ -587,14 +587,14 @@
       "sizeValue": 10,
       "sizeUnit": "GB",
       "minimumRequirements": {
-        "os": "NVIDIA GTX 760 4 GB",
+        "os": "Windows 7/8.1/10 (64-bit version)",
         "cpu": "Intel i5-750/AMD Phenom II X4-945",
         "gpu": "NVIDIA GTX 760 4 GB",
         "ram": "8 GB de RAM",
         "storage": "10 GB de espacio disponible"
       },
       "recommendedRequirements": {
-        "os": "NVIDIA GTX 1060 6 GB",
+        "os": "Windows 7/8.1/10 (64-bit version)",
         "cpu": "Intel i7-4770/AMD Ryzen 3 2200G",
         "gpu": "NVIDIA GTX 1060 6 GB",
         "ram": "8 GB de RAM",
@@ -607,14 +607,14 @@
           "sizeValue": 10,
           "sizeUnit": "GB",
           "minimumRequirements": {
-            "os": "NVIDIA GTX 760 4 GB",
+            "os": "Windows 7/8.1/10 (64-bit version)",
             "cpu": "Intel i5-750/AMD Phenom II X4-945",
             "gpu": "NVIDIA GTX 760 4 GB",
             "ram": "8 GB de RAM",
             "storage": "10 GB de espacio disponible"
           },
           "recommendedRequirements": {
-            "os": "NVIDIA GTX 1060 6 GB",
+            "os": "Windows 7/8.1/10 (64-bit version)",
             "cpu": "Intel i7-4770/AMD Ryzen 3 2200G",
             "gpu": "NVIDIA GTX 1060 6 GB",
             "ram": "8 GB de RAM",
@@ -751,14 +751,14 @@
       "sizeValue": 5,
       "sizeUnit": "GB",
       "minimumRequirements": {
-        "os": "Intel Arc A580 | Nvidia GTX 1060 (min. 6GB VRAM)",
+        "os": "64-bit Windows 10/11",
         "cpu": "Intel Core i5-8400",
         "gpu": "Intel Arc A580 | Nvidia GTX 1060 (min. 6GB VRAM)",
         "ram": "12 GB de RAM",
         "storage": "5 GB de espacio disponible"
       },
       "recommendedRequirements": {
-        "os": "Intel Arc B570 | Nvidia RTX 2060 Super (min. 8GB VRAM)",
+        "os": "64-bit Windows 10/11",
         "cpu": "Intel Core i7-8700K",
         "gpu": "Intel Arc B570 | Nvidia RTX 2060 Super (min. 8GB VRAM)",
         "ram": "16 GB de RAM",
@@ -771,14 +771,14 @@
           "sizeValue": 5,
           "sizeUnit": "GB",
           "minimumRequirements": {
-            "os": "Intel Arc A580 | Nvidia GTX 1060 (min. 6GB VRAM)",
+            "os": "64-bit Windows 10/11",
             "cpu": "Intel Core i5-8400",
             "gpu": "Intel Arc A580 | Nvidia GTX 1060 (min. 6GB VRAM)",
             "ram": "12 GB de RAM",
             "storage": "5 GB de espacio disponible"
           },
           "recommendedRequirements": {
-            "os": "Intel Arc B570 | Nvidia RTX 2060 Super (min. 8GB VRAM)",
+            "os": "64-bit Windows 10/11",
             "cpu": "Intel Core i7-8700K",
             "gpu": "Intel Arc B570 | Nvidia RTX 2060 Super (min. 8GB VRAM)",
             "ram": "16 GB de RAM",
@@ -810,14 +810,14 @@
       "sizeValue": 3,
       "sizeUnit": "GB",
       "minimumRequirements": {
-        "os": "GeForce GTX 560 Or Equivalent",
+        "os": "Windows 10",
         "cpu": "2.4 GHz Dual Core Processor Or Higher",
         "gpu": "GeForce GTX 560 Or Equivalent",
         "ram": "4 GB de RAM",
         "storage": "3 GB de espacio disponible"
       },
       "recommendedRequirements": {
-        "os": "Geforce GTX 970 Or Equivalent",
+        "os": "Windows 11",
         "cpu": "3.1 GHz Quad Core Processor Or Higher",
         "gpu": "Geforce GTX 970 Or Equivalent",
         "ram": "8 GB de RAM",
@@ -830,14 +830,14 @@
           "sizeValue": 3,
           "sizeUnit": "GB",
           "minimumRequirements": {
-            "os": "GeForce GTX 560 Or Equivalent",
+            "os": "Windows 10",
             "cpu": "2.4 GHz Dual Core Processor Or Higher",
             "gpu": "GeForce GTX 560 Or Equivalent",
             "ram": "4 GB de RAM",
             "storage": "3 GB de espacio disponible"
           },
           "recommendedRequirements": {
-            "os": "Geforce GTX 970 Or Equivalent",
+            "os": "Windows 11",
             "cpu": "3.1 GHz Quad Core Processor Or Higher",
             "gpu": "Geforce GTX 970 Or Equivalent",
             "ram": "8 GB de RAM",
@@ -869,14 +869,14 @@
       "sizeValue": 55,
       "sizeUnit": "GB",
       "minimumRequirements": {
-        "os": "8 GB VRAM / AMD RX 580",
+        "os": "Windows 10",
         "cpu": "4 or 6 cores / 8 threads / 3.6 Ghz Base clock speed",
         "gpu": "8 GB VRAM / AMD RX 580",
         "ram": "12 GB de RAM",
         "storage": "55 GB de espacio disponible"
       },
       "recommendedRequirements": {
-        "os": "8 GB VRAM / AMD RX 5700 XT",
+        "os": "Windows 10",
         "cpu": "6 cores / 12 threads / 3.4 Ghz Base clock speed",
         "gpu": "8 GB VRAM / AMD RX 5700 XT",
         "ram": "16 GB de RAM",
@@ -889,14 +889,14 @@
           "sizeValue": 55,
           "sizeUnit": "GB",
           "minimumRequirements": {
-            "os": "8 GB VRAM / AMD RX 580",
+            "os": "Windows 10",
             "cpu": "4 or 6 cores / 8 threads / 3.6 Ghz Base clock speed",
             "gpu": "8 GB VRAM / AMD RX 580",
             "ram": "12 GB de RAM",
             "storage": "55 GB de espacio disponible"
           },
           "recommendedRequirements": {
-            "os": "8 GB VRAM / AMD RX 5700 XT",
+            "os": "Windows 10",
             "cpu": "6 cores / 12 threads / 3.4 Ghz Base clock speed",
             "gpu": "8 GB VRAM / AMD RX 5700 XT",
             "ram": "16 GB de RAM",
@@ -929,14 +929,14 @@
       "sizeValue": 0.5,
       "sizeUnit": "GB",
       "minimumRequirements": {
-        "os": "3D graphics card compatible with DirectX 8",
+        "os": "Windows XP / ME / 2000 / 98 / 7 / 8",
         "cpu": "Intel Pentium II, 233 MHz",
         "gpu": "3D graphics card compatible with DirectX 8",
         "ram": "128 MB de RAM",
         "storage": "500 MB de espacio disponible"
       },
       "recommendedRequirements": {
-        "os": "3D graphics card compatible with DirectX 8",
+        "os": "Windows XP / ME / 2000 / 98 / 7 / 8",
         "cpu": "Intel Pentium III, 500 MHz",
         "gpu": "3D graphics card compatible with DirectX 8",
         "ram": "256 MB de RAM",
@@ -949,14 +949,14 @@
           "sizeValue": 0.5,
           "sizeUnit": "GB",
           "minimumRequirements": {
-            "os": "3D graphics card compatible with DirectX 8",
+            "os": "Windows XP / ME / 2000 / 98 / 7 / 8",
             "cpu": "Intel Pentium II, 233 MHz",
             "gpu": "3D graphics card compatible with DirectX 8",
             "ram": "128 MB de RAM",
             "storage": "500 MB de espacio disponible"
           },
           "recommendedRequirements": {
-            "os": "3D graphics card compatible with DirectX 8",
+            "os": "Windows XP / ME / 2000 / 98 / 7 / 8",
             "cpu": "Intel Pentium III, 500 MHz",
             "gpu": "3D graphics card compatible with DirectX 8",
             "ram": "256 MB de RAM",
@@ -988,14 +988,14 @@
       "sizeValue": 4,
       "sizeUnit": "GB",
       "minimumRequirements": {
-        "os": "NVidia GeForce GT430-1GB VRAM or equivalent",
+        "os": "Windows 7",
         "cpu": "Intel Core2-Duo 2GHz or equivalent",
         "gpu": "NVidia GeForce GT430-1GB VRAM or equivalent",
         "ram": "3 GB de RAM",
         "storage": "4 GB de espacio disponible"
       },
       "recommendedRequirements": {
-        "os": "NVidia GeForce GT440-2GB VRAM or equivalent",
+        "os": "Windows 10",
         "cpu": "Intel Core2-Duo 2GHz or equivalent",
         "gpu": "NVidia GeForce GT440-2GB VRAM or equivalent",
         "ram": "4 GB de RAM",
@@ -1008,14 +1008,14 @@
           "sizeValue": 4,
           "sizeUnit": "GB",
           "minimumRequirements": {
-            "os": "NVidia GeForce GT430-1GB VRAM or equivalent",
+            "os": "Windows 7",
             "cpu": "Intel Core2-Duo 2GHz or equivalent",
             "gpu": "NVidia GeForce GT430-1GB VRAM or equivalent",
             "ram": "3 GB de RAM",
             "storage": "4 GB de espacio disponible"
           },
           "recommendedRequirements": {
-            "os": "NVidia GeForce GT440-2GB VRAM or equivalent",
+            "os": "Windows 10",
             "cpu": "Intel Core2-Duo 2GHz or equivalent",
             "gpu": "NVidia GeForce GT440-2GB VRAM or equivalent",
             "ram": "4 GB de RAM",
@@ -1047,13 +1047,13 @@
       "sizeValue": null,
       "sizeUnit": null,
       "minimumRequirements": {
-        "os": "NVIDIA GeForce GTX 550/equivalent or higher",
+        "os": "Windows 7 or later",
         "cpu": "2 GHz",
         "gpu": "NVIDIA GeForce GTX 550/equivalent or higher",
         "ram": "2 GB de RAM"
       },
       "recommendedRequirements": {
-        "os": "NVIDIA GeForce GTX 760/equivalent or higher",
+        "os": "Windows 10",
         "cpu": "2 GHz",
         "gpu": "NVIDIA GeForce GTX 760/equivalent or higher",
         "ram": "2 GB de RAM"
@@ -1065,13 +1065,13 @@
           "sizeValue": null,
           "sizeUnit": null,
           "minimumRequirements": {
-            "os": "NVIDIA GeForce GTX 550/equivalent or higher",
+            "os": "Windows 7 or later",
             "cpu": "2 GHz",
             "gpu": "NVIDIA GeForce GTX 550/equivalent or higher",
             "ram": "2 GB de RAM"
           },
           "recommendedRequirements": {
-            "os": "NVIDIA GeForce GTX 760/equivalent or higher",
+            "os": "Windows 10",
             "cpu": "2 GHz",
             "gpu": "NVIDIA GeForce GTX 760/equivalent or higher",
             "ram": "2 GB de RAM"
@@ -1176,7 +1176,6 @@
         "ram": "8 GB de RAM"
       },
       "recommendedRequirements": {
-        "os": "NVIDIA GeForce GTX 1060, AMD Radeon RX 580, with at least 6 GB VRAM or equivalent",
         "cpu": "Intel Core i5‑8400, AMD Ryzen 5 2600 or equivalent or higher",
         "gpu": "NVIDIA GeForce GTX 1060, AMD Radeon RX 580, with at least 6 GB VRAM or equivalent",
         "ram": "16 GB de RAM"
@@ -1194,7 +1193,6 @@
             "ram": "8 GB de RAM"
           },
           "recommendedRequirements": {
-            "os": "NVIDIA GeForce GTX 1060, AMD Radeon RX 580, with at least 6 GB VRAM or equivalent",
             "cpu": "Intel Core i5‑8400, AMD Ryzen 5 2600 or equivalent or higher",
             "gpu": "NVIDIA GeForce GTX 1060, AMD Radeon RX 580, with at least 6 GB VRAM or equivalent",
             "ram": "16 GB de RAM"
@@ -1227,14 +1225,14 @@
       "sizeValue": 1,
       "sizeUnit": "GB",
       "minimumRequirements": {
-        "os": "GeForce GTX 950 or Radeon HD 7970",
+        "os": "Windows 10 or later",
         "cpu": "2.6 GHz Quad Core or similar",
         "gpu": "GeForce GTX 950 or Radeon HD 7970",
         "ram": "8 GB de RAM",
         "storage": "1 GB de espacio disponible"
       },
       "recommendedRequirements": {
-        "os": "GeForce GTX 1060 or Radeon RX 580",
+        "os": "Windows 10 or later",
         "cpu": "i5 3GHz or Ryzen 5 3GHz",
         "gpu": "GeForce GTX 1060 or Radeon RX 580",
         "ram": "16 GB de RAM",
@@ -1247,14 +1245,14 @@
           "sizeValue": 1,
           "sizeUnit": "GB",
           "minimumRequirements": {
-            "os": "GeForce GTX 950 or Radeon HD 7970",
+            "os": "Windows 10 or later",
             "cpu": "2.6 GHz Quad Core or similar",
             "gpu": "GeForce GTX 950 or Radeon HD 7970",
             "ram": "8 GB de RAM",
             "storage": "1 GB de espacio disponible"
           },
           "recommendedRequirements": {
-            "os": "GeForce GTX 1060 or Radeon RX 580",
+            "os": "Windows 10 or later",
             "cpu": "i5 3GHz or Ryzen 5 3GHz",
             "gpu": "GeForce GTX 1060 or Radeon RX 580",
             "ram": "16 GB de RAM",
@@ -1286,14 +1284,14 @@
       "sizeValue": 0.05,
       "sizeUnit": "GB",
       "minimumRequirements": {
-        "os": "Intel HD",
+        "os": "Windows 7+",
         "cpu": "Dual Core 1.8ghz",
         "gpu": "Intel HD",
         "ram": "1 GB de RAM",
         "storage": "50 MB de espacio disponible"
       },
       "recommendedRequirements": {
-        "os": "Intel HD",
+        "os": "Windows 7+",
         "cpu": "Dual Core 1.8ghz",
         "gpu": "Intel HD",
         "ram": "1 GB de RAM",
@@ -1306,14 +1304,14 @@
           "sizeValue": 0.05,
           "sizeUnit": "GB",
           "minimumRequirements": {
-            "os": "Intel HD",
+            "os": "Windows 7+",
             "cpu": "Dual Core 1.8ghz",
             "gpu": "Intel HD",
             "ram": "1 GB de RAM",
             "storage": "50 MB de espacio disponible"
           },
           "recommendedRequirements": {
-            "os": "Intel HD",
+            "os": "Windows 7+",
             "cpu": "Dual Core 1.8ghz",
             "gpu": "Intel HD",
             "ram": "1 GB de RAM",
@@ -1404,14 +1402,14 @@
       "sizeValue": 1,
       "sizeUnit": "GB",
       "minimumRequirements": {
-        "os": "GeForce GTX 560",
+        "os": "Win 10 x64",
         "cpu": "Dual Core i5 2.5 GHz",
         "gpu": "GeForce GTX 560",
         "ram": "8 GB de RAM",
         "storage": "1 GB de espacio disponible"
       },
       "recommendedRequirements": {
-        "os": "GeForce GTX 660",
+        "os": "Win 10 x64",
         "cpu": "Quad Core 3.0 GHz",
         "gpu": "GeForce GTX 660",
         "ram": "8 GB de RAM",
@@ -1424,14 +1422,14 @@
           "sizeValue": 1,
           "sizeUnit": "GB",
           "minimumRequirements": {
-            "os": "GeForce GTX 560",
+            "os": "Win 10 x64",
             "cpu": "Dual Core i5 2.5 GHz",
             "gpu": "GeForce GTX 560",
             "ram": "8 GB de RAM",
             "storage": "1 GB de espacio disponible"
           },
           "recommendedRequirements": {
-            "os": "GeForce GTX 660",
+            "os": "Win 10 x64",
             "cpu": "Quad Core 3.0 GHz",
             "gpu": "GeForce GTX 660",
             "ram": "8 GB de RAM",
@@ -1465,14 +1463,14 @@
       "sizeValue": 10,
       "sizeUnit": "GB",
       "minimumRequirements": {
-        "os": "NVIDIA GeForce GTX 650 Ti, 2 GB | AMD Radeon R7 360, 2 GB",
+        "os": "Windows 10",
         "cpu": "Intel Core i5-2300 | AMD FX-6350",
         "gpu": "NVIDIA GeForce GTX 650 Ti, 2 GB | AMD Radeon R7 360, 2 GB",
         "ram": "8 GB de RAM",
         "storage": "10 GB de espacio disponible"
       },
       "recommendedRequirements": {
-        "os": "NVIDIA GeForce GTX 780, 3 GB | AMD Radeon R9 290X, 4 GB",
+        "os": "Windows 10",
         "cpu": "Intel Core i5-8400 | AMD Ryzen 5 2600",
         "gpu": "NVIDIA GeForce GTX 780, 3 GB | AMD Radeon R9 290X, 4 GB",
         "ram": "8 GB de RAM",
@@ -1485,14 +1483,14 @@
           "sizeValue": 10,
           "sizeUnit": "GB",
           "minimumRequirements": {
-            "os": "NVIDIA GeForce GTX 650 Ti, 2 GB | AMD Radeon R7 360, 2 GB",
+            "os": "Windows 10",
             "cpu": "Intel Core i5-2300 | AMD FX-6350",
             "gpu": "NVIDIA GeForce GTX 650 Ti, 2 GB | AMD Radeon R7 360, 2 GB",
             "ram": "8 GB de RAM",
             "storage": "10 GB de espacio disponible"
           },
           "recommendedRequirements": {
-            "os": "NVIDIA GeForce GTX 780, 3 GB | AMD Radeon R9 290X, 4 GB",
+            "os": "Windows 10",
             "cpu": "Intel Core i5-8400 | AMD Ryzen 5 2600",
             "gpu": "NVIDIA GeForce GTX 780, 3 GB | AMD Radeon R9 290X, 4 GB",
             "ram": "8 GB de RAM",
@@ -1526,14 +1524,14 @@
       "sizeValue": 6,
       "sizeUnit": "GB",
       "minimumRequirements": {
-        "os": "NVIDIA GeForce GTX 1060/AMD RX580",
+        "os": "Windows 10/11, 64-bits",
         "cpu": "i5-2300/Ryzen 3 1200",
         "gpu": "NVIDIA GeForce GTX 1060/AMD RX580",
         "ram": "16 GB de RAM",
         "storage": "6 GB de espacio disponible"
       },
       "recommendedRequirements": {
-        "os": "NVidia GeForce 1080 GTX /AMD RX 5700",
+        "os": "Windows 10/11, 64-bits",
         "cpu": "Intel Core i5 4690K / AMD Ryzen 5 1500x",
         "gpu": "NVidia GeForce 1080 GTX /AMD RX 5700",
         "ram": "16 GB de RAM",
@@ -1546,14 +1544,14 @@
           "sizeValue": 6,
           "sizeUnit": "GB",
           "minimumRequirements": {
-            "os": "NVIDIA GeForce GTX 1060/AMD RX580",
+            "os": "Windows 10/11, 64-bits",
             "cpu": "i5-2300/Ryzen 3 1200",
             "gpu": "NVIDIA GeForce GTX 1060/AMD RX580",
             "ram": "16 GB de RAM",
             "storage": "6 GB de espacio disponible"
           },
           "recommendedRequirements": {
-            "os": "NVidia GeForce 1080 GTX /AMD RX 5700",
+            "os": "Windows 10/11, 64-bits",
             "cpu": "Intel Core i5 4690K / AMD Ryzen 5 1500x",
             "gpu": "NVidia GeForce 1080 GTX /AMD RX 5700",
             "ram": "16 GB de RAM",
@@ -1587,14 +1585,14 @@
       "sizeValue": 4,
       "sizeUnit": "GB",
       "minimumRequirements": {
-        "os": "AMD Radeon HD 7750, NVIDIA GeForce GTX 650 or Equivalent",
+        "os": "Windows 10",
         "cpu": "AMD FX-6100/Intel i3-3220 or Equivalent",
         "gpu": "AMD Radeon HD 7750, NVIDIA GeForce GTX 650 or Equivalent",
         "ram": "8 GB de RAM",
         "storage": "4 GB de espacio disponible"
       },
       "recommendedRequirements": {
-        "os": "AMD RX Vega 56, Nvidia GTX 1070/GTX1660Ti or Equivalent",
+        "os": "Windows 10",
         "cpu": "AMD Ryzen 7 1700/Intel i7-6700K or Equivalent",
         "gpu": "AMD RX Vega 56, Nvidia GTX 1070/GTX1660Ti or Equivalent",
         "ram": "16 GB de RAM",
@@ -1607,14 +1605,14 @@
           "sizeValue": 4,
           "sizeUnit": "GB",
           "minimumRequirements": {
-            "os": "AMD Radeon HD 7750, NVIDIA GeForce GTX 650 or Equivalent",
+            "os": "Windows 10",
             "cpu": "AMD FX-6100/Intel i3-3220 or Equivalent",
             "gpu": "AMD Radeon HD 7750, NVIDIA GeForce GTX 650 or Equivalent",
             "ram": "8 GB de RAM",
             "storage": "4 GB de espacio disponible"
           },
           "recommendedRequirements": {
-            "os": "AMD RX Vega 56, Nvidia GTX 1070/GTX1660Ti or Equivalent",
+            "os": "Windows 10",
             "cpu": "AMD Ryzen 7 1700/Intel i7-6700K or Equivalent",
             "gpu": "AMD RX Vega 56, Nvidia GTX 1070/GTX1660Ti or Equivalent",
             "ram": "16 GB de RAM",
@@ -1677,14 +1675,14 @@
       "sizeValue": 35,
       "sizeUnit": "GB",
       "minimumRequirements": {
-        "os": "NVIDIA GForce GTX 1060",
+        "os": "Windows 10 64-bit",
         "cpu": "Intel i5-7500",
         "gpu": "NVIDIA GForce GTX 1060",
         "ram": "16 GB de RAM",
         "storage": "35 GB de espacio disponible"
       },
       "recommendedRequirements": {
-        "os": "NVIDIA GForce GTX 1060",
+        "os": "Windows 10 64-bit",
         "cpu": "Intel i5-7500",
         "gpu": "NVIDIA GForce GTX 1060",
         "ram": "16 GB de RAM",
@@ -1697,14 +1695,14 @@
           "sizeValue": 35,
           "sizeUnit": "GB",
           "minimumRequirements": {
-            "os": "NVIDIA GForce GTX 1060",
+            "os": "Windows 10 64-bit",
             "cpu": "Intel i5-7500",
             "gpu": "NVIDIA GForce GTX 1060",
             "ram": "16 GB de RAM",
             "storage": "35 GB de espacio disponible"
           },
           "recommendedRequirements": {
-            "os": "NVIDIA GForce GTX 1060",
+            "os": "Windows 10 64-bit",
             "cpu": "Intel i5-7500",
             "gpu": "NVIDIA GForce GTX 1060",
             "ram": "16 GB de RAM",
@@ -1735,14 +1733,14 @@
       "sizeValue": 1,
       "sizeUnit": "GB",
       "minimumRequirements": {
-        "os": "OpenGL 4-compliant onboard graphics",
+        "os": "Windows 7",
         "cpu": "64bit Intel compatible Dual Core CPU",
         "gpu": "OpenGL 4-compliant onboard graphics",
         "ram": "2 GB de RAM",
         "storage": "1 GB de espacio disponible"
       },
       "recommendedRequirements": {
-        "os": "Dedicated OpenGL 4-compliant onboard graphics",
+        "os": "Microsoft 64bit Windows 10",
         "cpu": "64bit Intel compatible Quad Core CPU",
         "gpu": "Dedicated OpenGL 4-compliant onboard graphics",
         "ram": "8 GB de RAM",
@@ -1755,14 +1753,14 @@
           "sizeValue": 1,
           "sizeUnit": "GB",
           "minimumRequirements": {
-            "os": "OpenGL 4-compliant onboard graphics",
+            "os": "Windows 7",
             "cpu": "64bit Intel compatible Dual Core CPU",
             "gpu": "OpenGL 4-compliant onboard graphics",
             "ram": "2 GB de RAM",
             "storage": "1 GB de espacio disponible"
           },
           "recommendedRequirements": {
-            "os": "Dedicated OpenGL 4-compliant onboard graphics",
+            "os": "Microsoft 64bit Windows 10",
             "cpu": "64bit Intel compatible Quad Core CPU",
             "gpu": "Dedicated OpenGL 4-compliant onboard graphics",
             "ram": "8 GB de RAM",
@@ -1794,14 +1792,14 @@
       "sizeValue": 2,
       "sizeUnit": "GB",
       "minimumRequirements": {
-        "os": "GTX 660 2GB / AMD HD 7750 1GB",
+        "os": "Windows 10 64bit",
         "cpu": "Intel Core i3-2120 / AMD Athlon 3000G",
         "gpu": "GTX 660 2GB / AMD HD 7750 1GB",
         "ram": "8 GB de RAM",
         "storage": "2 GB de espacio disponible"
       },
       "recommendedRequirements": {
-        "os": "Nvidia GTX 1060 6GB / AMD Radeon RX 580 8GB",
+        "os": "Windows 10 64bit",
         "cpu": "Intel Core i5-8600K / AMD Ryzen 1300X",
         "gpu": "Nvidia GTX 1060 6GB / AMD Radeon RX 580 8GB",
         "ram": "16 GB de RAM",
@@ -1814,14 +1812,14 @@
           "sizeValue": 2,
           "sizeUnit": "GB",
           "minimumRequirements": {
-            "os": "GTX 660 2GB / AMD HD 7750 1GB",
+            "os": "Windows 10 64bit",
             "cpu": "Intel Core i3-2120 / AMD Athlon 3000G",
             "gpu": "GTX 660 2GB / AMD HD 7750 1GB",
             "ram": "8 GB de RAM",
             "storage": "2 GB de espacio disponible"
           },
           "recommendedRequirements": {
-            "os": "Nvidia GTX 1060 6GB / AMD Radeon RX 580 8GB",
+            "os": "Windows 10 64bit",
             "cpu": "Intel Core i5-8600K / AMD Ryzen 1300X",
             "gpu": "Nvidia GTX 1060 6GB / AMD Radeon RX 580 8GB",
             "ram": "16 GB de RAM",
@@ -1853,14 +1851,14 @@
       "sizeValue": 8,
       "sizeUnit": "GB",
       "minimumRequirements": {
-        "os": "NVIDIA GeForce GTS 450, 1 GB or AMD Radeon HD 5750, 1 GB or Intel HD Graphics 630",
+        "os": "Windows 10",
         "cpu": "Intel Core i5-9600K or AMD Ryzen 5 3600XT",
         "gpu": "NVIDIA GeForce GTS 450, 1 GB or AMD Radeon HD 5750, 1 GB or Intel HD Graphics 630",
         "ram": "8 GB de RAM",
         "storage": "8 GB de espacio disponible"
       },
       "recommendedRequirements": {
-        "os": "NVIDIA GeForce GT 1030, 2 GB or AMD Radeon RX 460, 2 GB or Intel HD Graphics 630",
+        "os": "Windows 10",
         "cpu": "Intel Core i7-9700K or AMD Ryzen 7 3800XT",
         "gpu": "NVIDIA GeForce GT 1030, 2 GB or AMD Radeon RX 460, 2 GB or Intel HD Graphics 630",
         "ram": "8 GB de RAM",
@@ -1873,14 +1871,14 @@
           "sizeValue": 8,
           "sizeUnit": "GB",
           "minimumRequirements": {
-            "os": "NVIDIA GeForce GTS 450, 1 GB or AMD Radeon HD 5750, 1 GB or Intel HD Graphics 630",
+            "os": "Windows 10",
             "cpu": "Intel Core i5-9600K or AMD Ryzen 5 3600XT",
             "gpu": "NVIDIA GeForce GTS 450, 1 GB or AMD Radeon HD 5750, 1 GB or Intel HD Graphics 630",
             "ram": "8 GB de RAM",
             "storage": "8 GB de espacio disponible"
           },
           "recommendedRequirements": {
-            "os": "NVIDIA GeForce GT 1030, 2 GB or AMD Radeon RX 460, 2 GB or Intel HD Graphics 630",
+            "os": "Windows 10",
             "cpu": "Intel Core i7-9700K or AMD Ryzen 7 3800XT",
             "gpu": "NVIDIA GeForce GT 1030, 2 GB or AMD Radeon RX 460, 2 GB or Intel HD Graphics 630",
             "ram": "8 GB de RAM",
@@ -1911,14 +1909,14 @@
       "sizeValue": 15,
       "sizeUnit": "GB",
       "minimumRequirements": {
-        "os": "GTX 1060 with 6GB VRAM / RX 580",
+        "os": "Windows 10 or 11",
         "cpu": "Core i5 8600 / Ryzen 5 3500 or equivalent 6 core CPU",
         "gpu": "GTX 1060 with 6GB VRAM / RX 580",
         "ram": "8 GB de RAM",
         "storage": "15 GB de espacio disponible"
       },
       "recommendedRequirements": {
-        "os": "RTX 3070 / 6800 XT",
+        "os": "Windows 10 or 11",
         "cpu": "Core i7 9700 / Ryzen 5 3600X or equivalent 6 core CPU",
         "gpu": "RTX 3070 / 6800 XT",
         "ram": "16 GB de RAM",
@@ -1931,14 +1929,14 @@
           "sizeValue": 15,
           "sizeUnit": "GB",
           "minimumRequirements": {
-            "os": "GTX 1060 with 6GB VRAM / RX 580",
+            "os": "Windows 10 or 11",
             "cpu": "Core i5 8600 / Ryzen 5 3500 or equivalent 6 core CPU",
             "gpu": "GTX 1060 with 6GB VRAM / RX 580",
             "ram": "8 GB de RAM",
             "storage": "15 GB de espacio disponible"
           },
           "recommendedRequirements": {
-            "os": "RTX 3070 / 6800 XT",
+            "os": "Windows 10 or 11",
             "cpu": "Core i7 9700 / Ryzen 5 3600X or equivalent 6 core CPU",
             "gpu": "RTX 3070 / 6800 XT",
             "ram": "16 GB de RAM",
@@ -1971,13 +1969,13 @@
       "sizeValue": 0.08,
       "sizeUnit": "GB",
       "minimumRequirements": {
-        "os": "you'll need a screen",
+        "os": "Windows 7",
         "cpu": "yes, you should have one",
         "gpu": "you'll need a screen",
         "storage": "80 MB de espacio disponible"
       },
       "recommendedRequirements": {
-        "os": "you'll need a screen",
+        "os": "Windows 7",
         "cpu": "yes, you should have one",
         "gpu": "you'll need a screen",
         "storage": "80 MB de espacio disponible"
@@ -1989,13 +1987,13 @@
           "sizeValue": 0.08,
           "sizeUnit": "GB",
           "minimumRequirements": {
-            "os": "you'll need a screen",
+            "os": "Windows 7",
             "cpu": "yes, you should have one",
             "gpu": "you'll need a screen",
             "storage": "80 MB de espacio disponible"
           },
           "recommendedRequirements": {
-            "os": "you'll need a screen",
+            "os": "Windows 7",
             "cpu": "yes, you should have one",
             "gpu": "you'll need a screen",
             "storage": "80 MB de espacio disponible"
@@ -2027,14 +2025,14 @@
       "sizeValue": 2,
       "sizeUnit": "GB",
       "minimumRequirements": {
-        "os": "GeForce GTX 670 / Radeon HD 7970",
+        "os": "Windows 10",
         "cpu": "Intel i3-6100 or equivalent",
         "gpu": "GeForce GTX 670 / Radeon HD 7970",
         "ram": "8 GB de RAM",
         "storage": "2 GB de espacio disponible"
       },
       "recommendedRequirements": {
-        "os": "GeForce GTX 670 / Radeon HD 7970",
+        "os": "Windows 10",
         "cpu": "Intel i3-6100 or equivalent",
         "gpu": "GeForce GTX 670 / Radeon HD 7970",
         "ram": "8 GB de RAM",
@@ -2047,14 +2045,14 @@
           "sizeValue": 2,
           "sizeUnit": "GB",
           "minimumRequirements": {
-            "os": "GeForce GTX 670 / Radeon HD 7970",
+            "os": "Windows 10",
             "cpu": "Intel i3-6100 or equivalent",
             "gpu": "GeForce GTX 670 / Radeon HD 7970",
             "ram": "8 GB de RAM",
             "storage": "2 GB de espacio disponible"
           },
           "recommendedRequirements": {
-            "os": "GeForce GTX 670 / Radeon HD 7970",
+            "os": "Windows 10",
             "cpu": "Intel i3-6100 or equivalent",
             "gpu": "GeForce GTX 670 / Radeon HD 7970",
             "ram": "8 GB de RAM",
@@ -2089,14 +2087,14 @@
       "sizeValue": 2,
       "sizeUnit": "GB",
       "minimumRequirements": {
-        "os": "DirectX 11 compatible for 1920x1080",
+        "os": "64-bit Windows 10 / 11",
         "cpu": "Dual Core 2Ghz Processor",
         "gpu": "DirectX 11 compatible for 1920x1080",
         "ram": "4 GB de RAM",
         "storage": "2 GB de espacio disponible"
       },
       "recommendedRequirements": {
-        "os": "GeForce GTX 950 / Radeon R7 370 for 4K",
+        "os": "64-bit Windows 10 / 11",
         "cpu": "Intel Core i5 / AMD Ryzen 5 Processor",
         "gpu": "GeForce GTX 950 / Radeon R7 370 for 4K",
         "ram": "4 GB de RAM",
@@ -2109,14 +2107,14 @@
           "sizeValue": 2,
           "sizeUnit": "GB",
           "minimumRequirements": {
-            "os": "DirectX 11 compatible for 1920x1080",
+            "os": "64-bit Windows 10 / 11",
             "cpu": "Dual Core 2Ghz Processor",
             "gpu": "DirectX 11 compatible for 1920x1080",
             "ram": "4 GB de RAM",
             "storage": "2 GB de espacio disponible"
           },
           "recommendedRequirements": {
-            "os": "GeForce GTX 950 / Radeon R7 370 for 4K",
+            "os": "64-bit Windows 10 / 11",
             "cpu": "Intel Core i5 / AMD Ryzen 5 Processor",
             "gpu": "GeForce GTX 950 / Radeon R7 370 for 4K",
             "ram": "4 GB de RAM",
@@ -2185,14 +2183,14 @@
       "sizeValue": 8,
       "sizeUnit": "GB",
       "minimumRequirements": {
-        "os": "1024 MB video card",
+        "os": "Windows (64bit) 7 or higher up to date",
         "cpu": "Intel Core2 Duo, 3.0GHz - AMD Athlon 64 X2 Dual Core 6400+ 3.2GHz",
         "gpu": "1024 MB video card",
         "ram": "2 GB de RAM",
         "storage": "8 GB de espacio disponible"
       },
       "recommendedRequirements": {
-        "os": "1024 MB video card",
+        "os": "Windows (64bit) 7 or higher up to date",
         "cpu": "Intel Core2 Duo, 3.0GHz - AMD Athlon 64 X2 Dual Core 6400+ 3.2GHz",
         "gpu": "1024 MB video card",
         "ram": "2 GB de RAM",
@@ -2205,14 +2203,14 @@
           "sizeValue": 8,
           "sizeUnit": "GB",
           "minimumRequirements": {
-            "os": "1024 MB video card",
+            "os": "Windows (64bit) 7 or higher up to date",
             "cpu": "Intel Core2 Duo, 3.0GHz - AMD Athlon 64 X2 Dual Core 6400+ 3.2GHz",
             "gpu": "1024 MB video card",
             "ram": "2 GB de RAM",
             "storage": "8 GB de espacio disponible"
           },
           "recommendedRequirements": {
-            "os": "1024 MB video card",
+            "os": "Windows (64bit) 7 or higher up to date",
             "cpu": "Intel Core2 Duo, 3.0GHz - AMD Athlon 64 X2 Dual Core 6400+ 3.2GHz",
             "gpu": "1024 MB video card",
             "ram": "2 GB de RAM",
@@ -2244,14 +2242,14 @@
       "sizeValue": 60,
       "sizeUnit": "GB",
       "minimumRequirements": {
-        "os": "NVIDIA GeForce 8600/9600GT, ATI/AMD Radeon HD2600/3600",
+        "os": "Windows 7 o posterior",
         "cpu": "Intel o AMD de doble núcleo a 2,8 GHz",
         "gpu": "NVIDIA GeForce 8600/9600GT, ATI/AMD Radeon HD2600/3600",
         "ram": "4 GB de RAM",
         "storage": "60 GB de espacio disponible"
       },
       "recommendedRequirements": {
-        "os": "NVIDIA GeForce 8600/9600GT, ATI/AMD Radeon HD2600/3600",
+        "os": "Windows 7 o posterior",
         "cpu": "Intel o AMD de doble núcleo a 2,8 GHz",
         "gpu": "NVIDIA GeForce 8600/9600GT, ATI/AMD Radeon HD2600/3600",
         "ram": "4 GB de RAM",
@@ -2264,14 +2262,14 @@
           "sizeValue": 60,
           "sizeUnit": "GB",
           "minimumRequirements": {
-            "os": "NVIDIA GeForce 8600/9600GT, ATI/AMD Radeon HD2600/3600",
+            "os": "Windows 7 o posterior",
             "cpu": "Intel o AMD de doble núcleo a 2,8 GHz",
             "gpu": "NVIDIA GeForce 8600/9600GT, ATI/AMD Radeon HD2600/3600",
             "ram": "4 GB de RAM",
             "storage": "60 GB de espacio disponible"
           },
           "recommendedRequirements": {
-            "os": "NVIDIA GeForce 8600/9600GT, ATI/AMD Radeon HD2600/3600",
+            "os": "Windows 7 o posterior",
             "cpu": "Intel o AMD de doble núcleo a 2,8 GHz",
             "gpu": "NVIDIA GeForce 8600/9600GT, ATI/AMD Radeon HD2600/3600",
             "ram": "4 GB de RAM",
@@ -2302,14 +2300,14 @@
       "sizeValue": 15,
       "sizeUnit": "GB",
       "minimumRequirements": {
-        "os": "GeForce GTX 560 or Radeon HD6870 with 1GB VRAM",
+        "os": "7/8/8.1/10",
         "cpu": "Core i3 3.1 GHz or AMD Phenom II X3 2.8 GHz",
         "gpu": "GeForce GTX 560 or Radeon HD6870 with 1GB VRAM",
         "ram": "4 GB de RAM",
         "storage": "15 GB de espacio disponible"
       },
       "recommendedRequirements": {
-        "os": "GeForce GTX 670 or Radeon HD7970 with 2 GB VRAM",
+        "os": "7/8/8.1/10",
         "cpu": "Core i5-2300 / AMD Athlon X4 760K or better",
         "gpu": "GeForce GTX 670 or Radeon HD7970 with 2 GB VRAM",
         "ram": "8 GB de RAM",
@@ -2322,14 +2320,14 @@
           "sizeValue": 15,
           "sizeUnit": "GB",
           "minimumRequirements": {
-            "os": "GeForce GTX 560 or Radeon HD6870 with 1GB VRAM",
+            "os": "7/8/8.1/10",
             "cpu": "Core i3 3.1 GHz or AMD Phenom II X3 2.8 GHz",
             "gpu": "GeForce GTX 560 or Radeon HD6870 with 1GB VRAM",
             "ram": "4 GB de RAM",
             "storage": "15 GB de espacio disponible"
           },
           "recommendedRequirements": {
-            "os": "GeForce GTX 670 or Radeon HD7970 with 2 GB VRAM",
+            "os": "7/8/8.1/10",
             "cpu": "Core i5-2300 / AMD Athlon X4 760K or better",
             "gpu": "GeForce GTX 670 or Radeon HD7970 with 2 GB VRAM",
             "ram": "8 GB de RAM",
@@ -2361,14 +2359,14 @@
       "sizeValue": 15,
       "sizeUnit": "GB",
       "minimumRequirements": {
-        "os": "NVIDIA GeForce 9800 GT 1GB / AMD Radeon HD 6670",
+        "os": "Windows 7",
         "cpu": "Intel Core 2 Duo E7500 2.93 GHz / AMD Athlon 64 X2 Dual Core Processor 5600+ 2.9GHz",
         "gpu": "NVIDIA GeForce 9800 GT 1GB / AMD Radeon HD 6670",
         "ram": "3 GB de RAM",
         "storage": "15 GB de espacio disponible"
       },
       "recommendedRequirements": {
-        "os": "GEFORCE GTX560 1GB / AMD Radeon HD 6850 1 GB",
+        "os": "Windows 7, 8, 10",
         "cpu": "Intel Core i3 4130 3.4 GHZ / AMD FX-4100 Quad-Core Processor 3.6GHz",
         "gpu": "GEFORCE GTX560 1GB / AMD Radeon HD 6850 1 GB",
         "ram": "8 GB de RAM",
@@ -2381,14 +2379,14 @@
           "sizeValue": 15,
           "sizeUnit": "GB",
           "minimumRequirements": {
-            "os": "NVIDIA GeForce 9800 GT 1GB / AMD Radeon HD 6670",
+            "os": "Windows 7",
             "cpu": "Intel Core 2 Duo E7500 2.93 GHz / AMD Athlon 64 X2 Dual Core Processor 5600+ 2.9GHz",
             "gpu": "NVIDIA GeForce 9800 GT 1GB / AMD Radeon HD 6670",
             "ram": "3 GB de RAM",
             "storage": "15 GB de espacio disponible"
           },
           "recommendedRequirements": {
-            "os": "GEFORCE GTX560 1GB / AMD Radeon HD 6850 1 GB",
+            "os": "Windows 7, 8, 10",
             "cpu": "Intel Core i3 4130 3.4 GHZ / AMD FX-4100 Quad-Core Processor 3.6GHz",
             "gpu": "GEFORCE GTX560 1GB / AMD Radeon HD 6850 1 GB",
             "ram": "8 GB de RAM",
@@ -2420,14 +2418,14 @@
       "sizeValue": 80,
       "sizeUnit": "GB",
       "minimumRequirements": {
-        "os": "AMD Radeon R9 280 | NVIDIA GeForce GTX 760 (Windows 10) | NVIDIA GeForce GTX 1050 (Windows 7)",
+        "os": "Windows 7 SP1 64-bit, Windows 10 64-bit",
         "cpu": "AMD FX-6000 series | Intel i3 Skylake",
         "gpu": "AMD Radeon R9 280 | NVIDIA GeForce GTX 760 (Windows 10) | NVIDIA GeForce GTX 1050 (Windows 7)",
         "ram": "8 GB de RAM",
         "storage": "80 GB de espacio disponible"
       },
       "recommendedRequirements": {
-        "os": "AMD Radeon RX 570 | NVIDIA GeForce GTX 970 (Windows 10) | NVIDIA GeForce GTX 1660ti (Windows 7)",
+        "os": "Windows 10 64-bit",
         "cpu": "AMD Ryzen 3 | Intel i5 Skylake",
         "gpu": "AMD Radeon RX 570 | NVIDIA GeForce GTX 970 (Windows 10) | NVIDIA GeForce GTX 1660ti (Windows 7)",
         "ram": "8 GB de RAM",
@@ -2440,14 +2438,14 @@
           "sizeValue": 80,
           "sizeUnit": "GB",
           "minimumRequirements": {
-            "os": "AMD Radeon R9 280 | NVIDIA GeForce GTX 760 (Windows 10) | NVIDIA GeForce GTX 1050 (Windows 7)",
+            "os": "Windows 7 SP1 64-bit, Windows 10 64-bit",
             "cpu": "AMD FX-6000 series | Intel i3 Skylake",
             "gpu": "AMD Radeon R9 280 | NVIDIA GeForce GTX 760 (Windows 10) | NVIDIA GeForce GTX 1050 (Windows 7)",
             "ram": "8 GB de RAM",
             "storage": "80 GB de espacio disponible"
           },
           "recommendedRequirements": {
-            "os": "AMD Radeon RX 570 | NVIDIA GeForce GTX 970 (Windows 10) | NVIDIA GeForce GTX 1660ti (Windows 7)",
+            "os": "Windows 10 64-bit",
             "cpu": "AMD Ryzen 3 | Intel i5 Skylake",
             "gpu": "AMD Radeon RX 570 | NVIDIA GeForce GTX 970 (Windows 10) | NVIDIA GeForce GTX 1660ti (Windows 7)",
             "ram": "8 GB de RAM",
@@ -2575,14 +2573,14 @@
       "sizeValue": 8,
       "sizeUnit": "GB",
       "minimumRequirements": {
-        "os": "Nvidia GeForce GT720 or AMD Radeon R7770 (1 GB)",
+        "os": "Windows 7",
         "cpu": "Intel Core 2 Duo 2.4GHz processor (E6600)",
         "gpu": "Nvidia GeForce GT720 or AMD Radeon R7770 (1 GB)",
         "ram": "4 GB de RAM",
         "storage": "8 GB de espacio disponible"
       },
       "recommendedRequirements": {
-        "os": "Nvidia GeForce GT720 or AMD Radeon R7770 (1 GB)",
+        "os": "Windows 7",
         "cpu": "Intel Core 2 Duo 2.4GHz processor (E6600)",
         "gpu": "Nvidia GeForce GT720 or AMD Radeon R7770 (1 GB)",
         "ram": "4 GB de RAM",
@@ -2595,14 +2593,14 @@
           "sizeValue": 8,
           "sizeUnit": "GB",
           "minimumRequirements": {
-            "os": "Nvidia GeForce GT720 or AMD Radeon R7770 (1 GB)",
+            "os": "Windows 7",
             "cpu": "Intel Core 2 Duo 2.4GHz processor (E6600)",
             "gpu": "Nvidia GeForce GT720 or AMD Radeon R7770 (1 GB)",
             "ram": "4 GB de RAM",
             "storage": "8 GB de espacio disponible"
           },
           "recommendedRequirements": {
-            "os": "Nvidia GeForce GT720 or AMD Radeon R7770 (1 GB)",
+            "os": "Windows 7",
             "cpu": "Intel Core 2 Duo 2.4GHz processor (E6600)",
             "gpu": "Nvidia GeForce GT720 or AMD Radeon R7770 (1 GB)",
             "ram": "4 GB de RAM",
@@ -2633,14 +2631,14 @@
       "sizeValue": 10,
       "sizeUnit": "GB",
       "minimumRequirements": {
-        "os": "Radeon X1800/ Nvidia GeForce 7600GT",
+        "os": "Windows 7/8",
         "cpu": "Intel 2GHz Core2 Duo / AMD Athlon 64 x2 2.4GHz",
         "gpu": "Radeon X1800/ Nvidia GeForce 7600GT",
         "ram": "3 GB de RAM",
         "storage": "10 GB de espacio disponible"
       },
       "recommendedRequirements": {
-        "os": "Nvidia GeForce GTX 260",
+        "os": "Windows 7/8 64bit",
         "cpu": "Intel Core2 Quad 2.33GHz",
         "gpu": "Nvidia GeForce GTX 260",
         "ram": "4 GB de RAM",
@@ -2653,14 +2651,14 @@
           "sizeValue": 10,
           "sizeUnit": "GB",
           "minimumRequirements": {
-            "os": "Radeon X1800/ Nvidia GeForce 7600GT",
+            "os": "Windows 7/8",
             "cpu": "Intel 2GHz Core2 Duo / AMD Athlon 64 x2 2.4GHz",
             "gpu": "Radeon X1800/ Nvidia GeForce 7600GT",
             "ram": "3 GB de RAM",
             "storage": "10 GB de espacio disponible"
           },
           "recommendedRequirements": {
-            "os": "Nvidia GeForce GTX 260",
+            "os": "Windows 7/8 64bit",
             "cpu": "Intel Core2 Quad 2.33GHz",
             "gpu": "Nvidia GeForce GTX 260",
             "ram": "4 GB de RAM",
