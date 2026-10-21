@@ -1051,7 +1051,7 @@ describe('POST /api/v1/admin/library-import/import', () => {
     expect(body.error?.code).toBe('VALIDATION_ERROR');
   });
 
-  it('aplica create/update/skip con auditoría por registro y sin tocar TenantGame', async () => {
+  it('aplica create/update/skip con auditoría por registro sin tocar las ofertas ajenas a la biblioteca', async () => {
     seedGlobalDictionary();
     const category = [...state.categories.values()].find((row) => row.slug === 'accion')!;
     const genre = [...state.genres.values()].find((row) => row.slug === 'indie')!;
@@ -1105,6 +1105,120 @@ describe('POST /api/v1/admin/library-import/import', () => {
     expect(state.tenantGames.size).toBe(1);
     const genero = [...state.baseGameGenres.values()];
     expect(genero.some((link) => link.genreId === genre.id)).toBe(true);
+  });
+
+  it('refresca la descripción y los requisitos de los juegos ya publicados en el catálogo', async () => {
+    seedGlobalDictionary();
+    const archivo = envelope([
+      record({
+        slug: 'hades',
+        title: 'Hades',
+        description: 'Roguelike de acción mitológico',
+        minimumRequirements: { os: 'Windows 10', cpu: 'Intel Core i5', ram: '8 GB' },
+        recommendedRequirements: { os: 'Windows 11', cpu: 'Intel Core i7', ram: '16 GB' },
+      }),
+    ]);
+
+    const primera = await importar(archivo);
+    expect(primera.status).toBe(200);
+    expect(primera.body.data!.summary).toEqual({ create: 1, update: 0, skip: 0, error: 0 });
+
+    const base = [...state.baseGames.values()].find((row) => row.slug === 'hades')!;
+    addFakeTenantGame({
+      id: randomUUID(),
+      tenantId: T_JAVIER,
+      baseGameId: base.id,
+      origin: 'BIBLIOTECA',
+      title: 'Hades (título del catálogo)',
+      slug: 'hades',
+      description: 'Old english copy',
+      sizeValue: 42,
+      sizeUnit: 'GB',
+      minimumRequirements: { os: 'Windows 8' },
+      recommendedRequirements: { os: 'Windows 8' },
+    });
+
+    // El archivo no cambió: la biblioteca ya está al día y el import no escribe
+    // nada en baseGames, pero la copia del catálogo sigue con el texto anterior.
+    const segunda = await importar(archivo);
+    expect(segunda.status).toBe(200);
+    expect(segunda.body.data!.summary).toEqual({ create: 0, update: 0, skip: 1, error: 0 });
+
+    const oferta = [...state.tenantGames.values()].find((row) => row.slug === 'hades')!;
+    const biblioteca = state.baseGames.get(base.id)!;
+    expect(oferta.description).toBe(biblioteca.description);
+    expect(oferta.minimumRequirements).toEqual(biblioteca.minimumRequirements);
+    expect(oferta.recommendedRequirements).toEqual(biblioteca.recommendedRequirements);
+
+    // Lo comercial y lo curado a mano del catálogo no se tocan.
+    expect(oferta.title).toBe('Hades (título del catálogo)');
+    expect(oferta.sizeValue).toBe(42);
+
+    expect(segunda.body.data!.warnings).toEqual([
+      expect.stringContaining('descripción y los requisitos'),
+    ]);
+    expect(
+      [...state.auditLogs.values()].some(
+        (row) =>
+          row.entity === 'TenantGame' &&
+          JSON.stringify(row.metadata ?? {}).includes('catalogSync'),
+      ),
+    ).toBe(true);
+  });
+
+  it('no crea copias nuevas ni borra texto cuando la biblioteca no tiene valor', async () => {
+    seedGlobalDictionary();
+    const archivo = envelope([
+      record({ slug: 'hades', description: 'Roguelike de acción mitológico' }),
+      record({
+        slug: 'celeste',
+        title: 'Celeste',
+        description: null,
+        minimumRequirements: null,
+        recommendedRequirements: null,
+      }),
+    ]);
+
+    const { status } = await importar(archivo);
+    expect(status).toBe(200);
+
+    const hades = [...state.baseGames.values()].find((row) => row.slug === 'hades')!;
+    const celeste = [...state.baseGames.values()].find((row) => row.slug === 'celeste')!;
+
+    addFakeTenantGame({
+      id: randomUUID(),
+      tenantId: T_JAVIER,
+      baseGameId: hades.id,
+      origin: 'BIBLIOTECA',
+      title: 'Hades',
+      slug: 'hades',
+      description: null,
+    });
+    addFakeTenantGame({
+      id: randomUUID(),
+      tenantId: T_JAVIER,
+      baseGameId: celeste.id,
+      origin: 'BIBLIOTECA',
+      title: 'Celeste',
+      slug: 'celeste',
+      description: 'Texto curado en inglés',
+      minimumRequirements: { os: 'Windows 8' },
+      recommendedRequirements: { os: 'Windows 8' },
+    });
+
+    const segunda = await importar(archivo);
+    expect(segunda.status).toBe(200);
+    expect(segunda.body.data!.warnings).toEqual([]);
+
+    const sinCopia = [...state.tenantGames.values()].find((row) => row.slug === 'hades')!;
+    expect(sinCopia.description).toBeNull();
+    expect(sinCopia.minimumRequirements).toBeNull();
+
+    // La biblioteca no tiene descripción ni requisitos: no se borra lo curado.
+    const conTexto = [...state.tenantGames.values()].find((row) => row.slug === 'celeste')!;
+    expect(conTexto.description).toBe('Texto curado en inglés');
+    expect(conTexto.minimumRequirements).toEqual({ os: 'Windows 8' });
+    expect(conTexto.recommendedRequirements).toEqual({ os: 'Windows 8' });
   });
 
   it('no borra datos buenos: ausente o null no cambian nada y presente sobreescribe', async () => {

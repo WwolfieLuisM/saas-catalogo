@@ -536,6 +536,8 @@ export async function importLibraryImport(
     );
   }
 
+  await syncCatalogCopies(touchedSlugs, auth, meta, warnings);
+
   const summary = { create: 0, update: 0, skip: 0, error: 0 };
 
   const records = plan.records.map((entry) => {
@@ -571,6 +573,101 @@ async function hasUsableCover(baseGameId: string): Promise<boolean> {
   });
 
   return row !== null;
+}
+
+/**
+ * El TenantGame guarda su propia copia de la descripción y de los requisitos
+ * al publicar desde la biblioteca, y resolveFinal les da prioridad antes de
+ * mirar la base: una reimportación que traduzca o corrija la biblioteca
+ * dejaría el catálogo con el texto anterior si no se refresca esa copia.
+ *
+ * Se alinea únicamente lo que ya era copia (si no lo era, la resolución ya cae
+ * a la base y crearla ahora robaría el sitio a la variante), solo con valor
+ * presente en la biblioteca (nunca se borra texto curado) y sin tocar los
+ * campos comerciales —título, tamaño, precio—, que son del catálogo.
+ */
+async function syncCatalogCopies(
+  slugs: string[],
+  auth: AuthContext | null,
+  meta: RequestMeta,
+  warnings: string[],
+): Promise<void> {
+  if (!slugs.length) return;
+  const prisma = getPrisma();
+
+  const biblioteca = await chunkedQuery(slugs, (chunk) =>
+    prisma.baseGame.findMany({ where: { slug: { in: chunk }, deletedAt: null } }),
+  );
+  if (!biblioteca.length) return;
+
+  const porId = new Map(biblioteca.map((fila) => [fila.id, fila]));
+  const ofertas = await chunkedQuery([...porId.keys()], (chunk) =>
+    prisma.tenantGame.findMany({
+      where: { origin: 'BIBLIOTECA', baseGameId: { in: chunk }, deletedAt: null },
+    }),
+  );
+  if (!ofertas.length) return;
+
+  let alineadas = 0;
+
+  for (const oferta of ofertas) {
+    const base = oferta.baseGameId ? porId.get(oferta.baseGameId) : undefined;
+    if (!base) continue;
+
+    const data: Prisma.TenantGameUncheckedUpdateInput = {};
+    const campos: string[] = [];
+
+    if (hayQueAlinear(base.description, oferta.description)) {
+      data.description = base.description;
+      campos.push('description');
+    }
+    if (hayQueAlinear(base.minimumRequirements, oferta.minimumRequirements)) {
+      data.minimumRequirements = jsonValue(base.minimumRequirements);
+      campos.push('minimumRequirements');
+    }
+    if (hayQueAlinear(base.recommendedRequirements, oferta.recommendedRequirements)) {
+      data.recommendedRequirements = jsonValue(base.recommendedRequirements);
+      campos.push('recommendedRequirements');
+    }
+    if (!campos.length) continue;
+
+    data.updatedBy = auth?.id ?? null;
+
+    await prisma.tenantGame.update({ where: { id: oferta.id }, data });
+    await prisma.auditLog.create({
+      data: auditData({
+        actor: auth,
+        action: 'UPDATE',
+        entity: 'TenantGame',
+        entityId: oferta.id,
+        tenantId: oferta.tenantId,
+        metadata: {
+          slug: oferta.slug,
+          schema: LIBRARY_IMPORT_SCHEMA,
+          catalogSync: { baseGameId: oferta.baseGameId, fields: campos },
+        },
+        ipAddress: meta.ipAddress,
+        userAgent: meta.userAgent,
+      }),
+    });
+
+    alineadas += 1;
+  }
+
+  if (alineadas > 0) {
+    warnings.push(
+      `Se alinearon con la biblioteca la descripción y los requisitos de ${alineadas} ${
+        alineadas === 1 ? 'juego' : 'juegos'
+      } publicado${alineadas === 1 ? '' : 's'} en el catálogo.`,
+    );
+  }
+}
+
+/** Solo se refresca lo que ya era copia y lo que la biblioteca sigue teniendo. */
+function hayQueAlinear(vigente: unknown, copia: unknown): boolean {
+  if (vigente === null || vigente === undefined) return false;
+  if (copia === null || copia === undefined) return false;
+  return canonicalJson(vigente) !== canonicalJson(copia);
 }
 
 function needsWrite(entry: LibraryImportPlanRecord): boolean {
