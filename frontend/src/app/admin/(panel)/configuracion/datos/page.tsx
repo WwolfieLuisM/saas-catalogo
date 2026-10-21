@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { CfgTabs } from '@/components/admin/CfgTabs';
 import { Badge, PageHead, StateBox } from '@/components/admin/ui';
+import { LibraryImportSection } from '@/components/admin/LibraryImportSection';
 import { adminFetch, adminFetchRaw } from '@/lib/admin/adminApi';
 import {
   etiquetaOferta,
@@ -226,7 +227,7 @@ export default function ConfigDatosPage() {
         </button>
       </section>
 
-      <section className="panel">
+      <section className="panel" style={{ marginBottom: 16 }}>
         <h3>Importar catálogo</h3>
         <p className="hint">
           Acepta exclusivamente el formato de catálogo exportado arriba. Un manifiesto multimedia u
@@ -426,6 +427,8 @@ export default function ConfigDatosPage() {
           </StateBox>
         )}
       </section>
+
+      <LibraryImportSection />
     </>
   );
 }
