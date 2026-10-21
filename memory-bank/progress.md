@@ -4,6 +4,11 @@
 2026-10-21
 
 ## What Works
+- **2026-10-21 (Fase A del plan de importación del catálogo, herramientas probadas y commiteadas):**
+  - Lote 1 = **943 MATCHED nuevos** (978 − 35 ya importados; 0 exclusiones cruzan) volcado en `backend/scripts/lote1-matched.csv` (local).
+  - **Muestra de 60** reproducible (semilla 20261021; 40 aleatorios + 20 de riesgo de 151) → `tasks/muestra-60-matched.csv` con enlaces y columna `correcto_SI_NO` (**aún sin revisar**).
+  - `scripts/construir-import.mjs` y `scripts/validar-import.ts` genéricos (CLI con argumentos) y probados: regresión sobre `tasks/library-import-50.json` = `VALIDO — 50 registros listos`; builder con las entradas del piloto = 50/50 registros, sin avisos de prevalidación.
+  - `tasks/mapa-generos-import.md`: propuesta IGDB→taxonomía (21 tokens con frecuencia real; **aún sin aprobar**).
 - **2026-10-21 (bloque de tamaños y visibilidad, todo pusheado y verificado en producción):**
   - `fbcc104` + `e55ef55`: el centinela «0 GB» se traduce a `null` (`presentSize`) → la biblioteca pinta «—» (verificado en navegador: 0 «0 GB» en la página, tamaños reales intactos).
   - `867ee40`: dashboard con `gamesWithoutSize` y la fila «N juego(s) sin tamaño en la biblioteca · Completar» (primera de *Requiere atención*); verificado en producción con login.
@@ -27,17 +32,18 @@
 - Documentación: `Decisiones-Arquitectonicas-v1.md`, `generador-impprtador.md`, `plan-detallado.md` (vigente), `plan.md`, `todo.md`, `dudas.md` §8/§9, memory-bank.
 
 ## In Progress
-- **Fase 6 en 6.2-B cerrada; sigue 6.2-C:** modelo de lectura del panel + botón que ejecute `/import/run` + cierre de los 4 `tsc` de `platformId`.
+- **Plan de importación del catálogo completo (Fases A–G): A cerrada y commiteada; parada a petición del usuario.** Esperando sus 2 validaciones (muestra de 60 y mapa de géneros) para arrancar la Fase B (enriquecimiento Steam nocturno del lote 1 + pase español).
 - **Fase 4 sigue en checkpoint:** código 4.1/4.3/4.4 ✅; pendientes demo con revisión humana, 4.5 contract (con bake time) y decisión `publishFromLibrary`.
 
 ## What's Left To Do
-- [x] Fase 1 V2 · [x] Fase 2 V2 · [x] Fase 3 V2 · [x] Fase 4 V2 (4.1–4.4) · [x] **Fase 5** (`library-import@2`, revisar en navegador 2026-10-16) · [x] **6.1** contrato `catalog@2` · [x] **6.2-A** rechazo de `@1` · [x] **6.2-B** importador por plataforma + export `@2` (roundtrip cerrado).
-- [ ] **6.2-C** panel de lectura + botón de importar + 4 `tsc`.
+- [x] Fase 1 V2 · [x] Fase 2 V2 · [x] Fase 3 V2 · [x] Fase 4 V2 (4.1–4.4) · [x] **Fase 5** (`library-import@2`, revisar en navegador 2026-10-16) · [x] **6.1** contrato `catalog@2` · [x] **6.2-A** rechazo de `@1` · [x] **6.2-B** importador por plataforma + export `@2` (roundtrip cerrado) · [x] **6.2-C** panel + botón de importar (el usuario importó los 50).
+- [ ] **Plan del catálogo completo (~1.723):** [x] **A** cimientos (lote 1, muestra de 60, constructor/validador genéricos, mapa de géneros propuesto) — parado aquí · [ ] **B** Steam masivo + pase español · [ ] **C** imágenes · [ ] **D** tamaños · [ ] **E** lote piloto 50 · [ ] **F** lotes grandes (4×~236) · [ ] **G** NEEDS_REVIEW/NO_MATCH + cola posterior.
 - [ ] **Fase 7** TenantPlatform + admin global · **8** tenants · **9** §14 + seguridad · **10** regenerar JSON (otra OC, último).
 - [ ] BUG-01.D (decisión) · decisión `publishFromLibrary` · demo/revisión humana de Fase 4.
 
 ## Known Issues
-- **Deuda real: `library-import-pilot.test.ts` 2 tests en rojo** (esperan 50 y el fixture local `backend/scripts/library-import.json` tiene 48); ver Next Steps 0d.
+- **Gate de la Fase B sin pasar:** `tasks/muestra-60-matched.csv` sin revisar (`correcto_SI_NO` vacía) y `tasks/mapa-generos-import.md` sin aprobar; no arrancar el enriquecimiento masivo sin ambas cosas.
+- **Deuda real: `library-import-pilot.test.ts` 2 tests en rojo** (esperan 50 y el fixture local `backend/scripts/library-import.json` tiene 48); ver Next Steps 7 (cola posterior).
 - ~~**`tsc`: 4 errores de Fase 6**~~ cerrados en 6.2-C (typecheck backend y frontend a 0 desde 2026-10-16).
 - ~~**El panel no ejecuta la importación**~~ cerrado en 6.2-C: el usuario ya importó los 50.
 - ~~Árbol sin commitear desde `321d77d`~~ cerrado: desde entonces todo está commiteado y pusheado.
