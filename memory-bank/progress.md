@@ -32,16 +32,17 @@
 - Documentación: `Decisiones-Arquitectonicas-v1.md`, `generador-impprtador.md`, `plan-detallado.md` (vigente), `plan.md`, `todo.md`, `dudas.md` §8/§9, memory-bank.
 
 ## In Progress
-- **Fase B en marcha (2026-10-21 noche):** `scripts/enriquecer-steam.mjs` corriendo en segundo plano sobre los 943 del lote 1 (salida incremental `backend/scripts/steam-lote1.json`, reanudable); después RAWG de los sin-Steam con `scripts/enriquecer-rawg.mjs`.
+- **Fase B: Steam TERMINADO (2026-10-21 noche, sesión pausada).** `backend/scripts/steam-lote1.json` completo: 943 filas → 772 con appid, 714 con tamaño, 768 descripciones ES, 758 requisitos ES, 730 portadas, 165 sin Steam, 57 con appid sin tamaño. **Siguiente al retomar:** RAWG (sin-Steam) + PCGW (los 57 tamaños) en paralelo — JSONs de salida borrados, arrancan de cero; comandos en activeContext Next Steps 1.
 - **Fase 4 sigue en checkpoint:** código 4.1/4.3/4.4 ✅; pendientes demo con revisión humana, 4.5 contract (con bake time) y decisión `publishFromLibrary`.
 
 ## What's Left To Do
 - [x] Fase 1 V2 · [x] Fase 2 V2 · [x] Fase 3 V2 · [x] Fase 4 V2 (4.1–4.4) · [x] **Fase 5** (`library-import@2`, revisar en navegador 2026-10-16) · [x] **6.1** contrato `catalog@2` · [x] **6.2-A** rechazo de `@1` · [x] **6.2-B** importador por plataforma + export `@2` (roundtrip cerrado) · [x] **6.2-C** panel + botón de importar (el usuario importó los 50).
-- [ ] **Plan del catálogo completo (~1.723):** [x] **A** cimientos (lote 1, muestra de 60, constructor/validador genéricos, mapa de géneros propuesto) — parado aquí · [ ] **B** Steam masivo + pase español · [ ] **C** imágenes · [ ] **D** tamaños · [ ] **E** lote piloto 50 · [ ] **F** lotes grandes (4×~236) · [ ] **G** NEEDS_REVIEW/NO_MATCH + cola posterior.
+- [ ] **Plan del catálogo completo (~1.723):** [x] **A** cimientos (lote 1, muestra de 60, constructor/validador genéricos, mapa de géneros propuesto) · [~] **B** Steam masivo + pase español: **Steam ✅ (943/943: 714 tamaños, 768 ES, 730 portadas)**; falta RAWG (165 sin Steam) y PCGW (57 tamaños) · [ ] **C** imágenes · [ ] **D** tamaños · [ ] **E** lote piloto 50 · [ ] **F** lotes grandes (4×~236) · [ ] **G** NEEDS_REVIEW/NO_MATCH + cola posterior.
 - [ ] **Fase 7** TenantPlatform + admin global · **8** tenants · **9** §14 + seguridad · **10** regenerar JSON (otra OC, último).
 - [ ] BUG-01.D (decisión) · decisión `publishFromLibrary` · demo/revisión humana de Fase 4.
 
 ## Known Issues
+- **Gate de encoding por señales (`6950865`):** parejas mojibake duras (cabecera U+00C0-00F4 + continuación U+0080-0xBF o Latin Extended); Latin Extended aislado = aviso sin fallo (falsos positivos con nombres ğ/ć/ź resueltos); cirílico/griego/U+FFFD siguen duros. No literales de mojibake en comentarios (el gate se auto-marcia).
 - **Bug del extractor ES corregido y reparado (2026-10-21):** `/OS\s*:/i` sin `\b` casaba dentro de «Gráficos:» → `os` = GPU en 37 juegos del JSON de 50; `scripts/corregir-requisitos-so.mjs` los reparó (VALIDO 50/50, rescan 0). Los enriquecedores nuevos ya llevan el `\b`.
 - **Gate de la Fase E (importar) sin pasar:** `tasks/muestra-60-matched.csv` sigue sin la columna `correcto_SI_NO` rellenada — el enriquecimiento (B) no lo necesita, pero sí la importación. Categoría `estrategia` (~385 juegos) sigue en `otros` pendiente de su decisión.
 - **Deuda real: `library-import-pilot.test.ts` 2 tests en rojo** (esperan 50 y el fixture local `backend/scripts/library-import.json` tiene 48); ver Next Steps 7 (cola posterior).
