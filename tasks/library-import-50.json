@@ -6,7 +6,7 @@
     {
       "title": "Redeemer",
       "slug": "redeemer",
-      "description": "Redeemer: Enhanced Edition is a brutal close-quarters brawler. Punch, crush, shoot, and use the environment to destroy enemies. Master deep melee combat, execute savage finishers, and fight for redemption as Vasily, a former elite operative hunted by a cybernetic corporation.",
+      "description": "REDEEMER: Enhanced Edition es un brutal brawler de combate cercano. Golpea, aplasta, dispara y usa el entorno para destruir enemigos. Domina un profundo sistema de combate cuerpo a cuerpo, ejecuta remates salvajes y lucha por la redención como Vasily.",
       "releaseYear": 2017,
       "developer": "Sobaka Studio",
       "publisher": "ESDigital Games",
@@ -19,34 +19,38 @@
       "sizeValue": 7,
       "sizeUnit": "GB",
       "minimumRequirements": {
+        "os": "AMD Radeon R9 200 Series or equivalent",
         "cpu": "Intel(R) Core(TM) i3-6300 CPU",
         "gpu": "AMD Radeon R9 200 Series or equivalent",
-        "ram": "4 GB RAM",
-        "storage": "7 GB available space"
+        "ram": "4 GB de RAM",
+        "storage": "7 GB de espacio disponible"
       },
       "recommendedRequirements": {
+        "os": "AMD Radeon R9 200 Series or equivalent",
         "cpu": "Intel(R) Core(TM) i3-6300 CPU",
         "gpu": "AMD Radeon R9 200 Series or equivalent",
-        "ram": "4 GB RAM",
-        "storage": "7 GB available space"
+        "ram": "4 GB de RAM",
+        "storage": "7 GB de espacio disponible"
       },
-      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co24p8.jpg",
+      "coverUrl": "https://cdn.akamai.steamstatic.com/steam/apps/447290/library_600x900.jpg",
       "platformVariants": [
         {
           "platformSlug": "pc",
           "sizeValue": 7,
           "sizeUnit": "GB",
           "minimumRequirements": {
+            "os": "AMD Radeon R9 200 Series or equivalent",
             "cpu": "Intel(R) Core(TM) i3-6300 CPU",
             "gpu": "AMD Radeon R9 200 Series or equivalent",
-            "ram": "4 GB RAM",
-            "storage": "7 GB available space"
+            "ram": "4 GB de RAM",
+            "storage": "7 GB de espacio disponible"
           },
           "recommendedRequirements": {
+            "os": "AMD Radeon R9 200 Series or equivalent",
             "cpu": "Intel(R) Core(TM) i3-6300 CPU",
             "gpu": "AMD Radeon R9 200 Series or equivalent",
-            "ram": "4 GB RAM",
-            "storage": "7 GB available space"
+            "ram": "4 GB de RAM",
+            "storage": "7 GB de espacio disponible"
           },
           "provenance": {
             "source": "steam",
@@ -73,34 +77,38 @@
       "sizeValue": 14,
       "sizeUnit": "GB",
       "minimumRequirements": {
+        "os": "NVIDIA GeForce GTX 750",
         "cpu": "Intel Core i5-760 @ 2.8 GHz",
         "gpu": "NVIDIA GeForce GTX 750",
-        "ram": "4 GB RAM",
-        "storage": "14 GB available space"
+        "ram": "4 GB de RAM",
+        "storage": "14 GB de espacio disponible"
       },
       "recommendedRequirements": {
+        "os": "NVIDIA GeForce GTX 960",
         "cpu": "Intel Core i5-4460 @ 3.4 GHz",
         "gpu": "NVIDIA GeForce GTX 960",
-        "ram": "6 GB RAM",
-        "storage": "14 GB available space"
+        "ram": "6 GB de RAM",
+        "storage": "14 GB de espacio disponible"
       },
-      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co27qd.jpg",
+      "coverUrl": "https://cdn.akamai.steamstatic.com/steam/apps/622220/library_600x900.jpg",
       "platformVariants": [
         {
           "platformSlug": "pc",
           "sizeValue": 14,
           "sizeUnit": "GB",
           "minimumRequirements": {
+            "os": "NVIDIA GeForce GTX 750",
             "cpu": "Intel Core i5-760 @ 2.8 GHz",
             "gpu": "NVIDIA GeForce GTX 750",
-            "ram": "4 GB RAM",
-            "storage": "14 GB available space"
+            "ram": "4 GB de RAM",
+            "storage": "14 GB de espacio disponible"
           },
           "recommendedRequirements": {
+            "os": "NVIDIA GeForce GTX 960",
             "cpu": "Intel Core i5-4460 @ 3.4 GHz",
             "gpu": "NVIDIA GeForce GTX 960",
-            "ram": "6 GB RAM",
-            "storage": "14 GB available space"
+            "ram": "6 GB de RAM",
+            "storage": "14 GB de espacio disponible"
           },
           "provenance": {
             "source": "steam",
@@ -115,7 +123,7 @@
     {
       "title": "Kick Beat Steam Edition",
       "slug": "kick-beat-steam-edition",
-      "description": "From indie pioneers Zen Studios (makers of Pinball FX2 and CastleStorm) comes KickBeat, an innovative rhythm game with a Kung Fu theme, featuring fully 3D characters and high-energy music! You can use your own music to create custom KickBeat tracks, allowing you ultimate replayability!",
+      "description": "Del estudio independiente y pionero Zen Studios (creadores de Pinball FX2 y CastleStorm) llega KickBeat, un innovador juego de ritmo con temática de kung-fu, con personajes completamente en 3D ¡y música de lo más energética!",
       "releaseYear": 2013,
       "developer": "Zen Studios",
       "publisher": "Zen Studios",
@@ -128,34 +136,38 @@
       "sizeValue": 2,
       "sizeUnit": "GB",
       "minimumRequirements": {
+        "os": "]Geforce 8600 GT (GDDR2, 512MB) / Radeon HD 2600 Pro (512 MB) category",
         "cpu": "Dual Core CPU @ 2 GHz",
         "gpu": "]Geforce 8600 GT (GDDR2, 512MB) / Radeon HD 2600 Pro (512 MB) category, DirectX® 10 compatible video card",
-        "ram": "1 GB RAM",
-        "storage": "2 GB available space"
+        "ram": "1 GB de RAM",
+        "storage": "2 GB de espacio disponible"
       },
       "recommendedRequirements": {
+        "os": "Geforce 8600 GT (GDDR3, 512 MB) / Radeon HD 3670 (512 MB) category",
         "cpu": "Dual Core CPU @ 2.40 GHz",
         "gpu": "Geforce 8600 GT (GDDR3, 512 MB) / Radeon HD 3670 (512 MB) category, DirectX® 10 compatible video card",
-        "ram": "2 GB RAM",
-        "storage": "2 GB available space"
+        "ram": "2 GB de RAM",
+        "storage": "2 GB de espacio disponible"
       },
-      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co4eqd.jpg",
+      "coverUrl": "https://cdn.akamai.steamstatic.com/steam/apps/255370/header.jpg",
       "platformVariants": [
         {
           "platformSlug": "pc",
           "sizeValue": 2,
           "sizeUnit": "GB",
           "minimumRequirements": {
+            "os": "]Geforce 8600 GT (GDDR2, 512MB) / Radeon HD 2600 Pro (512 MB) category",
             "cpu": "Dual Core CPU @ 2 GHz",
             "gpu": "]Geforce 8600 GT (GDDR2, 512MB) / Radeon HD 2600 Pro (512 MB) category, DirectX® 10 compatible video card",
-            "ram": "1 GB RAM",
-            "storage": "2 GB available space"
+            "ram": "1 GB de RAM",
+            "storage": "2 GB de espacio disponible"
           },
           "recommendedRequirements": {
+            "os": "Geforce 8600 GT (GDDR3, 512 MB) / Radeon HD 3670 (512 MB) category",
             "cpu": "Dual Core CPU @ 2.40 GHz",
             "gpu": "Geforce 8600 GT (GDDR3, 512 MB) / Radeon HD 3670 (512 MB) category, DirectX® 10 compatible video card",
-            "ram": "2 GB RAM",
-            "storage": "2 GB available space"
+            "ram": "2 GB de RAM",
+            "storage": "2 GB de espacio disponible"
           },
           "provenance": {
             "source": "steam",
@@ -180,40 +192,44 @@
         "aventura",
         "indie"
       ],
-      "sizeValue": 512,
+      "sizeValue": 0.512,
       "sizeUnit": "GB",
       "minimumRequirements": {
+        "os": "GeForce GTX 670 or Radeon HD 7850",
         "cpu": "Intel i5-2500 3.3 Ghz",
         "gpu": "GeForce GTX 670 or Radeon HD 7850",
-        "storage": "512 MB available space"
+        "storage": "512 MB de espacio disponible"
       },
       "recommendedRequirements": {
+        "os": "GeForce GTX 670 or Radeon HD 7850",
         "cpu": "Intel i5-2500 3.3 Ghz",
         "gpu": "GeForce GTX 670 or Radeon HD 7850",
-        "storage": "512 MB available space"
+        "storage": "512 MB de espacio disponible"
       },
-      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co4n1z.jpg",
+      "coverUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1934420/library_600x900.jpg",
       "platformVariants": [
         {
           "platformSlug": "pc",
-          "sizeValue": 512,
+          "sizeValue": 0.512,
           "sizeUnit": "GB",
           "minimumRequirements": {
+            "os": "GeForce GTX 670 or Radeon HD 7850",
             "cpu": "Intel i5-2500 3.3 Ghz",
             "gpu": "GeForce GTX 670 or Radeon HD 7850",
-            "storage": "512 MB available space"
+            "storage": "512 MB de espacio disponible"
           },
           "recommendedRequirements": {
+            "os": "GeForce GTX 670 or Radeon HD 7850",
             "cpu": "Intel i5-2500 3.3 Ghz",
             "gpu": "GeForce GTX 670 or Radeon HD 7850",
-            "storage": "512 MB available space"
+            "storage": "512 MB de espacio disponible"
           },
           "provenance": {
             "source": "steam",
             "sourceUrl": "https://store.steampowered.com/app/1934420/",
             "confidence": 1,
             "ingestedAt": "2026-10-21",
-            "notes": "Tamano 512 GB y requisitos extraidos de pc_requirements de la Steam store."
+            "notes": "Tamano 0.512 GB y requisitos extraidos de pc_requirements de la Steam store."
           }
         }
       ]
@@ -221,7 +237,7 @@
     {
       "title": "Thymesia",
       "slug": "thymesia",
-      "description": "Thymesia is a gruelling action-RPG with fast-paced combat and an intricate plague weapon system. In a kingdom where death spreads, play as a mysterious character known by the code name \"Corvus\". Prey upon your enemies, wield the power of disease and find the truth in your own memories.",
+      "description": "Thymesia es un arduo RPG de acción con un combate rápido y un complejo sistema de plagas como armas. En un reino donde la muerte campa a sus anchas, jugarás con el misterioso personaje «Corvus». Da caza a tus enemigos, blande el poder de la enfermedad y encuentra la verdad en tus propios recuerdos.",
       "releaseYear": 2022,
       "developer": "OverBorder Studio",
       "publisher": "Team17",
@@ -233,38 +249,38 @@
       "sizeValue": 16,
       "sizeUnit": "GB",
       "minimumRequirements": {
-        "os": "Windows 10 (64 Bit)",
+        "os": "NVIDIA GeForce GTX 950 or Radeon HD 7970",
         "cpu": "Intel Core i5 or AMD Ryzen 5",
         "gpu": "NVIDIA GeForce GTX 950 or Radeon HD 7970",
-        "ram": "8 GB RAM",
-        "storage": "16 GB available space"
+        "ram": "8 GB de RAM",
+        "storage": "16 GB de espacio disponible"
       },
       "recommendedRequirements": {
-        "os": "Windows 10 (64 Bit)",
+        "os": "NVIDIA GeForce GTX 1060 or AMD Radeon RX 580",
         "cpu": "Intel Core i7 or AMD Ryzen 7",
         "gpu": "NVIDIA GeForce GTX 1060 or AMD Radeon RX 580",
-        "ram": "16 GB RAM",
-        "storage": "16 GB available space"
+        "ram": "16 GB de RAM",
+        "storage": "16 GB de espacio disponible"
       },
-      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co2w5c.jpg",
+      "coverUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1343240/library_600x900.jpg",
       "platformVariants": [
         {
           "platformSlug": "pc",
           "sizeValue": 16,
           "sizeUnit": "GB",
           "minimumRequirements": {
-            "os": "Windows 10 (64 Bit)",
+            "os": "NVIDIA GeForce GTX 950 or Radeon HD 7970",
             "cpu": "Intel Core i5 or AMD Ryzen 5",
             "gpu": "NVIDIA GeForce GTX 950 or Radeon HD 7970",
-            "ram": "8 GB RAM",
-            "storage": "16 GB available space"
+            "ram": "8 GB de RAM",
+            "storage": "16 GB de espacio disponible"
           },
           "recommendedRequirements": {
-            "os": "Windows 10 (64 Bit)",
+            "os": "NVIDIA GeForce GTX 1060 or AMD Radeon RX 580",
             "cpu": "Intel Core i7 or AMD Ryzen 7",
             "gpu": "NVIDIA GeForce GTX 1060 or AMD Radeon RX 580",
-            "ram": "16 GB RAM",
-            "storage": "16 GB available space"
+            "ram": "16 GB de RAM",
+            "storage": "16 GB de espacio disponible"
           },
           "provenance": {
             "source": "steam",
@@ -279,7 +295,7 @@
     {
       "title": "Hellpoint",
       "slug": "hellpoint",
-      "description": "Travel to the Blue Sun parallel dimension to experience a new layer of story that reveals the one true cause of the Merge cataclysm. A ton of new armors and characters, a new “contract” system, dual wield weapons, three new sprawling locations to explore and die in",
+      "description": "El DLC Blue Sun de Hellpoint desvela la historia completa de Irid Novo, si es que logras entenderla. ¡Asmodeus, el intermediario, se interesa solo en los engendros más competentes!",
       "releaseYear": 2020,
       "developer": "Cradle Games",
       "publisher": "tinyBuild",
@@ -294,36 +310,38 @@
       "sizeValue": 6,
       "sizeUnit": "GB",
       "minimumRequirements": {
+        "os": "GeForce GTX 760 or better",
         "cpu": "4 threads, 2.5+ Ghz",
         "gpu": "GeForce GTX 760 or better",
-        "ram": "4 GB RAM",
-        "storage": "6 GB available space"
+        "ram": "4 GB de RAM",
+        "storage": "6 GB de espacio disponible"
       },
       "recommendedRequirements": {
-        "os": "Windows 10",
+        "os": "GeForce GTX 1050",
         "cpu": "4 cores, 3+ Ghz",
         "gpu": "GeForce GTX 1050",
-        "ram": "6 GB RAM",
-        "storage": "6 GB available space"
+        "ram": "6 GB de RAM",
+        "storage": "6 GB de espacio disponible"
       },
-      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co2bwn.jpg",
+      "coverUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1525260/header.jpg",
       "platformVariants": [
         {
           "platformSlug": "pc",
           "sizeValue": 6,
           "sizeUnit": "GB",
           "minimumRequirements": {
+            "os": "GeForce GTX 760 or better",
             "cpu": "4 threads, 2.5+ Ghz",
             "gpu": "GeForce GTX 760 or better",
-            "ram": "4 GB RAM",
-            "storage": "6 GB available space"
+            "ram": "4 GB de RAM",
+            "storage": "6 GB de espacio disponible"
           },
           "recommendedRequirements": {
-            "os": "Windows 10",
+            "os": "GeForce GTX 1050",
             "cpu": "4 cores, 3+ Ghz",
             "gpu": "GeForce GTX 1050",
-            "ram": "6 GB RAM",
-            "storage": "6 GB available space"
+            "ram": "6 GB de RAM",
+            "storage": "6 GB de espacio disponible"
           },
           "provenance": {
             "source": "steam",
@@ -338,7 +356,7 @@
     {
       "title": "State of Mind",
       "slug": "state-of-mind",
-      "description": "State of Mind is a futuristic thriller game delving into transhumanism. The game explores themes of separation, disjuncture and reunification, in a world that is torn between a dystopian material reality and a utopian virtual future.",
+      "description": "State of Mind es un juego en forma de thriller futurista que se adentra en el transhumanismo. El juego explora temas de separación, descoyuntura y reunificación en un mundo dividido entre una realidad material distópica y un futuro virtual utópico.",
       "releaseYear": 2018,
       "developer": "Daedalic Entertainment",
       "publisher": "Daedalic Entertainment",
@@ -353,34 +371,38 @@
       "sizeValue": 23,
       "sizeUnit": "GB",
       "minimumRequirements": {
+        "os": "NVIDIA GeForce 560 / AMD Radeon 7770 or similar, at least 2 GB of VRAM",
         "cpu": "2.8 Ghz Dual Core CPU",
         "gpu": "NVIDIA GeForce 560 / AMD Radeon 7770 or similar, at least 2 GB of VRAM",
-        "ram": "4 GB RAM",
-        "storage": "23 GB available space"
+        "ram": "4 GB de RAM",
+        "storage": "23 GB de espacio disponible"
       },
       "recommendedRequirements": {
+        "os": "NVIDIA GeForce GTX 750 Ti / AMD Radeon R7 370 or similar, at least 4 GB of VRAM",
         "cpu": "3 Ghz Quad Core CPU",
         "gpu": "NVIDIA GeForce GTX 750 Ti / AMD Radeon R7 370 or similar, at least 4 GB of VRAM",
-        "ram": "8 GB RAM",
-        "storage": "23 GB available space"
+        "ram": "8 GB de RAM",
+        "storage": "23 GB de espacio disponible"
       },
-      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/lemutdsx8sdhabiin8fx.jpg",
+      "coverUrl": "https://cdn.akamai.steamstatic.com/steam/apps/437630/library_600x900.jpg",
       "platformVariants": [
         {
           "platformSlug": "pc",
           "sizeValue": 23,
           "sizeUnit": "GB",
           "minimumRequirements": {
+            "os": "NVIDIA GeForce 560 / AMD Radeon 7770 or similar, at least 2 GB of VRAM",
             "cpu": "2.8 Ghz Dual Core CPU",
             "gpu": "NVIDIA GeForce 560 / AMD Radeon 7770 or similar, at least 2 GB of VRAM",
-            "ram": "4 GB RAM",
-            "storage": "23 GB available space"
+            "ram": "4 GB de RAM",
+            "storage": "23 GB de espacio disponible"
           },
           "recommendedRequirements": {
+            "os": "NVIDIA GeForce GTX 750 Ti / AMD Radeon R7 370 or similar, at least 4 GB of VRAM",
             "cpu": "3 Ghz Quad Core CPU",
             "gpu": "NVIDIA GeForce GTX 750 Ti / AMD Radeon R7 370 or similar, at least 4 GB of VRAM",
-            "ram": "8 GB RAM",
-            "storage": "23 GB available space"
+            "ram": "8 GB de RAM",
+            "storage": "23 GB de espacio disponible"
           },
           "provenance": {
             "source": "steam",
@@ -445,34 +467,38 @@
       "sizeValue": 3,
       "sizeUnit": "GB",
       "minimumRequirements": {
+        "os": "DirectX compatible card",
         "cpu": "2.0 GHz Core 2 Duo",
         "gpu": "DirectX compatible card",
-        "ram": "2 GB RAM",
-        "storage": "3 GB available space"
+        "ram": "2 GB de RAM",
+        "storage": "3 GB de espacio disponible"
       },
       "recommendedRequirements": {
+        "os": "DirectX compatible card",
         "cpu": "2.0 GHz Core 2 Duo",
         "gpu": "DirectX compatible card",
-        "ram": "2 GB RAM",
-        "storage": "3 GB available space"
+        "ram": "2 GB de RAM",
+        "storage": "3 GB de espacio disponible"
       },
-      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co2pwh.jpg",
+      "coverUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1137410/library_600x900.jpg",
       "platformVariants": [
         {
           "platformSlug": "pc",
           "sizeValue": 3,
           "sizeUnit": "GB",
           "minimumRequirements": {
+            "os": "DirectX compatible card",
             "cpu": "2.0 GHz Core 2 Duo",
             "gpu": "DirectX compatible card",
-            "ram": "2 GB RAM",
-            "storage": "3 GB available space"
+            "ram": "2 GB de RAM",
+            "storage": "3 GB de espacio disponible"
           },
           "recommendedRequirements": {
+            "os": "DirectX compatible card",
             "cpu": "2.0 GHz Core 2 Duo",
             "gpu": "DirectX compatible card",
-            "ram": "2 GB RAM",
-            "storage": "3 GB available space"
+            "ram": "2 GB de RAM",
+            "storage": "3 GB de espacio disponible"
           },
           "provenance": {
             "source": "steam",
@@ -487,7 +513,7 @@
     {
       "title": "Black Clover Quartet Knights",
       "slug": "black-clover-quartet-knights",
-      "description": "Take part in 4-on-4 team battles and cast an array of magic spells to defeat the opposing team! You can assume one of four roles. Use your role and spells to the best possible effect, and cooperate with your teammates to win the battle!",
+      "description": "¡Participa en combates de 4 contra 4 y combina una serie de hechizos para derrotar al equipo rival! Tienes cuatro roles diferentes para elegir. ¡Emplea tu rol y hechizos para lograr los mejores resultados y coopera con tus compañeros para ganar!",
       "releaseYear": 2018,
       "developer": "ILINX, Inc.",
       "publisher": "BANDAI NAMCO Entertainment",
@@ -501,36 +527,38 @@
       "sizeValue": 14,
       "sizeUnit": "GB",
       "minimumRequirements": {
+        "os": "Radeon Vega 8 or Intel Iris Pro 580",
         "cpu": "AMD Phenom II X4 945 or Intel Core i3-2100",
         "gpu": "Radeon Vega 8 or Intel Iris Pro 580",
-        "ram": "4 GB RAM",
-        "storage": "14 GB available space"
+        "ram": "4 GB de RAM",
+        "storage": "14 GB de espacio disponible"
       },
       "recommendedRequirements": {
-        "os": "Windows 10",
+        "os": "Radeon HD 7870 or GeForce GTX 660",
         "cpu": "AMD A12-9800 or Intel Core i5-2300",
         "gpu": "Radeon HD 7870 or GeForce GTX 660",
-        "ram": "4 GB RAM",
-        "storage": "14 GB available space"
+        "ram": "4 GB de RAM",
+        "storage": "14 GB de espacio disponible"
       },
-      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co28vm.jpg",
+      "coverUrl": "https://cdn.akamai.steamstatic.com/steam/apps/714080/header.jpg",
       "platformVariants": [
         {
           "platformSlug": "pc",
           "sizeValue": 14,
           "sizeUnit": "GB",
           "minimumRequirements": {
+            "os": "Radeon Vega 8 or Intel Iris Pro 580",
             "cpu": "AMD Phenom II X4 945 or Intel Core i3-2100",
             "gpu": "Radeon Vega 8 or Intel Iris Pro 580",
-            "ram": "4 GB RAM",
-            "storage": "14 GB available space"
+            "ram": "4 GB de RAM",
+            "storage": "14 GB de espacio disponible"
           },
           "recommendedRequirements": {
-            "os": "Windows 10",
+            "os": "Radeon HD 7870 or GeForce GTX 660",
             "cpu": "AMD A12-9800 or Intel Core i5-2300",
             "gpu": "Radeon HD 7870 or GeForce GTX 660",
-            "ram": "4 GB RAM",
-            "storage": "14 GB available space"
+            "ram": "4 GB de RAM",
+            "storage": "14 GB de espacio disponible"
           },
           "provenance": {
             "source": "steam",
@@ -559,34 +587,38 @@
       "sizeValue": 10,
       "sizeUnit": "GB",
       "minimumRequirements": {
+        "os": "NVIDIA GTX 760 4 GB",
         "cpu": "Intel i5-750/AMD Phenom II X4-945",
         "gpu": "NVIDIA GTX 760 4 GB",
-        "ram": "8 GB RAM",
-        "storage": "10 GB available space"
+        "ram": "8 GB de RAM",
+        "storage": "10 GB de espacio disponible"
       },
       "recommendedRequirements": {
+        "os": "NVIDIA GTX 1060 6 GB",
         "cpu": "Intel i7-4770/AMD Ryzen 3 2200G",
         "gpu": "NVIDIA GTX 1060 6 GB",
-        "ram": "8 GB RAM",
-        "storage": "10 GB available space"
+        "ram": "8 GB de RAM",
+        "storage": "10 GB de espacio disponible"
       },
-      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co1xr4.jpg",
+      "coverUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1112620/library_600x900.jpg",
       "platformVariants": [
         {
           "platformSlug": "pc",
           "sizeValue": 10,
           "sizeUnit": "GB",
           "minimumRequirements": {
+            "os": "NVIDIA GTX 760 4 GB",
             "cpu": "Intel i5-750/AMD Phenom II X4-945",
             "gpu": "NVIDIA GTX 760 4 GB",
-            "ram": "8 GB RAM",
-            "storage": "10 GB available space"
+            "ram": "8 GB de RAM",
+            "storage": "10 GB de espacio disponible"
           },
           "recommendedRequirements": {
+            "os": "NVIDIA GTX 1060 6 GB",
             "cpu": "Intel i7-4770/AMD Ryzen 3 2200G",
             "gpu": "NVIDIA GTX 1060 6 GB",
-            "ram": "8 GB RAM",
-            "storage": "10 GB available space"
+            "ram": "8 GB de RAM",
+            "storage": "10 GB de espacio disponible"
           },
           "provenance": {
             "source": "steam",
@@ -704,7 +736,7 @@
     {
       "title": "Everwind",
       "slug": "everwind",
-      "description": "Everwind is a novel take on RPG and Sandbox Survival genre in First-Person-Perspective. Embark on the adventure with your friends - Build a base on a flying island-ship, gather resources, craft, loot, and fight while you rise above the clouds to uncover the mysteries of this world!",
+      "description": "Everwind innova en el género de los juegos de rol y supervivencia en mundo abierto en primera persona. Embárcate con tus amigos, construye una base en una nave-isla voladora, consigue recursos, fabrica, saquea, combate y surca los cielos para desvelar los misterios del mundo.",
       "releaseYear": 2026,
       "developer": "Enjoy Studio S.A.",
       "publisher": "Bohemia Interactive",
@@ -719,38 +751,38 @@
       "sizeValue": 5,
       "sizeUnit": "GB",
       "minimumRequirements": {
-        "os": "64-bit Windows 10/11",
+        "os": "Intel Arc A580 | Nvidia GTX 1060 (min. 6GB VRAM)",
         "cpu": "Intel Core i5-8400",
         "gpu": "Intel Arc A580 | Nvidia GTX 1060 (min. 6GB VRAM)",
-        "ram": "12 GB RAM",
-        "storage": "5 GB available space"
+        "ram": "12 GB de RAM",
+        "storage": "5 GB de espacio disponible"
       },
       "recommendedRequirements": {
-        "os": "64-bit Windows 10/11",
+        "os": "Intel Arc B570 | Nvidia RTX 2060 Super (min. 8GB VRAM)",
         "cpu": "Intel Core i7-8700K",
         "gpu": "Intel Arc B570 | Nvidia RTX 2060 Super (min. 8GB VRAM)",
-        "ram": "16 GB RAM",
-        "storage": "5 GB available space"
+        "ram": "16 GB de RAM",
+        "storage": "5 GB de espacio disponible"
       },
-      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/coal66.jpg",
+      "coverUrl": "https://cdn.akamai.steamstatic.com/steam/apps/2253100/library_600x900.jpg",
       "platformVariants": [
         {
           "platformSlug": "pc",
           "sizeValue": 5,
           "sizeUnit": "GB",
           "minimumRequirements": {
-            "os": "64-bit Windows 10/11",
+            "os": "Intel Arc A580 | Nvidia GTX 1060 (min. 6GB VRAM)",
             "cpu": "Intel Core i5-8400",
             "gpu": "Intel Arc A580 | Nvidia GTX 1060 (min. 6GB VRAM)",
-            "ram": "12 GB RAM",
-            "storage": "5 GB available space"
+            "ram": "12 GB de RAM",
+            "storage": "5 GB de espacio disponible"
           },
           "recommendedRequirements": {
-            "os": "64-bit Windows 10/11",
+            "os": "Intel Arc B570 | Nvidia RTX 2060 Super (min. 8GB VRAM)",
             "cpu": "Intel Core i7-8700K",
             "gpu": "Intel Arc B570 | Nvidia RTX 2060 Super (min. 8GB VRAM)",
-            "ram": "16 GB RAM",
-            "storage": "5 GB available space"
+            "ram": "16 GB de RAM",
+            "storage": "5 GB de espacio disponible"
           },
           "provenance": {
             "source": "steam",
@@ -765,7 +797,7 @@
     {
       "title": "ULTRAKILL",
       "slug": "ultrakill",
-      "description": "ULTRAKILL is a fast-paced ultra-violent retro FPS that combines the skill-based style scoring of character action games with the unadulterated carnage inspired by the best shooters of the '90s. Rip apart your foes with varied destructive weaponry and shower in their blood to regain your health.",
+      "description": "ULTRAKILL es un juego de disparos en primera persona (FPS) retro, trepidante y ultraviolento, que combina el sistema de puntuación basado en la habilidad de los juegos de acción con personajes con la carnicería sin límites inspirada en los mejores shooters de los años 90.",
       "releaseYear": 2020,
       "developer": "Arsi \"Hakita\" Patala",
       "publisher": "New Blood Interactive",
@@ -778,38 +810,38 @@
       "sizeValue": 3,
       "sizeUnit": "GB",
       "minimumRequirements": {
-        "os": "Windows 10",
+        "os": "GeForce GTX 560 Or Equivalent",
         "cpu": "2.4 GHz Dual Core Processor Or Higher",
         "gpu": "GeForce GTX 560 Or Equivalent",
-        "ram": "4 GB RAM",
-        "storage": "3 GB available space"
+        "ram": "4 GB de RAM",
+        "storage": "3 GB de espacio disponible"
       },
       "recommendedRequirements": {
-        "os": "Windows 11",
+        "os": "Geforce GTX 970 Or Equivalent",
         "cpu": "3.1 GHz Quad Core Processor Or Higher",
         "gpu": "Geforce GTX 970 Or Equivalent",
-        "ram": "8 GB RAM",
-        "storage": "3 GB available space"
+        "ram": "8 GB de RAM",
+        "storage": "3 GB de espacio disponible"
       },
-      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co46s3.jpg",
+      "coverUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1229490/library_600x900.jpg",
       "platformVariants": [
         {
           "platformSlug": "pc",
           "sizeValue": 3,
           "sizeUnit": "GB",
           "minimumRequirements": {
-            "os": "Windows 10",
+            "os": "GeForce GTX 560 Or Equivalent",
             "cpu": "2.4 GHz Dual Core Processor Or Higher",
             "gpu": "GeForce GTX 560 Or Equivalent",
-            "ram": "4 GB RAM",
-            "storage": "3 GB available space"
+            "ram": "4 GB de RAM",
+            "storage": "3 GB de espacio disponible"
           },
           "recommendedRequirements": {
-            "os": "Windows 11",
+            "os": "Geforce GTX 970 Or Equivalent",
             "cpu": "3.1 GHz Quad Core Processor Or Higher",
             "gpu": "Geforce GTX 970 Or Equivalent",
-            "ram": "8 GB RAM",
-            "storage": "3 GB available space"
+            "ram": "8 GB de RAM",
+            "storage": "3 GB de espacio disponible"
           },
           "provenance": {
             "source": "steam",
@@ -824,7 +856,7 @@
     {
       "title": "Unknown 9 Awakening",
       "slug": "unknown-9-awakening",
-      "description": "You are Haroona, a Quaestor born with the ability to venture into a mysterious dimension: the Fold. On her quest for powerful hidden knowledge, she must learn to master the powers of the Fold to fight a secret society with a hostile agenda.",
+      "description": "Ponte en la piel de Haroona, una quaestora capaz de sumergirse en el Revés, una misteriosa dimensión. En su búsqueda de un poderoso conocimiento oculto, aprenderá a dominar los poderes del Revés para luchar contra una organización secreta hostil.",
       "releaseYear": 2024,
       "developer": "Reflector Entertainment Ltd.",
       "publisher": "BANDAI NAMCO Entertainment Inc.",
@@ -837,38 +869,38 @@
       "sizeValue": 55,
       "sizeUnit": "GB",
       "minimumRequirements": {
-        "os": "Windows 10",
+        "os": "8 GB VRAM / AMD RX 580",
         "cpu": "4 or 6 cores / 8 threads / 3.6 Ghz Base clock speed",
         "gpu": "8 GB VRAM / AMD RX 580",
-        "ram": "12 GB RAM",
-        "storage": "55 GB available space"
+        "ram": "12 GB de RAM",
+        "storage": "55 GB de espacio disponible"
       },
       "recommendedRequirements": {
-        "os": "Windows 10",
+        "os": "8 GB VRAM / AMD RX 5700 XT",
         "cpu": "6 cores / 12 threads / 3.4 Ghz Base clock speed",
         "gpu": "8 GB VRAM / AMD RX 5700 XT",
-        "ram": "16 GB RAM",
-        "storage": "55 GB available space"
+        "ram": "16 GB de RAM",
+        "storage": "55 GB de espacio disponible"
       },
-      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co8bh9.jpg",
+      "coverUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1477940/library_600x900.jpg",
       "platformVariants": [
         {
           "platformSlug": "pc",
           "sizeValue": 55,
           "sizeUnit": "GB",
           "minimumRequirements": {
-            "os": "Windows 10",
+            "os": "8 GB VRAM / AMD RX 580",
             "cpu": "4 or 6 cores / 8 threads / 3.6 Ghz Base clock speed",
             "gpu": "8 GB VRAM / AMD RX 580",
-            "ram": "12 GB RAM",
-            "storage": "55 GB available space"
+            "ram": "12 GB de RAM",
+            "storage": "55 GB de espacio disponible"
           },
           "recommendedRequirements": {
-            "os": "Windows 10",
+            "os": "8 GB VRAM / AMD RX 5700 XT",
             "cpu": "6 cores / 12 threads / 3.4 Ghz Base clock speed",
             "gpu": "8 GB VRAM / AMD RX 5700 XT",
-            "ram": "16 GB RAM",
-            "storage": "55 GB available space"
+            "ram": "16 GB de RAM",
+            "storage": "55 GB de espacio disponible"
           },
           "provenance": {
             "source": "steam",
@@ -894,44 +926,48 @@
         "casual",
         "puzzle"
       ],
-      "sizeValue": 500,
+      "sizeValue": 0.5,
       "sizeUnit": "GB",
       "minimumRequirements": {
+        "os": "3D graphics card compatible with DirectX 8",
         "cpu": "Intel Pentium II, 233 MHz",
         "gpu": "3D graphics card compatible with DirectX 8",
-        "ram": "128 MB RAM",
-        "storage": "500 MB available space"
+        "ram": "128 MB de RAM",
+        "storage": "500 MB de espacio disponible"
       },
       "recommendedRequirements": {
+        "os": "3D graphics card compatible with DirectX 8",
         "cpu": "Intel Pentium III, 500 MHz",
         "gpu": "3D graphics card compatible with DirectX 8",
-        "ram": "256 MB RAM",
-        "storage": "500 MB available space"
+        "ram": "256 MB de RAM",
+        "storage": "500 MB de espacio disponible"
       },
-      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co3q1f.jpg",
+      "coverUrl": "https://cdn.akamai.steamstatic.com/steam/apps/260750/library_600x900.jpg",
       "platformVariants": [
         {
           "platformSlug": "pc",
-          "sizeValue": 500,
+          "sizeValue": 0.5,
           "sizeUnit": "GB",
           "minimumRequirements": {
+            "os": "3D graphics card compatible with DirectX 8",
             "cpu": "Intel Pentium II, 233 MHz",
             "gpu": "3D graphics card compatible with DirectX 8",
-            "ram": "128 MB RAM",
-            "storage": "500 MB available space"
+            "ram": "128 MB de RAM",
+            "storage": "500 MB de espacio disponible"
           },
           "recommendedRequirements": {
+            "os": "3D graphics card compatible with DirectX 8",
             "cpu": "Intel Pentium III, 500 MHz",
             "gpu": "3D graphics card compatible with DirectX 8",
-            "ram": "256 MB RAM",
-            "storage": "500 MB available space"
+            "ram": "256 MB de RAM",
+            "storage": "500 MB de espacio disponible"
           },
           "provenance": {
             "source": "steam",
             "sourceUrl": "https://store.steampowered.com/app/260750/",
             "confidence": 1,
             "ingestedAt": "2026-10-21",
-            "notes": "Tamano 500 GB y requisitos extraidos de pc_requirements de la Steam store."
+            "notes": "Tamano 0.5 GB y requisitos extraidos de pc_requirements de la Steam store."
           }
         }
       ]
@@ -939,7 +975,7 @@
     {
       "title": "Voodoo Vince Remastered",
       "slug": "voodoo-vince-remastered",
-      "description": "The classic character platformer is back after 13 years and newly remastered! Help Vince run, jump and fight his way through cemeteries, swamps and an evil carnival as he seeks to save his creator Madam Charmaine from the clutches of Kosmo The Inscrutable.",
+      "description": "El clásico personaje de este juego de plataformas ha regresado tras más de 13 años, ¡y ahora lo hace en una espectacular alta definición! Esta aventura llevará a Vince desde las calles de Nueva Orleans a las profundidades de un pantano de Louisiana para descubrir el paradero de su dueña, Madam Charmaine.",
       "releaseYear": 2017,
       "developer": "Beep Games, Inc.",
       "publisher": "Beep Games, Inc.",
@@ -952,36 +988,38 @@
       "sizeValue": 4,
       "sizeUnit": "GB",
       "minimumRequirements": {
+        "os": "NVidia GeForce GT430-1GB VRAM or equivalent",
         "cpu": "Intel Core2-Duo 2GHz or equivalent",
         "gpu": "NVidia GeForce GT430-1GB VRAM or equivalent",
-        "ram": "3 GB RAM",
-        "storage": "4 GB available space"
+        "ram": "3 GB de RAM",
+        "storage": "4 GB de espacio disponible"
       },
       "recommendedRequirements": {
-        "os": "Windows 10",
+        "os": "NVidia GeForce GT440-2GB VRAM or equivalent",
         "cpu": "Intel Core2-Duo 2GHz or equivalent",
         "gpu": "NVidia GeForce GT440-2GB VRAM or equivalent",
-        "ram": "4 GB RAM",
-        "storage": "4 GB available space"
+        "ram": "4 GB de RAM",
+        "storage": "4 GB de espacio disponible"
       },
-      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co24kw.jpg",
+      "coverUrl": "https://cdn.akamai.steamstatic.com/steam/apps/545980/library_600x900.jpg",
       "platformVariants": [
         {
           "platformSlug": "pc",
           "sizeValue": 4,
           "sizeUnit": "GB",
           "minimumRequirements": {
+            "os": "NVidia GeForce GT430-1GB VRAM or equivalent",
             "cpu": "Intel Core2-Duo 2GHz or equivalent",
             "gpu": "NVidia GeForce GT430-1GB VRAM or equivalent",
-            "ram": "3 GB RAM",
-            "storage": "4 GB available space"
+            "ram": "3 GB de RAM",
+            "storage": "4 GB de espacio disponible"
           },
           "recommendedRequirements": {
-            "os": "Windows 10",
+            "os": "NVidia GeForce GT440-2GB VRAM or equivalent",
             "cpu": "Intel Core2-Duo 2GHz or equivalent",
             "gpu": "NVidia GeForce GT440-2GB VRAM or equivalent",
-            "ram": "4 GB RAM",
-            "storage": "4 GB available space"
+            "ram": "4 GB de RAM",
+            "storage": "4 GB de espacio disponible"
           },
           "provenance": {
             "source": "steam",
@@ -996,7 +1034,7 @@
     {
       "title": "Starless abyss",
       "slug": "starless-abyss",
-      "description": "Earth has fallen. Science and the Occult have united forces to brace for the arrival of the Eldritch. But will the efforts against this strange, alien race be enough? Play as one of many Proximae used to help defend humanity in this turn-based, roguelike, intergalactic deck builder.",
+      "description": "La Tierra ha caído. La ciencia y los ocultistas se han unido para enfrentarse a la llegada de Eldritch, pero ¿podrán detener a esta extraña raza alienígena? Juega como un Próxima y defiende a la humanidad en este juego intergaláctico de construcción de mazos con mecánicas roguelike por turnos.",
       "releaseYear": 2025,
       "developer": "Konafa Games",
       "publisher": "No More Robots",
@@ -1009,32 +1047,34 @@
       "sizeValue": null,
       "sizeUnit": null,
       "minimumRequirements": {
+        "os": "NVIDIA GeForce GTX 550/equivalent or higher",
         "cpu": "2 GHz",
         "gpu": "NVIDIA GeForce GTX 550/equivalent or higher",
-        "ram": "2 GB RAM"
+        "ram": "2 GB de RAM"
       },
       "recommendedRequirements": {
-        "os": "Windows 10",
+        "os": "NVIDIA GeForce GTX 760/equivalent or higher",
         "cpu": "2 GHz",
         "gpu": "NVIDIA GeForce GTX 760/equivalent or higher",
-        "ram": "2 GB RAM"
+        "ram": "2 GB de RAM"
       },
-      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co8xgh.jpg",
+      "coverUrl": "https://cdn.akamai.steamstatic.com/steam/apps/3167970/library_600x900.jpg",
       "platformVariants": [
         {
           "platformSlug": "pc",
           "sizeValue": null,
           "sizeUnit": null,
           "minimumRequirements": {
+            "os": "NVIDIA GeForce GTX 550/equivalent or higher",
             "cpu": "2 GHz",
             "gpu": "NVIDIA GeForce GTX 550/equivalent or higher",
-            "ram": "2 GB RAM"
+            "ram": "2 GB de RAM"
           },
           "recommendedRequirements": {
-            "os": "Windows 10",
+            "os": "NVIDIA GeForce GTX 760/equivalent or higher",
             "cpu": "2 GHz",
             "gpu": "NVIDIA GeForce GTX 760/equivalent or higher",
-            "ram": "2 GB RAM"
+            "ram": "2 GB de RAM"
           },
           "provenance": {
             "source": "steam",
@@ -1113,7 +1153,7 @@
     {
       "title": "Minecraft (Juego base)",
       "slug": "minecraft-juego-base",
-      "description": "A new threat descends upon the Overworld...",
+      "description": "Una nueva amenaza se cierne sobre el Mundo superior...",
       "releaseYear": 2016,
       "developer": "Mojang Studios, Double Eleven",
       "publisher": "Xbox Game Studios",
@@ -1130,16 +1170,16 @@
       "sizeValue": null,
       "sizeUnit": null,
       "minimumRequirements": {
-        "os": "Windows 10 64‑bit (1703 or newer)",
+        "os": "NVIDIA GeForce GTX 1050, AMD Radeon RX 560 or equivalent dedicated graphics card with at least 2 GB",
         "cpu": "Intel Core i3‑8100, AMD Ryzen 3 2200G or equivalent",
         "gpu": "NVIDIA GeForce GTX 1050, AMD Radeon RX 560 or equivalent dedicated graphics card with at least 2 GB VRAM",
-        "ram": "8 GB RAM"
+        "ram": "8 GB de RAM"
       },
       "recommendedRequirements": {
-        "os": "Windows 10 64‑bit (1703 or newer)",
+        "os": "NVIDIA GeForce GTX 1060, AMD Radeon RX 580, with at least 6 GB VRAM or equivalent",
         "cpu": "Intel Core i5‑8400, AMD Ryzen 5 2600 or equivalent or higher",
         "gpu": "NVIDIA GeForce GTX 1060, AMD Radeon RX 580, with at least 6 GB VRAM or equivalent",
-        "ram": "16 GB RAM"
+        "ram": "16 GB de RAM"
       },
       "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co8fu7.jpg",
       "platformVariants": [
@@ -1148,16 +1188,16 @@
           "sizeValue": null,
           "sizeUnit": null,
           "minimumRequirements": {
-            "os": "Windows 10 64‑bit (1703 or newer)",
+            "os": "NVIDIA GeForce GTX 1050, AMD Radeon RX 560 or equivalent dedicated graphics card with at least 2 GB",
             "cpu": "Intel Core i3‑8100, AMD Ryzen 3 2200G or equivalent",
             "gpu": "NVIDIA GeForce GTX 1050, AMD Radeon RX 560 or equivalent dedicated graphics card with at least 2 GB VRAM",
-            "ram": "8 GB RAM"
+            "ram": "8 GB de RAM"
           },
           "recommendedRequirements": {
-            "os": "Windows 10 64‑bit (1703 or newer)",
+            "os": "NVIDIA GeForce GTX 1060, AMD Radeon RX 580, with at least 6 GB VRAM or equivalent",
             "cpu": "Intel Core i5‑8400, AMD Ryzen 5 2600 or equivalent or higher",
             "gpu": "NVIDIA GeForce GTX 1060, AMD Radeon RX 580, with at least 6 GB VRAM or equivalent",
-            "ram": "16 GB RAM"
+            "ram": "16 GB de RAM"
           },
           "provenance": {
             "source": "steam",
@@ -1172,7 +1212,7 @@
     {
       "title": "Valheim",
       "slug": "valheim",
-      "description": "A collaborative exploration and survival game for 1-10 players, set in a procedurally generated afterlife inspired by Viking culture. Battle, build, and conquer your way to a saga worthy of Odin’s patronage!",
+      "description": "Un juego colaborativo de exploración y supervivencia para 1-10 jugadores, ambientado en un más allá generado por procedimientos e inspirado en la cultura vikinga. ¡Lucha, construye y conquista tu camino hacia una saga digna del patrocinio de Odín!",
       "releaseYear": 2026,
       "developer": "Iron Gate AB",
       "publisher": "Coffee Stain Publishing",
@@ -1187,38 +1227,38 @@
       "sizeValue": 1,
       "sizeUnit": "GB",
       "minimumRequirements": {
-        "os": "Windows 10 or later",
+        "os": "GeForce GTX 950 or Radeon HD 7970",
         "cpu": "2.6 GHz Quad Core or similar",
         "gpu": "GeForce GTX 950 or Radeon HD 7970",
-        "ram": "8 GB RAM",
-        "storage": "1 GB available space"
+        "ram": "8 GB de RAM",
+        "storage": "1 GB de espacio disponible"
       },
       "recommendedRequirements": {
-        "os": "Windows 10 or later",
+        "os": "GeForce GTX 1060 or Radeon RX 580",
         "cpu": "i5 3GHz or Ryzen 5 3GHz",
         "gpu": "GeForce GTX 1060 or Radeon RX 580",
-        "ram": "16 GB RAM",
-        "storage": "1 GB available space"
+        "ram": "16 GB de RAM",
+        "storage": "1 GB de espacio disponible"
       },
-      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/cocygu.jpg",
+      "coverUrl": "https://cdn.akamai.steamstatic.com/steam/apps/892970/library_600x900.jpg",
       "platformVariants": [
         {
           "platformSlug": "pc",
           "sizeValue": 1,
           "sizeUnit": "GB",
           "minimumRequirements": {
-            "os": "Windows 10 or later",
+            "os": "GeForce GTX 950 or Radeon HD 7970",
             "cpu": "2.6 GHz Quad Core or similar",
             "gpu": "GeForce GTX 950 or Radeon HD 7970",
-            "ram": "8 GB RAM",
-            "storage": "1 GB available space"
+            "ram": "8 GB de RAM",
+            "storage": "1 GB de espacio disponible"
           },
           "recommendedRequirements": {
-            "os": "Windows 10 or later",
+            "os": "GeForce GTX 1060 or Radeon RX 580",
             "cpu": "i5 3GHz or Ryzen 5 3GHz",
             "gpu": "GeForce GTX 1060 or Radeon RX 580",
-            "ram": "16 GB RAM",
-            "storage": "1 GB available space"
+            "ram": "16 GB de RAM",
+            "storage": "1 GB de espacio disponible"
           },
           "provenance": {
             "source": "steam",
@@ -1233,7 +1273,7 @@
     {
       "title": "Beyond the Ice Palace 2",
       "slug": "beyond-the-ice-palace-2",
-      "description": "Arise from the dead as the 'Cursed King' in an enthralling action platformer. Wield the chains that once imprisoned you to vanquish foes and traverse your fallen kingdom. Uncover hidden areas, strategically level up, and reclaim your throne by banishing colossal bosses!",
+      "description": "Ponte en la piel del Rey Maldito en este cautivador juego de plataformas y acción. Empuña las cadenas que una vez te aprisionaron para derrotar a los enemigos y atravesar tu reino destruido. ¡Descubre zonas ocultas y destierra a jefes colosales para reclamar tu trono!",
       "releaseYear": 2025,
       "developer": "STORYBIRD Studio",
       "publisher": "PQube, PixelHeart",
@@ -1243,44 +1283,48 @@
         "accion",
         "aventura"
       ],
-      "sizeValue": 50,
+      "sizeValue": 0.05,
       "sizeUnit": "GB",
       "minimumRequirements": {
+        "os": "Intel HD",
         "cpu": "Dual Core 1.8ghz",
         "gpu": "Intel HD",
-        "ram": "1 GB RAM",
-        "storage": "50 MB available space"
+        "ram": "1 GB de RAM",
+        "storage": "50 MB de espacio disponible"
       },
       "recommendedRequirements": {
+        "os": "Intel HD",
         "cpu": "Dual Core 1.8ghz",
         "gpu": "Intel HD",
-        "ram": "1 GB RAM",
-        "storage": "50 MB available space"
+        "ram": "1 GB de RAM",
+        "storage": "50 MB de espacio disponible"
       },
-      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co82o9.jpg",
+      "coverUrl": "https://cdn.akamai.steamstatic.com/steam/apps/2384730/library_600x900.jpg",
       "platformVariants": [
         {
           "platformSlug": "pc",
-          "sizeValue": 50,
+          "sizeValue": 0.05,
           "sizeUnit": "GB",
           "minimumRequirements": {
+            "os": "Intel HD",
             "cpu": "Dual Core 1.8ghz",
             "gpu": "Intel HD",
-            "ram": "1 GB RAM",
-            "storage": "50 MB available space"
+            "ram": "1 GB de RAM",
+            "storage": "50 MB de espacio disponible"
           },
           "recommendedRequirements": {
+            "os": "Intel HD",
             "cpu": "Dual Core 1.8ghz",
             "gpu": "Intel HD",
-            "ram": "1 GB RAM",
-            "storage": "50 MB available space"
+            "ram": "1 GB de RAM",
+            "storage": "50 MB de espacio disponible"
           },
           "provenance": {
             "source": "steam",
             "sourceUrl": "https://store.steampowered.com/app/2384730/",
             "confidence": 0.75,
             "ingestedAt": "2026-10-21",
-            "notes": "Tamano 50 GB y requisitos extraidos de pc_requirements de la Steam store."
+            "notes": "Tamano 0.05 GB y requisitos extraidos de pc_requirements de la Steam store."
           }
         }
       ]
@@ -1313,7 +1357,7 @@
         "ram": "6 GB RAM",
         "storage": "12 GB available space"
       },
-      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co7eo9.jpg",
+      "coverUrl": "https://cdn.akamai.steamstatic.com/steam/apps/2611740/header.jpg",
       "platformVariants": [
         {
           "platformSlug": "pc",
@@ -1360,38 +1404,38 @@
       "sizeValue": 1,
       "sizeUnit": "GB",
       "minimumRequirements": {
-        "os": "Win 10 x64",
+        "os": "GeForce GTX 560",
         "cpu": "Dual Core i5 2.5 GHz",
         "gpu": "GeForce GTX 560",
-        "ram": "8 GB RAM",
-        "storage": "1 GB available space"
+        "ram": "8 GB de RAM",
+        "storage": "1 GB de espacio disponible"
       },
       "recommendedRequirements": {
-        "os": "Win 10 x64",
+        "os": "GeForce GTX 660",
         "cpu": "Quad Core 3.0 GHz",
         "gpu": "GeForce GTX 660",
-        "ram": "8 GB RAM",
-        "storage": "2 GB available space"
+        "ram": "8 GB de RAM",
+        "storage": "2 GB de espacio disponible"
       },
-      "coverUrl": null,
+      "coverUrl": "https://cdn.akamai.steamstatic.com/steam/apps/2050510/library_600x900.jpg",
       "platformVariants": [
         {
           "platformSlug": "pc",
           "sizeValue": 1,
           "sizeUnit": "GB",
           "minimumRequirements": {
-            "os": "Win 10 x64",
+            "os": "GeForce GTX 560",
             "cpu": "Dual Core i5 2.5 GHz",
             "gpu": "GeForce GTX 560",
-            "ram": "8 GB RAM",
-            "storage": "1 GB available space"
+            "ram": "8 GB de RAM",
+            "storage": "1 GB de espacio disponible"
           },
           "recommendedRequirements": {
-            "os": "Win 10 x64",
+            "os": "GeForce GTX 660",
             "cpu": "Quad Core 3.0 GHz",
             "gpu": "GeForce GTX 660",
-            "ram": "8 GB RAM",
-            "storage": "2 GB available space"
+            "ram": "8 GB de RAM",
+            "storage": "2 GB de espacio disponible"
           },
           "provenance": {
             "source": "steam",
@@ -1406,7 +1450,7 @@
     {
       "title": "Stray",
       "slug": "stray",
-      "description": "Lost, alone and separated from family, a stray cat must untangle an ancient mystery to escape a long-forgotten cybercity and find their way home.",
+      "description": "Perdido, solo y separado de su familia, un gato callejero debe desentrañar un antiguo misterio para escapar de una ciberciudad olvidada y encontrar el camino a casa.",
       "releaseYear": 2022,
       "developer": "BlueTwelve Studio",
       "publisher": "Annapurna Interactive",
@@ -1421,38 +1465,38 @@
       "sizeValue": 10,
       "sizeUnit": "GB",
       "minimumRequirements": {
-        "os": "Windows 10",
+        "os": "NVIDIA GeForce GTX 650 Ti, 2 GB | AMD Radeon R7 360, 2 GB",
         "cpu": "Intel Core i5-2300 | AMD FX-6350",
         "gpu": "NVIDIA GeForce GTX 650 Ti, 2 GB | AMD Radeon R7 360, 2 GB",
-        "ram": "8 GB RAM",
-        "storage": "10 GB available space"
+        "ram": "8 GB de RAM",
+        "storage": "10 GB de espacio disponible"
       },
       "recommendedRequirements": {
-        "os": "Windows 10",
+        "os": "NVIDIA GeForce GTX 780, 3 GB | AMD Radeon R9 290X, 4 GB",
         "cpu": "Intel Core i5-8400 | AMD Ryzen 5 2600",
         "gpu": "NVIDIA GeForce GTX 780, 3 GB | AMD Radeon R9 290X, 4 GB",
-        "ram": "8 GB RAM",
-        "storage": "10 GB available space"
+        "ram": "8 GB de RAM",
+        "storage": "10 GB de espacio disponible"
       },
-      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co4tt2.jpg",
+      "coverUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1332010/library_600x900.jpg",
       "platformVariants": [
         {
           "platformSlug": "pc",
           "sizeValue": 10,
           "sizeUnit": "GB",
           "minimumRequirements": {
-            "os": "Windows 10",
+            "os": "NVIDIA GeForce GTX 650 Ti, 2 GB | AMD Radeon R7 360, 2 GB",
             "cpu": "Intel Core i5-2300 | AMD FX-6350",
             "gpu": "NVIDIA GeForce GTX 650 Ti, 2 GB | AMD Radeon R7 360, 2 GB",
-            "ram": "8 GB RAM",
-            "storage": "10 GB available space"
+            "ram": "8 GB de RAM",
+            "storage": "10 GB de espacio disponible"
           },
           "recommendedRequirements": {
-            "os": "Windows 10",
+            "os": "NVIDIA GeForce GTX 780, 3 GB | AMD Radeon R9 290X, 4 GB",
             "cpu": "Intel Core i5-8400 | AMD Ryzen 5 2600",
             "gpu": "NVIDIA GeForce GTX 780, 3 GB | AMD Radeon R9 290X, 4 GB",
-            "ram": "8 GB RAM",
-            "storage": "10 GB available space"
+            "ram": "8 GB de RAM",
+            "storage": "10 GB de espacio disponible"
           },
           "provenance": {
             "source": "steam",
@@ -1467,7 +1511,7 @@
     {
       "title": "Blue Prince",
       "slug": "blue-prince",
-      "description": "Welcome to Mt. Holly, where every dawn unveils a new mystery. Navigate through shifting corridors and ever-changing chambers in this genre-defying strategy puzzle adventure. But will your unpredictable path lead you to the rumored Room 46?",
+      "description": "Esto es Monte Holly, donde cada amanecer revela un nuevo misterio. Recorre pasillos y salas cambiantes en este juego que rompe con los géneros y combina aventura, estrategia y puzles. Pero ¿llegarás a la misteriosa habitación 46?",
       "releaseYear": 2025,
       "developer": "Dogubomb",
       "publisher": "Raw Fury",
@@ -1482,38 +1526,38 @@
       "sizeValue": 6,
       "sizeUnit": "GB",
       "minimumRequirements": {
-        "os": "Windows 10/11, 64-bits",
+        "os": "NVIDIA GeForce GTX 1060/AMD RX580",
         "cpu": "i5-2300/Ryzen 3 1200",
         "gpu": "NVIDIA GeForce GTX 1060/AMD RX580",
-        "ram": "16 GB RAM",
-        "storage": "6 GB available space"
+        "ram": "16 GB de RAM",
+        "storage": "6 GB de espacio disponible"
       },
       "recommendedRequirements": {
-        "os": "Windows 10/11, 64-bits",
+        "os": "NVidia GeForce 1080 GTX /AMD RX 5700",
         "cpu": "Intel Core i5 4690K / AMD Ryzen 5 1500x",
         "gpu": "NVidia GeForce 1080 GTX /AMD RX 5700",
-        "ram": "16 GB RAM",
-        "storage": "6 GB available space"
+        "ram": "16 GB de RAM",
+        "storage": "6 GB de espacio disponible"
       },
-      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co9mzd.jpg",
+      "coverUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1569580/library_600x900.jpg",
       "platformVariants": [
         {
           "platformSlug": "pc",
           "sizeValue": 6,
           "sizeUnit": "GB",
           "minimumRequirements": {
-            "os": "Windows 10/11, 64-bits",
+            "os": "NVIDIA GeForce GTX 1060/AMD RX580",
             "cpu": "i5-2300/Ryzen 3 1200",
             "gpu": "NVIDIA GeForce GTX 1060/AMD RX580",
-            "ram": "16 GB RAM",
-            "storage": "6 GB available space"
+            "ram": "16 GB de RAM",
+            "storage": "6 GB de espacio disponible"
           },
           "recommendedRequirements": {
-            "os": "Windows 10/11, 64-bits",
+            "os": "NVidia GeForce 1080 GTX /AMD RX 5700",
             "cpu": "Intel Core i5 4690K / AMD Ryzen 5 1500x",
             "gpu": "NVidia GeForce 1080 GTX /AMD RX 5700",
-            "ram": "16 GB RAM",
-            "storage": "6 GB available space"
+            "ram": "16 GB de RAM",
+            "storage": "6 GB de espacio disponible"
           },
           "provenance": {
             "source": "steam",
@@ -1528,7 +1572,7 @@
     {
       "title": "Sword of the Necromancer Resurrection",
       "slug": "sword-of-the-necromancer-resurrection",
-      "description": "Sword of the Necromancer: Resurrection is a 3D remake of the original ARPG, featuring revamped graphics, dynamic combat, and a tactical summoning system. Turn your foes into allies and dive into an adventure full of strategy and action, inspired by the classics of the 6th gen of consoles.",
+      "description": "El remake en 3D del ARPG original, que presenta gráficos renovados, combate dinámico y un sistema táctico de invocaciones. Convierte a tus enemigos en aliados y adéntrate en una aventura llena de estrategia y acción, inspirada en los clásicos de la sexta generación de consolas.",
       "releaseYear": 2025,
       "developer": "Grimorio of Games",
       "publisher": "Dolores Entertainment",
@@ -1543,38 +1587,38 @@
       "sizeValue": 4,
       "sizeUnit": "GB",
       "minimumRequirements": {
-        "os": "Windows 10",
+        "os": "AMD Radeon HD 7750, NVIDIA GeForce GTX 650 or Equivalent",
         "cpu": "AMD FX-6100/Intel i3-3220 or Equivalent",
         "gpu": "AMD Radeon HD 7750, NVIDIA GeForce GTX 650 or Equivalent",
-        "ram": "8 GB RAM",
-        "storage": "4 GB available space"
+        "ram": "8 GB de RAM",
+        "storage": "4 GB de espacio disponible"
       },
       "recommendedRequirements": {
-        "os": "Windows 10",
+        "os": "AMD RX Vega 56, Nvidia GTX 1070/GTX1660Ti or Equivalent",
         "cpu": "AMD Ryzen 7 1700/Intel i7-6700K or Equivalent",
         "gpu": "AMD RX Vega 56, Nvidia GTX 1070/GTX1660Ti or Equivalent",
-        "ram": "16 GB RAM",
-        "storage": "4 GB available space"
+        "ram": "16 GB de RAM",
+        "storage": "4 GB de espacio disponible"
       },
-      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co9b2z.jpg",
+      "coverUrl": "https://cdn.akamai.steamstatic.com/steam/apps/2782880/library_600x900.jpg",
       "platformVariants": [
         {
           "platformSlug": "pc",
           "sizeValue": 4,
           "sizeUnit": "GB",
           "minimumRequirements": {
-            "os": "Windows 10",
+            "os": "AMD Radeon HD 7750, NVIDIA GeForce GTX 650 or Equivalent",
             "cpu": "AMD FX-6100/Intel i3-3220 or Equivalent",
             "gpu": "AMD Radeon HD 7750, NVIDIA GeForce GTX 650 or Equivalent",
-            "ram": "8 GB RAM",
-            "storage": "4 GB available space"
+            "ram": "8 GB de RAM",
+            "storage": "4 GB de espacio disponible"
           },
           "recommendedRequirements": {
-            "os": "Windows 10",
+            "os": "AMD RX Vega 56, Nvidia GTX 1070/GTX1660Ti or Equivalent",
             "cpu": "AMD Ryzen 7 1700/Intel i7-6700K or Equivalent",
             "gpu": "AMD RX Vega 56, Nvidia GTX 1070/GTX1660Ti or Equivalent",
-            "ram": "16 GB RAM",
-            "storage": "4 GB available space"
+            "ram": "16 GB de RAM",
+            "storage": "4 GB de espacio disponible"
           },
           "provenance": {
             "source": "steam",
@@ -1633,38 +1677,38 @@
       "sizeValue": 35,
       "sizeUnit": "GB",
       "minimumRequirements": {
-        "os": "Windows 10 64-bit",
+        "os": "NVIDIA GForce GTX 1060",
         "cpu": "Intel i5-7500",
         "gpu": "NVIDIA GForce GTX 1060",
-        "ram": "16 GB RAM",
-        "storage": "35 GB available space"
+        "ram": "16 GB de RAM",
+        "storage": "35 GB de espacio disponible"
       },
       "recommendedRequirements": {
-        "os": "Windows 10 64-bit",
+        "os": "NVIDIA GForce GTX 1060",
         "cpu": "Intel i5-7500",
         "gpu": "NVIDIA GForce GTX 1060",
-        "ram": "16 GB RAM",
-        "storage": "35 GB available space"
+        "ram": "16 GB de RAM",
+        "storage": "35 GB de espacio disponible"
       },
-      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co9ozh.jpg",
+      "coverUrl": "https://cdn.akamai.steamstatic.com/steam/apps/2240620/library_600x900.jpg",
       "platformVariants": [
         {
           "platformSlug": "pc",
           "sizeValue": 35,
           "sizeUnit": "GB",
           "minimumRequirements": {
-            "os": "Windows 10 64-bit",
+            "os": "NVIDIA GForce GTX 1060",
             "cpu": "Intel i5-7500",
             "gpu": "NVIDIA GForce GTX 1060",
-            "ram": "16 GB RAM",
-            "storage": "35 GB available space"
+            "ram": "16 GB de RAM",
+            "storage": "35 GB de espacio disponible"
           },
           "recommendedRequirements": {
-            "os": "Windows 10 64-bit",
+            "os": "NVIDIA GForce GTX 1060",
             "cpu": "Intel i5-7500",
             "gpu": "NVIDIA GForce GTX 1060",
-            "ram": "16 GB RAM",
-            "storage": "35 GB available space"
+            "ram": "16 GB de RAM",
+            "storage": "35 GB de espacio disponible"
           },
           "provenance": {
             "source": "steam",
@@ -1691,36 +1735,38 @@
       "sizeValue": 1,
       "sizeUnit": "GB",
       "minimumRequirements": {
+        "os": "OpenGL 4-compliant onboard graphics",
         "cpu": "64bit Intel compatible Dual Core CPU",
         "gpu": "OpenGL 4-compliant onboard graphics",
-        "ram": "2 GB RAM",
-        "storage": "1 GB available space"
+        "ram": "2 GB de RAM",
+        "storage": "1 GB de espacio disponible"
       },
       "recommendedRequirements": {
-        "os": "Microsoft 64bit Windows 10",
+        "os": "Dedicated OpenGL 4-compliant onboard graphics",
         "cpu": "64bit Intel compatible Quad Core CPU",
         "gpu": "Dedicated OpenGL 4-compliant onboard graphics",
-        "ram": "8 GB RAM",
-        "storage": "1 GB available space"
+        "ram": "8 GB de RAM",
+        "storage": "1 GB de espacio disponible"
       },
-      "coverUrl": null,
+      "coverUrl": "https://cdn.akamai.steamstatic.com/steam/apps/2842910/library_600x900.jpg",
       "platformVariants": [
         {
           "platformSlug": "pc",
           "sizeValue": 1,
           "sizeUnit": "GB",
           "minimumRequirements": {
+            "os": "OpenGL 4-compliant onboard graphics",
             "cpu": "64bit Intel compatible Dual Core CPU",
             "gpu": "OpenGL 4-compliant onboard graphics",
-            "ram": "2 GB RAM",
-            "storage": "1 GB available space"
+            "ram": "2 GB de RAM",
+            "storage": "1 GB de espacio disponible"
           },
           "recommendedRequirements": {
-            "os": "Microsoft 64bit Windows 10",
+            "os": "Dedicated OpenGL 4-compliant onboard graphics",
             "cpu": "64bit Intel compatible Quad Core CPU",
             "gpu": "Dedicated OpenGL 4-compliant onboard graphics",
-            "ram": "8 GB RAM",
-            "storage": "1 GB available space"
+            "ram": "8 GB de RAM",
+            "storage": "1 GB de espacio disponible"
           },
           "provenance": {
             "source": "steam",
@@ -1735,7 +1781,7 @@
     {
       "title": "Dice Legacy",
       "slug": "dice-legacy",
-      "description": "Dice Legacy is a dice-based survival city builder set on a mysterious ringworld. Your ship has reached the shore of an uncharted continent. Roll and use your dice to gather resources, expand and defend your settlement, survive the winter and interact with the strange inhabitants of this eerie world.",
+      "description": "Dice Legacy es un juego de dados de construcción y supervivencia que tiene lugar en un mundo misterioso. Llegas a la costa de un continente inexplorado. Tira el dado para reunir recursos, expandir el asentamiento, sobrevivir al crudo invierno e interactuar con los peculiares habitantes de ese mundo.",
       "releaseYear": 2021,
       "developer": "DESTINYbit",
       "publisher": "DESTINYbit, Amplifier Studios",
@@ -1748,38 +1794,38 @@
       "sizeValue": 2,
       "sizeUnit": "GB",
       "minimumRequirements": {
-        "os": "Windows 10 64bit",
+        "os": "GTX 660 2GB / AMD HD 7750 1GB",
         "cpu": "Intel Core i3-2120 / AMD Athlon 3000G",
         "gpu": "GTX 660 2GB / AMD HD 7750 1GB",
-        "ram": "8 GB RAM",
-        "storage": "2 GB available space"
+        "ram": "8 GB de RAM",
+        "storage": "2 GB de espacio disponible"
       },
       "recommendedRequirements": {
-        "os": "Windows 10 64bit",
+        "os": "Nvidia GTX 1060 6GB / AMD Radeon RX 580 8GB",
         "cpu": "Intel Core i5-8600K / AMD Ryzen 1300X",
         "gpu": "Nvidia GTX 1060 6GB / AMD Radeon RX 580 8GB",
-        "ram": "16 GB RAM",
-        "storage": "2 GB available space"
+        "ram": "16 GB de RAM",
+        "storage": "2 GB de espacio disponible"
       },
-      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co3979.jpg",
+      "coverUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1229460/library_600x900.jpg",
       "platformVariants": [
         {
           "platformSlug": "pc",
           "sizeValue": 2,
           "sizeUnit": "GB",
           "minimumRequirements": {
-            "os": "Windows 10 64bit",
+            "os": "GTX 660 2GB / AMD HD 7750 1GB",
             "cpu": "Intel Core i3-2120 / AMD Athlon 3000G",
             "gpu": "GTX 660 2GB / AMD HD 7750 1GB",
-            "ram": "8 GB RAM",
-            "storage": "2 GB available space"
+            "ram": "8 GB de RAM",
+            "storage": "2 GB de espacio disponible"
           },
           "recommendedRequirements": {
-            "os": "Windows 10 64bit",
+            "os": "Nvidia GTX 1060 6GB / AMD Radeon RX 580 8GB",
             "cpu": "Intel Core i5-8600K / AMD Ryzen 1300X",
             "gpu": "Nvidia GTX 1060 6GB / AMD Radeon RX 580 8GB",
-            "ram": "16 GB RAM",
-            "storage": "2 GB available space"
+            "ram": "16 GB de RAM",
+            "storage": "2 GB de espacio disponible"
           },
           "provenance": {
             "source": "steam",
@@ -1794,7 +1840,7 @@
     {
       "title": "Pharaoh A New Era",
       "slug": "pharaoh-a-new-era",
-      "description": "The legendary city-builder returns! Lead the creation of one of the greatest civilizations the world has ever seen in this HD remake with modernized UI. Build monuments, manage your population and explore 4,000 years of history through over a hundred hours of gameplay.",
+      "description": "Vuelve el legendario juego de construcción de ciudades! En esta nueva versión en HD y con una nueva UI, te pondrás al mando de la creación de una de las mayores civilizaciones que jamás hayan existido en el mundo. Erige monumentos y gestiona la población durante más de cien horas de juego.",
       "releaseYear": 2023,
       "developer": "Triskell Interactive",
       "publisher": "Dotemu",
@@ -1807,38 +1853,38 @@
       "sizeValue": 8,
       "sizeUnit": "GB",
       "minimumRequirements": {
-        "os": "Windows 10",
+        "os": "NVIDIA GeForce GTS 450, 1 GB or AMD Radeon HD 5750, 1 GB or Intel HD Graphics 630",
         "cpu": "Intel Core i5-9600K or AMD Ryzen 5 3600XT",
         "gpu": "NVIDIA GeForce GTS 450, 1 GB or AMD Radeon HD 5750, 1 GB or Intel HD Graphics 630",
-        "ram": "8 GB RAM",
-        "storage": "8 GB available space"
+        "ram": "8 GB de RAM",
+        "storage": "8 GB de espacio disponible"
       },
       "recommendedRequirements": {
-        "os": "Windows 10",
+        "os": "NVIDIA GeForce GT 1030, 2 GB or AMD Radeon RX 460, 2 GB or Intel HD Graphics 630",
         "cpu": "Intel Core i7-9700K or AMD Ryzen 7 3800XT",
         "gpu": "NVIDIA GeForce GT 1030, 2 GB or AMD Radeon RX 460, 2 GB or Intel HD Graphics 630",
-        "ram": "8 GB RAM",
-        "storage": "8 GB available space"
+        "ram": "8 GB de RAM",
+        "storage": "8 GB de espacio disponible"
       },
-      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co2lww.jpg",
+      "coverUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1351080/library_600x900.jpg",
       "platformVariants": [
         {
           "platformSlug": "pc",
           "sizeValue": 8,
           "sizeUnit": "GB",
           "minimumRequirements": {
-            "os": "Windows 10",
+            "os": "NVIDIA GeForce GTS 450, 1 GB or AMD Radeon HD 5750, 1 GB or Intel HD Graphics 630",
             "cpu": "Intel Core i5-9600K or AMD Ryzen 5 3600XT",
             "gpu": "NVIDIA GeForce GTS 450, 1 GB or AMD Radeon HD 5750, 1 GB or Intel HD Graphics 630",
-            "ram": "8 GB RAM",
-            "storage": "8 GB available space"
+            "ram": "8 GB de RAM",
+            "storage": "8 GB de espacio disponible"
           },
           "recommendedRequirements": {
-            "os": "Windows 10",
+            "os": "NVIDIA GeForce GT 1030, 2 GB or AMD Radeon RX 460, 2 GB or Intel HD Graphics 630",
             "cpu": "Intel Core i7-9700K or AMD Ryzen 7 3800XT",
             "gpu": "NVIDIA GeForce GT 1030, 2 GB or AMD Radeon RX 460, 2 GB or Intel HD Graphics 630",
-            "ram": "8 GB RAM",
-            "storage": "8 GB available space"
+            "ram": "8 GB de RAM",
+            "storage": "8 GB de espacio disponible"
           },
           "provenance": {
             "source": "steam",
@@ -1853,7 +1899,7 @@
     {
       "title": "Wreckfest 2",
       "slug": "wreckfest-2",
-      "description": "Ready for mayhem? Wreckfest is back, offering the best in full-contact racing with unrivaled destruction! Witness head-to-head battles as you tear apart rival vehicles bit by bit. Powered by the enhanced physics engine, developed by the creators of Wreckfest & FlatOut!",
+      "description": "¿Listo para el caos? ¡Vuelve Wreckfest con las mejores carreras de choques y una destrucción sin igual! Sé testigo de batallas encarnizadas mientras haces trizas al resto de vehículos. ¡Motor de gráficas mejorado y desarrollado por los creadores de Wreckfest y FlatOut!",
       "releaseYear": 2025,
       "developer": "Bugbear",
       "publisher": "THQ Nordic",
@@ -1865,38 +1911,38 @@
       "sizeValue": 15,
       "sizeUnit": "GB",
       "minimumRequirements": {
-        "os": "Windows 10 or 11",
+        "os": "GTX 1060 with 6GB VRAM / RX 580",
         "cpu": "Core i5 8600 / Ryzen 5 3500 or equivalent 6 core CPU",
         "gpu": "GTX 1060 with 6GB VRAM / RX 580",
-        "ram": "8 GB RAM",
-        "storage": "15 GB available space"
+        "ram": "8 GB de RAM",
+        "storage": "15 GB de espacio disponible"
       },
       "recommendedRequirements": {
-        "os": "Windows 10 or 11",
+        "os": "RTX 3070 / 6800 XT",
         "cpu": "Core i7 9700 / Ryzen 5 3600X or equivalent 6 core CPU",
         "gpu": "RTX 3070 / 6800 XT",
-        "ram": "16 GB RAM",
-        "storage": "15 GB available space"
+        "ram": "16 GB de RAM",
+        "storage": "15 GB de espacio disponible"
       },
-      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co8mji.jpg",
+      "coverUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1203190/library_600x900.jpg",
       "platformVariants": [
         {
           "platformSlug": "pc",
           "sizeValue": 15,
           "sizeUnit": "GB",
           "minimumRequirements": {
-            "os": "Windows 10 or 11",
+            "os": "GTX 1060 with 6GB VRAM / RX 580",
             "cpu": "Core i5 8600 / Ryzen 5 3500 or equivalent 6 core CPU",
             "gpu": "GTX 1060 with 6GB VRAM / RX 580",
-            "ram": "8 GB RAM",
-            "storage": "15 GB available space"
+            "ram": "8 GB de RAM",
+            "storage": "15 GB de espacio disponible"
           },
           "recommendedRequirements": {
-            "os": "Windows 10 or 11",
+            "os": "RTX 3070 / 6800 XT",
             "cpu": "Core i7 9700 / Ryzen 5 3600X or equivalent 6 core CPU",
             "gpu": "RTX 3070 / 6800 XT",
-            "ram": "16 GB RAM",
-            "storage": "15 GB available space"
+            "ram": "16 GB de RAM",
+            "storage": "15 GB de espacio disponible"
           },
           "provenance": {
             "source": "steam",
@@ -1911,7 +1957,7 @@
     {
       "title": "Shotgun King The Final Checkmate",
       "slug": "shotgun-king-the-final-checkmate",
-      "description": "Chess, but you replace your entire army with a royal shotgun. A unique strategy roguelike based on the timeless checkboard classic.",
+      "description": "Como el ajedrez, pero reemplazando todas tus piezas por un único rey… con una escopeta. Shotgun King es un juego de estrategia único que da una sorprendente vuelta de tuerca a las mecánicas del atemporal juego de tablero.",
       "releaseYear": 2022,
       "developer": "PUNKCAKE Delicieux",
       "publisher": "PUNKCAKE Delicieux",
@@ -1922,40 +1968,44 @@
         "indie",
         "estrategia"
       ],
-      "sizeValue": 80,
+      "sizeValue": 0.08,
       "sizeUnit": "GB",
       "minimumRequirements": {
+        "os": "you'll need a screen",
         "cpu": "yes, you should have one",
         "gpu": "you'll need a screen",
-        "storage": "80 MB available space"
+        "storage": "80 MB de espacio disponible"
       },
       "recommendedRequirements": {
+        "os": "you'll need a screen",
         "cpu": "yes, you should have one",
         "gpu": "you'll need a screen",
-        "storage": "80 MB available space"
+        "storage": "80 MB de espacio disponible"
       },
-      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co8w6y.jpg",
+      "coverUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1972440/library_600x900.jpg",
       "platformVariants": [
         {
           "platformSlug": "pc",
-          "sizeValue": 80,
+          "sizeValue": 0.08,
           "sizeUnit": "GB",
           "minimumRequirements": {
+            "os": "you'll need a screen",
             "cpu": "yes, you should have one",
             "gpu": "you'll need a screen",
-            "storage": "80 MB available space"
+            "storage": "80 MB de espacio disponible"
           },
           "recommendedRequirements": {
+            "os": "you'll need a screen",
             "cpu": "yes, you should have one",
             "gpu": "you'll need a screen",
-            "storage": "80 MB available space"
+            "storage": "80 MB de espacio disponible"
           },
           "provenance": {
             "source": "steam",
             "sourceUrl": "https://store.steampowered.com/app/1972440/",
             "confidence": 1,
             "ingestedAt": "2026-10-21",
-            "notes": "Tamano 80 GB y requisitos extraidos de pc_requirements de la Steam store."
+            "notes": "Tamano 0.08 GB y requisitos extraidos de pc_requirements de la Steam store."
           }
         }
       ]
@@ -1963,7 +2013,7 @@
     {
       "title": "Potion Craft Alchemist Simulator",
       "slug": "potion-craft-alchemist-simulator",
-      "description": "Potion Craft is an alchemist simulator where you physically interact with your tools and ingredients to brew potions. You're in full control of the whole shop: invent new recipes, attract customers and experiment to your heart's content. Just remember: the whole town is counting on you.",
+      "description": "Potion Craft es un simulador de alquimista en el que interactúa físicamente con sus herramientas e ingredientes para elaborar pociones. Tiene todo el control sobre la tienda: invente nuevas recetas, atraiga a los clientes y experimente a su antojo. Recuerde: toda la ciudad cuenta con usted.",
       "releaseYear": 2022,
       "developer": "niceplay games",
       "publisher": "tinyBuild",
@@ -1977,38 +2027,38 @@
       "sizeValue": 2,
       "sizeUnit": "GB",
       "minimumRequirements": {
-        "os": "Windows 10",
+        "os": "GeForce GTX 670 / Radeon HD 7970",
         "cpu": "Intel i3-6100 or equivalent",
         "gpu": "GeForce GTX 670 / Radeon HD 7970",
-        "ram": "8 GB RAM",
-        "storage": "2 GB available space"
+        "ram": "8 GB de RAM",
+        "storage": "2 GB de espacio disponible"
       },
       "recommendedRequirements": {
-        "os": "Windows 10",
+        "os": "GeForce GTX 670 / Radeon HD 7970",
         "cpu": "Intel i3-6100 or equivalent",
         "gpu": "GeForce GTX 670 / Radeon HD 7970",
-        "ram": "8 GB RAM",
-        "storage": "2 GB available space"
+        "ram": "8 GB de RAM",
+        "storage": "2 GB de espacio disponible"
       },
-      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co2pow.jpg",
+      "coverUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1210320/library_600x900.jpg",
       "platformVariants": [
         {
           "platformSlug": "pc",
           "sizeValue": 2,
           "sizeUnit": "GB",
           "minimumRequirements": {
-            "os": "Windows 10",
+            "os": "GeForce GTX 670 / Radeon HD 7970",
             "cpu": "Intel i3-6100 or equivalent",
             "gpu": "GeForce GTX 670 / Radeon HD 7970",
-            "ram": "8 GB RAM",
-            "storage": "2 GB available space"
+            "ram": "8 GB de RAM",
+            "storage": "2 GB de espacio disponible"
           },
           "recommendedRequirements": {
-            "os": "Windows 10",
+            "os": "GeForce GTX 670 / Radeon HD 7970",
             "cpu": "Intel i3-6100 or equivalent",
             "gpu": "GeForce GTX 670 / Radeon HD 7970",
-            "ram": "8 GB RAM",
-            "storage": "2 GB available space"
+            "ram": "8 GB de RAM",
+            "storage": "2 GB de espacio disponible"
           },
           "provenance": {
             "source": "steam",
@@ -2023,7 +2073,7 @@
     {
       "title": "chasm",
       "slug": "chasm",
-      "description": "Prepare for terror in this ground-breaking classic old-school FPS. Following the destruction of Time you are left to battle in this horrific hellhole of multilevel interconnected missions populated by gruesome grotesque creatures.",
+      "description": "Siente el miedo en este revolucionario juego clásico de disparos en primera persona. Después de la destrucción del tiempo, tu única baza pasa por combatir en una espeluznante cueva con misiones interconectadas y horripilantes criaturas grotescas.",
       "releaseYear": 2018,
       "developer": "Action Forms, General Arcade",
       "publisher": "SNEG",
@@ -2039,38 +2089,38 @@
       "sizeValue": 2,
       "sizeUnit": "GB",
       "minimumRequirements": {
-        "os": "64-bit Windows 10 / 11",
+        "os": "DirectX 11 compatible for 1920x1080",
         "cpu": "Dual Core 2Ghz Processor",
         "gpu": "DirectX 11 compatible for 1920x1080",
-        "ram": "4 GB RAM",
-        "storage": "2 GB available space"
+        "ram": "4 GB de RAM",
+        "storage": "2 GB de espacio disponible"
       },
       "recommendedRequirements": {
-        "os": "64-bit Windows 10 / 11",
+        "os": "GeForce GTX 950 / Radeon R7 370 for 4K",
         "cpu": "Intel Core i5 / AMD Ryzen 5 Processor",
         "gpu": "GeForce GTX 950 / Radeon R7 370 for 4K",
-        "ram": "4 GB RAM",
-        "storage": "2 GB available space"
+        "ram": "4 GB de RAM",
+        "storage": "2 GB de espacio disponible"
       },
-      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co1r6k.jpg",
+      "coverUrl": "https://cdn.akamai.steamstatic.com/steam/apps/2061230/library_600x900.jpg",
       "platformVariants": [
         {
           "platformSlug": "pc",
           "sizeValue": 2,
           "sizeUnit": "GB",
           "minimumRequirements": {
-            "os": "64-bit Windows 10 / 11",
+            "os": "DirectX 11 compatible for 1920x1080",
             "cpu": "Dual Core 2Ghz Processor",
             "gpu": "DirectX 11 compatible for 1920x1080",
-            "ram": "4 GB RAM",
-            "storage": "2 GB available space"
+            "ram": "4 GB de RAM",
+            "storage": "2 GB de espacio disponible"
           },
           "recommendedRequirements": {
-            "os": "64-bit Windows 10 / 11",
+            "os": "GeForce GTX 950 / Radeon R7 370 for 4K",
             "cpu": "Intel Core i5 / AMD Ryzen 5 Processor",
             "gpu": "GeForce GTX 950 / Radeon R7 370 for 4K",
-            "ram": "4 GB RAM",
-            "storage": "2 GB available space"
+            "ram": "4 GB de RAM",
+            "storage": "2 GB de espacio disponible"
           },
           "provenance": {
             "source": "steam",
@@ -2120,7 +2170,7 @@
     {
       "title": "Naruto Shippuden Ultimate Ninja STORM 2",
       "slug": "naruto-shippuden-ultimate-ninja-storm-2",
-      "description": "NARUTO SHIPPUDEN: Ultimate Ninja STORM 2 is a tour de force of Naruto thrills and spills. Impressively faithful to the universe of the anime, the game takes players through the Shippuden story arc. Ultimate Ninja STORM 2 has been remastered in HD.",
+      "description": "NARUTO SHIPPUDEN: Ultimate Ninja STORM 2 contiene toda la emoción de Naruto. Representa con gran fidelidad el universo del anime y permite a los jugadores disfrutar de la trama de Shippuden. Ultimate Ninja STORM 2 ha sido remasterizado en alta definición.",
       "releaseYear": 2010,
       "developer": "CyberConnect2 Co. Ltd.",
       "publisher": "BANDAI NAMCO Entertainment",
@@ -2135,34 +2185,38 @@
       "sizeValue": 8,
       "sizeUnit": "GB",
       "minimumRequirements": {
+        "os": "1024 MB video card",
         "cpu": "Intel Core2 Duo, 3.0GHz - AMD Athlon 64 X2 Dual Core 6400+ 3.2GHz",
         "gpu": "1024 MB video card",
-        "ram": "2 GB RAM",
-        "storage": "8 GB available space"
+        "ram": "2 GB de RAM",
+        "storage": "8 GB de espacio disponible"
       },
       "recommendedRequirements": {
+        "os": "1024 MB video card",
         "cpu": "Intel Core2 Duo, 3.0GHz - AMD Athlon 64 X2 Dual Core 6400+ 3.2GHz",
         "gpu": "1024 MB video card",
-        "ram": "2 GB RAM",
-        "storage": "8 GB available space"
+        "ram": "2 GB de RAM",
+        "storage": "8 GB de espacio disponible"
       },
-      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co2ssk.jpg",
+      "coverUrl": "https://cdn.akamai.steamstatic.com/steam/apps/543870/header.jpg",
       "platformVariants": [
         {
           "platformSlug": "pc",
           "sizeValue": 8,
           "sizeUnit": "GB",
           "minimumRequirements": {
+            "os": "1024 MB video card",
             "cpu": "Intel Core2 Duo, 3.0GHz - AMD Athlon 64 X2 Dual Core 6400+ 3.2GHz",
             "gpu": "1024 MB video card",
-            "ram": "2 GB RAM",
-            "storage": "8 GB available space"
+            "ram": "2 GB de RAM",
+            "storage": "8 GB de espacio disponible"
           },
           "recommendedRequirements": {
+            "os": "1024 MB video card",
             "cpu": "Intel Core2 Duo, 3.0GHz - AMD Athlon 64 X2 Dual Core 6400+ 3.2GHz",
             "gpu": "1024 MB video card",
-            "ram": "2 GB RAM",
-            "storage": "8 GB available space"
+            "ram": "2 GB de RAM",
+            "storage": "8 GB de espacio disponible"
           },
           "provenance": {
             "source": "steam",
@@ -2177,7 +2231,7 @@
     {
       "title": "dota 2 beta lan",
       "slug": "dota-2-beta-lan",
-      "description": "Every day, millions of players worldwide enter battle as one of over a hundred Dota heroes. And no matter if it's their 10th hour of play or 1,000th, there's always something new to discover. With regular updates that ensure a constant evolution of gameplay, features, and heroes, Dota 2 has taken on a life of its own.",
+      "description": "Cada día, millones de jugadores de todo el mundo entran en batalla como uno de los más de cien héroes de Dota. Y no importa si es su décima hora de juego o la milésima, siempre hay algo nuevo que descubrir.",
       "releaseYear": 2013,
       "developer": "Valve",
       "publisher": "Valve",
@@ -2190,34 +2244,38 @@
       "sizeValue": 60,
       "sizeUnit": "GB",
       "minimumRequirements": {
-        "cpu": "Dual core from Intel or AMD at 2.8 GHz",
+        "os": "NVIDIA GeForce 8600/9600GT, ATI/AMD Radeon HD2600/3600",
+        "cpu": "Intel o AMD de doble núcleo a 2,8 GHz",
         "gpu": "NVIDIA GeForce 8600/9600GT, ATI/AMD Radeon HD2600/3600",
-        "ram": "4 GB RAM",
-        "storage": "60 GB available space"
+        "ram": "4 GB de RAM",
+        "storage": "60 GB de espacio disponible"
       },
       "recommendedRequirements": {
-        "cpu": "Dual core from Intel or AMD at 2.8 GHz",
+        "os": "NVIDIA GeForce 8600/9600GT, ATI/AMD Radeon HD2600/3600",
+        "cpu": "Intel o AMD de doble núcleo a 2,8 GHz",
         "gpu": "NVIDIA GeForce 8600/9600GT, ATI/AMD Radeon HD2600/3600",
-        "ram": "4 GB RAM",
-        "storage": "60 GB available space"
+        "ram": "4 GB de RAM",
+        "storage": "60 GB de espacio disponible"
       },
-      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/cobfk4.jpg",
+      "coverUrl": "https://cdn.akamai.steamstatic.com/steam/apps/570/library_600x900.jpg",
       "platformVariants": [
         {
           "platformSlug": "pc",
           "sizeValue": 60,
           "sizeUnit": "GB",
           "minimumRequirements": {
-            "cpu": "Dual core from Intel or AMD at 2.8 GHz",
+            "os": "NVIDIA GeForce 8600/9600GT, ATI/AMD Radeon HD2600/3600",
+            "cpu": "Intel o AMD de doble núcleo a 2,8 GHz",
             "gpu": "NVIDIA GeForce 8600/9600GT, ATI/AMD Radeon HD2600/3600",
-            "ram": "4 GB RAM",
-            "storage": "60 GB available space"
+            "ram": "4 GB de RAM",
+            "storage": "60 GB de espacio disponible"
           },
           "recommendedRequirements": {
-            "cpu": "Dual core from Intel or AMD at 2.8 GHz",
+            "os": "NVIDIA GeForce 8600/9600GT, ATI/AMD Radeon HD2600/3600",
+            "cpu": "Intel o AMD de doble núcleo a 2,8 GHz",
             "gpu": "NVIDIA GeForce 8600/9600GT, ATI/AMD Radeon HD2600/3600",
-            "ram": "4 GB RAM",
-            "storage": "60 GB available space"
+            "ram": "4 GB de RAM",
+            "storage": "60 GB de espacio disponible"
           },
           "provenance": {
             "source": "steam",
@@ -2232,7 +2290,7 @@
     {
       "title": "Demolish And Build 2017",
       "slug": "demolish-and-build-2017",
-      "description": "Become a boss of Demolition & Build company. Destroy small wooden huts and huge concrete buildings. Manage your workers. Invest earned cash in your own land properties and rent them for profit in open sandbox world. Use various hand tools, buy new machines and customize their parts.",
+      "description": "Toma el control de una empresa de construcción y demolición. Destruye distintos tipos de construcciones, desde casas de madera hasta gigantescos edificios de oficinas. Invierte el dinero conseguido en tus propios proyectos de construcción para luego conseguir beneficios alquilándolos.",
       "releaseYear": 2016,
       "developer": "Noble Muffins",
       "publisher": "Demolish Games S.A.",
@@ -2244,38 +2302,38 @@
       "sizeValue": 15,
       "sizeUnit": "GB",
       "minimumRequirements": {
-        "os": "7/8/8.1/10",
+        "os": "GeForce GTX 560 or Radeon HD6870 with 1GB VRAM",
         "cpu": "Core i3 3.1 GHz or AMD Phenom II X3 2.8 GHz",
         "gpu": "GeForce GTX 560 or Radeon HD6870 with 1GB VRAM",
-        "ram": "4 GB RAM",
-        "storage": "15 GB available space"
+        "ram": "4 GB de RAM",
+        "storage": "15 GB de espacio disponible"
       },
       "recommendedRequirements": {
-        "os": "7/8/8.1/10",
+        "os": "GeForce GTX 670 or Radeon HD7970 with 2 GB VRAM",
         "cpu": "Core i5-2300 / AMD Athlon X4 760K or better",
         "gpu": "GeForce GTX 670 or Radeon HD7970 with 2 GB VRAM",
-        "ram": "8 GB RAM",
-        "storage": "15 GB available space"
+        "ram": "8 GB de RAM",
+        "storage": "15 GB de espacio disponible"
       },
-      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co2pw7.jpg",
+      "coverUrl": "https://cdn.akamai.steamstatic.com/steam/apps/470740/header.jpg",
       "platformVariants": [
         {
           "platformSlug": "pc",
           "sizeValue": 15,
           "sizeUnit": "GB",
           "minimumRequirements": {
-            "os": "7/8/8.1/10",
+            "os": "GeForce GTX 560 or Radeon HD6870 with 1GB VRAM",
             "cpu": "Core i3 3.1 GHz or AMD Phenom II X3 2.8 GHz",
             "gpu": "GeForce GTX 560 or Radeon HD6870 with 1GB VRAM",
-            "ram": "4 GB RAM",
-            "storage": "15 GB available space"
+            "ram": "4 GB de RAM",
+            "storage": "15 GB de espacio disponible"
           },
           "recommendedRequirements": {
-            "os": "7/8/8.1/10",
+            "os": "GeForce GTX 670 or Radeon HD7970 with 2 GB VRAM",
             "cpu": "Core i5-2300 / AMD Athlon X4 760K or better",
             "gpu": "GeForce GTX 670 or Radeon HD7970 with 2 GB VRAM",
-            "ram": "8 GB RAM",
-            "storage": "15 GB available space"
+            "ram": "8 GB de RAM",
+            "storage": "15 GB de espacio disponible"
           },
           "provenance": {
             "source": "steam",
@@ -2290,7 +2348,7 @@
     {
       "title": "God Eater 2 Rage Burst",
       "slug": "god-eater-2-rage-burst",
-      "description": "Swear your oath as a GOD EATER and drive back the supernatural harbingers of Earth’s destruction. Buy GOD EATER 2 Rage Burst and get GOD EATER Resurrection FOR FREE",
+      "description": "Presta juramento como GOD EATER y acaba con los heraldos sobrenaturales de la aniquilación terrestre. ¡Con la compra de GOD EATER 2 Rage Burst conseguirás GOD EATER Resurrection GRATIS!",
       "releaseYear": 2015,
       "developer": "BANDAI NAMCO Studio, SHIFT, QLOC",
       "publisher": "BANDAI NAMCO Entertainment",
@@ -2303,34 +2361,38 @@
       "sizeValue": 15,
       "sizeUnit": "GB",
       "minimumRequirements": {
+        "os": "NVIDIA GeForce 9800 GT 1GB / AMD Radeon HD 6670",
         "cpu": "Intel Core 2 Duo E7500 2.93 GHz / AMD Athlon 64 X2 Dual Core Processor 5600+ 2.9GHz",
         "gpu": "NVIDIA GeForce 9800 GT 1GB / AMD Radeon HD 6670",
-        "ram": "3 GB RAM",
-        "storage": "15 GB available space"
+        "ram": "3 GB de RAM",
+        "storage": "15 GB de espacio disponible"
       },
       "recommendedRequirements": {
+        "os": "GEFORCE GTX560 1GB / AMD Radeon HD 6850 1 GB",
         "cpu": "Intel Core i3 4130 3.4 GHZ / AMD FX-4100 Quad-Core Processor 3.6GHz",
         "gpu": "GEFORCE GTX560 1GB / AMD Radeon HD 6850 1 GB",
-        "ram": "8 GB RAM",
-        "storage": "15 GB available space"
+        "ram": "8 GB de RAM",
+        "storage": "15 GB de espacio disponible"
       },
-      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co1nmt.jpg",
+      "coverUrl": "https://cdn.akamai.steamstatic.com/steam/apps/438490/header.jpg",
       "platformVariants": [
         {
           "platformSlug": "pc",
           "sizeValue": 15,
           "sizeUnit": "GB",
           "minimumRequirements": {
+            "os": "NVIDIA GeForce 9800 GT 1GB / AMD Radeon HD 6670",
             "cpu": "Intel Core 2 Duo E7500 2.93 GHz / AMD Athlon 64 X2 Dual Core Processor 5600+ 2.9GHz",
             "gpu": "NVIDIA GeForce 9800 GT 1GB / AMD Radeon HD 6670",
-            "ram": "3 GB RAM",
-            "storage": "15 GB available space"
+            "ram": "3 GB de RAM",
+            "storage": "15 GB de espacio disponible"
           },
           "recommendedRequirements": {
+            "os": "GEFORCE GTX560 1GB / AMD Radeon HD 6850 1 GB",
             "cpu": "Intel Core i3 4130 3.4 GHZ / AMD FX-4100 Quad-Core Processor 3.6GHz",
             "gpu": "GEFORCE GTX560 1GB / AMD Radeon HD 6850 1 GB",
-            "ram": "8 GB RAM",
-            "storage": "15 GB available space"
+            "ram": "8 GB de RAM",
+            "storage": "15 GB de espacio disponible"
           },
           "provenance": {
             "source": "steam",
@@ -2345,7 +2407,7 @@
     {
       "title": "Gears of War 5",
       "slug": "gears-of-war-5",
-      "description": "From one of gaming’s most acclaimed sagas, Gears is bigger than ever. With all-out war descending, Kait Diaz breaks away to uncover her connection to the enemy and discovers the true danger to Sera – herself.",
+      "description": "Llega la nueva entrega de Gears, una de las sagas más aclamadas de la industria, y lo hace a lo grande. En medio de una guerra sin cuartel, Kait Diaz se marcha para desentrañar su conexión con el enemigo y descubrir la auténtica amenaza para Sera: ella misma.",
       "releaseYear": 2019,
       "developer": "The Coalition",
       "publisher": "Xbox Game Studios",
@@ -2358,36 +2420,38 @@
       "sizeValue": 80,
       "sizeUnit": "GB",
       "minimumRequirements": {
+        "os": "AMD Radeon R9 280 | NVIDIA GeForce GTX 760 (Windows 10) | NVIDIA GeForce GTX 1050 (Windows 7)",
         "cpu": "AMD FX-6000 series | Intel i3 Skylake",
         "gpu": "AMD Radeon R9 280 | NVIDIA GeForce GTX 760 (Windows 10) | NVIDIA GeForce GTX 1050 (Windows 7)",
-        "ram": "8 GB RAM",
-        "storage": "80 GB available space"
+        "ram": "8 GB de RAM",
+        "storage": "80 GB de espacio disponible"
       },
       "recommendedRequirements": {
-        "os": "Windows 10 64-bit",
+        "os": "AMD Radeon RX 570 | NVIDIA GeForce GTX 970 (Windows 10) | NVIDIA GeForce GTX 1660ti (Windows 7)",
         "cpu": "AMD Ryzen 3 | Intel i5 Skylake",
         "gpu": "AMD Radeon RX 570 | NVIDIA GeForce GTX 970 (Windows 10) | NVIDIA GeForce GTX 1660ti (Windows 7)",
-        "ram": "8 GB RAM",
-        "storage": "80 GB available space"
+        "ram": "8 GB de RAM",
+        "storage": "80 GB de espacio disponible"
       },
-      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co2oz5.jpg",
+      "coverUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1097840/library_600x900.jpg",
       "platformVariants": [
         {
           "platformSlug": "pc",
           "sizeValue": 80,
           "sizeUnit": "GB",
           "minimumRequirements": {
+            "os": "AMD Radeon R9 280 | NVIDIA GeForce GTX 760 (Windows 10) | NVIDIA GeForce GTX 1050 (Windows 7)",
             "cpu": "AMD FX-6000 series | Intel i3 Skylake",
             "gpu": "AMD Radeon R9 280 | NVIDIA GeForce GTX 760 (Windows 10) | NVIDIA GeForce GTX 1050 (Windows 7)",
-            "ram": "8 GB RAM",
-            "storage": "80 GB available space"
+            "ram": "8 GB de RAM",
+            "storage": "80 GB de espacio disponible"
           },
           "recommendedRequirements": {
-            "os": "Windows 10 64-bit",
+            "os": "AMD Radeon RX 570 | NVIDIA GeForce GTX 970 (Windows 10) | NVIDIA GeForce GTX 1660ti (Windows 7)",
             "cpu": "AMD Ryzen 3 | Intel i5 Skylake",
             "gpu": "AMD Radeon RX 570 | NVIDIA GeForce GTX 970 (Windows 10) | NVIDIA GeForce GTX 1660ti (Windows 7)",
-            "ram": "8 GB RAM",
-            "storage": "80 GB available space"
+            "ram": "8 GB de RAM",
+            "storage": "80 GB de espacio disponible"
           },
           "provenance": {
             "source": "steam",
@@ -2402,7 +2466,7 @@
     {
       "title": "Portal 2",
       "slug": "portal-2",
-      "description": "The \"Perpetual Testing Initiative\" has been expanded to allow you to design co-op puzzles for you and your friends!",
+      "description": "¡La «Iniciativa de Prueba Perpetua» se ha ampliado, permitiéndote ahora diseñar puzles cooperativos para ti y tus amigos!",
       "releaseYear": 2011,
       "developer": "Valve",
       "publisher": "Valve",
@@ -2417,34 +2481,38 @@
       "sizeValue": 8,
       "sizeUnit": "GB",
       "minimumRequirements": {
-        "cpu": "3.0 GHz P4, Dual Core 2.0 (or higher) or AMD64X2 (or higher)",
-        "gpu": "Video card must be 128 MB or more and with support for Pixel Shader 2.0b (ATI Radeon X800 or higher / NVIDIA GeForce 7600 or higher / Intel HD Graphic",
-        "ram": "2 GB RAM",
-        "storage": "8 GB available space"
+        "os": "La tarjeta gráfica debe tener un tamaño de 128 MB como mínimo y ser compatible con Pixel Shader 2",
+        "cpu": "P4 a 3,0 GHz, doble núcleo a 2,0 GHz (o superior) o AMD64 X2 (o superior)",
+        "gpu": "La tarjeta gráfica debe tener un tamaño de 128 MB como mínimo y ser compatible con Pixel Shader 2.0b (ATI Radeon X800 o superior / NVIDIA GeForce 7600",
+        "ram": "2 GB de RAM",
+        "storage": "8 GB de espacio disponible"
       },
       "recommendedRequirements": {
-        "cpu": "3.0 GHz P4, Dual Core 2.0 (or higher) or AMD64X2 (or higher)",
-        "gpu": "Video card must be 128 MB or more and with support for Pixel Shader 2.0b (ATI Radeon X800 or higher / NVIDIA GeForce 7600 or higher / Intel HD Graphic",
-        "ram": "2 GB RAM",
-        "storage": "8 GB available space"
+        "os": "La tarjeta gráfica debe tener un tamaño de 128 MB como mínimo y ser compatible con Pixel Shader 2",
+        "cpu": "P4 a 3,0 GHz, doble núcleo a 2,0 GHz (o superior) o AMD64 X2 (o superior)",
+        "gpu": "La tarjeta gráfica debe tener un tamaño de 128 MB como mínimo y ser compatible con Pixel Shader 2.0b (ATI Radeon X800 o superior / NVIDIA GeForce 7600",
+        "ram": "2 GB de RAM",
+        "storage": "8 GB de espacio disponible"
       },
-      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co1rs4.jpg",
+      "coverUrl": "https://cdn.akamai.steamstatic.com/steam/apps/620/library_600x900.jpg",
       "platformVariants": [
         {
           "platformSlug": "pc",
           "sizeValue": 8,
           "sizeUnit": "GB",
           "minimumRequirements": {
-            "cpu": "3.0 GHz P4, Dual Core 2.0 (or higher) or AMD64X2 (or higher)",
-            "gpu": "Video card must be 128 MB or more and with support for Pixel Shader 2.0b (ATI Radeon X800 or higher / NVIDIA GeForce 7600 or higher / Intel HD Graphic",
-            "ram": "2 GB RAM",
-            "storage": "8 GB available space"
+            "os": "La tarjeta gráfica debe tener un tamaño de 128 MB como mínimo y ser compatible con Pixel Shader 2",
+            "cpu": "P4 a 3,0 GHz, doble núcleo a 2,0 GHz (o superior) o AMD64 X2 (o superior)",
+            "gpu": "La tarjeta gráfica debe tener un tamaño de 128 MB como mínimo y ser compatible con Pixel Shader 2.0b (ATI Radeon X800 o superior / NVIDIA GeForce 7600",
+            "ram": "2 GB de RAM",
+            "storage": "8 GB de espacio disponible"
           },
           "recommendedRequirements": {
-            "cpu": "3.0 GHz P4, Dual Core 2.0 (or higher) or AMD64X2 (or higher)",
-            "gpu": "Video card must be 128 MB or more and with support for Pixel Shader 2.0b (ATI Radeon X800 or higher / NVIDIA GeForce 7600 or higher / Intel HD Graphic",
-            "ram": "2 GB RAM",
-            "storage": "8 GB available space"
+            "os": "La tarjeta gráfica debe tener un tamaño de 128 MB como mínimo y ser compatible con Pixel Shader 2",
+            "cpu": "P4 a 3,0 GHz, doble núcleo a 2,0 GHz (o superior) o AMD64 X2 (o superior)",
+            "gpu": "La tarjeta gráfica debe tener un tamaño de 128 MB como mínimo y ser compatible con Pixel Shader 2.0b (ATI Radeon X800 o superior / NVIDIA GeForce 7600",
+            "ram": "2 GB de RAM",
+            "storage": "8 GB de espacio disponible"
           },
           "provenance": {
             "source": "steam",
@@ -2494,7 +2562,7 @@
     {
       "title": "Mark of the Ninja Remastered",
       "slug": "mark-of-the-ninja-remastered",
-      "description": "In Mark of the Ninja, you'll know what it is to truly be a ninja. You must be silent, agile and clever to outwit your opponents in a world of gorgeous scenery and flowing animation.",
+      "description": "En Mark of the Ninja Remastered descubrirás lo que es ser un auténtico ninja.",
       "releaseYear": 2018,
       "developer": "Klei Entertainment",
       "publisher": "Klei Entertainment",
@@ -2507,34 +2575,38 @@
       "sizeValue": 8,
       "sizeUnit": "GB",
       "minimumRequirements": {
+        "os": "Nvidia GeForce GT720 or AMD Radeon R7770 (1 GB)",
         "cpu": "Intel Core 2 Duo 2.4GHz processor (E6600)",
         "gpu": "Nvidia GeForce GT720 or AMD Radeon R7770 (1 GB)",
-        "ram": "4 GB RAM",
-        "storage": "8 GB available space"
+        "ram": "4 GB de RAM",
+        "storage": "8 GB de espacio disponible"
       },
       "recommendedRequirements": {
+        "os": "Nvidia GeForce GT720 or AMD Radeon R7770 (1 GB)",
         "cpu": "Intel Core 2 Duo 2.4GHz processor (E6600)",
         "gpu": "Nvidia GeForce GT720 or AMD Radeon R7770 (1 GB)",
-        "ram": "4 GB RAM",
-        "storage": "8 GB available space"
+        "ram": "4 GB de RAM",
+        "storage": "8 GB de espacio disponible"
       },
-      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/cob89e.jpg",
+      "coverUrl": "https://cdn.akamai.steamstatic.com/steam/apps/860950/library_600x900.jpg",
       "platformVariants": [
         {
           "platformSlug": "pc",
           "sizeValue": 8,
           "sizeUnit": "GB",
           "minimumRequirements": {
+            "os": "Nvidia GeForce GT720 or AMD Radeon R7770 (1 GB)",
             "cpu": "Intel Core 2 Duo 2.4GHz processor (E6600)",
             "gpu": "Nvidia GeForce GT720 or AMD Radeon R7770 (1 GB)",
-            "ram": "4 GB RAM",
-            "storage": "8 GB available space"
+            "ram": "4 GB de RAM",
+            "storage": "8 GB de espacio disponible"
           },
           "recommendedRequirements": {
+            "os": "Nvidia GeForce GT720 or AMD Radeon R7770 (1 GB)",
             "cpu": "Intel Core 2 Duo 2.4GHz processor (E6600)",
             "gpu": "Nvidia GeForce GT720 or AMD Radeon R7770 (1 GB)",
-            "ram": "4 GB RAM",
-            "storage": "8 GB available space"
+            "ram": "4 GB de RAM",
+            "storage": "8 GB de espacio disponible"
           },
           "provenance": {
             "source": "steam",
@@ -2561,34 +2633,38 @@
       "sizeValue": 10,
       "sizeUnit": "GB",
       "minimumRequirements": {
+        "os": "Radeon X1800/ Nvidia GeForce 7600GT",
         "cpu": "Intel 2GHz Core2 Duo / AMD Athlon 64 x2 2.4GHz",
         "gpu": "Radeon X1800/ Nvidia GeForce 7600GT",
-        "ram": "3 GB RAM",
-        "storage": "10 GB available space"
+        "ram": "3 GB de RAM",
+        "storage": "10 GB de espacio disponible"
       },
       "recommendedRequirements": {
+        "os": "Nvidia GeForce GTX 260",
         "cpu": "Intel Core2 Quad 2.33GHz",
         "gpu": "Nvidia GeForce GTX 260",
-        "ram": "4 GB RAM",
-        "storage": "10 GB available space"
+        "ram": "4 GB de RAM",
+        "storage": "10 GB de espacio disponible"
       },
-      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co22lr.jpg",
+      "coverUrl": "https://cdn.akamai.steamstatic.com/steam/apps/288470/library_600x900.jpg",
       "platformVariants": [
         {
           "platformSlug": "pc",
           "sizeValue": 10,
           "sizeUnit": "GB",
           "minimumRequirements": {
+            "os": "Radeon X1800/ Nvidia GeForce 7600GT",
             "cpu": "Intel 2GHz Core2 Duo / AMD Athlon 64 x2 2.4GHz",
             "gpu": "Radeon X1800/ Nvidia GeForce 7600GT",
-            "ram": "3 GB RAM",
-            "storage": "10 GB available space"
+            "ram": "3 GB de RAM",
+            "storage": "10 GB de espacio disponible"
           },
           "recommendedRequirements": {
+            "os": "Nvidia GeForce GTX 260",
             "cpu": "Intel Core2 Quad 2.33GHz",
             "gpu": "Nvidia GeForce GTX 260",
-            "ram": "4 GB RAM",
-            "storage": "10 GB available space"
+            "ram": "4 GB de RAM",
+            "storage": "10 GB de espacio disponible"
           },
           "provenance": {
             "source": "steam",
@@ -2616,32 +2692,32 @@
         "accion",
         "estrategia"
       ],
-      "sizeValue": 300,
+      "sizeValue": 0.3,
       "sizeUnit": "GB",
       "minimumRequirements": {
-        "storage": "300 MB available space"
+        "storage": "300 MB de espacio disponible"
       },
       "recommendedRequirements": {
-        "storage": "300 MB available space"
+        "storage": "300 MB de espacio disponible"
       },
-      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/g0whm2zpztk4g3mwpzo4.jpg",
+      "coverUrl": "https://cdn.akamai.steamstatic.com/steam/apps/533750/header.jpg",
       "platformVariants": [
         {
           "platformSlug": "pc",
-          "sizeValue": 300,
+          "sizeValue": 0.3,
           "sizeUnit": "GB",
           "minimumRequirements": {
-            "storage": "300 MB available space"
+            "storage": "300 MB de espacio disponible"
           },
           "recommendedRequirements": {
-            "storage": "300 MB available space"
+            "storage": "300 MB de espacio disponible"
           },
           "provenance": {
             "source": "steam",
             "sourceUrl": "https://store.steampowered.com/app/533750/",
             "confidence": 1,
             "ingestedAt": "2026-10-21",
-            "notes": "Tamano 300 GB y requisitos extraidos de pc_requirements de la Steam store."
+            "notes": "Tamano 0.3 GB y requisitos extraidos de pc_requirements de la Steam store."
           }
         }
       ]
