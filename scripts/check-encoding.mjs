@@ -1,6 +1,18 @@
 import { readdirSync, readFileSync, statSync } from 'node:fs';
 import { join, relative } from 'node:path';
 
+// Gate de encoding: detecta mojibake (UTF-8 reescrito por PowerShell en ANSI, etc.).
+// Enfoque por SEÑALES:
+//   - Duras (exit 1): cirílico, griego, U+FFFD y las parejas mojibake, es decir un
+//     carácter de rango Ã/Ä/Å/â (U+00C0-00F4, la cabecera UTF-8 leída como CP1252)
+//     inmediatamente seguido de un byte de continuación leído como CP1252 (U+0080-00BF)
+//     o de Latin Extended (Š/Ÿ/Ž...). Ese patrón NO aparece en texto natural.
+//   - Aviso sin fallo (exit 0): Latin Extended SOLO, sin esa pareja. Son nombres
+//     legítimos muy comunes en créditos de juegos (Göktuğ, Łukasz, Jiří...).
+//     Antes esto bloqueaba con falsos positivos en catálogos grandes.
+// Limitación conocida: parejas mojibake cuya continuación cae en símbolos CP1252
+// (â€™, â‚¬...) no se detectan; para este repo el patrón de PowerShell ANSI sí cubre.
+
 const RAIZ = process.cwd();
 const IGNORAR = new Set([
   'node_modules',
@@ -12,12 +24,19 @@ const IGNORAR = new Set([
   'out',
 ]);
 
-const RANGOS_SOSPECHOSOS = [
-  [0x0100, 0x024f, 'Latin Extended (típico de mojibake GBK/CP1252)'],
-  [0x0370, 0x03ff, 'Griego (típico de mojibake UTF-8 leído como latin)'],
-  [0x0400, 0x04ff, 'Cirílico (típico de mojibake UTF-8 leído como latin)'],
-  [0xfffd, 0xfffd, 'caracteres de reemplazo U+FFFD'],
+const RANGOS_DUROS = [
+  [0x0370, 0x03ff, 'Griego (mojibake de UTF-8 leído como latin)'],
+  [0x0400, 0x04ff, 'Cirílico (mojibake de UTF-8 leído como latin)'],
+  [0xfffd, 0xfffd, 'carácter de reemplazo U+FFFD'],
 ];
+
+// Cabeceras UTF-8 al decodearse como CP1252 caen en Â-ô (Ã, Ä, ä...).
+const esCabecera = (c) => c >= 0x00c0 && c <= 0x00f4;
+// Bytes de continuación UTF-8 = 0x80-0xBF (parejas del tipo U+00C3+U+00A9,
+// U+00C3+U+00B6, U+00C4+U+0178). NO subir a 0xFF: en español legítimo sí hay
+// parejas altas seguidas (enseñándoles, ÁÉÍÓÚÜÑ).
+const esContinuacion = (c) => c >= 0x0080 && c <= 0x00bf;
+const esLatinExtended = (c) => c >= 0x0100 && c <= 0x024f;
 
 const EXTENSIONES = new Set(['.ts', '.tsx', '.js', '.mjs', '.cjs', '.css', '.md', '.json']);
 
@@ -40,47 +59,82 @@ function recorrer(dir) {
 
 function revisar(ruta) {
   const texto = readFileSync(ruta, 'utf8');
-  const Relative = relative(RAIZ, ruta);
-  const salida = [];
-  const vistas = new Set();
+  const relativa = relative(RAIZ, ruta);
+  const duros = [];
+  const avisos = [];
+  const vistos = new Set();
 
   texto.split(/\r?\n/).forEach((linea, indice) => {
-    for (const [desde, hasta, motivo] of RANGOS_SOSPECHOSOS) {
-      for (let i = 0; i < linea.length; i += 1) {
-        const codigo = linea.codePointAt(i);
-        if (codigo === undefined) continue;
-        if (codigo >= desde && codigo <= hasta && !vistas.has(codigo)) {
-          vistas.add(codigo);
-          salida.push({
-            fichero: Relative,
-            linea: indice + 1,
-            codigo: `U+${codigo.toString(16).toUpperCase().padStart(4, '0')}`,
-            motivo,
-            texto: linea.trim().slice(0, 90),
-          });
-        }
+    const puntos = Array.from(linea);
+    const codigo = (i) => (puntos[i] ? puntos[i].codePointAt(0) : undefined);
+
+    for (let i = 0; i < puntos.length; i += 1) {
+      const actual = codigo(i);
+      if (actual === undefined) continue;
+      const anterior = i > 0 ? codigo(i - 1) : undefined;
+
+      const registrar = (tipo, motivo) => {
+        const clave = `${tipo}:${actual}`;
+        if (vistos.has(clave)) return;
+        vistos.add(clave);
+        const hallazgo = {
+          fichero: relativa,
+          linea: indice + 1,
+          codigo: `U+${actual.toString(16).toUpperCase().padStart(4, '0')}`,
+          motivo,
+          texto: linea.trim().slice(0, 90),
+        };
+        (tipo === 'duro' ? duros : avisos).push(hallazgo);
+      };
+
+      // 1) Rangos siempre duros (cirílico, griego, U+FFFD).
+      for (const [desde, hasta, motivo] of RANGOS_DUROS) {
+        if (actual >= desde && actual <= hasta) registrar('duro', motivo);
+      }
+
+      // 2) Pareja mojibake: cabecera UTF-8 + continuación leídas como CP1252.
+      if (anterior !== undefined && esCabecera(anterior) && esContinuacion(actual)) {
+        registrar('duro', `pareja mojibake (U+${anterior.toString(16).toUpperCase()} + continuación): texto UTF-8 leído como ANSI`);
+      }
+      if (anterior !== undefined && esCabecera(anterior) && esLatinExtended(actual)) {
+        registrar('duro', `pareja mojibake (U+${anterior.toString(16).toUpperCase()} + Latin Extended): texto UTF-8 leído como ANSI`);
+      }
+
+      // 3) Latin Extended sin pareja: probable nombre legítimo -> solo aviso.
+      if (esLatinExtended(actual) && !(anterior !== undefined && esCabecera(anterior))) {
+        registrar('aviso', 'Latin Extended sin indicios de mojibake (probable nombre propio legítimo)');
       }
     }
   });
 
-  return salida;
+  return [...duros, ...avisos];
 }
 
 const hallazgos = recorrer(RAIZ);
+const errores = hallazgos.filter((h) => !h.motivo.startsWith('Latin Extended sin indicios'));
+const avisos = hallazgos.filter((h) => h.motivo.startsWith('Latin Extended sin indicios'));
 
-if (hallazgos.length === 0) {
-  console.log('OK: ningun fichero con mojibake (U+0100-024F, griego, cirilico, U+FFFD).');
+if (errores.length === 0 && avisos.length === 0) {
+  console.log('OK: ningun fichero con mojibake (parejas ANSI, griego, cirilico, U+FFFD).');
   process.exit(0);
 }
 
-console.log(`ATENCION: ${hallazgos.length} indicio(s) de texto corrompido:\n`);
-for (const h of hallazgos) {
-  console.log(`  ${h.fichero}:${h.linea}  ${h.codigo}  ${h.motivo}`);
-  console.log(`    ${h.texto}`);
+if (errores.length > 0) {
+  console.log(`ERROR: ${errores.length} indicio(s) de texto corrompido:\n`);
+  for (const h of errores) {
+    console.log(`  ${h.fichero}:${h.linea}  ${h.codigo}  ${h.motivo}`);
+    console.log(`    ${h.texto}`);
+  }
+  console.log(
+    '\nCausa habitual: reescribir un fichero UTF-8 con PowerShell (Get-Content -Raw lee con el',
+  );
+  console.log('ANSI del sistema y WriteAllText guarda el mojibake como UTF-8).');
+  console.log('Usa las herramientas edit/write, que preservan UTF-8.');
+  process.exit(1);
 }
-console.log(
-  '\nCausa habitual: reescribir un fichero UTF-8 con PowerShell (Get-Content -Raw lee con el',
-);
-console.log('ANSI del sistema y WriteAllText guarda el mojibake como UTF-8).');
-console.log('Usa las herramientas edit/write, que preservan UTF-8.');
-process.exit(1);
+
+if (avisos.length > 0) {
+  console.log(`OK con ${avisos.length} aviso(s): Latin Extended sin parejas de mojibake (nombres propios probables):`);
+  for (const h of avisos) console.log(`  ${h.fichero}:${h.linea}  ${h.codigo}  ${h.texto.slice(0, 70)}`);
+  process.exit(0);
+}
