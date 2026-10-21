@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { dt, hue, ini, nf, rel, shortId, slugify } from './format.ts';
+import { dt, fmtSize, hue, ini, nf, rel, shortId, slugify } from './format.ts';
 
 const NOW = Date.parse('2026-10-11T12:00:00Z');
 
@@ -43,6 +43,20 @@ test('nf formatea con separador de miles y máximo 2 decimales', () => {
   assert.equal(nf(1234.5), '1,234.5');
   assert.equal(nf(1234.5678), '1,234.57');
   assert.equal(nf(0), '0');
+});
+
+test('fmtSize pinta «—» sin tamaño en vez de «0 GB»', () => {
+  assert.equal(fmtSize(null, null), '—');
+  assert.equal(fmtSize(null, 'GB'), '—');
+  assert.equal(fmtSize(28.8, null), '—');
+  assert.equal(fmtSize(undefined, undefined), '—');
+});
+
+test('fmtSize formatea el tamaño cuando existe', () => {
+  assert.equal(fmtSize(28.8, 'GB'), '28.8 GB');
+  assert.equal(fmtSize(0.5, 'GB'), '0.5 GB');
+  assert.equal(fmtSize(500, 'MB'), '500 MB');
+  assert.equal(fmtSize(0, 'GB'), '0 GB');
 });
 
 test('hue deriva un tono estable del texto', () => {

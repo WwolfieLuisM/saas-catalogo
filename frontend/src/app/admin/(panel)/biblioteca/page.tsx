@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState, type ReactNode } from 'react';
 import Link from 'next/link';
 import { ApiError } from '@/lib/api/client';
 import { adminFetch, adminFetchPaged } from '@/lib/admin/adminApi';
-import { nf } from '@/lib/admin/format';
+import { fmtSize } from '@/lib/admin/format';
 import { priceFor, sizeToGb } from '@/lib/admin/preview';
 import { toast } from '@/lib/admin/toast';
 import type {
@@ -101,7 +101,7 @@ function LibAddModal({
       }
     >
       <p>
-        <b>{game.title}</b>, {nf(game.sizeValue)} {game.sizeUnit}
+        <b>{game.title}</b>, {fmtSize(game.sizeValue, game.sizeUnit)}
       </p>
       <div className="grid2" style={{ marginTop: '12px' }}>
         <Field label="Categoría">
@@ -343,7 +343,7 @@ export default function BibliotecaPage() {
                   {item.platforms.map((p) => p.name).join(', ') || '—'}
                 </div>
                 <div data-l="Tamaño">
-                  {nf(item.sizeValue)} {item.sizeUnit}
+                  {fmtSize(item.sizeValue, item.sizeUnit)}
                 </div>
                 <div className="ac">
                   {isSa ? (
