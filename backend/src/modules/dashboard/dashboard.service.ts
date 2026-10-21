@@ -76,6 +76,7 @@ export async function getDashboard(
     activeSessions,
     recentAuditEvents,
     catalog,
+    gamesWithoutSize,
   ] = await Promise.all([
     prisma.tenantGame.count({ where: { ...gameScope, deletedAt: null } }),
     prisma.tenantGame.count({ where: { ...gameScope, deletedAt: null, availability: true } }),
@@ -98,6 +99,9 @@ export async function getDashboard(
       },
     }),
     tenantId ? prisma.catalogMetadata.findUnique({ where: { tenantId } }) : Promise.resolve(null),
+    // 0 GB es el centinela de «sin tamaño»: un juego así no puede fijar precio
+    // por regla, así que se cuenta (los eliminados no cuentan).
+    prisma.baseGame.count({ where: { deletedAt: null, sizeValue: { lte: 0 } } }),
   ]);
 
   return {
@@ -111,5 +115,6 @@ export async function getDashboard(
     activeSessions,
     recentAuditEvents,
     catalogVersion: catalog?.version ?? null,
+    gamesWithoutSize,
   };
 }

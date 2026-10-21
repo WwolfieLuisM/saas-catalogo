@@ -4,6 +4,7 @@ import { afterAll, beforeAll, beforeEach, describe, expect, it, vi } from 'vites
 import { signAccessToken } from '../../src/modules/auth/auth.tokens.js';
 import {
   addFakeAuditLog,
+  addFakeBaseGame,
   addFakeCatalogMetadata,
   addFakeGameMedia,
   addFakeSession,
@@ -35,6 +36,7 @@ interface DashboardData {
   activeSessions: number;
   recentAuditEvents: number;
   catalogVersion: number | null;
+  gamesWithoutSize: number;
 }
 
 let server: Server;
@@ -236,6 +238,21 @@ beforeEach(() => {
     timestamp: new Date(Date.now() - 3600_000),
   });
 
+  addFakeBaseGame({
+    id: 'b-sin-tamano',
+    title: 'Sin tamano',
+    slug: 'sin-tamano',
+    sizeValue: 0,
+    sizeUnit: 'GB',
+  });
+  addFakeBaseGame({
+    id: 'b-con-tamano',
+    title: 'Con tamano',
+    slug: 'con-tamano',
+    sizeValue: 15,
+    sizeUnit: 'GB',
+  });
+
   addFakeCatalogMetadata({ id: 'c-javier', tenantId: TENANT_JAVIER, version: 7 });
 });
 
@@ -247,7 +264,7 @@ describe('GET /api/v1/admin/dashboard', () => {
     expect(body.error?.code).toBe('UNAUTHENTICATED');
   });
 
-  it('devuelve exactamente los 10 campos de la especificación para ADMIN', async () => {
+  it('devuelve exactamente los 11 campos de la especificación para ADMIN', async () => {
     const { status, body } = await api<DashboardData>('/api/v1/admin/dashboard', {}, adminToken);
 
     expect(status).toBe(200);
@@ -263,6 +280,7 @@ describe('GET /api/v1/admin/dashboard', () => {
         'activeSessions',
         'recentAuditEvents',
         'catalogVersion',
+        'gamesWithoutSize',
       ].sort(),
     );
   });
@@ -282,6 +300,7 @@ describe('GET /api/v1/admin/dashboard', () => {
       activeSessions: 1,
       recentAuditEvents: 1,
       catalogVersion: 7,
+      gamesWithoutSize: 1,
     });
   });
 
@@ -318,6 +337,7 @@ describe('GET /api/v1/admin/dashboard', () => {
       activeSessions: 1,
       recentAuditEvents: 1,
       catalogVersion: null,
+      gamesWithoutSize: 1,
     });
   });
 
@@ -336,6 +356,7 @@ describe('GET /api/v1/admin/dashboard', () => {
       activeSessions: 2,
       recentAuditEvents: 3,
       catalogVersion: null,
+      gamesWithoutSize: 1,
     });
   });
 
@@ -358,7 +379,26 @@ describe('GET /api/v1/admin/dashboard', () => {
       activeSessions: 1,
       recentAuditEvents: 1,
       catalogVersion: 7,
+      gamesWithoutSize: 1,
     });
+  });
+
+  it('cuenta los juegos de biblioteca con tamaño centinela 0 y omite los eliminados', async () => {
+    // 0 GB es el centinela de «sin tamaño» que guarda el importador porque la
+    // columna no admite null: esos juegos no pueden fijar precio por regla.
+    addFakeBaseGame({
+      id: 'b-eliminado',
+      title: 'Eliminado',
+      slug: 'eliminado',
+      sizeValue: 0,
+      sizeUnit: 'GB',
+      deletedAt: new Date(),
+    });
+
+    const { status, body } = await api<DashboardData>('/api/v1/admin/dashboard', {}, superToken);
+
+    expect(status).toBe(200);
+    expect(body.data?.gamesWithoutSize).toBe(1);
   });
 
   it('devuelve 422 si el tenant indicado no existe', async () => {
@@ -403,6 +443,7 @@ describe('GET /api/v1/admin/dashboard', () => {
       activeSessions: 0,
       recentAuditEvents: 0,
       catalogVersion: null,
+      gamesWithoutSize: 0,
     });
   });
 });

@@ -17,4 +17,5 @@ export interface DashboardData {
   activeSessions: number;
   recentAuditEvents: number;
   catalogVersion: number | null;
+  gamesWithoutSize: number;
 }

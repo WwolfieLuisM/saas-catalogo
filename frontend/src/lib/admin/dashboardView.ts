@@ -23,6 +23,7 @@ export interface DashboardData {
   availablePriceSum?: number;
   gamesWithoutCover?: number;
   priceChanges?: number;
+  gamesWithoutSize?: number;
 }
 
 export type DashboardRole = 'SUPER_ADMIN' | 'ADMIN';
@@ -91,6 +92,14 @@ export interface AttentionRow {
 
 export function attentionOf(d: DashboardData): AttentionRow[] {
   const rows: AttentionRow[] = [];
+  if (d.gamesWithoutSize) {
+    // El tamaño es la entrada de las reglas de precio: sin él no hay precio.
+    rows.push({
+      text: `${nf(d.gamesWithoutSize)} juego(s) sin tamaño en la biblioteca`,
+      href: '/admin/biblioteca',
+      action: 'Completar',
+    });
+  }
   if (d.catalogPending) {
     rows.push({
       text: `${nf(d.catalogPending)} cambio(s) sin publicar en el catálogo`,

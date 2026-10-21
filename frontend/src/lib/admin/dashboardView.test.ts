@@ -29,6 +29,7 @@ const sample: DashboardData = {
   availablePriceSum: 4500,
   gamesWithoutCover: 4,
   priceChanges: 2,
+  gamesWithoutSize: 11,
 };
 
 test('statsOf devuelve 7 filas para SUPER_ADMIN', () => {
@@ -110,6 +111,7 @@ test('attentionOf queda vacío sin incidencias', () => {
     catalogPending: 0,
     priceChanges: 0,
     gamesWithoutCover: 0,
+    gamesWithoutSize: 0,
     mediaErrors: 0,
     orphanMedia: 0,
   });
@@ -119,21 +121,37 @@ test('attentionOf queda vacío sin incidencias', () => {
 test('attentionOf lista hasta 5 filas en orden con enlace y acción', () => {
   const rows = attentionOf(sample);
   assert.equal(rows.length, 5);
-  assert.match(rows[0].text, /3 cambio\(s\) sin publicar/);
-  assert.equal(rows[0].href, '/admin/configuracion/catalogo');
-  assert.equal(rows[0].action, 'Publicar');
-  assert.match(rows[1].text, /2 juego\(s\) cambiarían de precio/);
-  assert.equal(rows[1].href, '/admin/configuracion/precios');
-  assert.equal(rows[1].action, 'Revisar');
-  assert.match(rows[2].text, /4 juego\(s\) sin portada/);
-  assert.equal(rows[2].href, '/admin/juegos');
-  assert.equal(rows[2].action, 'Ver juegos');
-  assert.match(rows[3].text, /1 archivo\(s\) huérfano\(s\)/);
-  assert.equal(rows[3].href, '/admin/media');
-  assert.equal(rows[3].action, 'Revisar');
-  assert.match(rows[4].text, /2 subida\(s\) fallida\(s\)/);
+  assert.match(rows[0].text, /11 juego\(s\) sin tamaño en la biblioteca/);
+  assert.equal(rows[0].href, '/admin/biblioteca');
+  assert.equal(rows[0].action, 'Completar');
+  assert.match(rows[1].text, /3 cambio\(s\) sin publicar/);
+  assert.equal(rows[1].href, '/admin/configuracion/catalogo');
+  assert.equal(rows[1].action, 'Publicar');
+  assert.match(rows[2].text, /2 juego\(s\) cambiarían de precio/);
+  assert.equal(rows[2].href, '/admin/configuracion/precios');
+  assert.equal(rows[2].action, 'Revisar');
+  assert.match(rows[3].text, /4 juego\(s\) sin portada/);
+  assert.equal(rows[3].href, '/admin/juegos');
+  assert.equal(rows[3].action, 'Ver juegos');
+  assert.match(rows[4].text, /1 archivo\(s\) huérfano\(s\)/);
   assert.equal(rows[4].href, '/admin/media');
-  assert.equal(rows[4].action, 'Reintentar');
+  assert.equal(rows[4].action, 'Revisar');
+});
+
+test('attentionOf incluye subidas fallidas aunque sea la única incidencia', () => {
+  const rows = attentionOf({
+    ...sample,
+    catalogPending: 0,
+    priceChanges: 0,
+    gamesWithoutSize: 0,
+    gamesWithoutCover: 0,
+    orphanMedia: 0,
+    mediaErrors: 3,
+  });
+  assert.equal(rows.length, 1);
+  assert.match(rows[0].text, /3 subida\(s\) fallida\(s\)/);
+  assert.equal(rows[0].href, '/admin/media');
+  assert.equal(rows[0].action, 'Reintentar');
 });
 
 test('attentionOf recorta a 5 filas como máximo', () => {
