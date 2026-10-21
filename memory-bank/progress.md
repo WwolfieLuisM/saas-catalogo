@@ -32,7 +32,7 @@
 - Documentación: `Decisiones-Arquitectonicas-v1.md`, `generador-impprtador.md`, `plan-detallado.md` (vigente), `plan.md`, `todo.md`, `dudas.md` §8/§9, memory-bank.
 
 ## In Progress
-- **Plan de importación del catálogo completo (Fases A–G): A cerrada y commiteada; parada a petición del usuario.** Esperando sus 2 validaciones (muestra de 60 y mapa de géneros) para arrancar la Fase B (enriquecimiento Steam nocturno del lote 1 + pase español).
+- **Fase B en marcha (2026-10-21 noche):** `scripts/enriquecer-steam.mjs` corriendo en segundo plano sobre los 943 del lote 1 (salida incremental `backend/scripts/steam-lote1.json`, reanudable); después RAWG de los sin-Steam con `scripts/enriquecer-rawg.mjs`.
 - **Fase 4 sigue en checkpoint:** código 4.1/4.3/4.4 ✅; pendientes demo con revisión humana, 4.5 contract (con bake time) y decisión `publishFromLibrary`.
 
 ## What's Left To Do
@@ -42,7 +42,8 @@
 - [ ] BUG-01.D (decisión) · decisión `publishFromLibrary` · demo/revisión humana de Fase 4.
 
 ## Known Issues
-- **Gate de la Fase B sin pasar:** `tasks/muestra-60-matched.csv` sin revisar (`correcto_SI_NO` vacía) y `tasks/mapa-generos-import.md` sin aprobar; no arrancar el enriquecimiento masivo sin ambas cosas.
+- **Bug del extractor ES corregido y reparado (2026-10-21):** `/OS\s*:/i` sin `\b` casaba dentro de «Gráficos:» → `os` = GPU en 37 juegos del JSON de 50; `scripts/corregir-requisitos-so.mjs` los reparó (VALIDO 50/50, rescan 0). Los enriquecedores nuevos ya llevan el `\b`.
+- **Gate de la Fase E (importar) sin pasar:** `tasks/muestra-60-matched.csv` sigue sin la columna `correcto_SI_NO` rellenada — el enriquecimiento (B) no lo necesita, pero sí la importación. Categoría `estrategia` (~385 juegos) sigue en `otros` pendiente de su decisión.
 - **Deuda real: `library-import-pilot.test.ts` 2 tests en rojo** (esperan 50 y el fixture local `backend/scripts/library-import.json` tiene 48); ver Next Steps 7 (cola posterior).
 - ~~**`tsc`: 4 errores de Fase 6**~~ cerrados en 6.2-C (typecheck backend y frontend a 0 desde 2026-10-16).
 - ~~**El panel no ejecuta la importación**~~ cerrado en 6.2-C: el usuario ya importó los 50.
