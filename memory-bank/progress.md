@@ -1,9 +1,16 @@
 # Progress
 
 ## Last Updated
-2026-10-16
+2026-10-21
 
 ## What Works
+- **2026-10-21 (bloque de tamaños y visibilidad, todo pusheado y verificado en producción):**
+  - `fbcc104` + `e55ef55`: el centinela «0 GB» se traduce a `null` (`presentSize`) → la biblioteca pinta «—» (verificado en navegador: 0 «0 GB» en la página, tamaños reales intactos).
+  - `867ee40`: dashboard con `gamesWithoutSize` y la fila «N juego(s) sin tamaño en la biblioteca · Completar» (primera de *Requiere atención*); verificado en producción con login.
+  - `13b78b9`: **9 tamaños reales** con procedencia en `tasks/library-import-50.json` (cobertura 39/50 → **48/50**; validador en `VALIDO — 50 registros listos para importar`), script idempotente `scripts/completar-tamanos.mjs`.
+  - Documentación: **`docs/enriquecimiento-datos.md`** (español): fuentes por orden de preferencia, endpoints exactos, regla de `provenance`, flujo operativo de 8 pasos y resultado.
+  - Gates: backend 796/798 (los 2 = deuda `library-import-pilot`), `tsc` 0, eslint 0; frontend **108/108**, `tsc` 0, lint 0 (2 warnings preexistentes en `feed/Catalog.tsx`).
+- **El importador ya opera desde el panel** (6.2-C): el usuario importó los 50 juegos (53 en biblioteca).
 - **Proyecto V1 (fases 0–2 originales) completadas y commiteadas (sin push)**: 5 commits (`4afb3dd`, `c0bd1b5`, `c623f5f`, `55895ac`, `321d77d`). Sin push → Render/cloudflared intactos.
 - **Plan V2 (plan-detallado.md): Fases 1–3 ejecutadas 2026-10-15:**
   - F1 schema expand aplicada a producción (migration_id `43a46578…`) + seed 6 globales + ps4 global + tests (10 nuevos).
@@ -30,15 +37,15 @@
 - [ ] BUG-01.D (decisión) · decisión `publishFromLibrary` · demo/revisión humana de Fase 4.
 
 ## Known Issues
-- **`tsc`: 4 errores (los de Fase 6,eran 7)** — los 3 de `data-transfer` cerrados en 6.2-B; quedan `seed.ts:246` · `games.service.ts:471,563,900` (creates sin `platformId` / `title` no null) → 6.2-C.
-- **El panel no ejecuta la importación:** `configuracion/datos` solo llama a `/admin/import/validate`; no hay botón que llame a `/import/run` → 6.2-C.
-- `game.shared.ts` tiene **acentos corruptos ya commiteados** (mensaje de `slugSchema` y los de `assertTaxonomyRefs`): es texto visible al usuario.
-- **Ventana de escrituras en producción** hasta push posterior: el código desplegado no puede crear TenantGame (NOT NULL platformId). Sin push sin permiso.
+- **Deuda real: `library-import-pilot.test.ts` 2 tests en rojo** (esperan 50 y el fixture local `backend/scripts/library-import.json` tiene 48); ver Next Steps 0d.
+- ~~**`tsc`: 4 errores de Fase 6**~~ cerrados en 6.2-C (typecheck backend y frontend a 0 desde 2026-10-16).
+- ~~**El panel no ejecuta la importación**~~ cerrado en 6.2-C: el usuario ya importó los 50.
+- ~~Árbol sin commitear desde `321d77d`~~ cerrado: desde entonces todo está commiteado y pusheado.
+- `game.shared.ts` tenía **acentos corruptos ya commiteados** (mensaje de `slugSchema` y `assertTaxonomyRefs`): comprobar si sigue así (es texto visible al usuario).
 - `LibraryMedia = 0` (ninguna portada de biblioteca global aún).
-- `node -e` arruinado en ocasiones (usar `.mjs`); sin `rg`; PowerShell sin `&&`; Neon HTTP driver sin multi-sentencia.
-- 16 juegos sin tamaño → `INCOMPLETE` (decisión §7.1) hasta Fase 10.
+- **2 fichas sin tamaño**: `starless-abyss` (sin fuente publicada) y `football-manager-2016` (JSON `null` a propósito; su valor vive en la BD).
+- `node -e` arruinado en ocasiones (usar `.mjs`); sin `rg`; PowerShell sin `&&`; Neon HTTP driver sin multi-sentencia; **`websearch` nativo con 403** → usar `lite.duckduckgo.com/lite/` vía `webfetch`.
 - Deuda README §15: conservar, no resolver en estas fases.
-- **Árbol sin commitear desde `321d77d`** (Fase 1 → 6.2A). Commit autorizado por el usuario al cerrar 6.2-B en verde, **aún no hecho**.
 
 ## Completed Milestones
 - Fase 0 (salvaguardas) · Fase 1 (feed) · Fase 2 (biblioteca global) V1 — commiteadas.
