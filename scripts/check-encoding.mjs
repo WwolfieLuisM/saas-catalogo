@@ -6,7 +6,9 @@ import { join, relative } from 'node:path';
 //   - Duras (exit 1): cirílico, griego, U+FFFD y las parejas mojibake, es decir un
 //     carácter de rango Ã/Ä/Å/â (U+00C0-00F4, la cabecera UTF-8 leída como CP1252)
 //     inmediatamente seguido de un byte de continuación leído como CP1252 (U+0080-00BF)
-//     o de Latin Extended (Š/Ÿ/Ž...). Ese patrón NO aparece en texto natural.
+//     o de Latin Extended producido por CP1252 desde 8A-9F (U+0160, U+0178...). El
+//     resto de Latin Extended tras cabecera (U+017C, U+0107...) es eslavo legitimo
+//     (nombres propios como Rozalski) y NO bloquea.
 //   - Aviso sin fallo (exit 0): Latin Extended SOLO, sin esa pareja. Son nombres
 //     legítimos muy comunes en créditos de juegos (Göktuğ, Łukasz, Jiří...).
 //     Antes esto bloqueaba con falsos positivos en catálogos grandes.
@@ -43,6 +45,11 @@ const esLatinExtended = (c) => c >= 0x0100 && c <= 0x024f;
 const esAmbiguo = (c) => c === 0x00a0 || c === 0x00ab || c === 0x00bb;
 const esPareja = (anterior, actual) =>
   esContinuacion(actual) && (!esAmbiguo(actual) || anterior === 0x00c2 || anterior === 0x00c3);
+// Latin Extended al que CP1252 convierte los bytes de continuacion 8A/8C/8E/9A/
+// 9C/9E/9F (U+0160, U+0152, U+017D, U+0161, U+0153, U+017E, U+0178): esos si son
+// mojibake tras cabecera. El resto (U+017C, U+0107, U+0159...) tras cabecera es
+// ortografia eslava legitima y se queda en silencio.
+const LE_CP1252 = new Set([0x0152, 0x0153, 0x0160, 0x0161, 0x0178, 0x017d, 0x017e]);
 
 const EXTENSIONES = new Set(['.ts', '.tsx', '.js', '.mjs', '.cjs', '.css', '.md', '.json']);
 
@@ -102,8 +109,8 @@ function revisar(ruta) {
       if (anterior !== undefined && esCabecera(anterior) && esPareja(anterior, actual)) {
         registrar('duro', `pareja mojibake (U+${anterior.toString(16).toUpperCase()} + continuación): texto UTF-8 leído como ANSI`);
       }
-      if (anterior !== undefined && esCabecera(anterior) && esLatinExtended(actual)) {
-        registrar('duro', `pareja mojibake (U+${anterior.toString(16).toUpperCase()} + Latin Extended): texto UTF-8 leído como ANSI`);
+      if (anterior !== undefined && esCabecera(anterior) && esLatinExtended(actual) && LE_CP1252.has(actual)) {
+        registrar('duro', `pareja mojibake (U+${anterior.toString(16).toUpperCase()} + Latin Extended CP1252): texto UTF-8 leído como ANSI`);
       }
 
       // 3) Latin Extended sin pareja: probable nombre legítimo -> solo aviso.
