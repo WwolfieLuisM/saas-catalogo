@@ -118,9 +118,16 @@ const presentes = (obj) => {
 };
 
 function main() {
-  const [rutaFilas, rutaSteam, rutaRawg, rutaDestino] = process.argv.slice(2);
+  const args = process.argv.slice(2);
+  const idxPcgw = args.indexOf('--pcgw');
+  let rutaPcgw = null;
+  if (idxPcgw >= 0) {
+    rutaPcgw = args[idxPcgw + 1] ?? null;
+    args.splice(idxPcgw, 2);
+  }
+  const [rutaFilas, rutaSteam, rutaRawg, rutaDestino] = args;
   if (!rutaFilas || !rutaSteam || !rutaRawg || !rutaDestino) {
-    console.error('Uso: node scripts/construir-import.mjs <filas.csv> <steam.json> <rawg.json> <destino.json>');
+    console.error('Uso: node scripts/construir-import.mjs <filas.csv> <steam.json> <rawg.json> <destino.json> [--pcgw <archivo>]');
     process.exit(2);
   }
 
@@ -130,6 +137,7 @@ function main() {
   const porId = (arr) => new Map(arr.map((f) => [f.id, f]));
   const steamPorId = porId(steam);
   const rawgPorId = porId(rawg);
+  const pcgwPorId = rutaPcgw ? porId(leerJson(rutaPcgw).registros) : new Map();
 
   const slugsVistos = new Set();
   const avisos = [];
@@ -140,6 +148,7 @@ function main() {
   for (const fila of filas) {
     const s = steamPorId.get(fila.id) ?? {};
     const g = rawgPorId.get(fila.id) ?? {};
+    const p = pcgwPorId.get(fila.id) ?? {};
     const titulo = fila.titulo_limpio;
 
     for (const n of s.generos_steam ?? []) nombresSteam.add(n);
@@ -164,8 +173,12 @@ function main() {
     while (slugsVistos.has(slug)) slug = `${slugify(titulo).slice(0, 45)}-${n++}`;
     slugsVistos.add(slug);
 
-    // --- size (solo Steam; RAWG no lo publica)
-    const sizeGb = typeof s.size_gb === 'number' && s.size_gb > 0 ? s.size_gb : null;
+    // --- size: Steam primero; PCGW como respaldo (confidence < 1 = aproximado).
+    // RAWG/IGDB no publican tamaño, así que sin Steam ni PCGW queda null.
+    const sizeSteam = typeof s.size_gb === 'number' && s.size_gb > 0 ? s.size_gb : null;
+    const sizePcgw = typeof p.size_gb === 'number' && p.size_gb > 0 ? p.size_gb : null;
+    const sizeGb = sizeSteam ?? sizePcgw;
+    const desdePcgw = sizeSteam === null && sizePcgw !== null;
 
     // --- requisitos (solo Steam; se prefiere la variante en espanol del pase ES)
     const minReq = presentes(s.requisitos_min_es ?? s.requisitos_min ?? {})
@@ -184,15 +197,19 @@ function main() {
       ? `https://store.steampowered.com/app/${s.steam_appid}/`
       : (g.rawg_slug ? `https://rawg.io/games/${g.rawg_slug}` : undefined);
 
-    const confianza = typeof s.similitud === 'number'
-      ? s.similitud
-      : (typeof g.similitud === 'number' ? g.similitud : undefined);
+    const confianza = desdePcgw
+      ? (typeof p.confidence === 'number' ? p.confidence : 0.9)
+      : (typeof s.similitud === 'number'
+        ? s.similitud
+        : (typeof g.similitud === 'number' ? g.similitud : undefined));
 
-    const notas = sizeGb
-      ? `Tamano ${sizeGb} GB y requisitos extraidos de pc_requirements de la Steam store.`
-      : (fuenteMeta === 'rawg'
-        ? 'RAWG aporta descripcion, generos y desarrollador; no publica tamano de instalacion.'
-        : 'Sin tamano publicado por la fuente.');
+    const notas = desdePcgw
+      ? `${p.notas ?? 'Tamano aproximado de PCGamingWiki.'}${minReq ? ' Requisitos de pc_requirements de la Steam store.' : ''}`.slice(0, 300)
+      : (sizeGb
+        ? `Tamano ${sizeGb} GB y requisitos extraidos de pc_requirements de la Steam store.`
+        : (fuenteMeta === 'rawg'
+          ? 'RAWG aporta descripcion, generos y desarrollador; no publica tamano de instalacion.'
+          : 'Sin tamano publicado por la fuente.'));
 
     const variante = {
       platformSlug: 'pc',
@@ -263,7 +280,8 @@ function main() {
   }
 
   const fuente = 'Metadatos de Steam store y RAWG (https://rawg.io). '
-    + 'Uso de datos de RAWG con atribucion a https://rawg.io. Portadas: Steam e IGDB.';
+    + 'Uso de datos de RAWG con atribucion a https://rawg.io. Portadas: Steam e IGDB.'
+    + (rutaPcgw ? ' Tamano aproximado de PCGamingWiki (https://www.pcgamingwiki.com) cuando Steam no lo publica.' : '');
 
   const envelope = {
     schema: 'library-import@2',
