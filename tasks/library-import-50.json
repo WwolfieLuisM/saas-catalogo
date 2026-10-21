@@ -1,0 +1,2650 @@
+{
+  "schema": "library-import@2",
+  "generatedAt": "2026-10-21T00:48:32.923Z",
+  "source": "Metadatos de Steam store y RAWG (https://rawg.io). Uso de datos de RAWG con atribucion a https://rawg.io. Portadas: IGDB.",
+  "games": [
+    {
+      "title": "Redeemer",
+      "slug": "redeemer",
+      "description": "Redeemer: Enhanced Edition is a brutal close-quarters brawler. Punch, crush, shoot, and use the environment to destroy enemies. Master deep melee combat, execute savage finishers, and fight for redemption as Vasily, a former elite operative hunted by a cybernetic corporation.",
+      "releaseYear": 2017,
+      "developer": "Sobaka Studio",
+      "publisher": "ESDigital Games",
+      "keywords": "Action, Indie",
+      "categorySlug": "accion",
+      "genreSlugs": [
+        "accion",
+        "indie"
+      ],
+      "sizeValue": 7,
+      "sizeUnit": "GB",
+      "minimumRequirements": {
+        "cpu": "Intel(R) Core(TM) i3-6300 CPU",
+        "gpu": "AMD Radeon R9 200 Series or equivalent",
+        "ram": "4 GB RAM",
+        "storage": "7 GB available space"
+      },
+      "recommendedRequirements": {
+        "cpu": "Intel(R) Core(TM) i3-6300 CPU",
+        "gpu": "AMD Radeon R9 200 Series or equivalent",
+        "ram": "4 GB RAM",
+        "storage": "7 GB available space"
+      },
+      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co24p8.jpg",
+      "platformVariants": [
+        {
+          "platformSlug": "pc",
+          "sizeValue": 7,
+          "sizeUnit": "GB",
+          "minimumRequirements": {
+            "cpu": "Intel(R) Core(TM) i3-6300 CPU",
+            "gpu": "AMD Radeon R9 200 Series or equivalent",
+            "ram": "4 GB RAM",
+            "storage": "7 GB available space"
+          },
+          "recommendedRequirements": {
+            "cpu": "Intel(R) Core(TM) i3-6300 CPU",
+            "gpu": "AMD Radeon R9 200 Series or equivalent",
+            "ram": "4 GB RAM",
+            "storage": "7 GB available space"
+          },
+          "provenance": {
+            "source": "steam",
+            "sourceUrl": "https://store.steampowered.com/app/447290/",
+            "confidence": 1,
+            "ingestedAt": "2026-10-21",
+            "notes": "Tamano 7 GB y requisitos extraidos de pc_requirements de la Steam store."
+          }
+        }
+      ]
+    },
+    {
+      "title": "Fate EXTELLA",
+      "slug": "fate-extella",
+      "description": "History, legend, and sci-fi collide in the latest chapter of the Fate/EXTRA saga! Join 26 Heroic Spirits from all across time as they hack and slash their way across the battlefields of SE.RA.PH, a digital realm for the last survivors of Earth.",
+      "releaseYear": 2018,
+      "developer": "Marvelous Inc.",
+      "publisher": "XSEED Games, Marvelous USA, Inc., Marvelous Europe",
+      "keywords": "Action",
+      "categorySlug": "accion",
+      "genreSlugs": [
+        "accion"
+      ],
+      "sizeValue": 14,
+      "sizeUnit": "GB",
+      "minimumRequirements": {
+        "cpu": "Intel Core i5-760 @ 2.8 GHz",
+        "gpu": "NVIDIA GeForce GTX 750",
+        "ram": "4 GB RAM",
+        "storage": "14 GB available space"
+      },
+      "recommendedRequirements": {
+        "cpu": "Intel Core i5-4460 @ 3.4 GHz",
+        "gpu": "NVIDIA GeForce GTX 960",
+        "ram": "6 GB RAM",
+        "storage": "14 GB available space"
+      },
+      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co27qd.jpg",
+      "platformVariants": [
+        {
+          "platformSlug": "pc",
+          "sizeValue": 14,
+          "sizeUnit": "GB",
+          "minimumRequirements": {
+            "cpu": "Intel Core i5-760 @ 2.8 GHz",
+            "gpu": "NVIDIA GeForce GTX 750",
+            "ram": "4 GB RAM",
+            "storage": "14 GB available space"
+          },
+          "recommendedRequirements": {
+            "cpu": "Intel Core i5-4460 @ 3.4 GHz",
+            "gpu": "NVIDIA GeForce GTX 960",
+            "ram": "6 GB RAM",
+            "storage": "14 GB available space"
+          },
+          "provenance": {
+            "source": "steam",
+            "sourceUrl": "https://store.steampowered.com/app/622220/",
+            "confidence": 1,
+            "ingestedAt": "2026-10-21",
+            "notes": "Tamano 14 GB y requisitos extraidos de pc_requirements de la Steam store."
+          }
+        }
+      ]
+    },
+    {
+      "title": "Kick Beat Steam Edition",
+      "slug": "kick-beat-steam-edition",
+      "description": "From indie pioneers Zen Studios (makers of Pinball FX2 and CastleStorm) comes KickBeat, an innovative rhythm game with a Kung Fu theme, featuring fully 3D characters and high-energy music! You can use your own music to create custom KickBeat tracks, allowing you ultimate replayability!",
+      "releaseYear": 2013,
+      "developer": "Zen Studios",
+      "publisher": "Zen Studios",
+      "keywords": "Action, Indie",
+      "categorySlug": "accion",
+      "genreSlugs": [
+        "accion",
+        "indie"
+      ],
+      "sizeValue": 2,
+      "sizeUnit": "GB",
+      "minimumRequirements": {
+        "cpu": "Dual Core CPU @ 2 GHz",
+        "gpu": "]Geforce 8600 GT (GDDR2, 512MB) / Radeon HD 2600 Pro (512 MB) category, DirectX® 10 compatible video card",
+        "ram": "1 GB RAM",
+        "storage": "2 GB available space"
+      },
+      "recommendedRequirements": {
+        "cpu": "Dual Core CPU @ 2.40 GHz",
+        "gpu": "Geforce 8600 GT (GDDR3, 512 MB) / Radeon HD 3670 (512 MB) category, DirectX® 10 compatible video card",
+        "ram": "2 GB RAM",
+        "storage": "2 GB available space"
+      },
+      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co4eqd.jpg",
+      "platformVariants": [
+        {
+          "platformSlug": "pc",
+          "sizeValue": 2,
+          "sizeUnit": "GB",
+          "minimumRequirements": {
+            "cpu": "Dual Core CPU @ 2 GHz",
+            "gpu": "]Geforce 8600 GT (GDDR2, 512MB) / Radeon HD 2600 Pro (512 MB) category, DirectX® 10 compatible video card",
+            "ram": "1 GB RAM",
+            "storage": "2 GB available space"
+          },
+          "recommendedRequirements": {
+            "cpu": "Dual Core CPU @ 2.40 GHz",
+            "gpu": "Geforce 8600 GT (GDDR3, 512 MB) / Radeon HD 3670 (512 MB) category, DirectX® 10 compatible video card",
+            "ram": "2 GB RAM",
+            "storage": "2 GB available space"
+          },
+          "provenance": {
+            "source": "steam",
+            "sourceUrl": "https://store.steampowered.com/app/255370/",
+            "confidence": 1,
+            "ingestedAt": "2026-10-21",
+            "notes": "Tamano 2 GB y requisitos extraidos de pc_requirements de la Steam store."
+          }
+        }
+      ]
+    },
+    {
+      "title": "We Who Are About To Die",
+      "slug": "we-who-are-about-to-die",
+      "description": "A simple runner where you have to dodge obstacle and finish as fast as possible.",
+      "releaseYear": 2022,
+      "developer": "Vozif Corp",
+      "publisher": "Vozif Corp",
+      "keywords": "Adventure, Indie",
+      "categorySlug": "aventura",
+      "genreSlugs": [
+        "aventura",
+        "indie"
+      ],
+      "sizeValue": 512,
+      "sizeUnit": "GB",
+      "minimumRequirements": {
+        "cpu": "Intel i5-2500 3.3 Ghz",
+        "gpu": "GeForce GTX 670 or Radeon HD 7850",
+        "storage": "512 MB available space"
+      },
+      "recommendedRequirements": {
+        "cpu": "Intel i5-2500 3.3 Ghz",
+        "gpu": "GeForce GTX 670 or Radeon HD 7850",
+        "storage": "512 MB available space"
+      },
+      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co4n1z.jpg",
+      "platformVariants": [
+        {
+          "platformSlug": "pc",
+          "sizeValue": 512,
+          "sizeUnit": "GB",
+          "minimumRequirements": {
+            "cpu": "Intel i5-2500 3.3 Ghz",
+            "gpu": "GeForce GTX 670 or Radeon HD 7850",
+            "storage": "512 MB available space"
+          },
+          "recommendedRequirements": {
+            "cpu": "Intel i5-2500 3.3 Ghz",
+            "gpu": "GeForce GTX 670 or Radeon HD 7850",
+            "storage": "512 MB available space"
+          },
+          "provenance": {
+            "source": "steam",
+            "sourceUrl": "https://store.steampowered.com/app/1934420/",
+            "confidence": 1,
+            "ingestedAt": "2026-10-21",
+            "notes": "Tamano 512 GB y requisitos extraidos de pc_requirements de la Steam store."
+          }
+        }
+      ]
+    },
+    {
+      "title": "Thymesia",
+      "slug": "thymesia",
+      "description": "Thymesia is a gruelling action-RPG with fast-paced combat and an intricate plague weapon system. In a kingdom where death spreads, play as a mysterious character known by the code name \"Corvus\". Prey upon your enemies, wield the power of disease and find the truth in your own memories.",
+      "releaseYear": 2022,
+      "developer": "OverBorder Studio",
+      "publisher": "Team17",
+      "keywords": "Action",
+      "categorySlug": "accion",
+      "genreSlugs": [
+        "accion"
+      ],
+      "sizeValue": 16,
+      "sizeUnit": "GB",
+      "minimumRequirements": {
+        "os": "Windows 10 (64 Bit)",
+        "cpu": "Intel Core i5 or AMD Ryzen 5",
+        "gpu": "NVIDIA GeForce GTX 950 or Radeon HD 7970",
+        "ram": "8 GB RAM",
+        "storage": "16 GB available space"
+      },
+      "recommendedRequirements": {
+        "os": "Windows 10 (64 Bit)",
+        "cpu": "Intel Core i7 or AMD Ryzen 7",
+        "gpu": "NVIDIA GeForce GTX 1060 or AMD Radeon RX 580",
+        "ram": "16 GB RAM",
+        "storage": "16 GB available space"
+      },
+      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co2w5c.jpg",
+      "platformVariants": [
+        {
+          "platformSlug": "pc",
+          "sizeValue": 16,
+          "sizeUnit": "GB",
+          "minimumRequirements": {
+            "os": "Windows 10 (64 Bit)",
+            "cpu": "Intel Core i5 or AMD Ryzen 5",
+            "gpu": "NVIDIA GeForce GTX 950 or Radeon HD 7970",
+            "ram": "8 GB RAM",
+            "storage": "16 GB available space"
+          },
+          "recommendedRequirements": {
+            "os": "Windows 10 (64 Bit)",
+            "cpu": "Intel Core i7 or AMD Ryzen 7",
+            "gpu": "NVIDIA GeForce GTX 1060 or AMD Radeon RX 580",
+            "ram": "16 GB RAM",
+            "storage": "16 GB available space"
+          },
+          "provenance": {
+            "source": "steam",
+            "sourceUrl": "https://store.steampowered.com/app/1343240/",
+            "confidence": 1,
+            "ingestedAt": "2026-10-21",
+            "notes": "Tamano 16 GB y requisitos extraidos de pc_requirements de la Steam store."
+          }
+        }
+      ]
+    },
+    {
+      "title": "Hellpoint",
+      "slug": "hellpoint",
+      "description": "Travel to the Blue Sun parallel dimension to experience a new layer of story that reveals the one true cause of the Merge cataclysm. A ton of new armors and characters, a new “contract” system, dual wield weapons, three new sprawling locations to explore and die in",
+      "releaseYear": 2020,
+      "developer": "Cradle Games",
+      "publisher": "tinyBuild",
+      "keywords": "Action, Adventure, Indie, RPG",
+      "categorySlug": "accion",
+      "genreSlugs": [
+        "accion",
+        "aventura",
+        "indie",
+        "rol"
+      ],
+      "sizeValue": 6,
+      "sizeUnit": "GB",
+      "minimumRequirements": {
+        "cpu": "4 threads, 2.5+ Ghz",
+        "gpu": "GeForce GTX 760 or better",
+        "ram": "4 GB RAM",
+        "storage": "6 GB available space"
+      },
+      "recommendedRequirements": {
+        "os": "Windows 10",
+        "cpu": "4 cores, 3+ Ghz",
+        "gpu": "GeForce GTX 1050",
+        "ram": "6 GB RAM",
+        "storage": "6 GB available space"
+      },
+      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co2bwn.jpg",
+      "platformVariants": [
+        {
+          "platformSlug": "pc",
+          "sizeValue": 6,
+          "sizeUnit": "GB",
+          "minimumRequirements": {
+            "cpu": "4 threads, 2.5+ Ghz",
+            "gpu": "GeForce GTX 760 or better",
+            "ram": "4 GB RAM",
+            "storage": "6 GB available space"
+          },
+          "recommendedRequirements": {
+            "os": "Windows 10",
+            "cpu": "4 cores, 3+ Ghz",
+            "gpu": "GeForce GTX 1050",
+            "ram": "6 GB RAM",
+            "storage": "6 GB available space"
+          },
+          "provenance": {
+            "source": "steam",
+            "sourceUrl": "https://store.steampowered.com/app/1525260/",
+            "confidence": 1,
+            "ingestedAt": "2026-10-21",
+            "notes": "Tamano 6 GB y requisitos extraidos de pc_requirements de la Steam store."
+          }
+        }
+      ]
+    },
+    {
+      "title": "State of Mind",
+      "slug": "state-of-mind",
+      "description": "State of Mind is a futuristic thriller game delving into transhumanism. The game explores themes of separation, disjuncture and reunification, in a world that is torn between a dystopian material reality and a utopian virtual future.",
+      "releaseYear": 2018,
+      "developer": "Daedalic Entertainment",
+      "publisher": "Daedalic Entertainment",
+      "keywords": "Adventure, Indie",
+      "categorySlug": "aventura",
+      "genreSlugs": [
+        "aventura",
+        "indie",
+        "accion",
+        "puzzle"
+      ],
+      "sizeValue": 23,
+      "sizeUnit": "GB",
+      "minimumRequirements": {
+        "cpu": "2.8 Ghz Dual Core CPU",
+        "gpu": "NVIDIA GeForce 560 / AMD Radeon 7770 or similar, at least 2 GB of VRAM",
+        "ram": "4 GB RAM",
+        "storage": "23 GB available space"
+      },
+      "recommendedRequirements": {
+        "cpu": "3 Ghz Quad Core CPU",
+        "gpu": "NVIDIA GeForce GTX 750 Ti / AMD Radeon R7 370 or similar, at least 4 GB of VRAM",
+        "ram": "8 GB RAM",
+        "storage": "23 GB available space"
+      },
+      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/lemutdsx8sdhabiin8fx.jpg",
+      "platformVariants": [
+        {
+          "platformSlug": "pc",
+          "sizeValue": 23,
+          "sizeUnit": "GB",
+          "minimumRequirements": {
+            "cpu": "2.8 Ghz Dual Core CPU",
+            "gpu": "NVIDIA GeForce 560 / AMD Radeon 7770 or similar, at least 2 GB of VRAM",
+            "ram": "4 GB RAM",
+            "storage": "23 GB available space"
+          },
+          "recommendedRequirements": {
+            "cpu": "3 Ghz Quad Core CPU",
+            "gpu": "NVIDIA GeForce GTX 750 Ti / AMD Radeon R7 370 or similar, at least 4 GB of VRAM",
+            "ram": "8 GB RAM",
+            "storage": "23 GB available space"
+          },
+          "provenance": {
+            "source": "steam",
+            "sourceUrl": "https://store.steampowered.com/app/437630/",
+            "confidence": 1,
+            "ingestedAt": "2026-10-21",
+            "notes": "Tamano 23 GB y requisitos extraidos de pc_requirements de la Steam store."
+          }
+        }
+      ]
+    },
+    {
+      "title": "Kingdom Wars 2 Battles",
+      "slug": "kingdom-wars-2-battles",
+      "description": "Free Undead Cometh Expansion\nFree Undead Rising Expansion\nAbout the GameKingdom Wars 2: Battles brings a fresh perspective on the fantasy real-time Strategy genre, combining the best of Zombie survival and long term crafting with complex fast-paced city-building and skirmish siege combat. All in a beautifully, yet gory game world where players fight across the epic battlefields in multiplayer skirmish and coop with thousands of other players. And with an episodic singleplayer campaign bringing epic storytelling, with countless battles and adventures. New Episodes will be released as a free expansion pack, every few months.\nEpisodic Singleplayer Campaign\nKingdom Wars 2: Battles comes complete with an epic story-driven singleplayer campaign, as well as progressive multiplayer storytelling. Providing hours of engaging cinematic narrative, and original gameplay, campaign tells the story of the three great races, trying to survive in a world engulfed by total war. Each new episode will continue both the singleplayer and multiplayer story-arcs as well as introduce new races and locations. And in best Reverie World Studios traditions, new episodes will be released as a free expansion pack, every few months.\nStunning Siege Combat\nRealistic medieval siege combat brings fresh gameplay to the Strategy genre, with intricate stronghold construction, and over 25 defensive and offensive siege weapons. Ram the enemy gates, scale the walls with ladders and siege towers, and unleash trebuchet bombardments, while building your own strongholds and citadels protected by boiling oil and wall-mounted catapults.\nComplex Crafting System\nTo provide meaning long-term gameplay, KW2B features full crafting system, with over two hundred combinations, from dozens of components from blueprints and materials to legendary items and relics.",
+      "releaseYear": 2015,
+      "developer": "Reverie World Studios",
+      "publisher": "Reverie World Studios",
+      "keywords": null,
+      "categorySlug": "simulacion",
+      "genreSlugs": [
+        "estrategia",
+        "simulacion",
+        "indie"
+      ],
+      "sizeValue": null,
+      "sizeUnit": null,
+      "minimumRequirements": null,
+      "recommendedRequirements": null,
+      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co21az.jpg",
+      "platformVariants": [
+        {
+          "platformSlug": "pc",
+          "sizeValue": null,
+          "sizeUnit": null,
+          "minimumRequirements": null,
+          "recommendedRequirements": null,
+          "provenance": {
+            "source": "rawg",
+            "sourceUrl": "https://rawg.io/games/kingdom-wars-2-battles",
+            "confidence": 1,
+            "ingestedAt": "2026-10-21",
+            "notes": "RAWG aporta descripcion, generos y desarrollador; no publica tamano de instalacion."
+          }
+        }
+      ]
+    },
+    {
+      "title": "Depraved",
+      "slug": "depraved",
+      "description": "You are a private eye in Free City. Your latest client has found himself dead. As for how, many suspect suicide, though you're smarter than that. But poking around may get you in some hot water, but then again why would you be a private eye if you couldn't take the heat?",
+      "releaseYear": 2019,
+      "developer": "PhillyGames",
+      "publisher": "PhillyGames",
+      "keywords": "Indie",
+      "categorySlug": "simulacion",
+      "genreSlugs": [
+        "indie",
+        "estrategia",
+        "simulacion"
+      ],
+      "sizeValue": 3,
+      "sizeUnit": "GB",
+      "minimumRequirements": {
+        "cpu": "2.0 GHz Core 2 Duo",
+        "gpu": "DirectX compatible card",
+        "ram": "2 GB RAM",
+        "storage": "3 GB available space"
+      },
+      "recommendedRequirements": {
+        "cpu": "2.0 GHz Core 2 Duo",
+        "gpu": "DirectX compatible card",
+        "ram": "2 GB RAM",
+        "storage": "3 GB available space"
+      },
+      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co2pwh.jpg",
+      "platformVariants": [
+        {
+          "platformSlug": "pc",
+          "sizeValue": 3,
+          "sizeUnit": "GB",
+          "minimumRequirements": {
+            "cpu": "2.0 GHz Core 2 Duo",
+            "gpu": "DirectX compatible card",
+            "ram": "2 GB RAM",
+            "storage": "3 GB available space"
+          },
+          "recommendedRequirements": {
+            "cpu": "2.0 GHz Core 2 Duo",
+            "gpu": "DirectX compatible card",
+            "ram": "2 GB RAM",
+            "storage": "3 GB available space"
+          },
+          "provenance": {
+            "source": "steam",
+            "sourceUrl": "https://store.steampowered.com/app/1137410/",
+            "confidence": 1,
+            "ingestedAt": "2026-10-21",
+            "notes": "Tamano 3 GB y requisitos extraidos de pc_requirements de la Steam store."
+          }
+        }
+      ]
+    },
+    {
+      "title": "Black Clover Quartet Knights",
+      "slug": "black-clover-quartet-knights",
+      "description": "Take part in 4-on-4 team battles and cast an array of magic spells to defeat the opposing team! You can assume one of four roles. Use your role and spells to the best possible effect, and cooperate with your teammates to win the battle!",
+      "releaseYear": 2018,
+      "developer": "ILINX, Inc.",
+      "publisher": "BANDAI NAMCO Entertainment",
+      "keywords": "Action",
+      "categorySlug": "accion",
+      "genreSlugs": [
+        "accion",
+        "rol",
+        "lucha"
+      ],
+      "sizeValue": 14,
+      "sizeUnit": "GB",
+      "minimumRequirements": {
+        "cpu": "AMD Phenom II X4 945 or Intel Core i3-2100",
+        "gpu": "Radeon Vega 8 or Intel Iris Pro 580",
+        "ram": "4 GB RAM",
+        "storage": "14 GB available space"
+      },
+      "recommendedRequirements": {
+        "os": "Windows 10",
+        "cpu": "AMD A12-9800 or Intel Core i5-2300",
+        "gpu": "Radeon HD 7870 or GeForce GTX 660",
+        "ram": "4 GB RAM",
+        "storage": "14 GB available space"
+      },
+      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co28vm.jpg",
+      "platformVariants": [
+        {
+          "platformSlug": "pc",
+          "sizeValue": 14,
+          "sizeUnit": "GB",
+          "minimumRequirements": {
+            "cpu": "AMD Phenom II X4 945 or Intel Core i3-2100",
+            "gpu": "Radeon Vega 8 or Intel Iris Pro 580",
+            "ram": "4 GB RAM",
+            "storage": "14 GB available space"
+          },
+          "recommendedRequirements": {
+            "os": "Windows 10",
+            "cpu": "AMD A12-9800 or Intel Core i5-2300",
+            "gpu": "Radeon HD 7870 or GeForce GTX 660",
+            "ram": "4 GB RAM",
+            "storage": "14 GB available space"
+          },
+          "provenance": {
+            "source": "steam",
+            "sourceUrl": "https://store.steampowered.com/app/714080/",
+            "confidence": 1,
+            "ingestedAt": "2026-10-21",
+            "notes": "Tamano 14 GB y requisitos extraidos de pc_requirements de la Steam store."
+          }
+        }
+      ]
+    },
+    {
+      "title": "Isles of Adalar",
+      "slug": "isles-of-adalar",
+      "description": "Isles of Adalar is an open world single player/co-op fantasy RPG that can be played in first or third person. The game is one part RPG one part RPG maker as it ships with an integrated level editor and Steam Workshop support. Users can mod the existing content or create their own.",
+      "releaseYear": 2020,
+      "developer": "Peakway Software LLC",
+      "publisher": "Peakway Software LLC",
+      "keywords": "Adventure, Indie, RPG, Early Access",
+      "categorySlug": "aventura",
+      "genreSlugs": [
+        "aventura",
+        "indie",
+        "rol"
+      ],
+      "sizeValue": 10,
+      "sizeUnit": "GB",
+      "minimumRequirements": {
+        "cpu": "Intel i5-750/AMD Phenom II X4-945",
+        "gpu": "NVIDIA GTX 760 4 GB",
+        "ram": "8 GB RAM",
+        "storage": "10 GB available space"
+      },
+      "recommendedRequirements": {
+        "cpu": "Intel i7-4770/AMD Ryzen 3 2200G",
+        "gpu": "NVIDIA GTX 1060 6 GB",
+        "ram": "8 GB RAM",
+        "storage": "10 GB available space"
+      },
+      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co1xr4.jpg",
+      "platformVariants": [
+        {
+          "platformSlug": "pc",
+          "sizeValue": 10,
+          "sizeUnit": "GB",
+          "minimumRequirements": {
+            "cpu": "Intel i5-750/AMD Phenom II X4-945",
+            "gpu": "NVIDIA GTX 760 4 GB",
+            "ram": "8 GB RAM",
+            "storage": "10 GB available space"
+          },
+          "recommendedRequirements": {
+            "cpu": "Intel i7-4770/AMD Ryzen 3 2200G",
+            "gpu": "NVIDIA GTX 1060 6 GB",
+            "ram": "8 GB RAM",
+            "storage": "10 GB available space"
+          },
+          "provenance": {
+            "source": "steam",
+            "sourceUrl": "https://store.steampowered.com/app/1112620/",
+            "confidence": 1,
+            "ingestedAt": "2026-10-21",
+            "notes": "Tamano 10 GB y requisitos extraidos de pc_requirements de la Steam store."
+          }
+        }
+      ]
+    },
+    {
+      "title": "F.E.A.R Platinum Collection",
+      "slug": "f-e-a-r-platinum-collection",
+      "description": "F.E.A.R. Platinum includes the original F.E.A.R. and its two addons: F.E.A.R. Extraction Point and F.E.A.R. Perseus Mandate.\nBe the hero in your own cinematic epic of action, tension and terror. A mysterious paramilitary force infiltrates a multi-billion dollar aerospace compound, taking hostages but issuing no demands. The government responds by sending in a Special Forces team only to have them obliterated. Live footage of the massacre shows an inexplicable wave of destruction tearing the soldiers apart. With no other recourse, the elite F.E.A.R. (First Encounter Assault Recon) team is assembled to deal with the extraordinary circumstances. They are given one simple mission: Evaluate the threat and eliminate the intruders at any cost.\nF.E.A.R. Extraction Point\nExtraction Point kicks off where the original game ended – with a bang. As the helicopter which the F.E.A.R. team is on attempts to leave the vicinity, it instead winds up crashing. The F.E.A.R. team is thus forced to seek out an alternate extraction point, all the way battling the now free Alma and her paranormal minions across a destroyed city.\nF.E.A.R. Perseus Mandate\nAs the first F.E.A.R. team and Delta Force fight for control of the situation, a second F.E.A.R. team is sent in to shed some light on Armacham Technology Corporation's (ATC) dark past. As a member of a secondary F.E.A.R. team, you are brought in to discover more information regarding the secret project at the ATC facilities.Hyper-stylized combat for breathtaking cinematic quality action\nGripping supernatural storyline for spine-tingling intensity of play\nAdvanced graphics and physics for visceral movie-like experience\nEnemies with special abilities and A.I. so intuitive it’s like battling living, breathing players",
+      "releaseYear": 2005,
+      "developer": "Monolith Productions, TimeGate Studios",
+      "publisher": "Warner Bros. Interactive",
+      "keywords": null,
+      "categorySlug": "accion",
+      "genreSlugs": [
+        "disparos"
+      ],
+      "sizeValue": null,
+      "sizeUnit": null,
+      "minimumRequirements": null,
+      "recommendedRequirements": null,
+      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co236u.jpg",
+      "platformVariants": [
+        {
+          "platformSlug": "pc",
+          "sizeValue": null,
+          "sizeUnit": null,
+          "minimumRequirements": null,
+          "recommendedRequirements": null,
+          "provenance": {
+            "source": "rawg",
+            "sourceUrl": "https://rawg.io/games/fear-platinum",
+            "confidence": 1,
+            "ingestedAt": "2026-10-21",
+            "notes": "RAWG aporta descripcion, generos y desarrollador; no publica tamano de instalacion."
+          }
+        }
+      ]
+    },
+    {
+      "title": "Super Mario Galaxy",
+      "slug": "super-mario-galaxy",
+      "description": "Space *3 times - Triple Jump\nShift while falling or jumping - Ground Pound\nSpace while doing the first jump - Dive\nCrouch (C) and jump - Long jump\nE on Luma -> dialogue\nthere will be bugs",
+      "releaseYear": 2013,
+      "developer": "Danielisnotaloser",
+      "publisher": null,
+      "keywords": null,
+      "categorySlug": "accion",
+      "genreSlugs": [
+        "accion"
+      ],
+      "sizeValue": null,
+      "sizeUnit": null,
+      "minimumRequirements": null,
+      "recommendedRequirements": null,
+      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co98nx.jpg",
+      "platformVariants": [
+        {
+          "platformSlug": "pc",
+          "sizeValue": null,
+          "sizeUnit": null,
+          "minimumRequirements": null,
+          "recommendedRequirements": null,
+          "provenance": {
+            "source": "rawg",
+            "sourceUrl": "https://rawg.io/games/super-mario-galaxy-ue4",
+            "confidence": 1,
+            "ingestedAt": "2026-10-21",
+            "notes": "RAWG aporta descripcion, generos y desarrollador; no publica tamano de instalacion."
+          }
+        }
+      ]
+    },
+    {
+      "title": "Ace Combat Assault Horizon Enhanced Edition",
+      "slug": "ace-combat-assault-horizon-enhanced-edition",
+      "description": "Ace Combat: Assault Horizon is a combat flight simulator game, the 13th installment in Bandai Namco’s Ace Combat series. \n###Plot \nThe story takes place in 2015 in different places across the world, including Miami, Russia, East Africa, and the Middle East. You play as Lieutenant Colonel William Bishop, head of the United States Air Force's Warwolf Squadron and his sidekicks on the mission of defeating Russian criminal syndicate Blatnoi. \n###Gameplay \nThe gameplay is very reminiscent of other Ace Combat entries. You control different aircraft on various combat missions. The game’s controls are a compromise between arcade-like and realistic approaches. For the first time in series, the game features a “Close-Range Assault’ system that is intended to bring the action closer to the player. \n###Game Modes \nBesides single-player campaign, the game offers various multiplayer modes. There are both cooperative missions and competitive matches. Two new modes introduced in Assault Horizon are Capital Conquest and Domination. In Capital Conquest, your team must destroy the opposite’s team headquarters. In Domination, two teams try to take over three bases in one city. \n###Enhanced edition \nThe Enhanced Edition of Ace Combat: Assault Horizon is an upgraded PC port of the game. It features improved graphics, controls, additional, and multiplayer content.",
+      "releaseYear": 2013,
+      "developer": "NAMCO, Project Aces",
+      "publisher": "Bandai Namco Entertainment",
+      "keywords": null,
+      "categorySlug": "accion",
+      "genreSlugs": [
+        "accion",
+        "simulacion"
+      ],
+      "sizeValue": null,
+      "sizeUnit": null,
+      "minimumRequirements": null,
+      "recommendedRequirements": null,
+      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co47gb.jpg",
+      "platformVariants": [
+        {
+          "platformSlug": "pc",
+          "sizeValue": null,
+          "sizeUnit": null,
+          "minimumRequirements": null,
+          "recommendedRequirements": null,
+          "provenance": {
+            "source": "rawg",
+            "sourceUrl": "https://rawg.io/games/ace-combat-assault-horizon-enhanced-edition",
+            "confidence": 1,
+            "ingestedAt": "2026-10-21",
+            "notes": "RAWG aporta descripcion, generos y desarrollador; no publica tamano de instalacion."
+          }
+        }
+      ]
+    },
+    {
+      "title": "Everwind",
+      "slug": "everwind",
+      "description": "Everwind is a novel take on RPG and Sandbox Survival genre in First-Person-Perspective. Embark on the adventure with your friends - Build a base on a flying island-ship, gather resources, craft, loot, and fight while you rise above the clouds to uncover the mysteries of this world!",
+      "releaseYear": 2026,
+      "developer": "Enjoy Studio S.A.",
+      "publisher": "Bohemia Interactive",
+      "keywords": "Adventure, Indie, RPG, Simulation, Early Access",
+      "categorySlug": "aventura",
+      "genreSlugs": [
+        "aventura",
+        "indie",
+        "rol",
+        "simulacion"
+      ],
+      "sizeValue": 5,
+      "sizeUnit": "GB",
+      "minimumRequirements": {
+        "os": "64-bit Windows 10/11",
+        "cpu": "Intel Core i5-8400",
+        "gpu": "Intel Arc A580 | Nvidia GTX 1060 (min. 6GB VRAM)",
+        "ram": "12 GB RAM",
+        "storage": "5 GB available space"
+      },
+      "recommendedRequirements": {
+        "os": "64-bit Windows 10/11",
+        "cpu": "Intel Core i7-8700K",
+        "gpu": "Intel Arc B570 | Nvidia RTX 2060 Super (min. 8GB VRAM)",
+        "ram": "16 GB RAM",
+        "storage": "5 GB available space"
+      },
+      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/coal66.jpg",
+      "platformVariants": [
+        {
+          "platformSlug": "pc",
+          "sizeValue": 5,
+          "sizeUnit": "GB",
+          "minimumRequirements": {
+            "os": "64-bit Windows 10/11",
+            "cpu": "Intel Core i5-8400",
+            "gpu": "Intel Arc A580 | Nvidia GTX 1060 (min. 6GB VRAM)",
+            "ram": "12 GB RAM",
+            "storage": "5 GB available space"
+          },
+          "recommendedRequirements": {
+            "os": "64-bit Windows 10/11",
+            "cpu": "Intel Core i7-8700K",
+            "gpu": "Intel Arc B570 | Nvidia RTX 2060 Super (min. 8GB VRAM)",
+            "ram": "16 GB RAM",
+            "storage": "5 GB available space"
+          },
+          "provenance": {
+            "source": "steam",
+            "sourceUrl": "https://store.steampowered.com/app/2253100/",
+            "confidence": 1,
+            "ingestedAt": "2026-10-21",
+            "notes": "Tamano 5 GB y requisitos extraidos de pc_requirements de la Steam store."
+          }
+        }
+      ]
+    },
+    {
+      "title": "ULTRAKILL",
+      "slug": "ultrakill",
+      "description": "ULTRAKILL is a fast-paced ultra-violent retro FPS that combines the skill-based style scoring of character action games with the unadulterated carnage inspired by the best shooters of the '90s. Rip apart your foes with varied destructive weaponry and shower in their blood to regain your health.",
+      "releaseYear": 2020,
+      "developer": "Arsi \"Hakita\" Patala",
+      "publisher": "New Blood Interactive",
+      "keywords": "Action, Indie, Early Access",
+      "categorySlug": "accion",
+      "genreSlugs": [
+        "accion",
+        "indie"
+      ],
+      "sizeValue": 3,
+      "sizeUnit": "GB",
+      "minimumRequirements": {
+        "os": "Windows 10",
+        "cpu": "2.4 GHz Dual Core Processor Or Higher",
+        "gpu": "GeForce GTX 560 Or Equivalent",
+        "ram": "4 GB RAM",
+        "storage": "3 GB available space"
+      },
+      "recommendedRequirements": {
+        "os": "Windows 11",
+        "cpu": "3.1 GHz Quad Core Processor Or Higher",
+        "gpu": "Geforce GTX 970 Or Equivalent",
+        "ram": "8 GB RAM",
+        "storage": "3 GB available space"
+      },
+      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co46s3.jpg",
+      "platformVariants": [
+        {
+          "platformSlug": "pc",
+          "sizeValue": 3,
+          "sizeUnit": "GB",
+          "minimumRequirements": {
+            "os": "Windows 10",
+            "cpu": "2.4 GHz Dual Core Processor Or Higher",
+            "gpu": "GeForce GTX 560 Or Equivalent",
+            "ram": "4 GB RAM",
+            "storage": "3 GB available space"
+          },
+          "recommendedRequirements": {
+            "os": "Windows 11",
+            "cpu": "3.1 GHz Quad Core Processor Or Higher",
+            "gpu": "Geforce GTX 970 Or Equivalent",
+            "ram": "8 GB RAM",
+            "storage": "3 GB available space"
+          },
+          "provenance": {
+            "source": "steam",
+            "sourceUrl": "https://store.steampowered.com/app/1229490/",
+            "confidence": 1,
+            "ingestedAt": "2026-10-21",
+            "notes": "Tamano 3 GB y requisitos extraidos de pc_requirements de la Steam store."
+          }
+        }
+      ]
+    },
+    {
+      "title": "Unknown 9 Awakening",
+      "slug": "unknown-9-awakening",
+      "description": "You are Haroona, a Quaestor born with the ability to venture into a mysterious dimension: the Fold. On her quest for powerful hidden knowledge, she must learn to master the powers of the Fold to fight a secret society with a hostile agenda.",
+      "releaseYear": 2024,
+      "developer": "Reflector Entertainment Ltd.",
+      "publisher": "BANDAI NAMCO Entertainment Inc.",
+      "keywords": "Action, Adventure",
+      "categorySlug": "accion",
+      "genreSlugs": [
+        "accion",
+        "aventura"
+      ],
+      "sizeValue": 55,
+      "sizeUnit": "GB",
+      "minimumRequirements": {
+        "os": "Windows 10",
+        "cpu": "4 or 6 cores / 8 threads / 3.6 Ghz Base clock speed",
+        "gpu": "8 GB VRAM / AMD RX 580",
+        "ram": "12 GB RAM",
+        "storage": "55 GB available space"
+      },
+      "recommendedRequirements": {
+        "os": "Windows 10",
+        "cpu": "6 cores / 12 threads / 3.4 Ghz Base clock speed",
+        "gpu": "8 GB VRAM / AMD RX 5700 XT",
+        "ram": "16 GB RAM",
+        "storage": "55 GB available space"
+      },
+      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co8bh9.jpg",
+      "platformVariants": [
+        {
+          "platformSlug": "pc",
+          "sizeValue": 55,
+          "sizeUnit": "GB",
+          "minimumRequirements": {
+            "os": "Windows 10",
+            "cpu": "4 or 6 cores / 8 threads / 3.6 Ghz Base clock speed",
+            "gpu": "8 GB VRAM / AMD RX 580",
+            "ram": "12 GB RAM",
+            "storage": "55 GB available space"
+          },
+          "recommendedRequirements": {
+            "os": "Windows 10",
+            "cpu": "6 cores / 12 threads / 3.4 Ghz Base clock speed",
+            "gpu": "8 GB VRAM / AMD RX 5700 XT",
+            "ram": "16 GB RAM",
+            "storage": "55 GB available space"
+          },
+          "provenance": {
+            "source": "steam",
+            "sourceUrl": "https://store.steampowered.com/app/1477940/",
+            "confidence": 1,
+            "ingestedAt": "2026-10-21",
+            "notes": "Tamano 55 GB y requisitos extraidos de pc_requirements de la Steam store."
+          }
+        }
+      ]
+    },
+    {
+      "title": "Neighbours From Hell Compilation",
+      "slug": "neighbours-from-hell-compilation",
+      "description": "INTRODUCING THE GAME OF NEIGHBOURHOOD NASTINESS AND COMMUNITY COMMOTION! Living next door to you is a real Neighbour From Hell and it's now time to have your revenge! This compilation includes the original Neighbours From Hell and it's sequel Neighbours from Hell 2: On Vacation.",
+      "releaseYear": 2004,
+      "developer": "JoWooD Vienna",
+      "publisher": "THQ Nordic Mobile",
+      "keywords": "Adventure, Casual",
+      "categorySlug": "aventura",
+      "genreSlugs": [
+        "aventura",
+        "casual",
+        "puzzle"
+      ],
+      "sizeValue": 500,
+      "sizeUnit": "GB",
+      "minimumRequirements": {
+        "cpu": "Intel Pentium II, 233 MHz",
+        "gpu": "3D graphics card compatible with DirectX 8",
+        "ram": "128 MB RAM",
+        "storage": "500 MB available space"
+      },
+      "recommendedRequirements": {
+        "cpu": "Intel Pentium III, 500 MHz",
+        "gpu": "3D graphics card compatible with DirectX 8",
+        "ram": "256 MB RAM",
+        "storage": "500 MB available space"
+      },
+      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co3q1f.jpg",
+      "platformVariants": [
+        {
+          "platformSlug": "pc",
+          "sizeValue": 500,
+          "sizeUnit": "GB",
+          "minimumRequirements": {
+            "cpu": "Intel Pentium II, 233 MHz",
+            "gpu": "3D graphics card compatible with DirectX 8",
+            "ram": "128 MB RAM",
+            "storage": "500 MB available space"
+          },
+          "recommendedRequirements": {
+            "cpu": "Intel Pentium III, 500 MHz",
+            "gpu": "3D graphics card compatible with DirectX 8",
+            "ram": "256 MB RAM",
+            "storage": "500 MB available space"
+          },
+          "provenance": {
+            "source": "steam",
+            "sourceUrl": "https://store.steampowered.com/app/260750/",
+            "confidence": 1,
+            "ingestedAt": "2026-10-21",
+            "notes": "Tamano 500 GB y requisitos extraidos de pc_requirements de la Steam store."
+          }
+        }
+      ]
+    },
+    {
+      "title": "Voodoo Vince Remastered",
+      "slug": "voodoo-vince-remastered",
+      "description": "The classic character platformer is back after 13 years and newly remastered! Help Vince run, jump and fight his way through cemeteries, swamps and an evil carnival as he seeks to save his creator Madam Charmaine from the clutches of Kosmo The Inscrutable.",
+      "releaseYear": 2017,
+      "developer": "Beep Games, Inc.",
+      "publisher": "Beep Games, Inc.",
+      "keywords": "Action, Adventure",
+      "categorySlug": "accion",
+      "genreSlugs": [
+        "accion",
+        "aventura"
+      ],
+      "sizeValue": 4,
+      "sizeUnit": "GB",
+      "minimumRequirements": {
+        "cpu": "Intel Core2-Duo 2GHz or equivalent",
+        "gpu": "NVidia GeForce GT430-1GB VRAM or equivalent",
+        "ram": "3 GB RAM",
+        "storage": "4 GB available space"
+      },
+      "recommendedRequirements": {
+        "os": "Windows 10",
+        "cpu": "Intel Core2-Duo 2GHz or equivalent",
+        "gpu": "NVidia GeForce GT440-2GB VRAM or equivalent",
+        "ram": "4 GB RAM",
+        "storage": "4 GB available space"
+      },
+      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co24kw.jpg",
+      "platformVariants": [
+        {
+          "platformSlug": "pc",
+          "sizeValue": 4,
+          "sizeUnit": "GB",
+          "minimumRequirements": {
+            "cpu": "Intel Core2-Duo 2GHz or equivalent",
+            "gpu": "NVidia GeForce GT430-1GB VRAM or equivalent",
+            "ram": "3 GB RAM",
+            "storage": "4 GB available space"
+          },
+          "recommendedRequirements": {
+            "os": "Windows 10",
+            "cpu": "Intel Core2-Duo 2GHz or equivalent",
+            "gpu": "NVidia GeForce GT440-2GB VRAM or equivalent",
+            "ram": "4 GB RAM",
+            "storage": "4 GB available space"
+          },
+          "provenance": {
+            "source": "steam",
+            "sourceUrl": "https://store.steampowered.com/app/545980/",
+            "confidence": 1,
+            "ingestedAt": "2026-10-21",
+            "notes": "Tamano 4 GB y requisitos extraidos de pc_requirements de la Steam store."
+          }
+        }
+      ]
+    },
+    {
+      "title": "Starless abyss",
+      "slug": "starless-abyss",
+      "description": "Earth has fallen. Science and the Occult have united forces to brace for the arrival of the Eldritch. But will the efforts against this strange, alien race be enough? Play as one of many Proximae used to help defend humanity in this turn-based, roguelike, intergalactic deck builder.",
+      "releaseYear": 2025,
+      "developer": "Konafa Games",
+      "publisher": "No More Robots",
+      "keywords": "Indie, Strategy",
+      "categorySlug": "otros",
+      "genreSlugs": [
+        "indie",
+        "estrategia"
+      ],
+      "sizeValue": null,
+      "sizeUnit": null,
+      "minimumRequirements": {
+        "cpu": "2 GHz",
+        "gpu": "NVIDIA GeForce GTX 550/equivalent or higher",
+        "ram": "2 GB RAM"
+      },
+      "recommendedRequirements": {
+        "os": "Windows 10",
+        "cpu": "2 GHz",
+        "gpu": "NVIDIA GeForce GTX 760/equivalent or higher",
+        "ram": "2 GB RAM"
+      },
+      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co8xgh.jpg",
+      "platformVariants": [
+        {
+          "platformSlug": "pc",
+          "sizeValue": null,
+          "sizeUnit": null,
+          "minimumRequirements": {
+            "cpu": "2 GHz",
+            "gpu": "NVIDIA GeForce GTX 550/equivalent or higher",
+            "ram": "2 GB RAM"
+          },
+          "recommendedRequirements": {
+            "os": "Windows 10",
+            "cpu": "2 GHz",
+            "gpu": "NVIDIA GeForce GTX 760/equivalent or higher",
+            "ram": "2 GB RAM"
+          },
+          "provenance": {
+            "source": "steam",
+            "sourceUrl": "https://store.steampowered.com/app/3167970/",
+            "confidence": 1,
+            "ingestedAt": "2026-10-21",
+            "notes": "Sin tamano publicado por la fuente."
+          }
+        }
+      ]
+    },
+    {
+      "title": "Chiquitos",
+      "slug": "chiquitos",
+      "description": "(We tried to fix some bugs but we couldn´t fix them all :()A WarioWare like game set in the forehead of Chiquito.\nMade for the IndieWareJam.\nControls:\nZ, X and Arrow Keys\nCredits:\nFranVadillo & ZAM",
+      "releaseYear": null,
+      "developer": "Fran Vadillo",
+      "publisher": null,
+      "keywords": null,
+      "categorySlug": "otros",
+      "genreSlugs": [],
+      "sizeValue": null,
+      "sizeUnit": null,
+      "minimumRequirements": null,
+      "recommendedRequirements": null,
+      "coverUrl": null,
+      "platformVariants": [
+        {
+          "platformSlug": "pc",
+          "sizeValue": null,
+          "sizeUnit": null,
+          "minimumRequirements": null,
+          "recommendedRequirements": null,
+          "provenance": {
+            "source": "rawg",
+            "sourceUrl": "https://rawg.io/games/juegos-chiquitos",
+            "confidence": 1,
+            "ingestedAt": "2026-10-21",
+            "notes": "RAWG aporta descripcion, generos y desarrollador; no publica tamano de instalacion."
+          }
+        }
+      ]
+    },
+    {
+      "title": "Fallout London",
+      "slug": "fallout-london",
+      "description": "Fallout London is a total conversion mod made by Team FOLON® for Fallout 4 GOTY and requires you to own the base game on either GOG or Steam.\nHow to install and play Fallout London:\nIf you own Fallout 4: Game of the Year Edition on Steam, please click here to access the installation's instructions provided by Team FOLON®. You will have to downgrade your version, then install the Fallout: London via our dedicated launcher.\nIf you own Fallout 4: Game of the Year Edition on GOG, since our version is directly compatible with Fallout: London, you will only have to follow these easy steps:\nInstall the English version of Fallout 4: GOTY Edition via GOG GALAXY and disable your cloud saves.\nGet Fallout London in our store for free.\nInstall Fallout London via GOG GALAXY and launch it.\nFollow the launcher’s instructions, and enjoy!\nA Polite Disclaimer\nIn typical imperial British fashion, Fallout: London will take over your Fallout 4 installation. Installing Fallout: London will make irreversible changes to the default Fallout 4: GOTY Edition installation. You’ll also need to disable cloud saves (as the save folder is shared between the game and the mod). If you’d like to play the default Fallout 4: GOTY Edition again, you’ll need to uninstall the game and the mod, and then reinstall Fallout 4: GOTY Edition.\nSummary\nFallout: London lets you explore a dishevelled London set in the Fallout universe. It overhauls Fallout 4 with a new story, new weapons, London-centric items and a vast recreation of the ruined city to explore.\nFallout: London is a free total conversion mod for Fallout 4, available to anyone who owns the base game and all of its DLCs. It is developed non-commercially by Team FOLON, many of whom are proud London residents or expats.\nAbout This Game\nThere has never been a better time to sample the capital’s delights! Fallout: London lets you explore the wonders of the city 160 years after the bombs have dropped, and 40 years before the events of Fallout 3.",
+      "releaseYear": 2024,
+      "developer": "Team FOLON®",
+      "publisher": "Team FOLON®",
+      "keywords": null,
+      "categorySlug": "otros",
+      "genreSlugs": [],
+      "sizeValue": null,
+      "sizeUnit": null,
+      "minimumRequirements": null,
+      "recommendedRequirements": null,
+      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/cob7zh.jpg",
+      "platformVariants": [
+        {
+          "platformSlug": "pc",
+          "sizeValue": null,
+          "sizeUnit": null,
+          "minimumRequirements": null,
+          "recommendedRequirements": null,
+          "provenance": {
+            "source": "rawg",
+            "sourceUrl": "https://rawg.io/games/fallout-london",
+            "confidence": 1,
+            "ingestedAt": "2026-10-21",
+            "notes": "RAWG aporta descripcion, generos y desarrollador; no publica tamano de instalacion."
+          }
+        }
+      ]
+    },
+    {
+      "title": "Minecraft (Juego base)",
+      "slug": "minecraft-juego-base",
+      "description": "A new threat descends upon the Overworld...",
+      "releaseYear": 2016,
+      "developer": "Mojang Studios, Double Eleven",
+      "publisher": "Xbox Game Studios",
+      "keywords": "Action, Adventure, RPG",
+      "categorySlug": "accion",
+      "genreSlugs": [
+        "accion",
+        "aventura",
+        "rol",
+        "simulacion",
+        "arcade",
+        "indie"
+      ],
+      "sizeValue": null,
+      "sizeUnit": null,
+      "minimumRequirements": {
+        "os": "Windows 10 64‑bit (1703 or newer)",
+        "cpu": "Intel Core i3‑8100, AMD Ryzen 3 2200G or equivalent",
+        "gpu": "NVIDIA GeForce GTX 1050, AMD Radeon RX 560 or equivalent dedicated graphics card with at least 2 GB VRAM",
+        "ram": "8 GB RAM"
+      },
+      "recommendedRequirements": {
+        "os": "Windows 10 64‑bit (1703 or newer)",
+        "cpu": "Intel Core i5‑8400, AMD Ryzen 5 2600 or equivalent or higher",
+        "gpu": "NVIDIA GeForce GTX 1060, AMD Radeon RX 580, with at least 6 GB VRAM or equivalent",
+        "ram": "16 GB RAM"
+      },
+      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co8fu7.jpg",
+      "platformVariants": [
+        {
+          "platformSlug": "pc",
+          "sizeValue": null,
+          "sizeUnit": null,
+          "minimumRequirements": {
+            "os": "Windows 10 64‑bit (1703 or newer)",
+            "cpu": "Intel Core i3‑8100, AMD Ryzen 3 2200G or equivalent",
+            "gpu": "NVIDIA GeForce GTX 1050, AMD Radeon RX 560 or equivalent dedicated graphics card with at least 2 GB VRAM",
+            "ram": "8 GB RAM"
+          },
+          "recommendedRequirements": {
+            "os": "Windows 10 64‑bit (1703 or newer)",
+            "cpu": "Intel Core i5‑8400, AMD Ryzen 5 2600 or equivalent or higher",
+            "gpu": "NVIDIA GeForce GTX 1060, AMD Radeon RX 580, with at least 6 GB VRAM or equivalent",
+            "ram": "16 GB RAM"
+          },
+          "provenance": {
+            "source": "steam",
+            "sourceUrl": "https://store.steampowered.com/app/1912410/",
+            "confidence": 1,
+            "ingestedAt": "2026-10-21",
+            "notes": "Sin tamano publicado por la fuente."
+          }
+        }
+      ]
+    },
+    {
+      "title": "Valheim",
+      "slug": "valheim",
+      "description": "A collaborative exploration and survival game for 1-10 players, set in a procedurally generated afterlife inspired by Viking culture. Battle, build, and conquer your way to a saga worthy of Odin’s patronage!",
+      "releaseYear": 2026,
+      "developer": "Iron Gate AB",
+      "publisher": "Coffee Stain Publishing",
+      "keywords": "Action, Adventure, Indie, RPG",
+      "categorySlug": "accion",
+      "genreSlugs": [
+        "accion",
+        "aventura",
+        "indie",
+        "rol"
+      ],
+      "sizeValue": 1,
+      "sizeUnit": "GB",
+      "minimumRequirements": {
+        "os": "Windows 10 or later",
+        "cpu": "2.6 GHz Quad Core or similar",
+        "gpu": "GeForce GTX 950 or Radeon HD 7970",
+        "ram": "8 GB RAM",
+        "storage": "1 GB available space"
+      },
+      "recommendedRequirements": {
+        "os": "Windows 10 or later",
+        "cpu": "i5 3GHz or Ryzen 5 3GHz",
+        "gpu": "GeForce GTX 1060 or Radeon RX 580",
+        "ram": "16 GB RAM",
+        "storage": "1 GB available space"
+      },
+      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/cocygu.jpg",
+      "platformVariants": [
+        {
+          "platformSlug": "pc",
+          "sizeValue": 1,
+          "sizeUnit": "GB",
+          "minimumRequirements": {
+            "os": "Windows 10 or later",
+            "cpu": "2.6 GHz Quad Core or similar",
+            "gpu": "GeForce GTX 950 or Radeon HD 7970",
+            "ram": "8 GB RAM",
+            "storage": "1 GB available space"
+          },
+          "recommendedRequirements": {
+            "os": "Windows 10 or later",
+            "cpu": "i5 3GHz or Ryzen 5 3GHz",
+            "gpu": "GeForce GTX 1060 or Radeon RX 580",
+            "ram": "16 GB RAM",
+            "storage": "1 GB available space"
+          },
+          "provenance": {
+            "source": "steam",
+            "sourceUrl": "https://store.steampowered.com/app/892970/",
+            "confidence": 1,
+            "ingestedAt": "2026-10-21",
+            "notes": "Tamano 1 GB y requisitos extraidos de pc_requirements de la Steam store."
+          }
+        }
+      ]
+    },
+    {
+      "title": "Beyond the Ice Palace 2",
+      "slug": "beyond-the-ice-palace-2",
+      "description": "Arise from the dead as the 'Cursed King' in an enthralling action platformer. Wield the chains that once imprisoned you to vanquish foes and traverse your fallen kingdom. Uncover hidden areas, strategically level up, and reclaim your throne by banishing colossal bosses!",
+      "releaseYear": 2025,
+      "developer": "STORYBIRD Studio",
+      "publisher": "PQube, PixelHeart",
+      "keywords": "Action, Adventure",
+      "categorySlug": "accion",
+      "genreSlugs": [
+        "accion",
+        "aventura"
+      ],
+      "sizeValue": 50,
+      "sizeUnit": "GB",
+      "minimumRequirements": {
+        "cpu": "Dual Core 1.8ghz",
+        "gpu": "Intel HD",
+        "ram": "1 GB RAM",
+        "storage": "50 MB available space"
+      },
+      "recommendedRequirements": {
+        "cpu": "Dual Core 1.8ghz",
+        "gpu": "Intel HD",
+        "ram": "1 GB RAM",
+        "storage": "50 MB available space"
+      },
+      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co82o9.jpg",
+      "platformVariants": [
+        {
+          "platformSlug": "pc",
+          "sizeValue": 50,
+          "sizeUnit": "GB",
+          "minimumRequirements": {
+            "cpu": "Dual Core 1.8ghz",
+            "gpu": "Intel HD",
+            "ram": "1 GB RAM",
+            "storage": "50 MB available space"
+          },
+          "recommendedRequirements": {
+            "cpu": "Dual Core 1.8ghz",
+            "gpu": "Intel HD",
+            "ram": "1 GB RAM",
+            "storage": "50 MB available space"
+          },
+          "provenance": {
+            "source": "steam",
+            "sourceUrl": "https://store.steampowered.com/app/2384730/",
+            "confidence": 0.75,
+            "ingestedAt": "2026-10-21",
+            "notes": "Tamano 50 GB y requisitos extraidos de pc_requirements de la Steam store."
+          }
+        }
+      ]
+    },
+    {
+      "title": "Euro Truck Simulator 2",
+      "slug": "euro-truck-simulator-2",
+      "description": "The DAF XD truck represents a new generation of distribution and vocational vehicles. From its aerodynamic features enhancing fuel efficiency to the advanced safety systems ensuring a secure journey, it is the ideal choice for your next regional delivery on the road.",
+      "releaseYear": 2023,
+      "developer": "SCS Software",
+      "publisher": "SCS Software",
+      "keywords": "Indie, Simulation",
+      "categorySlug": "simulacion",
+      "genreSlugs": [
+        "indie",
+        "simulacion",
+        "carreras"
+      ],
+      "sizeValue": 12,
+      "sizeUnit": "GB",
+      "minimumRequirements": {
+        "cpu": "Dual core CPU 2.4 GHz",
+        "gpu": "GeForce GTS 450-class (Intel HD 4000)",
+        "ram": "4 GB RAM",
+        "storage": "12 GB available space"
+      },
+      "recommendedRequirements": {
+        "cpu": "Quad core CPU 3.0 GHz",
+        "gpu": "GeForce GTX 760-class (2 GB)",
+        "ram": "6 GB RAM",
+        "storage": "12 GB available space"
+      },
+      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co7eo9.jpg",
+      "platformVariants": [
+        {
+          "platformSlug": "pc",
+          "sizeValue": 12,
+          "sizeUnit": "GB",
+          "minimumRequirements": {
+            "cpu": "Dual core CPU 2.4 GHz",
+            "gpu": "GeForce GTS 450-class (Intel HD 4000)",
+            "ram": "4 GB RAM",
+            "storage": "12 GB available space"
+          },
+          "recommendedRequirements": {
+            "cpu": "Quad core CPU 3.0 GHz",
+            "gpu": "GeForce GTX 760-class (2 GB)",
+            "ram": "6 GB RAM",
+            "storage": "12 GB available space"
+          },
+          "provenance": {
+            "source": "steam",
+            "sourceUrl": "https://store.steampowered.com/app/2611740/",
+            "confidence": 1,
+            "ingestedAt": "2026-10-21",
+            "notes": "Tamano 12 GB y requisitos extraidos de pc_requirements de la Steam store."
+          }
+        }
+      ]
+    },
+    {
+      "title": "Oriental Dynasty Silk Road Defense War",
+      "slug": "oriental-dynasty-silk-road-defense-war",
+      "description": "Experience the perfect combination of tower defense and the historical plot of the Silk Road, so as to bring an amazing epic game adventure experience! You will follow our protagonists in a strategic battle on the Eurasian continent! Come on, buddy, this epic fantasy adventure needs your help!",
+      "releaseYear": null,
+      "developer": "星环游戏",
+      "publisher": "星环游戏",
+      "keywords": "Adventure, Casual, Indie, RPG, Strategy",
+      "categorySlug": "aventura",
+      "genreSlugs": [
+        "aventura",
+        "casual",
+        "indie",
+        "rol",
+        "estrategia"
+      ],
+      "sizeValue": 1,
+      "sizeUnit": "GB",
+      "minimumRequirements": {
+        "os": "Win 10 x64",
+        "cpu": "Dual Core i5 2.5 GHz",
+        "gpu": "GeForce GTX 560",
+        "ram": "8 GB RAM",
+        "storage": "1 GB available space"
+      },
+      "recommendedRequirements": {
+        "os": "Win 10 x64",
+        "cpu": "Quad Core 3.0 GHz",
+        "gpu": "GeForce GTX 660",
+        "ram": "8 GB RAM",
+        "storage": "2 GB available space"
+      },
+      "coverUrl": null,
+      "platformVariants": [
+        {
+          "platformSlug": "pc",
+          "sizeValue": 1,
+          "sizeUnit": "GB",
+          "minimumRequirements": {
+            "os": "Win 10 x64",
+            "cpu": "Dual Core i5 2.5 GHz",
+            "gpu": "GeForce GTX 560",
+            "ram": "8 GB RAM",
+            "storage": "1 GB available space"
+          },
+          "recommendedRequirements": {
+            "os": "Win 10 x64",
+            "cpu": "Quad Core 3.0 GHz",
+            "gpu": "GeForce GTX 660",
+            "ram": "8 GB RAM",
+            "storage": "2 GB available space"
+          },
+          "provenance": {
+            "source": "steam",
+            "sourceUrl": "https://store.steampowered.com/app/2050510/",
+            "confidence": 1,
+            "ingestedAt": "2026-10-21",
+            "notes": "Tamano 1 GB y requisitos extraidos de pc_requirements de la Steam store."
+          }
+        }
+      ]
+    },
+    {
+      "title": "Stray",
+      "slug": "stray",
+      "description": "Lost, alone and separated from family, a stray cat must untangle an ancient mystery to escape a long-forgotten cybercity and find their way home.",
+      "releaseYear": 2022,
+      "developer": "BlueTwelve Studio",
+      "publisher": "Annapurna Interactive",
+      "keywords": "Adventure, Indie",
+      "categorySlug": "aventura",
+      "genreSlugs": [
+        "aventura",
+        "indie",
+        "accion",
+        "puzzle"
+      ],
+      "sizeValue": 10,
+      "sizeUnit": "GB",
+      "minimumRequirements": {
+        "os": "Windows 10",
+        "cpu": "Intel Core i5-2300 | AMD FX-6350",
+        "gpu": "NVIDIA GeForce GTX 650 Ti, 2 GB | AMD Radeon R7 360, 2 GB",
+        "ram": "8 GB RAM",
+        "storage": "10 GB available space"
+      },
+      "recommendedRequirements": {
+        "os": "Windows 10",
+        "cpu": "Intel Core i5-8400 | AMD Ryzen 5 2600",
+        "gpu": "NVIDIA GeForce GTX 780, 3 GB | AMD Radeon R9 290X, 4 GB",
+        "ram": "8 GB RAM",
+        "storage": "10 GB available space"
+      },
+      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co4tt2.jpg",
+      "platformVariants": [
+        {
+          "platformSlug": "pc",
+          "sizeValue": 10,
+          "sizeUnit": "GB",
+          "minimumRequirements": {
+            "os": "Windows 10",
+            "cpu": "Intel Core i5-2300 | AMD FX-6350",
+            "gpu": "NVIDIA GeForce GTX 650 Ti, 2 GB | AMD Radeon R7 360, 2 GB",
+            "ram": "8 GB RAM",
+            "storage": "10 GB available space"
+          },
+          "recommendedRequirements": {
+            "os": "Windows 10",
+            "cpu": "Intel Core i5-8400 | AMD Ryzen 5 2600",
+            "gpu": "NVIDIA GeForce GTX 780, 3 GB | AMD Radeon R9 290X, 4 GB",
+            "ram": "8 GB RAM",
+            "storage": "10 GB available space"
+          },
+          "provenance": {
+            "source": "steam",
+            "sourceUrl": "https://store.steampowered.com/app/1332010/",
+            "confidence": 1,
+            "ingestedAt": "2026-10-21",
+            "notes": "Tamano 10 GB y requisitos extraidos de pc_requirements de la Steam store."
+          }
+        }
+      ]
+    },
+    {
+      "title": "Blue Prince",
+      "slug": "blue-prince",
+      "description": "Welcome to Mt. Holly, where every dawn unveils a new mystery. Navigate through shifting corridors and ever-changing chambers in this genre-defying strategy puzzle adventure. But will your unpredictable path lead you to the rumored Room 46?",
+      "releaseYear": 2025,
+      "developer": "Dogubomb",
+      "publisher": "Raw Fury",
+      "keywords": "Adventure, Indie, Strategy",
+      "categorySlug": "aventura",
+      "genreSlugs": [
+        "aventura",
+        "indie",
+        "estrategia",
+        "puzzle"
+      ],
+      "sizeValue": 6,
+      "sizeUnit": "GB",
+      "minimumRequirements": {
+        "os": "Windows 10/11, 64-bits",
+        "cpu": "i5-2300/Ryzen 3 1200",
+        "gpu": "NVIDIA GeForce GTX 1060/AMD RX580",
+        "ram": "16 GB RAM",
+        "storage": "6 GB available space"
+      },
+      "recommendedRequirements": {
+        "os": "Windows 10/11, 64-bits",
+        "cpu": "Intel Core i5 4690K / AMD Ryzen 5 1500x",
+        "gpu": "NVidia GeForce 1080 GTX /AMD RX 5700",
+        "ram": "16 GB RAM",
+        "storage": "6 GB available space"
+      },
+      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co9mzd.jpg",
+      "platformVariants": [
+        {
+          "platformSlug": "pc",
+          "sizeValue": 6,
+          "sizeUnit": "GB",
+          "minimumRequirements": {
+            "os": "Windows 10/11, 64-bits",
+            "cpu": "i5-2300/Ryzen 3 1200",
+            "gpu": "NVIDIA GeForce GTX 1060/AMD RX580",
+            "ram": "16 GB RAM",
+            "storage": "6 GB available space"
+          },
+          "recommendedRequirements": {
+            "os": "Windows 10/11, 64-bits",
+            "cpu": "Intel Core i5 4690K / AMD Ryzen 5 1500x",
+            "gpu": "NVidia GeForce 1080 GTX /AMD RX 5700",
+            "ram": "16 GB RAM",
+            "storage": "6 GB available space"
+          },
+          "provenance": {
+            "source": "steam",
+            "sourceUrl": "https://store.steampowered.com/app/1569580/",
+            "confidence": 1,
+            "ingestedAt": "2026-10-21",
+            "notes": "Tamano 6 GB y requisitos extraidos de pc_requirements de la Steam store."
+          }
+        }
+      ]
+    },
+    {
+      "title": "Sword of the Necromancer Resurrection",
+      "slug": "sword-of-the-necromancer-resurrection",
+      "description": "Sword of the Necromancer: Resurrection is a 3D remake of the original ARPG, featuring revamped graphics, dynamic combat, and a tactical summoning system. Turn your foes into allies and dive into an adventure full of strategy and action, inspired by the classics of the 6th gen of consoles.",
+      "releaseYear": 2025,
+      "developer": "Grimorio of Games",
+      "publisher": "Dolores Entertainment",
+      "keywords": "Action, Adventure, Indie, RPG",
+      "categorySlug": "accion",
+      "genreSlugs": [
+        "accion",
+        "aventura",
+        "indie",
+        "rol"
+      ],
+      "sizeValue": 4,
+      "sizeUnit": "GB",
+      "minimumRequirements": {
+        "os": "Windows 10",
+        "cpu": "AMD FX-6100/Intel i3-3220 or Equivalent",
+        "gpu": "AMD Radeon HD 7750, NVIDIA GeForce GTX 650 or Equivalent",
+        "ram": "8 GB RAM",
+        "storage": "4 GB available space"
+      },
+      "recommendedRequirements": {
+        "os": "Windows 10",
+        "cpu": "AMD Ryzen 7 1700/Intel i7-6700K or Equivalent",
+        "gpu": "AMD RX Vega 56, Nvidia GTX 1070/GTX1660Ti or Equivalent",
+        "ram": "16 GB RAM",
+        "storage": "4 GB available space"
+      },
+      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co9b2z.jpg",
+      "platformVariants": [
+        {
+          "platformSlug": "pc",
+          "sizeValue": 4,
+          "sizeUnit": "GB",
+          "minimumRequirements": {
+            "os": "Windows 10",
+            "cpu": "AMD FX-6100/Intel i3-3220 or Equivalent",
+            "gpu": "AMD Radeon HD 7750, NVIDIA GeForce GTX 650 or Equivalent",
+            "ram": "8 GB RAM",
+            "storage": "4 GB available space"
+          },
+          "recommendedRequirements": {
+            "os": "Windows 10",
+            "cpu": "AMD Ryzen 7 1700/Intel i7-6700K or Equivalent",
+            "gpu": "AMD RX Vega 56, Nvidia GTX 1070/GTX1660Ti or Equivalent",
+            "ram": "16 GB RAM",
+            "storage": "4 GB available space"
+          },
+          "provenance": {
+            "source": "steam",
+            "sourceUrl": "https://store.steampowered.com/app/2782880/",
+            "confidence": 1,
+            "ingestedAt": "2026-10-21",
+            "notes": "Tamano 4 GB y requisitos extraidos de pc_requirements de la Steam store."
+          }
+        }
+      ]
+    },
+    {
+      "title": "Dino Crisis Bundle",
+      "slug": "dino-crisis-bundle",
+      "description": "Dino Crisis Bundle includes:\nDino Crisis Three years ago. A scientist died in an accident during an experiment. His research was on “Third Energy,” a completely clean energy source. The accident occurred just as government funding had been cut off because the project was deemed unfeasible. To the public, it was nothing more than an insignificant piece of information. Until now.\nDino Crisis 2 A year has passed since the operation to retrieve Dr. Kirk. Third Energy, both a source of \"ultimate clean energy\" and a potential \"ultimate weapon,\" has proven to be dangerously unpredictable. The government, having taken control of the project from Dr. Kirk, continued its development. Then, the “accident” happened once again.\nディノクライシスバンドルに含まれるもの:\nディノクライシス 3年前。一人の科学者が実験中の事故で死亡した。\n彼が研究していたのは《完全なクリーンエネルギー＝“サードエナジー”》。\n実現性に乏しいとみなされ、政府からの資金援助を絶たれた矢先の、不慮の事故だった。\nそれは世間にとって、取るに足りない情報の一飛沫にすぎなかった。\nそして今。\nディノクライシス2 〈カーク博士奪還作戦〉から１年。\n“究極のクリーンエネルギー”“究極の兵器”…２つの顔を持つサードエナジー。\nその開発プロジェクトは、開発者カーク博士の手を離れ、政府に移された。\nそして、再び“事故”は起こった…。\nEach title offers different language support. For all the details, please refer to their individual product pages.\nDino Crisis:\nDino Crisis 2:",
+      "releaseYear": 2025,
+      "developer": "Capcom, GOG",
+      "publisher": "Capcom",
+      "keywords": null,
+      "categorySlug": "otros",
+      "genreSlugs": [],
+      "sizeValue": null,
+      "sizeUnit": null,
+      "minimumRequirements": null,
+      "recommendedRequirements": null,
+      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co9c5n.jpg",
+      "platformVariants": [
+        {
+          "platformSlug": "pc",
+          "sizeValue": null,
+          "sizeUnit": null,
+          "minimumRequirements": null,
+          "recommendedRequirements": null,
+          "provenance": {
+            "source": "rawg",
+            "sourceUrl": "https://rawg.io/games/dino-crisis-bundle",
+            "confidence": 1,
+            "ingestedAt": "2026-10-21",
+            "notes": "RAWG aporta descripcion, generos y desarrollador; no publica tamano de instalacion."
+          }
+        }
+      ]
+    },
+    {
+      "title": "UNBEATABLE",
+      "slug": "unbeatable",
+      "description": "UNBEATABLE is a rhythm adventure where music is illegal and you do crimes. Follow the story of Beat and her band on the run, in a narrative experience full of big emotions powered by arcade-flawless rhythm gameplay.",
+      "releaseYear": 2025,
+      "developer": "D-CELL GAMES",
+      "publisher": "Playstack",
+      "keywords": "Adventure",
+      "categorySlug": "aventura",
+      "genreSlugs": [
+        "aventura"
+      ],
+      "sizeValue": 35,
+      "sizeUnit": "GB",
+      "minimumRequirements": {
+        "os": "Windows 10 64-bit",
+        "cpu": "Intel i5-7500",
+        "gpu": "NVIDIA GForce GTX 1060",
+        "ram": "16 GB RAM",
+        "storage": "35 GB available space"
+      },
+      "recommendedRequirements": {
+        "os": "Windows 10 64-bit",
+        "cpu": "Intel i5-7500",
+        "gpu": "NVIDIA GForce GTX 1060",
+        "ram": "16 GB RAM",
+        "storage": "35 GB available space"
+      },
+      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co9ozh.jpg",
+      "platformVariants": [
+        {
+          "platformSlug": "pc",
+          "sizeValue": 35,
+          "sizeUnit": "GB",
+          "minimumRequirements": {
+            "os": "Windows 10 64-bit",
+            "cpu": "Intel i5-7500",
+            "gpu": "NVIDIA GForce GTX 1060",
+            "ram": "16 GB RAM",
+            "storage": "35 GB available space"
+          },
+          "recommendedRequirements": {
+            "os": "Windows 10 64-bit",
+            "cpu": "Intel i5-7500",
+            "gpu": "NVIDIA GForce GTX 1060",
+            "ram": "16 GB RAM",
+            "storage": "35 GB available space"
+          },
+          "provenance": {
+            "source": "steam",
+            "sourceUrl": "https://store.steampowered.com/app/2240620/",
+            "confidence": 1,
+            "ingestedAt": "2026-10-21",
+            "notes": "Tamano 35 GB y requisitos extraidos de pc_requirements de la Steam store."
+          }
+        }
+      ]
+    },
+    {
+      "title": "galaxy dreamer",
+      "slug": "galaxy-dreamer",
+      "description": "Galaxy Dreamer is an 2D old-school vertical space shooter that will remind you of your childhood.Control a spaceship and shoot your opponents alone or with a friend! You can choose from a dozen spaceships and weapons to destroy a variety of enemies and BOSSES!",
+      "releaseYear": null,
+      "developer": "Annet Valentive",
+      "publisher": "Galaxy Games",
+      "keywords": "Action",
+      "categorySlug": "accion",
+      "genreSlugs": [
+        "accion"
+      ],
+      "sizeValue": 1,
+      "sizeUnit": "GB",
+      "minimumRequirements": {
+        "cpu": "64bit Intel compatible Dual Core CPU",
+        "gpu": "OpenGL 4-compliant onboard graphics",
+        "ram": "2 GB RAM",
+        "storage": "1 GB available space"
+      },
+      "recommendedRequirements": {
+        "os": "Microsoft 64bit Windows 10",
+        "cpu": "64bit Intel compatible Quad Core CPU",
+        "gpu": "Dedicated OpenGL 4-compliant onboard graphics",
+        "ram": "8 GB RAM",
+        "storage": "1 GB available space"
+      },
+      "coverUrl": null,
+      "platformVariants": [
+        {
+          "platformSlug": "pc",
+          "sizeValue": 1,
+          "sizeUnit": "GB",
+          "minimumRequirements": {
+            "cpu": "64bit Intel compatible Dual Core CPU",
+            "gpu": "OpenGL 4-compliant onboard graphics",
+            "ram": "2 GB RAM",
+            "storage": "1 GB available space"
+          },
+          "recommendedRequirements": {
+            "os": "Microsoft 64bit Windows 10",
+            "cpu": "64bit Intel compatible Quad Core CPU",
+            "gpu": "Dedicated OpenGL 4-compliant onboard graphics",
+            "ram": "8 GB RAM",
+            "storage": "1 GB available space"
+          },
+          "provenance": {
+            "source": "steam",
+            "sourceUrl": "https://store.steampowered.com/app/2842910/",
+            "confidence": 1,
+            "ingestedAt": "2026-10-21",
+            "notes": "Tamano 1 GB y requisitos extraidos de pc_requirements de la Steam store."
+          }
+        }
+      ]
+    },
+    {
+      "title": "Dice Legacy",
+      "slug": "dice-legacy",
+      "description": "Dice Legacy is a dice-based survival city builder set on a mysterious ringworld. Your ship has reached the shore of an uncharted continent. Roll and use your dice to gather resources, expand and defend your settlement, survive the winter and interact with the strange inhabitants of this eerie world.",
+      "releaseYear": 2021,
+      "developer": "DESTINYbit",
+      "publisher": "DESTINYbit, Amplifier Studios",
+      "keywords": "Indie, Strategy",
+      "categorySlug": "otros",
+      "genreSlugs": [
+        "indie",
+        "estrategia"
+      ],
+      "sizeValue": 2,
+      "sizeUnit": "GB",
+      "minimumRequirements": {
+        "os": "Windows 10 64bit",
+        "cpu": "Intel Core i3-2120 / AMD Athlon 3000G",
+        "gpu": "GTX 660 2GB / AMD HD 7750 1GB",
+        "ram": "8 GB RAM",
+        "storage": "2 GB available space"
+      },
+      "recommendedRequirements": {
+        "os": "Windows 10 64bit",
+        "cpu": "Intel Core i5-8600K / AMD Ryzen 1300X",
+        "gpu": "Nvidia GTX 1060 6GB / AMD Radeon RX 580 8GB",
+        "ram": "16 GB RAM",
+        "storage": "2 GB available space"
+      },
+      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co3979.jpg",
+      "platformVariants": [
+        {
+          "platformSlug": "pc",
+          "sizeValue": 2,
+          "sizeUnit": "GB",
+          "minimumRequirements": {
+            "os": "Windows 10 64bit",
+            "cpu": "Intel Core i3-2120 / AMD Athlon 3000G",
+            "gpu": "GTX 660 2GB / AMD HD 7750 1GB",
+            "ram": "8 GB RAM",
+            "storage": "2 GB available space"
+          },
+          "recommendedRequirements": {
+            "os": "Windows 10 64bit",
+            "cpu": "Intel Core i5-8600K / AMD Ryzen 1300X",
+            "gpu": "Nvidia GTX 1060 6GB / AMD Radeon RX 580 8GB",
+            "ram": "16 GB RAM",
+            "storage": "2 GB available space"
+          },
+          "provenance": {
+            "source": "steam",
+            "sourceUrl": "https://store.steampowered.com/app/1229460/",
+            "confidence": 1,
+            "ingestedAt": "2026-10-21",
+            "notes": "Tamano 2 GB y requisitos extraidos de pc_requirements de la Steam store."
+          }
+        }
+      ]
+    },
+    {
+      "title": "Pharaoh A New Era",
+      "slug": "pharaoh-a-new-era",
+      "description": "The legendary city-builder returns! Lead the creation of one of the greatest civilizations the world has ever seen in this HD remake with modernized UI. Build monuments, manage your population and explore 4,000 years of history through over a hundred hours of gameplay.",
+      "releaseYear": 2023,
+      "developer": "Triskell Interactive",
+      "publisher": "Dotemu",
+      "keywords": "Simulation, Strategy",
+      "categorySlug": "simulacion",
+      "genreSlugs": [
+        "simulacion",
+        "estrategia"
+      ],
+      "sizeValue": 8,
+      "sizeUnit": "GB",
+      "minimumRequirements": {
+        "os": "Windows 10",
+        "cpu": "Intel Core i5-9600K or AMD Ryzen 5 3600XT",
+        "gpu": "NVIDIA GeForce GTS 450, 1 GB or AMD Radeon HD 5750, 1 GB or Intel HD Graphics 630",
+        "ram": "8 GB RAM",
+        "storage": "8 GB available space"
+      },
+      "recommendedRequirements": {
+        "os": "Windows 10",
+        "cpu": "Intel Core i7-9700K or AMD Ryzen 7 3800XT",
+        "gpu": "NVIDIA GeForce GT 1030, 2 GB or AMD Radeon RX 460, 2 GB or Intel HD Graphics 630",
+        "ram": "8 GB RAM",
+        "storage": "8 GB available space"
+      },
+      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co2lww.jpg",
+      "platformVariants": [
+        {
+          "platformSlug": "pc",
+          "sizeValue": 8,
+          "sizeUnit": "GB",
+          "minimumRequirements": {
+            "os": "Windows 10",
+            "cpu": "Intel Core i5-9600K or AMD Ryzen 5 3600XT",
+            "gpu": "NVIDIA GeForce GTS 450, 1 GB or AMD Radeon HD 5750, 1 GB or Intel HD Graphics 630",
+            "ram": "8 GB RAM",
+            "storage": "8 GB available space"
+          },
+          "recommendedRequirements": {
+            "os": "Windows 10",
+            "cpu": "Intel Core i7-9700K or AMD Ryzen 7 3800XT",
+            "gpu": "NVIDIA GeForce GT 1030, 2 GB or AMD Radeon RX 460, 2 GB or Intel HD Graphics 630",
+            "ram": "8 GB RAM",
+            "storage": "8 GB available space"
+          },
+          "provenance": {
+            "source": "steam",
+            "sourceUrl": "https://store.steampowered.com/app/1351080/",
+            "confidence": 1,
+            "ingestedAt": "2026-10-21",
+            "notes": "Tamano 8 GB y requisitos extraidos de pc_requirements de la Steam store."
+          }
+        }
+      ]
+    },
+    {
+      "title": "Wreckfest 2",
+      "slug": "wreckfest-2",
+      "description": "Ready for mayhem? Wreckfest is back, offering the best in full-contact racing with unrivaled destruction! Witness head-to-head battles as you tear apart rival vehicles bit by bit. Powered by the enhanced physics engine, developed by the creators of Wreckfest & FlatOut!",
+      "releaseYear": 2025,
+      "developer": "Bugbear",
+      "publisher": "THQ Nordic",
+      "keywords": "Racing, Early Access",
+      "categorySlug": "carreras",
+      "genreSlugs": [
+        "carreras"
+      ],
+      "sizeValue": 15,
+      "sizeUnit": "GB",
+      "minimumRequirements": {
+        "os": "Windows 10 or 11",
+        "cpu": "Core i5 8600 / Ryzen 5 3500 or equivalent 6 core CPU",
+        "gpu": "GTX 1060 with 6GB VRAM / RX 580",
+        "ram": "8 GB RAM",
+        "storage": "15 GB available space"
+      },
+      "recommendedRequirements": {
+        "os": "Windows 10 or 11",
+        "cpu": "Core i7 9700 / Ryzen 5 3600X or equivalent 6 core CPU",
+        "gpu": "RTX 3070 / 6800 XT",
+        "ram": "16 GB RAM",
+        "storage": "15 GB available space"
+      },
+      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co8mji.jpg",
+      "platformVariants": [
+        {
+          "platformSlug": "pc",
+          "sizeValue": 15,
+          "sizeUnit": "GB",
+          "minimumRequirements": {
+            "os": "Windows 10 or 11",
+            "cpu": "Core i5 8600 / Ryzen 5 3500 or equivalent 6 core CPU",
+            "gpu": "GTX 1060 with 6GB VRAM / RX 580",
+            "ram": "8 GB RAM",
+            "storage": "15 GB available space"
+          },
+          "recommendedRequirements": {
+            "os": "Windows 10 or 11",
+            "cpu": "Core i7 9700 / Ryzen 5 3600X or equivalent 6 core CPU",
+            "gpu": "RTX 3070 / 6800 XT",
+            "ram": "16 GB RAM",
+            "storage": "15 GB available space"
+          },
+          "provenance": {
+            "source": "steam",
+            "sourceUrl": "https://store.steampowered.com/app/1203190/",
+            "confidence": 1,
+            "ingestedAt": "2026-10-21",
+            "notes": "Tamano 15 GB y requisitos extraidos de pc_requirements de la Steam store."
+          }
+        }
+      ]
+    },
+    {
+      "title": "Shotgun King The Final Checkmate",
+      "slug": "shotgun-king-the-final-checkmate",
+      "description": "Chess, but you replace your entire army with a royal shotgun. A unique strategy roguelike based on the timeless checkboard classic.",
+      "releaseYear": 2022,
+      "developer": "PUNKCAKE Delicieux",
+      "publisher": "PUNKCAKE Delicieux",
+      "keywords": "Action, Indie, Strategy",
+      "categorySlug": "accion",
+      "genreSlugs": [
+        "accion",
+        "indie",
+        "estrategia"
+      ],
+      "sizeValue": 80,
+      "sizeUnit": "GB",
+      "minimumRequirements": {
+        "cpu": "yes, you should have one",
+        "gpu": "you'll need a screen",
+        "storage": "80 MB available space"
+      },
+      "recommendedRequirements": {
+        "cpu": "yes, you should have one",
+        "gpu": "you'll need a screen",
+        "storage": "80 MB available space"
+      },
+      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co8w6y.jpg",
+      "platformVariants": [
+        {
+          "platformSlug": "pc",
+          "sizeValue": 80,
+          "sizeUnit": "GB",
+          "minimumRequirements": {
+            "cpu": "yes, you should have one",
+            "gpu": "you'll need a screen",
+            "storage": "80 MB available space"
+          },
+          "recommendedRequirements": {
+            "cpu": "yes, you should have one",
+            "gpu": "you'll need a screen",
+            "storage": "80 MB available space"
+          },
+          "provenance": {
+            "source": "steam",
+            "sourceUrl": "https://store.steampowered.com/app/1972440/",
+            "confidence": 1,
+            "ingestedAt": "2026-10-21",
+            "notes": "Tamano 80 GB y requisitos extraidos de pc_requirements de la Steam store."
+          }
+        }
+      ]
+    },
+    {
+      "title": "Potion Craft Alchemist Simulator",
+      "slug": "potion-craft-alchemist-simulator",
+      "description": "Potion Craft is an alchemist simulator where you physically interact with your tools and ingredients to brew potions. You're in full control of the whole shop: invent new recipes, attract customers and experiment to your heart's content. Just remember: the whole town is counting on you.",
+      "releaseYear": 2022,
+      "developer": "niceplay games",
+      "publisher": "tinyBuild",
+      "keywords": "Indie, Simulation",
+      "categorySlug": "simulacion",
+      "genreSlugs": [
+        "indie",
+        "simulacion",
+        "casual"
+      ],
+      "sizeValue": 2,
+      "sizeUnit": "GB",
+      "minimumRequirements": {
+        "os": "Windows 10",
+        "cpu": "Intel i3-6100 or equivalent",
+        "gpu": "GeForce GTX 670 / Radeon HD 7970",
+        "ram": "8 GB RAM",
+        "storage": "2 GB available space"
+      },
+      "recommendedRequirements": {
+        "os": "Windows 10",
+        "cpu": "Intel i3-6100 or equivalent",
+        "gpu": "GeForce GTX 670 / Radeon HD 7970",
+        "ram": "8 GB RAM",
+        "storage": "2 GB available space"
+      },
+      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co2pow.jpg",
+      "platformVariants": [
+        {
+          "platformSlug": "pc",
+          "sizeValue": 2,
+          "sizeUnit": "GB",
+          "minimumRequirements": {
+            "os": "Windows 10",
+            "cpu": "Intel i3-6100 or equivalent",
+            "gpu": "GeForce GTX 670 / Radeon HD 7970",
+            "ram": "8 GB RAM",
+            "storage": "2 GB available space"
+          },
+          "recommendedRequirements": {
+            "os": "Windows 10",
+            "cpu": "Intel i3-6100 or equivalent",
+            "gpu": "GeForce GTX 670 / Radeon HD 7970",
+            "ram": "8 GB RAM",
+            "storage": "2 GB available space"
+          },
+          "provenance": {
+            "source": "steam",
+            "sourceUrl": "https://store.steampowered.com/app/1210320/",
+            "confidence": 1,
+            "ingestedAt": "2026-10-21",
+            "notes": "Tamano 2 GB y requisitos extraidos de pc_requirements de la Steam store."
+          }
+        }
+      ]
+    },
+    {
+      "title": "chasm",
+      "slug": "chasm",
+      "description": "Prepare for terror in this ground-breaking classic old-school FPS. Following the destruction of Time you are left to battle in this horrific hellhole of multilevel interconnected missions populated by gruesome grotesque creatures.",
+      "releaseYear": 2018,
+      "developer": "Action Forms, General Arcade",
+      "publisher": "SNEG",
+      "keywords": "Action",
+      "categorySlug": "accion",
+      "genreSlugs": [
+        "accion",
+        "aventura",
+        "rol",
+        "casual",
+        "indie"
+      ],
+      "sizeValue": 2,
+      "sizeUnit": "GB",
+      "minimumRequirements": {
+        "os": "64-bit Windows 10 / 11",
+        "cpu": "Dual Core 2Ghz Processor",
+        "gpu": "DirectX 11 compatible for 1920x1080",
+        "ram": "4 GB RAM",
+        "storage": "2 GB available space"
+      },
+      "recommendedRequirements": {
+        "os": "64-bit Windows 10 / 11",
+        "cpu": "Intel Core i5 / AMD Ryzen 5 Processor",
+        "gpu": "GeForce GTX 950 / Radeon R7 370 for 4K",
+        "ram": "4 GB RAM",
+        "storage": "2 GB available space"
+      },
+      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co1r6k.jpg",
+      "platformVariants": [
+        {
+          "platformSlug": "pc",
+          "sizeValue": 2,
+          "sizeUnit": "GB",
+          "minimumRequirements": {
+            "os": "64-bit Windows 10 / 11",
+            "cpu": "Dual Core 2Ghz Processor",
+            "gpu": "DirectX 11 compatible for 1920x1080",
+            "ram": "4 GB RAM",
+            "storage": "2 GB available space"
+          },
+          "recommendedRequirements": {
+            "os": "64-bit Windows 10 / 11",
+            "cpu": "Intel Core i5 / AMD Ryzen 5 Processor",
+            "gpu": "GeForce GTX 950 / Radeon R7 370 for 4K",
+            "ram": "4 GB RAM",
+            "storage": "2 GB available space"
+          },
+          "provenance": {
+            "source": "steam",
+            "sourceUrl": "https://store.steampowered.com/app/2061230/",
+            "confidence": 1,
+            "ingestedAt": "2026-10-21",
+            "notes": "Tamano 2 GB y requisitos extraidos de pc_requirements de la Steam store."
+          }
+        }
+      ]
+    },
+    {
+      "title": "Football Manager 2016",
+      "slug": "football-manager-2016",
+      "description": "Football Manager 2016 is a strategy-sports game. It came out on 13-11-2015. SEGA published the game. Football Manager 2016 has a Metascore of 81, based on professional reviews. Most rawgers rated the game as \"Recommended\". \nFootball Manager 2016 is available on PC.",
+      "releaseYear": 2015,
+      "developer": null,
+      "publisher": "SEGA",
+      "keywords": null,
+      "categorySlug": "deportes",
+      "genreSlugs": [
+        "estrategia",
+        "deportes"
+      ],
+      "sizeValue": null,
+      "sizeUnit": null,
+      "minimumRequirements": null,
+      "recommendedRequirements": null,
+      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co2k7b.jpg",
+      "platformVariants": [
+        {
+          "platformSlug": "pc",
+          "sizeValue": null,
+          "sizeUnit": null,
+          "minimumRequirements": null,
+          "recommendedRequirements": null,
+          "provenance": {
+            "source": "rawg",
+            "sourceUrl": "https://rawg.io/games/football-manager-2016",
+            "confidence": 1,
+            "ingestedAt": "2026-10-21",
+            "notes": "RAWG aporta descripcion, generos y desarrollador; no publica tamano de instalacion."
+          }
+        }
+      ]
+    },
+    {
+      "title": "Naruto Shippuden Ultimate Ninja STORM 2",
+      "slug": "naruto-shippuden-ultimate-ninja-storm-2",
+      "description": "NARUTO SHIPPUDEN: Ultimate Ninja STORM 2 is a tour de force of Naruto thrills and spills. Impressively faithful to the universe of the anime, the game takes players through the Shippuden story arc. Ultimate Ninja STORM 2 has been remastered in HD.",
+      "releaseYear": 2010,
+      "developer": "CyberConnect2 Co. Ltd.",
+      "publisher": "BANDAI NAMCO Entertainment",
+      "keywords": "Action, Adventure, Strategy",
+      "categorySlug": "accion",
+      "genreSlugs": [
+        "accion",
+        "aventura",
+        "estrategia",
+        "lucha"
+      ],
+      "sizeValue": 8,
+      "sizeUnit": "GB",
+      "minimumRequirements": {
+        "cpu": "Intel Core2 Duo, 3.0GHz - AMD Athlon 64 X2 Dual Core 6400+ 3.2GHz",
+        "gpu": "1024 MB video card",
+        "ram": "2 GB RAM",
+        "storage": "8 GB available space"
+      },
+      "recommendedRequirements": {
+        "cpu": "Intel Core2 Duo, 3.0GHz - AMD Athlon 64 X2 Dual Core 6400+ 3.2GHz",
+        "gpu": "1024 MB video card",
+        "ram": "2 GB RAM",
+        "storage": "8 GB available space"
+      },
+      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co2ssk.jpg",
+      "platformVariants": [
+        {
+          "platformSlug": "pc",
+          "sizeValue": 8,
+          "sizeUnit": "GB",
+          "minimumRequirements": {
+            "cpu": "Intel Core2 Duo, 3.0GHz - AMD Athlon 64 X2 Dual Core 6400+ 3.2GHz",
+            "gpu": "1024 MB video card",
+            "ram": "2 GB RAM",
+            "storage": "8 GB available space"
+          },
+          "recommendedRequirements": {
+            "cpu": "Intel Core2 Duo, 3.0GHz - AMD Athlon 64 X2 Dual Core 6400+ 3.2GHz",
+            "gpu": "1024 MB video card",
+            "ram": "2 GB RAM",
+            "storage": "8 GB available space"
+          },
+          "provenance": {
+            "source": "steam",
+            "sourceUrl": "https://store.steampowered.com/app/543870/",
+            "confidence": 1,
+            "ingestedAt": "2026-10-21",
+            "notes": "Tamano 8 GB y requisitos extraidos de pc_requirements de la Steam store."
+          }
+        }
+      ]
+    },
+    {
+      "title": "dota 2 beta lan",
+      "slug": "dota-2-beta-lan",
+      "description": "Every day, millions of players worldwide enter battle as one of over a hundred Dota heroes. And no matter if it's their 10th hour of play or 1,000th, there's always something new to discover. With regular updates that ensure a constant evolution of gameplay, features, and heroes, Dota 2 has taken on a life of its own.",
+      "releaseYear": 2013,
+      "developer": "Valve",
+      "publisher": "Valve",
+      "keywords": "Action, Strategy, Free To Play",
+      "categorySlug": "accion",
+      "genreSlugs": [
+        "accion",
+        "estrategia"
+      ],
+      "sizeValue": 60,
+      "sizeUnit": "GB",
+      "minimumRequirements": {
+        "cpu": "Dual core from Intel or AMD at 2.8 GHz",
+        "gpu": "NVIDIA GeForce 8600/9600GT, ATI/AMD Radeon HD2600/3600",
+        "ram": "4 GB RAM",
+        "storage": "60 GB available space"
+      },
+      "recommendedRequirements": {
+        "cpu": "Dual core from Intel or AMD at 2.8 GHz",
+        "gpu": "NVIDIA GeForce 8600/9600GT, ATI/AMD Radeon HD2600/3600",
+        "ram": "4 GB RAM",
+        "storage": "60 GB available space"
+      },
+      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/cobfk4.jpg",
+      "platformVariants": [
+        {
+          "platformSlug": "pc",
+          "sizeValue": 60,
+          "sizeUnit": "GB",
+          "minimumRequirements": {
+            "cpu": "Dual core from Intel or AMD at 2.8 GHz",
+            "gpu": "NVIDIA GeForce 8600/9600GT, ATI/AMD Radeon HD2600/3600",
+            "ram": "4 GB RAM",
+            "storage": "60 GB available space"
+          },
+          "recommendedRequirements": {
+            "cpu": "Dual core from Intel or AMD at 2.8 GHz",
+            "gpu": "NVIDIA GeForce 8600/9600GT, ATI/AMD Radeon HD2600/3600",
+            "ram": "4 GB RAM",
+            "storage": "60 GB available space"
+          },
+          "provenance": {
+            "source": "steam",
+            "sourceUrl": "https://store.steampowered.com/app/570/",
+            "confidence": 1,
+            "ingestedAt": "2026-10-21",
+            "notes": "Tamano 60 GB y requisitos extraidos de pc_requirements de la Steam store."
+          }
+        }
+      ]
+    },
+    {
+      "title": "Demolish And Build 2017",
+      "slug": "demolish-and-build-2017",
+      "description": "Become a boss of Demolition & Build company. Destroy small wooden huts and huge concrete buildings. Manage your workers. Invest earned cash in your own land properties and rent them for profit in open sandbox world. Use various hand tools, buy new machines and customize their parts.",
+      "releaseYear": 2016,
+      "developer": "Noble Muffins",
+      "publisher": "Demolish Games S.A.",
+      "keywords": "Simulation",
+      "categorySlug": "simulacion",
+      "genreSlugs": [
+        "simulacion"
+      ],
+      "sizeValue": 15,
+      "sizeUnit": "GB",
+      "minimumRequirements": {
+        "os": "7/8/8.1/10",
+        "cpu": "Core i3 3.1 GHz or AMD Phenom II X3 2.8 GHz",
+        "gpu": "GeForce GTX 560 or Radeon HD6870 with 1GB VRAM",
+        "ram": "4 GB RAM",
+        "storage": "15 GB available space"
+      },
+      "recommendedRequirements": {
+        "os": "7/8/8.1/10",
+        "cpu": "Core i5-2300 / AMD Athlon X4 760K or better",
+        "gpu": "GeForce GTX 670 or Radeon HD7970 with 2 GB VRAM",
+        "ram": "8 GB RAM",
+        "storage": "15 GB available space"
+      },
+      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co2pw7.jpg",
+      "platformVariants": [
+        {
+          "platformSlug": "pc",
+          "sizeValue": 15,
+          "sizeUnit": "GB",
+          "minimumRequirements": {
+            "os": "7/8/8.1/10",
+            "cpu": "Core i3 3.1 GHz or AMD Phenom II X3 2.8 GHz",
+            "gpu": "GeForce GTX 560 or Radeon HD6870 with 1GB VRAM",
+            "ram": "4 GB RAM",
+            "storage": "15 GB available space"
+          },
+          "recommendedRequirements": {
+            "os": "7/8/8.1/10",
+            "cpu": "Core i5-2300 / AMD Athlon X4 760K or better",
+            "gpu": "GeForce GTX 670 or Radeon HD7970 with 2 GB VRAM",
+            "ram": "8 GB RAM",
+            "storage": "15 GB available space"
+          },
+          "provenance": {
+            "source": "steam",
+            "sourceUrl": "https://store.steampowered.com/app/470740/",
+            "confidence": 1,
+            "ingestedAt": "2026-10-21",
+            "notes": "Tamano 15 GB y requisitos extraidos de pc_requirements de la Steam store."
+          }
+        }
+      ]
+    },
+    {
+      "title": "God Eater 2 Rage Burst",
+      "slug": "god-eater-2-rage-burst",
+      "description": "Swear your oath as a GOD EATER and drive back the supernatural harbingers of Earth’s destruction. Buy GOD EATER 2 Rage Burst and get GOD EATER Resurrection FOR FREE",
+      "releaseYear": 2015,
+      "developer": "BANDAI NAMCO Studio, SHIFT, QLOC",
+      "publisher": "BANDAI NAMCO Entertainment",
+      "keywords": "Action, RPG",
+      "categorySlug": "accion",
+      "genreSlugs": [
+        "accion",
+        "rol"
+      ],
+      "sizeValue": 15,
+      "sizeUnit": "GB",
+      "minimumRequirements": {
+        "cpu": "Intel Core 2 Duo E7500 2.93 GHz / AMD Athlon 64 X2 Dual Core Processor 5600+ 2.9GHz",
+        "gpu": "NVIDIA GeForce 9800 GT 1GB / AMD Radeon HD 6670",
+        "ram": "3 GB RAM",
+        "storage": "15 GB available space"
+      },
+      "recommendedRequirements": {
+        "cpu": "Intel Core i3 4130 3.4 GHZ / AMD FX-4100 Quad-Core Processor 3.6GHz",
+        "gpu": "GEFORCE GTX560 1GB / AMD Radeon HD 6850 1 GB",
+        "ram": "8 GB RAM",
+        "storage": "15 GB available space"
+      },
+      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co1nmt.jpg",
+      "platformVariants": [
+        {
+          "platformSlug": "pc",
+          "sizeValue": 15,
+          "sizeUnit": "GB",
+          "minimumRequirements": {
+            "cpu": "Intel Core 2 Duo E7500 2.93 GHz / AMD Athlon 64 X2 Dual Core Processor 5600+ 2.9GHz",
+            "gpu": "NVIDIA GeForce 9800 GT 1GB / AMD Radeon HD 6670",
+            "ram": "3 GB RAM",
+            "storage": "15 GB available space"
+          },
+          "recommendedRequirements": {
+            "cpu": "Intel Core i3 4130 3.4 GHZ / AMD FX-4100 Quad-Core Processor 3.6GHz",
+            "gpu": "GEFORCE GTX560 1GB / AMD Radeon HD 6850 1 GB",
+            "ram": "8 GB RAM",
+            "storage": "15 GB available space"
+          },
+          "provenance": {
+            "source": "steam",
+            "sourceUrl": "https://store.steampowered.com/app/438490/",
+            "confidence": 1,
+            "ingestedAt": "2026-10-21",
+            "notes": "Tamano 15 GB y requisitos extraidos de pc_requirements de la Steam store."
+          }
+        }
+      ]
+    },
+    {
+      "title": "Gears of War 5",
+      "slug": "gears-of-war-5",
+      "description": "From one of gaming’s most acclaimed sagas, Gears is bigger than ever. With all-out war descending, Kait Diaz breaks away to uncover her connection to the enemy and discovers the true danger to Sera – herself.",
+      "releaseYear": 2019,
+      "developer": "The Coalition",
+      "publisher": "Xbox Game Studios",
+      "keywords": "Action, Adventure",
+      "categorySlug": "accion",
+      "genreSlugs": [
+        "accion",
+        "aventura"
+      ],
+      "sizeValue": 80,
+      "sizeUnit": "GB",
+      "minimumRequirements": {
+        "cpu": "AMD FX-6000 series | Intel i3 Skylake",
+        "gpu": "AMD Radeon R9 280 | NVIDIA GeForce GTX 760 (Windows 10) | NVIDIA GeForce GTX 1050 (Windows 7)",
+        "ram": "8 GB RAM",
+        "storage": "80 GB available space"
+      },
+      "recommendedRequirements": {
+        "os": "Windows 10 64-bit",
+        "cpu": "AMD Ryzen 3 | Intel i5 Skylake",
+        "gpu": "AMD Radeon RX 570 | NVIDIA GeForce GTX 970 (Windows 10) | NVIDIA GeForce GTX 1660ti (Windows 7)",
+        "ram": "8 GB RAM",
+        "storage": "80 GB available space"
+      },
+      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co2oz5.jpg",
+      "platformVariants": [
+        {
+          "platformSlug": "pc",
+          "sizeValue": 80,
+          "sizeUnit": "GB",
+          "minimumRequirements": {
+            "cpu": "AMD FX-6000 series | Intel i3 Skylake",
+            "gpu": "AMD Radeon R9 280 | NVIDIA GeForce GTX 760 (Windows 10) | NVIDIA GeForce GTX 1050 (Windows 7)",
+            "ram": "8 GB RAM",
+            "storage": "80 GB available space"
+          },
+          "recommendedRequirements": {
+            "os": "Windows 10 64-bit",
+            "cpu": "AMD Ryzen 3 | Intel i5 Skylake",
+            "gpu": "AMD Radeon RX 570 | NVIDIA GeForce GTX 970 (Windows 10) | NVIDIA GeForce GTX 1660ti (Windows 7)",
+            "ram": "8 GB RAM",
+            "storage": "80 GB available space"
+          },
+          "provenance": {
+            "source": "steam",
+            "sourceUrl": "https://store.steampowered.com/app/1097840/",
+            "confidence": 1,
+            "ingestedAt": "2026-10-21",
+            "notes": "Tamano 80 GB y requisitos extraidos de pc_requirements de la Steam store."
+          }
+        }
+      ]
+    },
+    {
+      "title": "Portal 2",
+      "slug": "portal-2",
+      "description": "The \"Perpetual Testing Initiative\" has been expanded to allow you to design co-op puzzles for you and your friends!",
+      "releaseYear": 2011,
+      "developer": "Valve",
+      "publisher": "Valve",
+      "keywords": "Action, Adventure",
+      "categorySlug": "accion",
+      "genreSlugs": [
+        "accion",
+        "aventura",
+        "disparos",
+        "puzzle"
+      ],
+      "sizeValue": 8,
+      "sizeUnit": "GB",
+      "minimumRequirements": {
+        "cpu": "3.0 GHz P4, Dual Core 2.0 (or higher) or AMD64X2 (or higher)",
+        "gpu": "Video card must be 128 MB or more and with support for Pixel Shader 2.0b (ATI Radeon X800 or higher / NVIDIA GeForce 7600 or higher / Intel HD Graphic",
+        "ram": "2 GB RAM",
+        "storage": "8 GB available space"
+      },
+      "recommendedRequirements": {
+        "cpu": "3.0 GHz P4, Dual Core 2.0 (or higher) or AMD64X2 (or higher)",
+        "gpu": "Video card must be 128 MB or more and with support for Pixel Shader 2.0b (ATI Radeon X800 or higher / NVIDIA GeForce 7600 or higher / Intel HD Graphic",
+        "ram": "2 GB RAM",
+        "storage": "8 GB available space"
+      },
+      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co1rs4.jpg",
+      "platformVariants": [
+        {
+          "platformSlug": "pc",
+          "sizeValue": 8,
+          "sizeUnit": "GB",
+          "minimumRequirements": {
+            "cpu": "3.0 GHz P4, Dual Core 2.0 (or higher) or AMD64X2 (or higher)",
+            "gpu": "Video card must be 128 MB or more and with support for Pixel Shader 2.0b (ATI Radeon X800 or higher / NVIDIA GeForce 7600 or higher / Intel HD Graphic",
+            "ram": "2 GB RAM",
+            "storage": "8 GB available space"
+          },
+          "recommendedRequirements": {
+            "cpu": "3.0 GHz P4, Dual Core 2.0 (or higher) or AMD64X2 (or higher)",
+            "gpu": "Video card must be 128 MB or more and with support for Pixel Shader 2.0b (ATI Radeon X800 or higher / NVIDIA GeForce 7600 or higher / Intel HD Graphic",
+            "ram": "2 GB RAM",
+            "storage": "8 GB available space"
+          },
+          "provenance": {
+            "source": "steam",
+            "sourceUrl": "https://store.steampowered.com/app/620/",
+            "confidence": 1,
+            "ingestedAt": "2026-10-21",
+            "notes": "Tamano 8 GB y requisitos extraidos de pc_requirements de la Steam store."
+          }
+        }
+      ]
+    },
+    {
+      "title": "Terminator Salvation",
+      "slug": "terminator-salvation",
+      "description": "Terminator Salvation",
+      "releaseYear": 2009,
+      "developer": "GRIN, Evolved Games",
+      "publisher": "Evolved Games",
+      "keywords": null,
+      "categorySlug": "accion",
+      "genreSlugs": [
+        "accion",
+        "disparos"
+      ],
+      "sizeValue": null,
+      "sizeUnit": null,
+      "minimumRequirements": null,
+      "recommendedRequirements": null,
+      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co2cbm.jpg",
+      "platformVariants": [
+        {
+          "platformSlug": "pc",
+          "sizeValue": null,
+          "sizeUnit": null,
+          "minimumRequirements": null,
+          "recommendedRequirements": null,
+          "provenance": {
+            "source": "rawg",
+            "sourceUrl": "https://rawg.io/games/terminator-salvation",
+            "confidence": 1,
+            "ingestedAt": "2026-10-21",
+            "notes": "RAWG aporta descripcion, generos y desarrollador; no publica tamano de instalacion."
+          }
+        }
+      ]
+    },
+    {
+      "title": "Mark of the Ninja Remastered",
+      "slug": "mark-of-the-ninja-remastered",
+      "description": "In Mark of the Ninja, you'll know what it is to truly be a ninja. You must be silent, agile and clever to outwit your opponents in a world of gorgeous scenery and flowing animation.",
+      "releaseYear": 2018,
+      "developer": "Klei Entertainment",
+      "publisher": "Klei Entertainment",
+      "keywords": "Action, Indie",
+      "categorySlug": "accion",
+      "genreSlugs": [
+        "accion",
+        "indie"
+      ],
+      "sizeValue": 8,
+      "sizeUnit": "GB",
+      "minimumRequirements": {
+        "cpu": "Intel Core 2 Duo 2.4GHz processor (E6600)",
+        "gpu": "Nvidia GeForce GT720 or AMD Radeon R7770 (1 GB)",
+        "ram": "4 GB RAM",
+        "storage": "8 GB available space"
+      },
+      "recommendedRequirements": {
+        "cpu": "Intel Core 2 Duo 2.4GHz processor (E6600)",
+        "gpu": "Nvidia GeForce GT720 or AMD Radeon R7770 (1 GB)",
+        "ram": "4 GB RAM",
+        "storage": "8 GB available space"
+      },
+      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/cob89e.jpg",
+      "platformVariants": [
+        {
+          "platformSlug": "pc",
+          "sizeValue": 8,
+          "sizeUnit": "GB",
+          "minimumRequirements": {
+            "cpu": "Intel Core 2 Duo 2.4GHz processor (E6600)",
+            "gpu": "Nvidia GeForce GT720 or AMD Radeon R7770 (1 GB)",
+            "ram": "4 GB RAM",
+            "storage": "8 GB available space"
+          },
+          "recommendedRequirements": {
+            "cpu": "Intel Core 2 Duo 2.4GHz processor (E6600)",
+            "gpu": "Nvidia GeForce GT720 or AMD Radeon R7770 (1 GB)",
+            "ram": "4 GB RAM",
+            "storage": "8 GB available space"
+          },
+          "provenance": {
+            "source": "steam",
+            "sourceUrl": "https://store.steampowered.com/app/860950/",
+            "confidence": 1,
+            "ingestedAt": "2026-10-21",
+            "notes": "Tamano 8 GB y requisitos extraidos de pc_requirements de la Steam store."
+          }
+        }
+      ]
+    },
+    {
+      "title": "Fable Anniversary",
+      "slug": "fable-anniversary",
+      "description": "FOR EVERY CHOICE, A CONSEQUENCE.Fully re-mastered with HD visuals and audio, Fable Anniversary is a stunning rendition of the original game that will delight faithful fans and new players alike! The all new Heroic difficulty setting will test the mettle of even the most hardcore Fable fan.",
+      "releaseYear": 2014,
+      "developer": "Lionhead Studios",
+      "publisher": "Xbox Game Studios",
+      "keywords": "RPG",
+      "categorySlug": "rol",
+      "genreSlugs": [
+        "rol"
+      ],
+      "sizeValue": 10,
+      "sizeUnit": "GB",
+      "minimumRequirements": {
+        "cpu": "Intel 2GHz Core2 Duo / AMD Athlon 64 x2 2.4GHz",
+        "gpu": "Radeon X1800/ Nvidia GeForce 7600GT",
+        "ram": "3 GB RAM",
+        "storage": "10 GB available space"
+      },
+      "recommendedRequirements": {
+        "cpu": "Intel Core2 Quad 2.33GHz",
+        "gpu": "Nvidia GeForce GTX 260",
+        "ram": "4 GB RAM",
+        "storage": "10 GB available space"
+      },
+      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co22lr.jpg",
+      "platformVariants": [
+        {
+          "platformSlug": "pc",
+          "sizeValue": 10,
+          "sizeUnit": "GB",
+          "minimumRequirements": {
+            "cpu": "Intel 2GHz Core2 Duo / AMD Athlon 64 x2 2.4GHz",
+            "gpu": "Radeon X1800/ Nvidia GeForce 7600GT",
+            "ram": "3 GB RAM",
+            "storage": "10 GB available space"
+          },
+          "recommendedRequirements": {
+            "cpu": "Intel Core2 Quad 2.33GHz",
+            "gpu": "Nvidia GeForce GTX 260",
+            "ram": "4 GB RAM",
+            "storage": "10 GB available space"
+          },
+          "provenance": {
+            "source": "steam",
+            "sourceUrl": "https://store.steampowered.com/app/288470/",
+            "confidence": 1,
+            "ingestedAt": "2026-10-21",
+            "notes": "Tamano 10 GB y requisitos extraidos de pc_requirements de la Steam store."
+          }
+        }
+      ]
+    },
+    {
+      "title": "Earthlock Festival Of Magic",
+      "slug": "earthlock-festival-of-magic",
+      "description": "The Original Soundtrack for Earthlock: Festival of Magic.",
+      "releaseYear": 2016,
+      "developer": "Snowcastle Games",
+      "publisher": "Snowcastle Games",
+      "keywords": "Adventure, Indie, RPG",
+      "categorySlug": "aventura",
+      "genreSlugs": [
+        "aventura",
+        "indie",
+        "rol",
+        "accion",
+        "estrategia"
+      ],
+      "sizeValue": 300,
+      "sizeUnit": "GB",
+      "minimumRequirements": {
+        "storage": "300 MB available space"
+      },
+      "recommendedRequirements": {
+        "storage": "300 MB available space"
+      },
+      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/g0whm2zpztk4g3mwpzo4.jpg",
+      "platformVariants": [
+        {
+          "platformSlug": "pc",
+          "sizeValue": 300,
+          "sizeUnit": "GB",
+          "minimumRequirements": {
+            "storage": "300 MB available space"
+          },
+          "recommendedRequirements": {
+            "storage": "300 MB available space"
+          },
+          "provenance": {
+            "source": "steam",
+            "sourceUrl": "https://store.steampowered.com/app/533750/",
+            "confidence": 1,
+            "ingestedAt": "2026-10-21",
+            "notes": "Tamano 300 GB y requisitos extraidos de pc_requirements de la Steam store."
+          }
+        }
+      ]
+    }
+  ]
+}
