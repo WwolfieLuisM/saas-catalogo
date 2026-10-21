@@ -6,7 +6,12 @@ import { AppError } from '../../utils/appError.js';
 import type { RequestMeta } from '../../utils/requestMeta.js';
 import { auditData } from '../audit/audit.service.js';
 import { planCatalogBump } from '../catalog/catalog.service.js';
-import { assertTaxonomyRefs, jsonValue, resolveRequirements } from './game.shared.js';
+import {
+  assertTaxonomyRefs,
+  jsonValue,
+  presentSize,
+  resolveRequirements,
+} from './game.shared.js';
 import type { CreateGameInput, GamesListQuery, UpdateGameInput } from './games.schemas.js';
 import { resolveFinal, resolveGenres, resolvePlatformIds } from './resolution.js';
 import { loadBaseGenreIds, loadVariants, variantKey } from './resolutionData.js';
@@ -208,6 +213,13 @@ async function loadDetails(rows: TenantGame[]): Promise<Map<string, GameDetail>>
     const rawGenreIds = genreIdsByGame.get(row.id) ?? [];
     const rawPlatformIds = platformIdsByGame.get(row.id) ?? [];
 
+    // sizeValue 0 en la base es el centinela de «sin tamaño»: se traduce a
+    // null para que ni la ficha ni el formulario enseñen un 0 inventado.
+    const resolvedSize = presentSize(
+      resolveFinal(row, refs.variant, refs.base, 'sizeValue'),
+      resolveFinal(row, refs.variant, refs.base, 'sizeUnit'),
+    );
+
     details.set(row.id, {
       category: summary(categoryById.get(row.categoryId ?? '')) ?? null,
       genres: rawGenreIds
@@ -221,8 +233,8 @@ async function loadDetails(rows: TenantGame[]): Promise<Map<string, GameDetail>>
       resolved: {
         title: resolveFinal(row, refs.variant, refs.base, 'title'),
         description: resolveFinal(row, refs.variant, refs.base, 'description'),
-        sizeValue: resolveFinal(row, refs.variant, refs.base, 'sizeValue'),
-        sizeUnit: resolveFinal(row, refs.variant, refs.base, 'sizeUnit'),
+        sizeValue: resolvedSize.sizeValue,
+        sizeUnit: resolvedSize.sizeUnit,
         releaseYear: resolveFinal(row, refs.variant, refs.base, 'releaseYear'),
         categoryId: refs.categoryId,
         minimumRequirements: resolveFinal(row, refs.variant, refs.base, 'minimumRequirements'),
@@ -259,8 +271,7 @@ export function tenantGameDto(row: TenantGame, detail: GameDetail) {
     priceMode: row.priceMode,
     price: row.price === null ? null : Number(row.price),
     availability: row.availability,
-    sizeValue: row.sizeValue,
-    sizeUnit: row.sizeUnit,
+    ...presentSize(row.sizeValue, row.sizeUnit),
     releaseYear: row.releaseYear,
     categoryId: row.categoryId,
     category: detail.category,

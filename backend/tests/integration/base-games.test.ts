@@ -34,8 +34,8 @@ interface BaseGameDto {
   title: string;
   slug: string;
   description: string | null;
-  sizeValue: number;
-  sizeUnit: string;
+  sizeValue: number | null;
+  sizeUnit: string | null;
   releaseYear: number | null;
   status: string;
   source: string | null;
@@ -172,6 +172,24 @@ describe('GET /base-games', () => {
     expect(status).toBe(200);
     expect(body.meta?.total).toBe(1);
     expect(body.data?.[0]?.slug).toBe('hades');
+  });
+
+  it('devuelve sizeValue null cuando la base guarda el centinela 0 de «sin tamaño»', async () => {
+    // La columna no admite null, así que el importador guarda 0 GB; a la UI
+    // eso tiene que llegárselle como null para que pinte «—» y no «0 GB».
+    seedBaseGame({ title: 'Sin tamaño', slug: 'sin-tamano', sizeValue: 0, sizeUnit: 'GB' });
+    seedBaseGame();
+
+    const { status, body } = await api<BaseGameDto[]>(BASE, {}, superToken);
+
+    expect(status).toBe(200);
+    const sinTamano = body.data?.find((row) => row.slug === 'sin-tamano');
+    expect(sinTamano?.sizeValue).toBeNull();
+    expect(sinTamano?.sizeUnit).toBeNull();
+
+    const conTamano = body.data?.find((row) => row.slug === 'hades');
+    expect(conTamano?.sizeValue).toBe(15);
+    expect(conTamano?.sizeUnit).toBe('GB');
   });
 
   it('filtra q case-insensitive en title y slug', async () => {

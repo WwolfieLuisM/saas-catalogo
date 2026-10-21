@@ -562,6 +562,28 @@ describe('POST /api/v1/admin/library-import/validate', () => {
     expect(previewAt(data, 0)).toMatchObject({ action: 'create', status: 'INCOMPLETE' });
   });
 
+  it('deja el centinela 0 en la columna y marca INCOMPLETE si no trae tamaño', async () => {
+    seedGlobalDictionary();
+
+    const { status } = await importar(
+      envelope([
+        record({
+          slug: 'sin-tamano',
+          title: 'Sin tamaño',
+          platformVariants: [{ platformSlug: 'pc' }],
+        }),
+      ]),
+    );
+
+    expect(status).toBe(200);
+    const base = [...state.baseGames.values()].find((row) => row.slug === 'sin-tamano');
+    // La columna no admite null, así que aquí se guarda el centinela 0; el
+    // que lo traduce a null para la tabla es baseGameDto (test en base-games).
+    expect(base?.sizeValue).toBe(0);
+    expect(base?.sizeUnit).toBe('GB');
+    expect(base?.status).toBe('INCOMPLETE');
+  });
+
   it('no cuenta como portada una LibraryMedia que no está en estado OK', async () => {
     seedGlobalDictionary();
     const genre = [...state.genres.values()].find((row) => row.slug === 'indie')!;

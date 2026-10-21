@@ -65,9 +65,14 @@ export interface LibraryImportValidateResult {
   };
 }
 
+/**
+ * Tamaño definitivo de un registro. null cuando ni el archivo ni la biblioteca
+ * lo traen: antes se rellenaba con un 0 GB inventado que se colaba en la tabla
+ * como «0 GB» en vez de quedar sin tamaño.
+ */
 interface MergedSize {
-  sizeValue: number;
-  sizeUnit: SizeUnitValue;
+  sizeValue: number | null;
+  sizeUnit: SizeUnitValue | null;
 }
 
 interface ResolvedVariant {
@@ -298,7 +303,7 @@ export async function buildLibraryImportPlan(
         categoryId: null,
         genreIds: [],
         variants: [],
-        size: { sizeValue: 0, sizeUnit: 'GB' },
+        size: { sizeValue: null, sizeUnit: null },
       });
       return;
     }
@@ -331,7 +336,7 @@ export async function buildLibraryImportPlan(
         categoryId: null,
         genreIds: [],
         variants: [],
-        size: { sizeValue: 0, sizeUnit: 'GB' },
+        size: { sizeValue: null, sizeUnit: null },
       });
       return;
     }
@@ -703,8 +708,11 @@ async function applyEntry(
               publisher: record.publisher ?? null,
               keywords: record.keywords ?? null,
               categoryId: entry.categoryId,
-              sizeValue: entry.size.sizeValue,
-              sizeUnit: entry.size.sizeUnit,
+              // La columna no admite null: sin tamaño conocido se guarda el
+              // centinela 0, que el DTO traduce a null para que la tabla
+              // pinte «—» en vez de «0 GB».
+              sizeValue: entry.size.sizeValue ?? 0,
+              sizeUnit: entry.size.sizeUnit ?? 'GB',
               status,
               source: LIBRARY_IMPORT_SCHEMA,
               minimumRequirements: jsonValue(record.minimumRequirements ?? null),
@@ -755,8 +763,8 @@ async function updateBaseGame(
   const data: Prisma.BaseGameUncheckedUpdateInput = {
     title: record.title,
     status: entry.status ?? 'INCOMPLETE',
-    sizeValue: entry.size.sizeValue,
-    sizeUnit: entry.size.sizeUnit,
+    sizeValue: entry.size.sizeValue ?? 0,
+    sizeUnit: entry.size.sizeUnit ?? 'GB',
     deletedAt: null,
     updatedBy: auth.id,
   };
@@ -955,7 +963,7 @@ function semanticErrors(
 
 function resolveMergedSize(
   record: LibraryImportRecord,
-  existing: { sizeValue: number; sizeUnit: SizeUnitValue } | undefined,
+  existing: { sizeValue: number | null; sizeUnit: SizeUnitValue | null } | undefined,
 ): MergedSize {
   if (record.sizeValue !== undefined && record.sizeValue !== null && record.sizeUnit) {
     return { sizeValue: record.sizeValue, sizeUnit: record.sizeUnit };
@@ -974,7 +982,7 @@ function resolveMergedSize(
     return { sizeValue: existing.sizeValue, sizeUnit: existing.sizeUnit };
   }
 
-  return { sizeValue: 0, sizeUnit: 'GB' };
+  return { sizeValue: null, sizeUnit: null };
 }
 
 function isPresentText(value: string | null | undefined): value is string {
@@ -995,6 +1003,7 @@ function deriveStatus(
   const conditions =
     hasDescription &&
     record.platformVariants.length > 0 &&
+    size.sizeValue !== null &&
     size.sizeValue > 0 &&
     (hasCover || hasCoverMedia);
 

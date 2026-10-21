@@ -9,6 +9,23 @@ export function jsonValue(value: unknown): JsonFieldValue {
   return value as JsonFieldValue;
 }
 
+/**
+ * El tamaño se guarda en la base como 0 cuando no se conoce, porque la columna
+ * no admite null; y0 nunca es un tamaño válido (sizeValueSchema solo admite
+ * positivos). Este traductor devuelve null en ese caso para que la UI pinte
+ * «—» y no «0 GB», y arrastra la unidad para que no quede «— GB».
+ */
+export function presentSize<T>(
+  sizeValue: number | null | undefined,
+  sizeUnit: T | null | undefined,
+): { sizeValue: number | null; sizeUnit: T | null } {
+  if (sizeValue === null || sizeValue === undefined || sizeValue <= 0) {
+    return { sizeValue: null, sizeUnit: null };
+  }
+
+  return { sizeValue, sizeUnit: sizeUnit ?? null };
+}
+
 export const slugSchema = z
   .string()
   .trim()

@@ -5,7 +5,12 @@ import type { BaseGame, Prisma } from '../../generated/client.js';
 import { AppError } from '../../utils/appError.js';
 import type { RequestMeta } from '../../utils/requestMeta.js';
 import { auditData } from '../audit/audit.service.js';
-import { assertTaxonomyRefs, jsonValue, resolveRequirements } from '../games/game.shared.js';
+import {
+  assertTaxonomyRefs,
+  jsonValue,
+  presentSize,
+  resolveRequirements,
+} from '../games/game.shared.js';
 import type {
   BaseGamesListQuery,
   CreateBaseGameInput,
@@ -92,8 +97,7 @@ export function baseGameDto(row: BaseGame, detail: BaseGameDetail) {
     title: row.title,
     slug: row.slug,
     description: row.description,
-    sizeValue: row.sizeValue,
-    sizeUnit: row.sizeUnit,
+    ...presentSize(row.sizeValue, row.sizeUnit),
     releaseYear: row.releaseYear,
     status: row.status,
     source: row.source,
