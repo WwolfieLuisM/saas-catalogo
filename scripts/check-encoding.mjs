@@ -37,6 +37,12 @@ const esCabecera = (c) => c >= 0x00c0 && c <= 0x00f4;
 // parejas altas seguidas (enseñándoles, ÁÉÍÓÚÜÑ).
 const esContinuacion = (c) => c >= 0x0080 && c <= 0x00bf;
 const esLatinExtended = (c) => c >= 0x0100 && c <= 0x024f;
+// NBSP y guillemets son vecinos legitimos de una letra acentuada («menú», «año»,
+// «...Ñ»): solo cuentan como continuacion si los precede Â o Ã, que es justo como
+// se ven NBSP/«/» cuando el UTF-8 se leyo como ANSI (C2 A0 / C2 AB / C2 BB).
+const esAmbiguo = (c) => c === 0x00a0 || c === 0x00ab || c === 0x00bb;
+const esPareja = (anterior, actual) =>
+  esContinuacion(actual) && (!esAmbiguo(actual) || anterior === 0x00c2 || anterior === 0x00c3);
 
 const EXTENSIONES = new Set(['.ts', '.tsx', '.js', '.mjs', '.cjs', '.css', '.md', '.json']);
 
@@ -93,7 +99,7 @@ function revisar(ruta) {
       }
 
       // 2) Pareja mojibake: cabecera UTF-8 + continuación leídas como CP1252.
-      if (anterior !== undefined && esCabecera(anterior) && esContinuacion(actual)) {
+      if (anterior !== undefined && esCabecera(anterior) && esPareja(anterior, actual)) {
         registrar('duro', `pareja mojibake (U+${anterior.toString(16).toUpperCase()} + continuación): texto UTF-8 leído como ANSI`);
       }
       if (anterior !== undefined && esCabecera(anterior) && esLatinExtended(actual)) {

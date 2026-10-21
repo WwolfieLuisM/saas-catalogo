@@ -70,10 +70,27 @@ function cortar(html, max) {
   return (fin > max * 0.5 ? corte.slice(0, fin + 1) : corte.trimEnd()).trim();
 }
 
+// Homoglifos cirilicos tecleados sin querer en requisitos (la X de "x64" en un
+// teclado ruso). Claves por code point: cero cirilico literal en el codigo.
+const HOMoglifos = Object.fromEntries(
+  [
+    [0x0430, 'a'], [0x0435, 'e'], [0x0451, 'e'], [0x043e, 'o'], [0x0440, 'p'],
+    [0x0441, 'c'], [0x0443, 'y'], [0x0445, 'x'], [0x0456, 'i'],
+    [0x0410, 'A'], [0x0412, 'B'], [0x0415, 'E'], [0x0401, 'E'], [0x041a, 'K'],
+    [0x041c, 'M'], [0x041d, 'H'], [0x041e, 'O'], [0x0420, 'P'], [0x0421, 'C'],
+    [0x0422, 'T'], [0x0425, 'X'], [0x0423, 'Y'],
+  ].map(([codigo, letra]) => [String.fromCharCode(codigo), letra]),
+);
+function homoglifos(t) {
+  let salida = '';
+  for (const c of String(t)) salida += HOMoglifos[c] ?? c;
+  return salida;
+}
+
 // Rótulos en ambos idiomas: Steam devuelve el idioma de `l` y el catalogo es ES.
 function extraerRequisitos(htmlRequisitos) {
   // "SO *:" (asterisco de nota) se normaliza a "SO:" para poder casar el rotulo.
-  const texto = textoPlano(htmlRequisitos).replace(/\s*\*\s*:/g, ':').replace(/\s*:\s*/g, ': ');
+  const texto = homoglifos(textoPlano(htmlRequisitos)).replace(/\s*\*\s*:/g, ':').replace(/\s*:\s*/g, ': ');
   if (!texto) return null;
   const campo = (etiquetas) => {
     for (const e of etiquetas) {
