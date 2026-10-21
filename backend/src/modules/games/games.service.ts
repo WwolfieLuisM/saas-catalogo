@@ -632,7 +632,15 @@ export async function updateGame(
 
   let newPrice: typeof row.price | number = row.price;
   if (newPriceMode === 'RULE') {
-    newPrice = null;
+    // Se recalcula con el tamaño vigente, igual que al publicar. Antes se fijaba en
+    // null, asi que cualquier guardado borraba el precio sellado y la UI pasaba a
+    // mostrar "sin regla aplicable" aunque una regla cubriera el tamaño.
+    const sizeValue = input.sizeValue ?? row.sizeValue;
+    const sizeUnit = input.sizeUnit ?? row.sizeUnit;
+    newPrice =
+      sizeValue != null && sizeUnit != null
+        ? await priceFromRules(row.tenantId, sizeToGb(sizeValue, sizeUnit))
+        : null;
   } else if (input.price !== undefined) {
     newPrice = input.price;
   } else if (row.price === null) {

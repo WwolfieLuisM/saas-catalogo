@@ -1028,6 +1028,107 @@ describe('PATCH /games/:id', () => {
     expect(log?.metadata).toMatchObject({ fields: ['priceMode', 'price', 'availability'] });
   });
 
+  it('recalcula el precio por reglas al guardar en modo RULE en vez de borrarlo', async () => {
+    const game = seedGame({
+      origin: 'BIBLIOTECA',
+      baseGameId: randomUUID(),
+      slug: 'hades',
+      title: 'Hades',
+      priceMode: 'RULE',
+      price: 250,
+      sizeValue: 15,
+      sizeUnit: 'GB',
+    });
+    addFakePricingRule({
+      id: randomUUID(),
+      tenantId: T_JAVIER,
+      minSize: 11,
+      maxSize: 20,
+      price: 250,
+      active: true,
+    });
+
+    const { status, body } = await api<GameDto>(
+      `${BASE}/${game.id}`,
+      { method: 'PATCH', body: JSON.stringify({ priceMode: 'RULE', title: 'Editado' }) },
+      adminToken,
+    );
+
+    expect(status).toBe(200);
+    expect(body.data?.priceMode).toBe('RULE');
+    expect(body.data?.price).toBe(250);
+    expect(state.tenantGames.get(game.id)?.price).toBe(250);
+  });
+
+  it('el precio sigue al tamaño al cambiarlo en modo RULE', async () => {
+    const game = seedGame({
+      origin: 'BIBLIOTECA',
+      baseGameId: randomUUID(),
+      slug: 'hades',
+      title: 'Hades',
+      priceMode: 'RULE',
+      price: 100,
+      sizeValue: 15,
+      sizeUnit: 'GB',
+    });
+    addFakePricingRule({
+      id: randomUUID(),
+      tenantId: T_JAVIER,
+      minSize: 11,
+      maxSize: 20,
+      price: 100,
+      active: true,
+    });
+    addFakePricingRule({
+      id: randomUUID(),
+      tenantId: T_JAVIER,
+      minSize: 21,
+      maxSize: 60,
+      price: 150,
+      active: true,
+    });
+
+    const { status, body } = await api<GameDto>(
+      `${BASE}/${game.id}`,
+      { method: 'PATCH', body: JSON.stringify({ sizeValue: 30 }) },
+      adminToken,
+    );
+
+    expect(status).toBe(200);
+    expect(body.data?.sizeValue).toBe(30);
+    expect(body.data?.price).toBe(150);
+  });
+
+  it('deja el precio en null si al cambiar el tamaño ninguna regla lo cubre', async () => {
+    const game = seedGame({
+      origin: 'BIBLIOTECA',
+      baseGameId: randomUUID(),
+      slug: 'hades',
+      title: 'Hades',
+      priceMode: 'RULE',
+      price: 100,
+      sizeValue: 15,
+      sizeUnit: 'GB',
+    });
+    addFakePricingRule({
+      id: randomUUID(),
+      tenantId: T_JAVIER,
+      minSize: 11,
+      maxSize: 20,
+      price: 100,
+      active: true,
+    });
+
+    const { status, body } = await api<GameDto>(
+      `${BASE}/${game.id}`,
+      { method: 'PATCH', body: JSON.stringify({ sizeValue: 7 }) },
+      adminToken,
+    );
+
+    expect(status).toBe(200);
+    expect(body.data?.price).toBeNull();
+  });
+
   it('permite editar title en juegos de biblioteca como override de tenant', async () => {
     const game = seedGame({ origin: 'BIBLIOTECA', baseGameId: randomUUID(), slug: 'hades' });
 
