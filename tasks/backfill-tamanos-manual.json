@@ -1,0 +1,454 @@
+{
+  "registros": [
+    {
+      "slug": "dark-souls-iii-the-fire-fades-edition",
+      "titulo": "Dark Souls III The Fire Fades Edition",
+      "size_gb": 25,
+      "fuente": "PCGamingWiki",
+      "url": "https://www.pcgamingwiki.com/wiki/Dark_Souls_III",
+      "confidence": 0.8,
+      "modo": "juego-base",
+      "notas": "juego-base (Fire Fades = edición; base DS3 25 GB)"
+    },
+    {
+      "slug": "rage-2-rise-of-the-ghosts",
+      "titulo": "Rage 2 Rise of the Ghosts",
+      "size_gb": 50,
+      "fuente": "PCGamingWiki",
+      "url": "https://www.pcgamingwiki.com/wiki/Rage_2",
+      "confidence": 0.8,
+      "modo": "juego-base",
+      "notas": "juego-base (DLC; base Rage 2 50 GB)"
+    },
+    {
+      "slug": "northgard-svafnir-clan-of-the-snake",
+      "titulo": "Northgard Svafnir Clan of The Snake",
+      "size_gb": 1,
+      "fuente": "PCGamingWiki",
+      "url": "https://www.pcgamingwiki.com/wiki/Northgard",
+      "confidence": 0.8,
+      "modo": "juego-base",
+      "notas": "juego-base (DLC clan; base Northgard 1 GB)"
+    },
+    {
+      "slug": "battlestar-galactica-deadlock-resurrection",
+      "titulo": "Battlestar Galactica Deadlock - Resurrection",
+      "size_gb": 8.739,
+      "fuente": "PCGamingWiki",
+      "url": "https://www.pcgamingwiki.com/wiki/Battlestar_Galactica_Deadlock",
+      "confidence": 0.8,
+      "modo": "juego-base",
+      "notas": "juego-base (DLC; 8739 MB → GB)"
+    },
+    {
+      "slug": "world-in-conflict-soviet-assault",
+      "titulo": "World in Conflict - Soviet Assault",
+      "size_gb": 8,
+      "fuente": "PCGamingWiki",
+      "url": "https://www.pcgamingwiki.com/wiki/World_in_Conflict",
+      "confidence": 0.8,
+      "modo": "juego-base",
+      "notas": "juego-base (expansión; base WiC 8 GB)"
+    },
+    {
+      "slug": "dead-or-alive-6-digital-deluxe-edition",
+      "titulo": "Dead or Alive 6 Digital Deluxe Edition",
+      "size_gb": 50,
+      "fuente": "PCGamingWiki",
+      "url": "https://www.pcgamingwiki.com/wiki/Dead_or_Alive_6",
+      "confidence": 0.8,
+      "modo": "juego-base",
+      "notas": "juego-base (edición; base DOA6 50 GB)"
+    },
+    {
+      "slug": "injustice-2-legendary-edition",
+      "titulo": "Injustice 2 Legendary Edition",
+      "size_gb": 52,
+      "fuente": "PCGamingWiki",
+      "url": "https://www.pcgamingwiki.com/wiki/Injustice_2",
+      "confidence": 0.8,
+      "modo": "juego-base",
+      "notas": "juego-base (edición; base Injustice 2 min 52 GB)"
+    },
+    {
+      "slug": "bastion",
+      "titulo": "Bastion",
+      "size_gb": 1,
+      "fuente": "PCGamingWiki",
+      "url": "https://www.pcgamingwiki.com/wiki/Bastion",
+      "confidence": 0.8,
+      "modo": "misma-edicion",
+      "notas": "misma-edicion (Fase B matcheo Bastion 1996 por error; página real del 2011 = 1 GB Windows)"
+    },
+    {
+      "slug": "ghostrunner-2-brutal-edition",
+      "titulo": "Ghostrunner 2 Brutal Edition",
+      "size_gb": 65,
+      "fuente": "PCGamingWiki",
+      "url": "https://www.pcgamingwiki.com/wiki/Ghostrunner_2",
+      "confidence": 0.8,
+      "modo": "juego-base",
+      "notas": "juego-base"
+    },
+    {
+      "slug": "the-walking-dead-the-final-season-episode-4",
+      "titulo": "The Walking Dead The Final Season Episode 4",
+      "size_gb": 15,
+      "fuente": "PCGamingWiki",
+      "url": "https://www.pcgamingwiki.com/wiki/The_Walking_Dead:_The_Final_Season",
+      "confidence": 0.8,
+      "modo": "juego-base",
+      "notas": "juego-base"
+    },
+    {
+      "slug": "ark-survival-evolved-explorer-s-edition",
+      "titulo": "ARK Survival Evolved Explorer's Edition",
+      "size_gb": 60,
+      "fuente": "PCGamingWiki",
+      "url": "https://www.pcgamingwiki.com/wiki/ARK:_Survival_Evolved",
+      "confidence": 0.8,
+      "modo": "juego-base",
+      "notas": "juego-base"
+    },
+    {
+      "slug": "far-cry-primal-apex-edition",
+      "titulo": "Far Cry Primal Apex Edition",
+      "size_gb": 20,
+      "fuente": "PCGamingWiki",
+      "url": "https://www.pcgamingwiki.com/wiki/Far_Cry_Primal",
+      "confidence": 0.8,
+      "modo": "juego-base",
+      "notas": "juego-base"
+    },
+    {
+      "slug": "pathfinder-kingmaker-imperial-edition",
+      "titulo": "Pathfinder Kingmaker Imperial Edition",
+      "size_gb": 30,
+      "fuente": "PCGamingWiki",
+      "url": "https://www.pcgamingwiki.com/wiki/Pathfinder:_Kingmaker",
+      "confidence": 0.8,
+      "modo": "juego-base",
+      "notas": "juego-base"
+    },
+    {
+      "slug": "absolver-downfall",
+      "titulo": "Absolver Downfall",
+      "size_gb": 11,
+      "fuente": "PCGamingWiki",
+      "url": "https://www.pcgamingwiki.com/wiki/Absolver",
+      "confidence": 0.8,
+      "modo": "juego-base",
+      "notas": "juego-base (Downfall = expansión gratis)"
+    },
+    {
+      "slug": "krai-mira-extended-cut",
+      "titulo": "Krai Mira Extended Cut",
+      "size_gb": 1,
+      "fuente": "PCGamingWiki",
+      "url": "https://www.pcgamingwiki.com/wiki/Krai_Mira",
+      "confidence": 0.8,
+      "modo": "juego-base",
+      "notas": "juego-base"
+    },
+    {
+      "slug": "maneater-apex-edition",
+      "titulo": "Maneater Apex Edition",
+      "size_gb": 20,
+      "fuente": "PCGamingWiki",
+      "url": "https://www.pcgamingwiki.com/wiki/Maneater",
+      "confidence": 0.8,
+      "modo": "juego-base",
+      "notas": "juego-base"
+    },
+    {
+      "slug": "red-faction-i-guerrilla",
+      "titulo": "Red Faction I Guerrilla",
+      "size_gb": 32,
+      "fuente": "PCGamingWiki",
+      "url": "https://www.pcgamingwiki.com/wiki/Red_Faction_Guerrilla_Re-Mars-tered",
+      "confidence": 0.8,
+      "modo": "juego-base",
+      "notas": "juego-base"
+    },
+    {
+      "slug": "assassin-s-creed-syndicate-the-dreadful-crimes",
+      "titulo": "Assassin's Creed Syndicate The Dreadful Crimes",
+      "size_gb": 50,
+      "fuente": "PCGamingWiki",
+      "url": "https://www.pcgamingwiki.com/wiki/Assassin%27s_Creed_Syndicate",
+      "confidence": 0.8,
+      "modo": "juego-base",
+      "notas": "juego-base (DLC)"
+    },
+    {
+      "slug": "the-surge-the-good-the-bad-and-the-augmented",
+      "titulo": "The Surge The Good the Bad and the Augmented",
+      "size_gb": 15,
+      "fuente": "PCGamingWiki",
+      "url": "https://www.pcgamingwiki.com/wiki/The_Surge",
+      "confidence": 0.8,
+      "modo": "juego-base",
+      "notas": "juego-base (DLC)"
+    },
+    {
+      "slug": "company-of-heroes-2-master-collection",
+      "titulo": "Company of Heroes 2 Master Collection",
+      "size_gb": 30,
+      "fuente": "PCGamingWiki",
+      "url": "https://www.pcgamingwiki.com/wiki/Company_of_Heroes_2",
+      "confidence": 0.8,
+      "modo": "juego-base",
+      "notas": "juego-base"
+    },
+    {
+      "slug": "victor-vran-overkill-edition",
+      "titulo": "Victor Vran Overkill Edition",
+      "size_gb": 4,
+      "fuente": "PCGamingWiki",
+      "url": "https://www.pcgamingwiki.com/wiki/Victor_Vran",
+      "confidence": 0.8,
+      "modo": "juego-base",
+      "notas": "juego-base (búsqueda dio «Victor Vran ARPG» sin HD; página «Victor Vran» = 4 GB)"
+    },
+    {
+      "slug": "syndicate",
+      "titulo": "Syndicate",
+      "size_gb": 12,
+      "fuente": "PCGamingWiki",
+      "url": "https://www.pcgamingwiki.com/wiki/Syndicate_(2012)",
+      "confidence": 0.8,
+      "modo": "misma-edicion",
+      "notas": "misma-edicion (ojo: página «Syndicate» = juego de 1993 con 50 MB; la del 2012 es «Syndicate (2012)» = 12 GB)"
+    },
+    {
+      "slug": "hard-reset-extended-edition",
+      "titulo": "Hard Reset - Extended Edition",
+      "size_gb": 4.6,
+      "fuente": "PCGamingWiki",
+      "url": "https://www.pcgamingwiki.com/wiki/Hard_Reset",
+      "confidence": 0.8,
+      "modo": "juego-base",
+      "notas": "juego-base (Extended Edition; base 4.6 GB; Redux = otra página 5 GB)"
+    },
+    {
+      "slug": "surviving-mars-space-race",
+      "titulo": "Surviving Mars Space Race",
+      "size_gb": 6,
+      "fuente": "PCGamingWiki",
+      "url": "https://www.pcgamingwiki.com/wiki/Surviving_Mars",
+      "confidence": 0.8,
+      "modo": "juego-base",
+      "notas": "juego-base (usar página original, NO «Relaunched» 10 GB)"
+    },
+    {
+      "slug": "hollow-knight-godmaster",
+      "titulo": "Hollow Knight Godmaster",
+      "size_gb": 9,
+      "fuente": "PCGamingWiki",
+      "url": "https://www.pcgamingwiki.com/wiki/Hollow_Knight",
+      "confidence": 0.8,
+      "modo": "juego-base",
+      "notas": "juego-base (Godmaster = DLC; búsqueda daba Silksong — usar página original 9 GB)"
+    },
+    {
+      "slug": "inside",
+      "titulo": "Inside",
+      "size_gb": 3,
+      "fuente": "PCGamingWiki",
+      "url": "https://www.pcgamingwiki.com/wiki/Inside",
+      "confidence": 0.8,
+      "modo": "misma-edicion",
+      "notas": "misma-edicion (Playdead INSIDE; appid de Fase B 3609750 era incorrecto)"
+    },
+    {
+      "slug": "bermuda-lost-survival",
+      "titulo": "Bermuda Lost Survival",
+      "size_gb": 6,
+      "fuente": "Steam",
+      "url": "https://store.steampowered.com/app/654690",
+      "confidence": 0.8,
+      "modo": "misma-edicion",
+      "notas": "misma-edicion (appid desde página PCGW; nombre exacto)"
+    },
+    {
+      "slug": "mortal-kombat-9-komplete-edition",
+      "titulo": "Mortal Kombat 9 Komplete Edition",
+      "size_gb": 10,
+      "fuente": "Steam",
+      "url": "https://store.steampowered.com/app/237110",
+      "confidence": 0.8,
+      "modo": "misma-edicion",
+      "notas": "misma-edicion (nombre exacto en Steam)"
+    },
+    {
+      "slug": "impact-winter",
+      "titulo": "Impact Winter",
+      "size_gb": 5,
+      "fuente": "Steam",
+      "url": "https://store.steampowered.com/app/468000",
+      "confidence": 0.8,
+      "modo": "misma-edicion",
+      "notas": "misma-edicion"
+    },
+    {
+      "slug": "arcania-gothic-4",
+      "titulo": "Arcania Gothic 4",
+      "size_gb": 10,
+      "fuente": "Steam",
+      "url": "https://store.steampowered.com/app/39690",
+      "confidence": 0.8,
+      "modo": "misma-edicion",
+      "notas": "misma-edicion (Steam lo lista como «ArcaniA» sin subtítulo; mismo juego)"
+    },
+    {
+      "slug": "arcania-gothic-4-fall-of-setarrif",
+      "titulo": "Arcania Gothic 4 Fall of Setarrif",
+      "size_gb": 10,
+      "fuente": "Steam",
+      "url": "https://store.steampowered.com/app/39690",
+      "confidence": 0.8,
+      "modo": "juego-base",
+      "notas": "juego-base (expansión; base ArcaniA 10 GB)"
+    },
+    {
+      "slug": "train-simulator-2016",
+      "titulo": "Train Simulator 2016",
+      "size_gb": 40,
+      "fuente": "Steam",
+      "url": "https://store.steampowered.com/app/24010",
+      "confidence": 0.8,
+      "modo": "juego-base",
+      "notas": "juego-base (ficha TS2016 = base «Train Simulator Classic» 40 GB)"
+    },
+    {
+      "slug": "the-witcher-1-enhanced-edition",
+      "titulo": "The Witcher 1 Enhanced Edition",
+      "size_gb": 15,
+      "fuente": "Steam",
+      "url": "https://store.steampowered.com/app/20900",
+      "confidence": 0.8,
+      "modo": "misma-edicion",
+      "notas": "misma-edicion («Enhanced Edition Director's Cut» en Steam; el appid de Fase B 292030 no publica storage)"
+    },
+    {
+      "slug": "mortal-kombat-xl",
+      "titulo": "Mortal Kombat XL",
+      "size_gb": 36,
+      "fuente": "Steam",
+      "url": "https://store.steampowered.com/app/307780",
+      "confidence": 0.8,
+      "modo": "juego-base",
+      "notas": "juego-base (XL = edición; base MKX min 36 GB / rec 44 GB)"
+    },
+    {
+      "slug": "raiders-of-the-broken-planet",
+      "titulo": "Raiders of the Broken Planet",
+      "size_gb": 10,
+      "fuente": "Steam",
+      "url": "https://store.steampowered.com/app/436180",
+      "confidence": 0.8,
+      "modo": "misma-edicion",
+      "notas": "misma-edicion (mismo juego rebautizado «Spacelords» en Steam)"
+    },
+    {
+      "slug": "s-t-a-l-k-e-r-call-of-pripyat",
+      "titulo": "S.T.A.L.K.E.R Call of Pripyat",
+      "size_gb": 10,
+      "fuente": "Steam",
+      "url": "https://store.steampowered.com/app/2427430",
+      "confidence": 0.8,
+      "modo": "misma-edicion",
+      "notas": "misma-edicion («Enhanced Edition» nombre exacto)"
+    },
+    {
+      "slug": "burnout-paradise-the-ultimate-box",
+      "titulo": "Burnout Paradise The Ultimate Box",
+      "size_gb": 4,
+      "fuente": "Steam",
+      "url": "https://store.steampowered.com/app/24740",
+      "confidence": 0.8,
+      "modo": "misma-edicion",
+      "notas": "misma-edicion (nombre exacto)"
+    },
+    {
+      "slug": "dragon-age-inquisition-deluxe-edition",
+      "titulo": "Dragon Age Inquisition - Deluxe Edition",
+      "size_gb": 26,
+      "fuente": "Steam",
+      "url": "https://store.steampowered.com/app/1222690",
+      "confidence": 0.8,
+      "modo": "juego-base",
+      "notas": "juego-base (Deluxe; base DA:I 26 GB)"
+    },
+    {
+      "slug": "skylar-and-plux-adventure-on-clover-island",
+      "titulo": "Skylar and Plux Adventure On Clover Island",
+      "size_gb": 6,
+      "fuente": "Steam",
+      "url": "https://store.steampowered.com/app/452540",
+      "confidence": 0.8,
+      "modo": "misma-edicion",
+      "notas": "misma-edicion"
+    },
+    {
+      "slug": "dead-island-game-of-the-year-edition",
+      "titulo": "Dead Island Game of the Year Edition",
+      "size_gb": 7,
+      "fuente": "PCGamingWiki",
+      "url": "https://www.pcgamingwiki.com/wiki/Dead_Island",
+      "confidence": 0.8,
+      "modo": "juego-base",
+      "notas": "juego-base (GOTY; página resuelta a base Dead Island 7 GB; Steam 91310/91340 delisted)"
+    },
+    {
+      "slug": "the-elder-scrolls-v-skyrim-legendary-edition",
+      "titulo": "The Elder Scrolls V Skyrim Legendary Edition",
+      "size_gb": 6,
+      "fuente": "PCGamingWiki",
+      "url": "https://www.pcgamingwiki.com/wiki/The_Elder_Scrolls_V:_Skyrim",
+      "confidence": 0.8,
+      "modo": "juego-base",
+      "notas": "juego-base (Legendary; página resuelta a base Skyrim 6 GB; Steam 72850 vacío)"
+    },
+    {
+      "slug": "transformers-war-for-cybertron",
+      "titulo": "Transformers War For Cybertron",
+      "size_gb": 9,
+      "fuente": "PCGamingWiki",
+      "url": "https://www.pcgamingwiki.com/wiki/Transformers:_War_for_Cybertron",
+      "confidence": 0.8,
+      "modo": "misma-edicion",
+      "notas": "misma-edicion (página exacta con minHD 9 GB; Steam 42650 delisted)"
+    },
+    {
+      "slug": "the-walking-dead-survival-instinct",
+      "titulo": "The Walking Dead Survival Instinct",
+      "size_gb": 9,
+      "fuente": "PCGamingWiki",
+      "url": "https://www.pcgamingwiki.com/wiki/The_Walking_Dead:_Survival_Instinct",
+      "confidence": 0.8,
+      "modo": "misma-edicion",
+      "notas": "misma-edicion (página resuelta; Steam 262630 = «Tom vs. The Armies of Hell», otro juego)"
+    },
+    {
+      "slug": "dishonored-game-of-the-year-edition",
+      "titulo": "Dishonored Game Of The Year Edition",
+      "size_gb": 9,
+      "fuente": "PCGamingWiki",
+      "url": "https://www.pcgamingwiki.com/wiki/Dishonored",
+      "confidence": 0.8,
+      "modo": "juego-base",
+      "notas": "juego-base (GOTY; base Dishonored 9 GB; Steam 205100 vacío)"
+    },
+    {
+      "slug": "star-wars-battlefront-ii-elite-trooper-deluxe-edit",
+      "titulo": "Star Wars Battlefront II Elite Trooper Deluxe Edition",
+      "size_gb": 60,
+      "fuente": "Steam",
+      "url": "https://store.steampowered.com/app/1237950",
+      "confidence": 0.8,
+      "modo": "juego-base",
+      "notas": "juego-base (Elite Trooper Deluxe; storesearch → base BF2 2017 = 60 GB; el appid de Fase B 1274870 era erróneo)"
+    }
+  ]
+}

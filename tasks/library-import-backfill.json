@@ -1,8 +1,65 @@
 {
   "schema": "library-import@2",
-  "generatedAt": "2026-10-22T10:57:42.073Z",
+  "generatedAt": "2026-10-22T12:13:52.604Z",
   "source": "Fase G1 backfill de tamaños",
   "games": [
+    {
+      "title": "Syndicate",
+      "slug": "syndicate",
+      "description": "Londres, 1868. Dirige tu organización clandestina en plena Revolución Industrial para acabar con la corrupción de la ciudad en una aventura visceral llena acción, intriga y combates brutales.",
+      "releaseYear": 2012,
+      "developer": "Ubisoft Quebec, in collaboration with Ubisoft Annecy, Bucharest, Kiev, Montreal, Montpellier, Shanghai, Singapore, Sofia, Toronto studios",
+      "publisher": "Ubisoft",
+      "keywords": "Action, Adventure",
+      "categorySlug": "accion",
+      "genreSlugs": [
+        "accion",
+        "aventura",
+        "disparos",
+        "puzzle"
+      ],
+      "sizeValue": 12,
+      "sizeUnit": "GB",
+      "minimumRequirements": {
+        "os": "Windows 10 (64-bit versions only)",
+        "cpu": "Intel Core i5 2400s @ 2.5 GHz / AMD FX 6350 @ 3.9 GHz",
+        "gpu": "NVIDIA GeForce GTX 660 / AMD Radeon R9 270 (2GB VRAM with Shader Model 5.0)",
+        "ram": "6 GB de RAM"
+      },
+      "recommendedRequirements": {
+        "os": "Windows 10 (64-bit versions only)",
+        "cpu": "Intel Core i7 3770 @ 3.5 GHz / AMD FX 8350 @ 4.0 GHz",
+        "gpu": "NVIDIA GeForce GTX 760 (4GB) or the newer GTX 970 (4GB) / AMD Radeon R9 280X (3GB of VRAM) or better",
+        "ram": "8 GB de RAM"
+      },
+      "coverUrl": "https://cdn.akamai.steamstatic.com/steam/apps/368500/library_600x900.jpg",
+      "platformVariants": [
+        {
+          "platformSlug": "pc",
+          "sizeValue": 12,
+          "sizeUnit": "GB",
+          "minimumRequirements": {
+            "os": "Windows 10 (64-bit versions only)",
+            "cpu": "Intel Core i5 2400s @ 2.5 GHz / AMD FX 6350 @ 3.9 GHz",
+            "gpu": "NVIDIA GeForce GTX 660 / AMD Radeon R9 270 (2GB VRAM with Shader Model 5.0)",
+            "ram": "6 GB de RAM"
+          },
+          "recommendedRequirements": {
+            "os": "Windows 10 (64-bit versions only)",
+            "cpu": "Intel Core i7 3770 @ 3.5 GHz / AMD FX 8350 @ 4.0 GHz",
+            "gpu": "NVIDIA GeForce GTX 760 (4GB) or the newer GTX 970 (4GB) / AMD Radeon R9 280X (3GB of VRAM) or better",
+            "ram": "8 GB de RAM"
+          },
+          "provenance": {
+            "source": "PCGamingWiki",
+            "ingestedAt": "2026-10-22",
+            "notes": "misma-edicion (ojo: página «Syndicate» = juego de 1993 con 50 MB; la del 2012 es «Syndicate (2012)» = 12 GB)",
+            "sourceUrl": "https://www.pcgamingwiki.com/wiki/Syndicate_(2012)",
+            "confidence": 0.8
+          }
+        }
+      ]
+    },
     {
       "title": "Sword Art Online Hollow Realization Deluxe Edition",
       "slug": "sword-art-online-hollow-realization-deluxe-edition",
@@ -41,6 +98,211 @@
       ]
     },
     {
+      "title": "Bermuda Lost Survival",
+      "slug": "bermuda-lost-survival",
+      "description": "Survivors, Adventurers, Explorers!\nPrepare for the journey of your life and experience one of the world’s most mysterious regions! The Bermuda Triangle is notorious for the vanishing of countless ships and airplanes. Will you survive long enough to reveal it’s secret?\nOpen WorldBermuda – Lost Survival plays in an open world sea scenario containing sectors with different reefs and individual resources. Since a sector never contains all resources, you must plan strategic outposts and optimize your crafting chains and travel routes.Dynamic EcosystemEach reef in the game has an individual ecosystem that is affected by your actions. Observe the wildlife’s reaction and keep the natural balance as your life depends on the reefs natural supplies!Progressive GameplayAs you progress further, the game focus will shift: Crafting and building plays a very important role in the beginning. Your next step will be to explore deeper waters and find out about Bermuda’s myth. But your activities in the depths will not stay unnoticed!ExplorationUpgrade your equipment and prepare for the depths! Visit impressive wrecks and ancient structures. Search them for unique artifacts and hints that might lead you to the myth of the Bermuda Triangle.Late GameAfter drawing too much attention, a hostile faction guarding Bermuda’s secret will find you.\nTake action and fight for your survival!\n(Not available during Early Access)\nDay 7I survived, alone, nothing but water and horizon around me.Day 13The harsh weather conditions and cold nights get debilitating. Supplies are running low.Day 15I crafted some basic tools and hunted for fish. Let’s hope I didn’t attract any predators. Fresh water is still a problem.Day 17I found a huge reef. It’s full of life and old wrecks. I salvaged a lot of useful materials from the depths and might be able to build a platform, like an ark or something.Day 29Welcome to my new home! It’s not beautiful, but a suitable shelter.",
+      "releaseYear": 2020,
+      "developer": "NIGHTBOX",
+      "publisher": "NIGHTBOX",
+      "keywords": null,
+      "categorySlug": "accion",
+      "genreSlugs": [
+        "accion",
+        "aventura",
+        "estrategia",
+        "indie"
+      ],
+      "sizeValue": 6,
+      "sizeUnit": "GB",
+      "minimumRequirements": null,
+      "recommendedRequirements": null,
+      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co230m.jpg",
+      "platformVariants": [
+        {
+          "platformSlug": "pc",
+          "sizeValue": 6,
+          "sizeUnit": "GB",
+          "minimumRequirements": null,
+          "recommendedRequirements": null,
+          "provenance": {
+            "source": "Steam",
+            "ingestedAt": "2026-10-22",
+            "notes": "misma-edicion (appid desde página PCGW; nombre exacto)",
+            "sourceUrl": "https://store.steampowered.com/app/654690",
+            "confidence": 0.8
+          }
+        }
+      ]
+    },
+    {
+      "title": "Maneater Apex Edition",
+      "slug": "maneater-apex-edition",
+      "description": null,
+      "releaseYear": 2021,
+      "developer": null,
+      "publisher": null,
+      "keywords": null,
+      "categorySlug": "rol",
+      "genreSlugs": [
+        "rol",
+        "aventura",
+        "indie"
+      ],
+      "sizeValue": 20,
+      "sizeUnit": "GB",
+      "minimumRequirements": null,
+      "recommendedRequirements": null,
+      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/coa15g.jpg",
+      "platformVariants": [
+        {
+          "platformSlug": "pc",
+          "sizeValue": 20,
+          "sizeUnit": "GB",
+          "minimumRequirements": null,
+          "recommendedRequirements": null,
+          "provenance": {
+            "source": "PCGamingWiki",
+            "ingestedAt": "2026-10-22",
+            "notes": "juego-base",
+            "sourceUrl": "https://www.pcgamingwiki.com/wiki/Maneater",
+            "confidence": 0.8
+          }
+        }
+      ]
+    },
+    {
+      "title": "Victor Vran Overkill Edition",
+      "slug": "victor-vran-overkill-edition",
+      "description": "Victor Vran is an isometric action-RPG, set in a fictional town, where the player’s character must hunt demons and other vile creatures and rid the world of darkness.\nThe gameplay despite being similar to other games in the hack’n’slash genre features unique elements based on player’s reaction. Dodging bullets and moving around hordes of enemies can be tricky, but the game emphasizes that the main way to achieve is not just spamming two skills, but employing techniques and developing character’s abilities in the way that would be comfortable to the player. The different loot system helps the character in his journey, as various weapons have their unique abilities, and often improves character’s skills.\nThe game’s art style is highly reminiscent of Dracula movies and other vampire-based stories. The grim locations and fearsome enemies leave a mark on any player, and the soundtrack of the game also adds to the overall mood of evil lingering in the dark.",
+      "releaseYear": 2017,
+      "developer": "Haemimont Games",
+      "publisher": "EuroVideo Medien",
+      "keywords": null,
+      "categorySlug": "accion",
+      "genreSlugs": [
+        "accion",
+        "aventura",
+        "rol",
+        "indie"
+      ],
+      "sizeValue": 4,
+      "sizeUnit": "GB",
+      "minimumRequirements": null,
+      "recommendedRequirements": null,
+      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co2sh6.jpg",
+      "platformVariants": [
+        {
+          "platformSlug": "pc",
+          "sizeValue": 4,
+          "sizeUnit": "GB",
+          "minimumRequirements": null,
+          "recommendedRequirements": null,
+          "provenance": {
+            "source": "PCGamingWiki",
+            "ingestedAt": "2026-10-22",
+            "notes": "juego-base (búsqueda dio «Victor Vran ARPG» sin HD; página «Victor Vran» = 4 GB)",
+            "sourceUrl": "https://www.pcgamingwiki.com/wiki/Victor_Vran",
+            "confidence": 0.8
+          }
+        }
+      ]
+    },
+    {
+      "title": "Mortal Kombat 9 Komplete Edition",
+      "slug": "mortal-kombat-9-komplete-edition",
+      "description": "Mortal Kombat Komplete Edition is the embodiment of the dynamic, bloody and violent gameplay. Here you can scoff at your opponent. You can fight using an axe or a sword; you can shoot an enemy from a gun, try to burn it or freeze. And when the enemy is no longer able to resist you, you will perform the most popular reception - \"FATALITY.\"\nThe game includes several modes: Tag Team, Challenge Tower and a full-featured story mode. Players are wholly given the opportunity to choose legendary warriors from the expanded line, as well as the chance to challenge your friends in traditional one on one matches. And as you progress through specific modes, players will also be able to access the achievements and statistics of the leaders.\nBrutal and unmerciful two-dimensional fighting game replenished with genre solutions in the style of X-Ray. Now, by the accumulating of a specific scale, the hero has the opportunity to use one of the unique techniques. Sometimes such an action can reverse the course of the battle.",
+      "releaseYear": 2012,
+      "developer": "NetherRealm Studios, High Voltage Software",
+      "publisher": "Warner Bros. Interactive",
+      "keywords": null,
+      "categorySlug": "accion",
+      "genreSlugs": [
+        "arcade",
+        "lucha"
+      ],
+      "sizeValue": 10,
+      "sizeUnit": "GB",
+      "minimumRequirements": null,
+      "recommendedRequirements": null,
+      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co1xzx.jpg",
+      "platformVariants": [
+        {
+          "platformSlug": "pc",
+          "sizeValue": 10,
+          "sizeUnit": "GB",
+          "minimumRequirements": null,
+          "recommendedRequirements": null,
+          "provenance": {
+            "source": "Steam",
+            "ingestedAt": "2026-10-22",
+            "notes": "misma-edicion (nombre exacto en Steam)",
+            "sourceUrl": "https://store.steampowered.com/app/237110",
+            "confidence": 0.8
+          }
+        }
+      ]
+    },
+    {
+      "title": "Hard Reset - Extended Edition",
+      "slug": "hard-reset-extended-edition",
+      "description": "Destrucción sin límites, montones de enemigos, gran variedad de armas y un hermoso escenario de estilo cyberpunk. Prueba ahora la demo.",
+      "releaseYear": 2012,
+      "developer": "Flying Wild Hog",
+      "publisher": "Good Shepherd Entertainment",
+      "keywords": "Action, Indie",
+      "categorySlug": "accion",
+      "genreSlugs": [
+        "accion",
+        "indie",
+        "disparos"
+      ],
+      "sizeValue": 4.6,
+      "sizeUnit": "GB",
+      "minimumRequirements": {
+        "os": "Windows XP / Vista / 7",
+        "cpu": "Intel Pentium 4 a 2.5 GHz / AMD Athlon 64",
+        "gpu": "nVidia GeForce 8800GS / ATI Radeon HD 3870 con 512 MB de VRAM o superior",
+        "ram": "2 GB de RAM",
+        "storage": "4 GB de espacio libre"
+      },
+      "recommendedRequirements": {
+        "os": "Windows XP / Vista / 7",
+        "cpu": "Intel Quad Core a 2.3 GHz / AMD Phenom II x4 a 2.5 GHz",
+        "gpu": "Gráfica nVidia GeForce 9800 GT / ATI Radeon HD 4870 o superior con 512 MB de VRAM",
+        "ram": "3 GB de RAM",
+        "storage": "4 GB de espacio libre"
+      },
+      "coverUrl": "https://cdn.akamai.steamstatic.com/steam/apps/98400/header.jpg",
+      "platformVariants": [
+        {
+          "platformSlug": "pc",
+          "sizeValue": 4.6,
+          "sizeUnit": "GB",
+          "minimumRequirements": {
+            "os": "Windows XP / Vista / 7",
+            "cpu": "Intel Pentium 4 a 2.5 GHz / AMD Athlon 64",
+            "gpu": "nVidia GeForce 8800GS / ATI Radeon HD 3870 con 512 MB de VRAM o superior",
+            "ram": "2 GB de RAM",
+            "storage": "4 GB de espacio libre"
+          },
+          "recommendedRequirements": {
+            "os": "Windows XP / Vista / 7",
+            "cpu": "Intel Quad Core a 2.3 GHz / AMD Phenom II x4 a 2.5 GHz",
+            "gpu": "Gráfica nVidia GeForce 9800 GT / ATI Radeon HD 4870 o superior con 512 MB de VRAM",
+            "ram": "3 GB de RAM",
+            "storage": "4 GB de espacio libre"
+          },
+          "provenance": {
+            "source": "PCGamingWiki",
+            "ingestedAt": "2026-10-22",
+            "notes": "juego-base (Extended Edition; base 4.6 GB; Redux = otra página 5 GB)",
+            "sourceUrl": "https://www.pcgamingwiki.com/wiki/Hard_Reset",
+            "confidence": 0.8
+          }
+        }
+      ]
+    },
+    {
       "title": "Strange Brigade Deluxe Edition",
       "slug": "strange-brigade-deluxe-edition",
       "description": "There are remote corners of the British Empire where the shadows linger at their deepest. The servants of The Crown know about these places and the supernatural beings that sometimes lurk there.\nIntroducing the fearless and unflinching STRANGE BRIGADE!\nEmbark on an exotic safari into DANGER where few dare go and fewer return! Encounter FANTASTIC and forgotten civilizations shrouded in MYSTERY! Uncover TREACHEROUS tombs and unfathomable EVIL, never-before-seen by any human now living!\nThis pulse-pounding adventure will rivet you to your game controller!\nDon’t fail to play: STRANGE BRIGADE!\nFOUR FEARLESS ADVENTURERS!\nExplore the ancient world as one of four dashing explorers, each with their own special powers, weapons and tactics.\nA THRILLING 1930’s CAMPAIGN!\nExperience a rip-roaring new adventure for 1-4 players filled with pulse-pounding action, treacherous traps and tales of derring-do!\nLEGIONS OF BEASTIES!\nFight-back-to-back against an army of mythological menaces unleashed by an ancient Egyptian ruler so nefarious she was wiped from the hieroglyphs: Seteki the Witch Queen!\nHIDDEN TREASURES!\nStay on the lookout for secret caves and buried riches. Get off the beaten track and keep those peepers peeled … what with all those dastardly traps about!",
@@ -72,6 +334,78 @@
             "notes": "tamaño publicado en la edición base «Strange Brigade»",
             "sourceUrl": "https://www.pcgamingwiki.com/wiki/Strange_Brigade",
             "confidence": 0.6
+          }
+        }
+      ]
+    },
+    {
+      "title": "Rage 2 Rise of the Ghosts",
+      "slug": "rage-2-rise-of-the-ghosts",
+      "description": "After Axel Stone, Blaze Fielding and Adam Hunter destroyed the evil Syndicate leader, Mr. X, the city became a peaceful place to live, and each one of them followed their own paths. One year later, after their reunion, Adam's brother Sammy returned from school to find their apartment in a mess, and Adam nowhere to be seen, and after calling his two friends, one of them notices a photo of Adam chained to a wall, next to someone they knew very well - Mr. X, who returned to turn the peaceful city once again into a war zone. Now, Axel, Blaze, Sammy, and Axel's good friend Max, a pro wrestler, must head out to stop Mr. X once again...hopefully for good...\nStreets of Rage 2 differs from the previous title in several ways. There are changes in both graphics (characters now are bigger, more detailed and with more animation frames, and scenarios are less grainy) and gameplay (the rocket move was replaced by a special move that doubles in offense and defense along several new moves), along other new features such as life bars (and names) for all enemies and the radically different new characters.",
+      "releaseYear": 2019,
+      "developer": "SEGA, Ancient, Shout! Designworks, H.I.C.",
+      "publisher": "SEGA",
+      "keywords": null,
+      "categorySlug": "accion",
+      "genreSlugs": [
+        "accion",
+        "arcade"
+      ],
+      "sizeValue": 50,
+      "sizeUnit": "GB",
+      "minimumRequirements": null,
+      "recommendedRequirements": null,
+      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co1r5o.jpg",
+      "platformVariants": [
+        {
+          "platformSlug": "pc",
+          "sizeValue": 50,
+          "sizeUnit": "GB",
+          "minimumRequirements": null,
+          "recommendedRequirements": null,
+          "provenance": {
+            "source": "PCGamingWiki",
+            "ingestedAt": "2026-10-22",
+            "notes": "juego-base (DLC; base Rage 2 50 GB)",
+            "sourceUrl": "https://www.pcgamingwiki.com/wiki/Rage_2",
+            "confidence": 0.8
+          }
+        }
+      ]
+    },
+    {
+      "title": "Northgard Svafnir Clan of The Snake",
+      "slug": "northgard-svafnir-clan-of-the-snake",
+      "description": "The Clan of the Snake, gathers some of the most roguish vikings to set foot on the continent of Northgard. Led by Signy, the Spear Maiden, the cunning members of the clan have little regard for fame or honour and would rather use guerilla tactics to dominate their enemies than open warfare.\nThe clan’s warchief is available at the beginning of the game and, while her martial skills are slightly better than a Warrior’s at first, she will grow as seasons go by, becoming more powerful and unlocking new abilities in the process. Her most powerful skill, “Scorched Earth”, can only be unlocked once Signy becomes an adult, and will allow her to burn down a tile, providing attack bonuses to her units and buildings.\nThe Clan’s unique conception of war translates into specific Knowledge such as “Guerilla Tactics”, giving bonus attack power to the Snake’s warriors when killing civilians, or “Stolen Lore”, allowing players to steal Knowledge from another clan.\nWith this clan:\nExperience a brand new way of playing Northgard: the Clan of the Snake has no Honor, and thus, cannot win a Fame Victory! But do not underestimate its potential...\nBackstab your opponents, steal their Knowledge, and create new and innovative tactics\nTravel accross Northgard without fear as Signy and her Skirmishers can hide themselves among wild Wolves and Bears!\nUse your Black Markets to bolster your economy without helping your opponents!\nCripple the other player's economy by using Scorched Earth, Signy's special ability and boost your unit's attack power",
+      "releaseYear": 2019,
+      "developer": "Plug In Digital",
+      "publisher": null,
+      "keywords": null,
+      "categorySlug": "simulacion",
+      "genreSlugs": [
+        "estrategia",
+        "estrategia-en-tiempo-real",
+        "simulacion",
+        "indie"
+      ],
+      "sizeValue": 1,
+      "sizeUnit": "GB",
+      "minimumRequirements": null,
+      "recommendedRequirements": null,
+      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co9qnn.jpg",
+      "platformVariants": [
+        {
+          "platformSlug": "pc",
+          "sizeValue": 1,
+          "sizeUnit": "GB",
+          "minimumRequirements": null,
+          "recommendedRequirements": null,
+          "provenance": {
+            "source": "PCGamingWiki",
+            "ingestedAt": "2026-10-22",
+            "notes": "juego-base (DLC clan; base Northgard 1 GB)",
+            "sourceUrl": "https://www.pcgamingwiki.com/wiki/Northgard",
+            "confidence": 0.8
           }
         }
       ]
@@ -149,6 +483,78 @@
       ]
     },
     {
+      "title": "Impact Winter",
+      "slug": "impact-winter",
+      "description": "A game controller is recommended to play Impact Winter.\n\"In 30 days, help is coming…\"\nA mysterious radio transmission claims that help is inbound. You are Jacob Solomon: leader of a makeshift team trying to survive the aftermath of a devastating asteroid collision. The world you once knew is no more – buried deep beneath the constant snowfall. Your goal: keep your companions alive until rescue.\nRescue-minus 30 days:\nRediscover the survival genre: strategize in a bid to lower the Rescue Timer.\nLead your team to survival:\nProvide for your team and unite your skills in a freezing struggle for life.\nAn immersive and unpredictably hostile world:\nOutlast a hazardous winter brought to life by a unique artistic direction.",
+      "releaseYear": 2017,
+      "developer": "BANDAI NAMCO Entertainment America, Mojo Bones",
+      "publisher": "Bandai Namco Entertainment, BANDAI NAMCO Entertainment US",
+      "keywords": null,
+      "categorySlug": "aventura",
+      "genreSlugs": [
+        "aventura",
+        "simulacion",
+        "indie",
+        "rol",
+        "estrategia"
+      ],
+      "sizeValue": 5,
+      "sizeUnit": "GB",
+      "minimumRequirements": null,
+      "recommendedRequirements": null,
+      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co1reb.jpg",
+      "platformVariants": [
+        {
+          "platformSlug": "pc",
+          "sizeValue": 5,
+          "sizeUnit": "GB",
+          "minimumRequirements": null,
+          "recommendedRequirements": null,
+          "provenance": {
+            "source": "Steam",
+            "ingestedAt": "2026-10-22",
+            "notes": "misma-edicion",
+            "sourceUrl": "https://store.steampowered.com/app/468000",
+            "confidence": 0.8
+          }
+        }
+      ]
+    },
+    {
+      "title": "Arcania Gothic 4",
+      "slug": "arcania-gothic-4",
+      "description": null,
+      "releaseYear": 2010,
+      "developer": null,
+      "publisher": null,
+      "keywords": null,
+      "categorySlug": "rol",
+      "genreSlugs": [
+        "rol"
+      ],
+      "sizeValue": 10,
+      "sizeUnit": "GB",
+      "minimumRequirements": null,
+      "recommendedRequirements": null,
+      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co20kx.jpg",
+      "platformVariants": [
+        {
+          "platformSlug": "pc",
+          "sizeValue": 10,
+          "sizeUnit": "GB",
+          "minimumRequirements": null,
+          "recommendedRequirements": null,
+          "provenance": {
+            "source": "Steam",
+            "ingestedAt": "2026-10-22",
+            "notes": "misma-edicion (Steam lo lista como «ArcaniA» sin subtítulo; mismo juego)",
+            "sourceUrl": "https://store.steampowered.com/app/39690",
+            "confidence": 0.8
+          }
+        }
+      ]
+    },
+    {
       "title": "Sniper Elite 4 Deluxe Edition",
       "slug": "sniper-elite-4-deluxe-edition",
       "description": "\"Sniper Elite 4 is a smart, strategic shooter that empowers you to make your own path\"\nIGN, 8.3/10 \"A riotously entertaining WW2 stealth adventure\"\nEurogamer, Recommended \"An ambitious stealth game that handily outperforms its predecessors\"\nPC World, 4/5\nDiscover unrivalled sniping freedom in the largest and most advanced World War 2 shooter ever built. Experience tactical third-person combat, gameplay choice and epic longshots across gigantic levels as you liberate wartime Italy from the grip of Fascism.\nSet in the aftermath of its award-winning predecessor, Sniper Elite 4 transports players across the beautiful Italian peninsula, from sun-drenched Mediterranean coastal towns, to ancient forests, mountain valleys and colossal Nazi megastructures.\nCovert agent and elite marksman Karl Fairburne must fight alongside the brave men and women of the Italian Resistance and defeat a terrifying new threat with the potential to halt the Allied fightback in Europe before it’s even begun.EXPANSIVE CAMPAIGNEncounter hours of gripping gameplay in huge campaign levels with hundreds of enemies, vehicles and high-ranking Nazi officers to hunt. Forge your own path to your objectives, uncover new sniper nests, find secret side missions, collectibles and more!AWARD-WINNING SNIPINGExperience genre-defining rifle ballistics where snipers must take account of wind, gravity and heart rate to land satisfying shots over hundreds of meters.EXTENSIVE ARSENALAdapt seamlessly to any combat situation with an impressive array of iconic World War 2 sniper rifles, pistols, submachine guns, heavy weapons, traps, grenades and explosives.DEEP CUSTOMISATIONHone your combat effectiveness by upgrading skills and tweaking key weapon traits such as scope magnification, muzzle velocity and stability.",
@@ -217,6 +623,77 @@
             "notes": "tamaño publicado en la edición base «Wo Long: Fallen Dynasty»",
             "sourceUrl": "https://www.pcgamingwiki.com/wiki/Wo_Long%3A_Fallen_Dynasty",
             "confidence": 0.6
+          }
+        }
+      ]
+    },
+    {
+      "title": "Dark Souls III The Fire Fades Edition",
+      "slug": "dark-souls-iii-the-fire-fades-edition",
+      "description": "Fear not, the dark, ashen one. \n\r\nThe Ringed City is the final DLC pack for Dark Souls III – an award-winning, genre-defining Golden Joystick Awards 2016 Game of the year RPG. Journey to the world’s end to search for the Ringed City and encounter new lands, new bosses, new enemies with new armor, magic and items. Experience the epic final chapter of a dark world that could only be created by the mind of Hidetaka Miyazaki. \n\r\nA New World. One Last Journey.",
+      "releaseYear": 2017,
+      "developer": "FromSoftware",
+      "publisher": "Bandai Namco Entertainment",
+      "keywords": null,
+      "categorySlug": "accion",
+      "genreSlugs": [
+        "accion",
+        "rol",
+        "aventura"
+      ],
+      "sizeValue": 25,
+      "sizeUnit": "GB",
+      "minimumRequirements": null,
+      "recommendedRequirements": null,
+      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co4990.jpg",
+      "platformVariants": [
+        {
+          "platformSlug": "pc",
+          "sizeValue": 25,
+          "sizeUnit": "GB",
+          "minimumRequirements": null,
+          "recommendedRequirements": null,
+          "provenance": {
+            "source": "PCGamingWiki",
+            "ingestedAt": "2026-10-22",
+            "notes": "juego-base (Fire Fades = edición; base DS3 25 GB)",
+            "sourceUrl": "https://www.pcgamingwiki.com/wiki/Dark_Souls_III",
+            "confidence": 0.8
+          }
+        }
+      ]
+    },
+    {
+      "title": "Battlestar Galactica Deadlock - Resurrection",
+      "slug": "battlestar-galactica-deadlock-resurrection",
+      "description": "If you buy Battlestar Galactica Deadlock: Armistice until 1st October 2020, 2 PM UTC, you’ll receive Battlestar Galactica Deadlock: Modern Ships Pack for FREE.\nFollowing the Ghost Fleet Offensive, the Cylons are losing their iron grip on the war.\nBut when whispers of a new super weapon reach the Colonial Fleet, BSG-75 embarks on a race against time to uncover the Cylon secret, and prevent the annihilation of the human race...The Final Chapter\nArmistice is an explosive 8-mission story campaign that brings Season Two of Battlestar Galactica Deadlock to a thrilling conclusion! Unravel Clothos’ plot for dominion, and take part in the legendary Operation Raptor Talon.New Resource Mission\nNine resource missions available for you to challenge in any Season Two story campaign.New Music\nThree epic musical pieces from award-winning composer Ash Gibson Greig that bring the world of Battlestar Galactica Deadlock to life.",
+      "releaseYear": 2019,
+      "developer": "Black Lab Games",
+      "publisher": "Slitherine",
+      "keywords": null,
+      "categorySlug": "otros",
+      "genreSlugs": [
+        "estrategia",
+        "por-turnos"
+      ],
+      "sizeValue": 8.739,
+      "sizeUnit": "GB",
+      "minimumRequirements": null,
+      "recommendedRequirements": null,
+      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co23g1.jpg",
+      "platformVariants": [
+        {
+          "platformSlug": "pc",
+          "sizeValue": 8.739,
+          "sizeUnit": "GB",
+          "minimumRequirements": null,
+          "recommendedRequirements": null,
+          "provenance": {
+            "source": "PCGamingWiki",
+            "ingestedAt": "2026-10-22",
+            "notes": "juego-base (DLC; 8739 MB → GB)",
+            "sourceUrl": "https://www.pcgamingwiki.com/wiki/Battlestar_Galactica_Deadlock",
+            "confidence": 0.8
           }
         }
       ]
@@ -326,6 +803,75 @@
       ]
     },
     {
+      "title": "World in Conflict - Soviet Assault",
+      "slug": "world-in-conflict-soviet-assault",
+      "description": "The game that was universally hailed as Strategy Game of the Year 2007 returns with all new content! World In Conflict Soviet Assault features 6 new single missions a bevy of new weapons and even more explosive World War III action. The new missions are interspersed with the storyline of original, but now you'll go on the attack as you take control of the Soviet army in an attempt to paint the free world red.\nThe Soviet Assault expansion is fully compatible with your original World In Conflict save files.",
+      "releaseYear": 2009,
+      "developer": "Massive Entertainment",
+      "publisher": "Ubisoft Entertainment",
+      "keywords": null,
+      "categorySlug": "otros",
+      "genreSlugs": [
+        "estrategia",
+        "estrategia-en-tiempo-real"
+      ],
+      "sizeValue": 8,
+      "sizeUnit": "GB",
+      "minimumRequirements": null,
+      "recommendedRequirements": null,
+      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/tmidw4oaruiokbncua3t.jpg",
+      "platformVariants": [
+        {
+          "platformSlug": "pc",
+          "sizeValue": 8,
+          "sizeUnit": "GB",
+          "minimumRequirements": null,
+          "recommendedRequirements": null,
+          "provenance": {
+            "source": "PCGamingWiki",
+            "ingestedAt": "2026-10-22",
+            "notes": "juego-base (expansión; base WiC 8 GB)",
+            "sourceUrl": "https://www.pcgamingwiki.com/wiki/World_in_Conflict",
+            "confidence": 0.8
+          }
+        }
+      ]
+    },
+    {
+      "title": "Train Simulator 2016",
+      "slug": "train-simulator-2016",
+      "description": "Train Simulator 2016 is a simulation game developed by Dovetail Games. It came out on 18-09-2015. It was published by Railsimulator.com. Most rawgers rated the game as \"Recommended\". \nYou can play Train Simulator 2016 on PC. \nPaul Jackson produced the game.",
+      "releaseYear": 2015,
+      "developer": "Dovetail Games",
+      "publisher": "Railsimulator.com",
+      "keywords": null,
+      "categorySlug": "simulacion",
+      "genreSlugs": [
+        "simulacion"
+      ],
+      "sizeValue": 40,
+      "sizeUnit": "GB",
+      "minimumRequirements": null,
+      "recommendedRequirements": null,
+      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co2rqf.jpg",
+      "platformVariants": [
+        {
+          "platformSlug": "pc",
+          "sizeValue": 40,
+          "sizeUnit": "GB",
+          "minimumRequirements": null,
+          "recommendedRequirements": null,
+          "provenance": {
+            "source": "Steam",
+            "ingestedAt": "2026-10-22",
+            "notes": "juego-base (ficha TS2016 = base «Train Simulator Classic» 40 GB)",
+            "sourceUrl": "https://store.steampowered.com/app/24010",
+            "confidence": 0.8
+          }
+        }
+      ]
+    },
+    {
       "title": "Wargame Red Dragon Nation Pack Israel",
       "slug": "wargame-red-dragon-nation-pack-israel",
       "description": null,
@@ -399,6 +945,102 @@
       ]
     },
     {
+      "title": "Bastion",
+      "slug": "bastion",
+      "description": "Each crystal can be upgraded to attack faster and deal more damage, helping you hold back stronger waves of enemies.",
+      "releaseYear": 2011,
+      "developer": "byking inc",
+      "publisher": "byking inc",
+      "keywords": "Adventure, Casual, Indie, Simulation, Sports",
+      "categorySlug": "aventura",
+      "genreSlugs": [
+        "aventura",
+        "casual",
+        "indie",
+        "simulacion",
+        "deportes",
+        "rol"
+      ],
+      "sizeValue": 1,
+      "sizeUnit": "GB",
+      "minimumRequirements": {
+        "os": "windows 10",
+        "cpu": "intel i3",
+        "gpu": "GT 730",
+        "ram": "4 GB de RAM"
+      },
+      "recommendedRequirements": {
+        "os": "windows 11",
+        "cpu": "intel i3",
+        "gpu": "GT 730",
+        "ram": "4 GB de RAM"
+      },
+      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co1qlj.jpg",
+      "platformVariants": [
+        {
+          "platformSlug": "pc",
+          "sizeValue": 1,
+          "sizeUnit": "GB",
+          "minimumRequirements": {
+            "os": "windows 10",
+            "cpu": "intel i3",
+            "gpu": "GT 730",
+            "ram": "4 GB de RAM"
+          },
+          "recommendedRequirements": {
+            "os": "windows 11",
+            "cpu": "intel i3",
+            "gpu": "GT 730",
+            "ram": "4 GB de RAM"
+          },
+          "provenance": {
+            "source": "PCGamingWiki",
+            "ingestedAt": "2026-10-22",
+            "notes": "misma-edicion (Fase B matcheo Bastion 1996 por error; página real del 2011 = 1 GB Windows)",
+            "sourceUrl": "https://www.pcgamingwiki.com/wiki/Bastion",
+            "confidence": 0.8
+          }
+        }
+      ]
+    },
+    {
+      "title": "Dead Island Game of the Year Edition",
+      "slug": "dead-island-game-of-the-year-edition",
+      "description": "Red Dead Redemption: Game of the Year Edition is an action game. It came out on 11-10-2011. Most rawgers rated the game as \"Exceptional\". \nYou can play Red Dead Redemption: Game of the Year Edition on Xbox 360 and PlayStation 3.",
+      "releaseYear": 2012,
+      "developer": null,
+      "publisher": null,
+      "keywords": null,
+      "categorySlug": "accion",
+      "genreSlugs": [
+        "accion",
+        "disparos",
+        "rol",
+        "hack-and-slash"
+      ],
+      "sizeValue": 7,
+      "sizeUnit": "GB",
+      "minimumRequirements": null,
+      "recommendedRequirements": null,
+      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co60hd.jpg",
+      "platformVariants": [
+        {
+          "platformSlug": "pc",
+          "sizeValue": 7,
+          "sizeUnit": "GB",
+          "minimumRequirements": null,
+          "recommendedRequirements": null,
+          "provenance": {
+            "source": "PCGamingWiki",
+            "ingestedAt": "2026-10-22",
+            "notes": "juego-base (GOTY; página resuelta a base Dead Island 7 GB; Steam 91310/91340 delisted)",
+            "sourceUrl": "https://www.pcgamingwiki.com/wiki/Dead_Island",
+            "confidence": 0.8
+          }
+        }
+      ]
+    },
+    {
       "title": "Crusader Kings III Royal Edition",
       "slug": "crusader-kings-iii-royal-edition",
       "description": "The Dark Ages might be drawing to a close, but Europe is still in turmoil. Petty lords vie against beleaguered kings who struggle to assert control over their fragmented realms. The Pope calls for a Crusade to protect the Christians in the Holy Land even as he refuses to relinquish control over the investiture of bishops - and their riches. Now is the time for greatness. Expand your demesne and secure the future of your dynasty. Fill your coffers, appoint vassals, root out traitors and heretics, introduce laws and interact with hundreds of nobles, each with their own agenda.\nA good lord will always need friends to support him. But beware, as loyal vassals can quickly turn to bitter rivals, and some might not be as reliable as they seem... Stand ready, and increase your prestige until the world whispers your name in awe. Do you have what it takes to become a Crusader King?\nCrusader Kings II explores one of the defining periods in world history in an experience crafted by the masters of Grand Strategy. Medieval Europe is brought to life in this epic game of knights, schemes, and thrones...\nSystem requirements, bonus goodies, and features may vary between games - please check individual product pages for details.",
@@ -428,6 +1070,349 @@
             "notes": "tamaño publicado en la edición base «Crusader Kings III: Royal Court»",
             "sourceUrl": "https://store.steampowered.com/app/1303182",
             "confidence": 0.6
+          }
+        }
+      ]
+    },
+    {
+      "title": "The Elder Scrolls V Skyrim Legendary Edition",
+      "slug": "the-elder-scrolls-v-skyrim-legendary-edition",
+      "description": "The Elder Scrolls V: Skyrim Legendary Edition is an adventure-RPG game developed by Bethesda Game Studios. It was originally released in 2013. Bethesda Softworks published the game. On review aggregator Metacritic, The Elder Scrolls V: Skyrim Legendary Edition has a score of 94. The game is rated as \"Exceptional\" on RAWG. \nYou can play The Elder Scrolls V: Skyrim Legendary Edition on PC, PlayStation 3 and Xbox 360.",
+      "releaseYear": 2013,
+      "developer": "Bethesda Game Studios",
+      "publisher": "Bethesda Softworks",
+      "keywords": null,
+      "categorySlug": "aventura",
+      "genreSlugs": [
+        "aventura",
+        "rol"
+      ],
+      "sizeValue": 6,
+      "sizeUnit": "GB",
+      "minimumRequirements": null,
+      "recommendedRequirements": null,
+      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co3dcm.jpg",
+      "platformVariants": [
+        {
+          "platformSlug": "pc",
+          "sizeValue": 6,
+          "sizeUnit": "GB",
+          "minimumRequirements": null,
+          "recommendedRequirements": null,
+          "provenance": {
+            "source": "PCGamingWiki",
+            "ingestedAt": "2026-10-22",
+            "notes": "juego-base (Legendary; página resuelta a base Skyrim 6 GB; Steam 72850 vacío)",
+            "sourceUrl": "https://www.pcgamingwiki.com/wiki/The_Elder_Scrolls_V:_Skyrim",
+            "confidence": 0.8
+          }
+        }
+      ]
+    },
+    {
+      "title": "Dead or Alive 6 Digital Deluxe Edition",
+      "slug": "dead-or-alive-6-digital-deluxe-edition",
+      "description": "[Introduce DOA Series]\r\nThe Dead or Alive franchise is a AAA fighting game series produced by Koei Tecmo Games' Team NINJA. Composed of fast-paced 3D fighting games that began with the original Dead or Alive in 1996, Dead or Alive 6 will be the sixth entry in the series. This game features fighting entertainment with multi-tiered stages that are now both dynamic and critical parts of the competitive experience.\r\n[Story]\r\nThe story will follow that of Dead or Alive 5, shedding light on 2 main narratives; namely, the battle between “Ninja and DOATEC” versus “M.I.S.T. lead by Donovan”, and the tournament “Dead or Alive 6”. New episodes will also be added for returning characters.\r\n[The New Visuals]\r\nThe visuals of DOA6 express dramatic lighting that goes beyond the genre of “fighting games” and focus on serious, intense combat. It also features improved skin and sweat textures, introducing wounds, as well as flexible, varied facial animations.\r\n[Triangle System]\r\nFights in Dead or Alive 6 are based on a Traditional triangle system: strikes beat throws, throws beat holds, and holds beat strikes. When you land an attack of one type that beats another type, like landing a strike when an opponent tries to throw, that attack becomes a Hi Counter attack and does even more damage.\r\n[Break Actions - New Combat Mechanics]\r\nWith this title, we are introducing a new Special Move Gauge (Break Gauge) to the DEAD OR ALIVE series, making the fights more strategic than ever before. Because the actions can be performed by simply pressing the [RB] button, even beginners can enjoy the new system.\r\n[Break Blow] A strong, high-damage special move that knocks the opponent away. The first part of the move also parries attacks, working as both an offensive and defensive move!\r\n[Break Hold] A convenient counter technique that can also be used while the player is heavily stunned. It should only be used in tight situations due to its light-damage output.",
+      "releaseYear": 2019,
+      "developer": "Koei Tecmo, KOEI TECMO America",
+      "publisher": "Koei Tecmo Games",
+      "keywords": null,
+      "categorySlug": "accion",
+      "genreSlugs": [
+        "accion",
+        "lucha"
+      ],
+      "sizeValue": 50,
+      "sizeUnit": "GB",
+      "minimumRequirements": null,
+      "recommendedRequirements": null,
+      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co835p.jpg",
+      "platformVariants": [
+        {
+          "platformSlug": "pc",
+          "sizeValue": 50,
+          "sizeUnit": "GB",
+          "minimumRequirements": null,
+          "recommendedRequirements": null,
+          "provenance": {
+            "source": "PCGamingWiki",
+            "ingestedAt": "2026-10-22",
+            "notes": "juego-base (edición; base DOA6 50 GB)",
+            "sourceUrl": "https://www.pcgamingwiki.com/wiki/Dead_or_Alive_6",
+            "confidence": 0.8
+          }
+        }
+      ]
+    },
+    {
+      "title": "Arcania Gothic 4 Fall of Setarrif",
+      "slug": "arcania-gothic-4-fall-of-setarrif",
+      "description": "Face the last challenge - determine destiny!\nA new threat casts its shadow over the Southern Isles. A mysterious demon, consumed by hatred, terrifies the population and pools his force against the coastal city of Setarrif. The dramatic situation exacerbates after a volcanic eruption in the mountains nearby. Thereupon the nameless hero joins forces with his strongest allies and courageously faces the new menace.\nEven after king Rhobar III was freed from the demons control, the struggle apparently is not over. The king already ordered his armies to conquer Setarrif, but so far no word from his troops, or the frantic population for that matter, has gotten through.\nExperience an all new adventure amidst demonic powers, political intrigue and inscrutable incidents – what’s really going on in Setarrif?\nFeatures: Experience a new, compelling part of the chronicles of Argaan\nPlay parts of the story from your famous allies’ perspective\nAll new enemies as well as new armors and weapons to further expand and hone your combat skills\nMeet new, lively characters when exploring the (yet) unknown regions & dungeons\nStand-alone expansion\nPlaying time: 4 – 8 hours\nImport your character from the main game (with a character that killed the endboss of ArcaniA main game)\nNew locations and settings (lava/beach/dungeon)",
+      "releaseYear": 2010,
+      "developer": "Spellbound Entertainment",
+      "publisher": "THQ Nordic",
+      "keywords": null,
+      "categorySlug": "accion",
+      "genreSlugs": [
+        "accion",
+        "rol"
+      ],
+      "sizeValue": 10,
+      "sizeUnit": "GB",
+      "minimumRequirements": null,
+      "recommendedRequirements": null,
+      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co20kx.jpg",
+      "platformVariants": [
+        {
+          "platformSlug": "pc",
+          "sizeValue": 10,
+          "sizeUnit": "GB",
+          "minimumRequirements": null,
+          "recommendedRequirements": null,
+          "provenance": {
+            "source": "Steam",
+            "ingestedAt": "2026-10-22",
+            "notes": "juego-base (expansión; base ArcaniA 10 GB)",
+            "sourceUrl": "https://store.steampowered.com/app/39690",
+            "confidence": 0.8
+          }
+        }
+      ]
+    },
+    {
+      "title": "Injustice 2 Legendary Edition",
+      "slug": "injustice-2-legendary-edition",
+      "description": "Injustice 2 is a fighting game developed by NetherRealm Studios.\r\n\r\nThe game begins on Krypton in its last hours. After Brainiac attacked the planet, he decides to destroy it using the beta-bombs. Only Superman and Supergirl survived, as their parents decided to send them to Earth, but these two get separated as the shuttles courses get affected by the planet's explosion. Time passes and Superman becomes a tyrannic Earth dictator, yet Batman destroys his regime at the end of the first game. Batman attempts to rebuild the society after the fall of Superman.\r\n\r\nThe core gameplay resembles the same of the first game. Every character has their own unique set of combos and special attacks. The objective of every fight is to knock out the enemy. The players can use the environment in order to damage their opponent. Every successful attack fills the super meter. Super meter can be used to perform special skills or dodges. Using the full super meter charge allows for a unique attack. \r\n\r\nInjustice 2 features a loot box system. Players can get new outfits with special effects from the crates. An RPG-like mechanics is also present as the characters four base stats can be improved after every fight.",
+      "releaseYear": 2018,
+      "developer": "Warner Bros. Interactive, NetherRealm Studios, QLOC",
+      "publisher": "Warner Bros. Interactive",
+      "keywords": null,
+      "categorySlug": "accion",
+      "genreSlugs": [
+        "lucha"
+      ],
+      "sizeValue": 52,
+      "sizeUnit": "GB",
+      "minimumRequirements": null,
+      "recommendedRequirements": null,
+      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co1xrv.jpg",
+      "platformVariants": [
+        {
+          "platformSlug": "pc",
+          "sizeValue": 52,
+          "sizeUnit": "GB",
+          "minimumRequirements": null,
+          "recommendedRequirements": null,
+          "provenance": {
+            "source": "PCGamingWiki",
+            "ingestedAt": "2026-10-22",
+            "notes": "juego-base (edición; base Injustice 2 min 52 GB)",
+            "sourceUrl": "https://www.pcgamingwiki.com/wiki/Injustice_2",
+            "confidence": 0.8
+          }
+        }
+      ]
+    },
+    {
+      "title": "The Witcher 1 Enhanced Edition",
+      "slug": "the-witcher-1-enhanced-edition",
+      "description": "The Witcher 3: Wild Hunt — Remastered moderniza el célebre título de rol con multitud de mejoras. En la piel de Geralt de Rivia, cazador de monstruos a sueldo, recorre a tus anchas un tétrico mundo a rebosar de fantasía épica en busca de Ciri, tu hija adoptiva.",
+      "releaseYear": 2007,
+      "developer": "CD PROJEKT RED",
+      "publisher": "CD PROJEKT RED",
+      "keywords": "RPG",
+      "categorySlug": "rol",
+      "genreSlugs": [
+        "rol",
+        "aventura"
+      ],
+      "sizeValue": 15,
+      "sizeUnit": "GB",
+      "minimumRequirements": {
+        "os": "64-bit Windows 11",
+        "cpu": "Core i5-8400 / Ryzen 5 2600",
+        "gpu": "GeForce GTX 1660 / Radeon RX 5500 XT 8GB / Arc A580",
+        "ram": "12 GB de RAM",
+        "storage": "60 SSD GB de espacio disponible"
+      },
+      "recommendedRequirements": {
+        "os": "64-bit Windows 11",
+        "cpu": "Intel Core i7 8700K / AMD Ryzen 5 3600X",
+        "gpu": "RTX 2060 Super / AMD Radeon RX 6600 XT / Intel Arc B580",
+        "ram": "16 GB de RAM",
+        "storage": "60 SSD GB de espacio disponible"
+      },
+      "coverUrl": "https://cdn.akamai.steamstatic.com/steam/apps/292030/library_600x900.jpg",
+      "platformVariants": [
+        {
+          "platformSlug": "pc",
+          "sizeValue": 15,
+          "sizeUnit": "GB",
+          "minimumRequirements": {
+            "os": "64-bit Windows 11",
+            "cpu": "Core i5-8400 / Ryzen 5 2600",
+            "gpu": "GeForce GTX 1660 / Radeon RX 5500 XT 8GB / Arc A580",
+            "ram": "12 GB de RAM",
+            "storage": "60 SSD GB de espacio disponible"
+          },
+          "recommendedRequirements": {
+            "os": "64-bit Windows 11",
+            "cpu": "Intel Core i7 8700K / AMD Ryzen 5 3600X",
+            "gpu": "RTX 2060 Super / AMD Radeon RX 6600 XT / Intel Arc B580",
+            "ram": "16 GB de RAM",
+            "storage": "60 SSD GB de espacio disponible"
+          },
+          "provenance": {
+            "source": "Steam",
+            "ingestedAt": "2026-10-22",
+            "notes": "misma-edicion («Enhanced Edition Director's Cut» en Steam; el appid de Fase B 292030 no publica storage)",
+            "sourceUrl": "https://store.steampowered.com/app/20900",
+            "confidence": 0.8
+          }
+        }
+      ]
+    },
+    {
+      "title": "Ghostrunner 2 Brutal Edition",
+      "slug": "ghostrunner-2-brutal-edition",
+      "description": "Ghostrunner 2 is a hardcore FPP slasher set in a post-apocalyptic, cyberpunk world. Featuring everything fans loved about Ghostrunner plus incredible boss fights, new interactive story, thrilling motorbike levels, improved skills, and more cyber ninja action.",
+      "releaseYear": 2023,
+      "developer": "One More Level",
+      "publisher": "505 Games",
+      "keywords": null,
+      "categorySlug": "accion",
+      "genreSlugs": [
+        "accion",
+        "disparos",
+        "estrategia",
+        "hack-and-slash",
+        "aventura"
+      ],
+      "sizeValue": 65,
+      "sizeUnit": "GB",
+      "minimumRequirements": null,
+      "recommendedRequirements": null,
+      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co6yrn.jpg",
+      "platformVariants": [
+        {
+          "platformSlug": "pc",
+          "sizeValue": 65,
+          "sizeUnit": "GB",
+          "minimumRequirements": null,
+          "recommendedRequirements": null,
+          "provenance": {
+            "source": "PCGamingWiki",
+            "ingestedAt": "2026-10-22",
+            "notes": "juego-base",
+            "sourceUrl": "https://www.pcgamingwiki.com/wiki/Ghostrunner_2",
+            "confidence": 0.8
+          }
+        }
+      ]
+    },
+    {
+      "title": "The Walking Dead The Final Season Episode 4",
+      "slug": "the-walking-dead-the-final-season-episode-4",
+      "description": "Clementine, now a fierce and capable survivor, has reached the final chapter in her journey. After years on the road facing threats both living and dead, a secluded school might finally be her chance for a home. But protecting it will mean sacrifice. Clem must build a life and become a leader while still watching over AJ, an orphaned boy and the closest thing to family she has left. In this gripping and emotional final season, you will define your relationships, fight the undead, and determine how Clementine’s story ends.\n● Emotional, Gut-Wrenching Story - See Clementine’s journey through to the end. As she builds a new life, you will have to grapple with new types of choices and live with the consequences as AJ looks on, learning from your every move.\n● More Control, More Tension - A new over-the-shoulder camera system, greater freedom to explore detailed environments, and scenes of unscripted combat capture the fear of living in a world overrun by the undead. All this creates the most engaging The Walking Dead game yet.\n● Striking New Visual Style - The all-new Graphic Black art style rips the ink from the pages of the Eisner Award-winning comic book series and brings the world of The Walking Dead to life like never before.\nIncludes access to all 4 episodes (Episode 1 available at launch, Episodes 2-4 coming soon).",
+      "releaseYear": 2019,
+      "developer": "Telltale Games",
+      "publisher": "Telltale Games",
+      "keywords": null,
+      "categorySlug": "accion",
+      "genreSlugs": [
+        "accion",
+        "aventura",
+        "point-and-click"
+      ],
+      "sizeValue": 15,
+      "sizeUnit": "GB",
+      "minimumRequirements": null,
+      "recommendedRequirements": null,
+      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co1va0.jpg",
+      "platformVariants": [
+        {
+          "platformSlug": "pc",
+          "sizeValue": 15,
+          "sizeUnit": "GB",
+          "minimumRequirements": null,
+          "recommendedRequirements": null,
+          "provenance": {
+            "source": "PCGamingWiki",
+            "ingestedAt": "2026-10-22",
+            "notes": "juego-base",
+            "sourceUrl": "https://www.pcgamingwiki.com/wiki/The_Walking_Dead:_The_Final_Season",
+            "confidence": 0.8
+          }
+        }
+      ]
+    },
+    {
+      "title": "Star Wars Battlefront II Elite Trooper Deluxe Edition",
+      "slug": "star-wars-battlefront-ii-elite-trooper-deluxe-edit",
+      "description": "Despite its name, Star Wars Battlefront II is the seventh game in the Battlefront series of action games. It is a direct sequel to the 2015 Star Wars Battlefront that became the series's reboot.\r\n\r\n###Story mode\r\nThe game is set in the Star Wars universe during and after the fall of the Galactic Empire. Its story mode fills the gap between the original trilogy and Episode VII: The Force Awakens. In the story campaign mode, the player controls the Imperial Inferno Squad led by the game's main protagonist, Iden Versio (who is voiced by Janina Gavankar). She and her special forces group participate in a variety of missions spanning almost 30 years. On certain levels, the player will also control other characters, including rebels.\r\n\r\n###Arcade mode\r\nBesides the story mode, there's the Arcade mode that offers the players to take on the role of any Star Wars character from the said period, such as Darth Vader, Han Solo, Luke, Rey, Kylo Ren, among others. The player can choose the battle to participate in, the side to fight for, and the character, or even to customize the mission. \r\n\r\n###Multiplayer\r\nThe Arcade mode offers a local cooperative multiplayer. Besides that, there are nine online multiplayer modes that include traditional types like team deathmatch and capture the flag. Some of this modes, like Galactic Assault, support up to 40 players at once and allow the players to participate in a large-scale battle between the rebels and the Empire.",
+      "releaseYear": 2017,
+      "developer": "Electronic Arts DICE",
+      "publisher": "Electronic Arts",
+      "keywords": null,
+      "categorySlug": "accion",
+      "genreSlugs": [
+        "accion",
+        "disparos",
+        "aventura"
+      ],
+      "sizeValue": 60,
+      "sizeUnit": "GB",
+      "minimumRequirements": null,
+      "recommendedRequirements": null,
+      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co27vh.jpg",
+      "platformVariants": [
+        {
+          "platformSlug": "pc",
+          "sizeValue": 60,
+          "sizeUnit": "GB",
+          "minimumRequirements": null,
+          "recommendedRequirements": null,
+          "provenance": {
+            "source": "Steam",
+            "ingestedAt": "2026-10-22",
+            "notes": "juego-base (Elite Trooper Deluxe; storesearch → base BF2 2017 = 60 GB; el appid de Fase B 1274870 era erróneo)",
+            "sourceUrl": "https://store.steampowered.com/app/1237950",
+            "confidence": 0.8
+          }
+        }
+      ]
+    },
+    {
+      "title": "Company of Heroes 2 Master Collection",
+      "slug": "company-of-heroes-2-master-collection",
+      "description": "Company of Heroes 2 is the second installment in the series of real-time strategy games, following its predecessor’s legacy as one of the most complex and realistic WWII simulators. New features and game engine improvements will provide the most intense experience of the most significant battles of both the Western and Eastern fronts of the war.\r\nAfter seven years since the first game’s release, Company of Heroes 2 provides the players with new battle mechanics, even more, micromanagement and new game modes, as well as an expanded single-player campaign, taking place in the Eastern front. The key features of the first game, being the dynamic environments and cover system, have also been overhauled, with additions as a line of sight for every troop. The warfare itself has also been changed, removing the mechanics of doctrines and adding traits to various generals on the field.\r\nThe game also includes additional content, which adds two new Allied factions, the US expeditionary forces and the Royal Army, and new campaigns for both factions, while also improving performance and adding new features to the game, such as tech trees, various tactics and many more.",
+      "releaseYear": 2015,
+      "developer": "Feral Interactive, Relic Entertainment",
+      "publisher": "SEGA, Feral Interactive",
+      "keywords": null,
+      "categorySlug": "otros",
+      "genreSlugs": [
+        "estrategia",
+        "estrategia-en-tiempo-real"
+      ],
+      "sizeValue": 30,
+      "sizeUnit": "GB",
+      "minimumRequirements": null,
+      "recommendedRequirements": null,
+      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co39we.jpg",
+      "platformVariants": [
+        {
+          "platformSlug": "pc",
+          "sizeValue": 30,
+          "sizeUnit": "GB",
+          "minimumRequirements": null,
+          "recommendedRequirements": null,
+          "provenance": {
+            "source": "PCGamingWiki",
+            "ingestedAt": "2026-10-22",
+            "notes": "juego-base",
+            "sourceUrl": "https://www.pcgamingwiki.com/wiki/Company_of_Heroes_2",
+            "confidence": 0.8
           }
         }
       ]
@@ -498,6 +1483,42 @@
             "notes": "",
             "sourceUrl": "https://store.steampowered.com/app/413370",
             "confidence": 0.9
+          }
+        }
+      ]
+    },
+    {
+      "title": "Red Faction I Guerrilla",
+      "slug": "red-faction-i-guerrilla",
+      "description": "The soundtrack of Red Faction: Guerrilla contains 32 tracks.",
+      "releaseYear": 2009,
+      "developer": "Volition, KAIKO, THQ Nordic",
+      "publisher": "Deep Silver",
+      "keywords": "Action",
+      "categorySlug": "accion",
+      "genreSlugs": [
+        "accion",
+        "disparos",
+        "aventura"
+      ],
+      "sizeValue": 32,
+      "sizeUnit": "GB",
+      "minimumRequirements": null,
+      "recommendedRequirements": null,
+      "coverUrl": "https://cdn.akamai.steamstatic.com/steam/apps/888820/header.jpg",
+      "platformVariants": [
+        {
+          "platformSlug": "pc",
+          "sizeValue": 32,
+          "sizeUnit": "GB",
+          "minimumRequirements": null,
+          "recommendedRequirements": null,
+          "provenance": {
+            "source": "PCGamingWiki",
+            "ingestedAt": "2026-10-22",
+            "notes": "juego-base",
+            "sourceUrl": "https://www.pcgamingwiki.com/wiki/Red_Faction_Guerrilla_Re-Mars-tered",
+            "confidence": 0.8
           }
         }
       ]
@@ -576,6 +1597,42 @@
       ]
     },
     {
+      "title": "Transformers War For Cybertron",
+      "slug": "transformers-war-for-cybertron",
+      "description": "Become the ultimate weapon. Fight to the end in the war that started it all. Wield an arsenal of lethal, high-tech weaponry and change form from robot to vehicle at any time as you battle through the living, metallic world of Cybertron. Separate Autobot and Decepticon campaigns take you from Autobot and Decepticon cities, to the Energon core of Cybertron, to the outer reaches of the orbital debris while pitting brother against brother and friend against foe. Experience Optimus’ rise to greatness and Megatron’s thirst for destruction. The balance of power between Autobots and Decepticons is in your hands.\nKey Features TWO DISTINCT CAMPAIGNS, ONE EPIC STORY\nPlay both the Autobots™ and Decepticons™ campaigns\nBattle as your favorite Transformers character in this 3rd Person High Action Shooter\nWAGE WAR ONLINE\nDeep multiplayer game modes thrust you into a global battle\nTeam up with your friends and battle waves of enemies in Escalation Mode\nCREATE YOUR OWN TRANFORMERS CHARACTER\nChoose your character class, vehicle, weapons, attributes, skills, and upgrades\nLevel up and customize your character to fit your playing style\n3-PLAYER DROP-IN/DROP-OUT ONLINE CO-OP\nTeam up with your friends and fight through epic campaigns\nCHANGE FORM FROM ROBOT TO VEHICLE AT ANY TIME\nInstantly convert from robot to car, jet, tank or truck mode and attack your enemies from any angle",
+      "releaseYear": 2010,
+      "developer": "Activision, High Moon Studios",
+      "publisher": "Activision Blizzard",
+      "keywords": null,
+      "categorySlug": "accion",
+      "genreSlugs": [
+        "accion",
+        "disparos",
+        "aventura"
+      ],
+      "sizeValue": 9,
+      "sizeUnit": "GB",
+      "minimumRequirements": null,
+      "recommendedRequirements": null,
+      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co9a64.jpg",
+      "platformVariants": [
+        {
+          "platformSlug": "pc",
+          "sizeValue": 9,
+          "sizeUnit": "GB",
+          "minimumRequirements": null,
+          "recommendedRequirements": null,
+          "provenance": {
+            "source": "PCGamingWiki",
+            "ingestedAt": "2026-10-22",
+            "notes": "misma-edicion (página exacta con minHD 9 GB; Steam 42650 delisted)",
+            "sourceUrl": "https://www.pcgamingwiki.com/wiki/Transformers:_War_for_Cybertron",
+            "confidence": 0.8
+          }
+        }
+      ]
+    },
+    {
       "title": "R.B.I Baseball",
       "slug": "r-b-i-baseball",
       "description": "PLAY YOUR WAY. Create a legacy and make a statement. The world of MLB awaits in R.B.I. Baseball 21. R.B.I. is the fast-paced, easy-to-learn baseball franchise perfect for anyone who wants to pick up and play, and R.B.I. Baseball 21 brings new features including create-a-player, play-by-play commentary, immersive time-of-day, and incredible visual improvements. Step up to the plate, crush home runs, and take your club to a World Series title in R.B.I. Baseball 21.",
@@ -643,6 +1700,95 @@
             "notes": "tamaño publicado en la edición base «Iron Harvest»",
             "sourceUrl": "https://store.steampowered.com/app/826630",
             "confidence": 0.6
+          }
+        }
+      ]
+    },
+    {
+      "title": "Inside",
+      "slug": "inside",
+      "description": "Organized Inside es un juego tranquilo sobre gatos, amor y crecimiento. Ordena objetos del hogar y encuentra armonía en el caos. A través del orden y la calma, descubre la alegría y el sentido ocultos en la vida cotidiana.",
+      "releaseYear": 2016,
+      "developer": "Meox Studio",
+      "publisher": "Meox Studio",
+      "keywords": "Casual, Indie, Simulation",
+      "categorySlug": "simulacion",
+      "genreSlugs": [
+        "casual",
+        "indie",
+        "simulacion",
+        "plataformas",
+        "puzzle",
+        "aventura"
+      ],
+      "sizeValue": 3,
+      "sizeUnit": "GB",
+      "minimumRequirements": {
+        "os": "Windows 7 SP1+",
+        "cpu": "SSE2 instruction set support",
+        "gpu": "Graphics card with DX10 (shader model 4.0) capabilities."
+      },
+      "recommendedRequirements": {
+        "os": "Windows 7 SP1+",
+        "cpu": "SSE2 instruction set support",
+        "gpu": "Graphics card with DX10 (shader model 4.0) capabilities."
+      },
+      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co2fca.jpg",
+      "platformVariants": [
+        {
+          "platformSlug": "pc",
+          "sizeValue": 3,
+          "sizeUnit": "GB",
+          "minimumRequirements": {
+            "os": "Windows 7 SP1+",
+            "cpu": "SSE2 instruction set support",
+            "gpu": "Graphics card with DX10 (shader model 4.0) capabilities."
+          },
+          "recommendedRequirements": {
+            "os": "Windows 7 SP1+",
+            "cpu": "SSE2 instruction set support",
+            "gpu": "Graphics card with DX10 (shader model 4.0) capabilities."
+          },
+          "provenance": {
+            "source": "PCGamingWiki",
+            "ingestedAt": "2026-10-22",
+            "notes": "misma-edicion (Playdead INSIDE; appid de Fase B 3609750 era incorrecto)",
+            "sourceUrl": "https://www.pcgamingwiki.com/wiki/Inside",
+            "confidence": 0.8
+          }
+        }
+      ]
+    },
+    {
+      "title": "Mortal Kombat XL",
+      "slug": "mortal-kombat-xl",
+      "description": "One of the best-selling titles of 2015 has gone XL! Komplete The Mortal Kombat X Experience with new and existing content. Includes the main game, and new playable characters Alien, Leatherface, Triborg, and Bo’Rai Cho. Previously released playable characters include Predator, Jason Voorhees, Tremor, Tanya, and Goro. Also includes the new skins pack Apocalypse Pack and all previously released skins packs.\nUse of PSN and SEN account are subject to the Terms of Service and User Agreement and applicable privacy policy (see terms at sonyentertainmentnetwork.com/terms-of-service & sonyentertainmentnetwork.com/privacy-policy). *Online multiplayer also requires a PlayStation®Plus subscription.\n1-2 players\nNetwork Players 2-10\nDUALSHOCK®4\n1080p HD Video Output\nOnline Play (Optional)\nSoftware subject to license (us.playstation.com/softwarelicense). Online activity subject to Terms of Services and User Agreement (www.playstationnetwork.com/terms-of-service). One-time license fee for play on account’s designated primary PS4™ system and other PS4™ systems when signed in with that account.\nMORTAL KOMBAT XL software © 2016 Warner Bros. Entertainment Inc. Developed by NetherRealm Studios. ALIEN and PREDATOR ™ & © 2016 Twentieth Century Fox Film Corporation. All rights reserved. JASON VOORHEES and all related elements are trademarks of and © New Line Productions, Inc. The Texas Chainsaw Massacre © 1974 VORTEX, INC. /KIM HENKEL/TOBE HOOPER Leatherface™ and The Texas Chainsaw Massacre™ are trademarks of VORTEX, INC./KIM HENKEL/TOBE HOOPER. All Rights Reserved. All other trademarks and copyrights are the property of their respective owners. All rights reserved.\nWB GAMES LOGO, WB SHIELD, NETHERREALM STUDIOS LOGO, MORTAL KOMBAT, THE DRAGON LOGO, and all related characters and elements are trademarks of and © Warner Bros. Entertainment Inc.\n(s16)",
+      "releaseYear": 2016,
+      "developer": "NetherRealm Studios",
+      "publisher": "Warner Bros. Interactive",
+      "keywords": null,
+      "categorySlug": "accion",
+      "genreSlugs": [
+        "lucha"
+      ],
+      "sizeValue": 36,
+      "sizeUnit": "GB",
+      "minimumRequirements": null,
+      "recommendedRequirements": null,
+      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co20md.jpg",
+      "platformVariants": [
+        {
+          "platformSlug": "pc",
+          "sizeValue": 36,
+          "sizeUnit": "GB",
+          "minimumRequirements": null,
+          "recommendedRequirements": null,
+          "provenance": {
+            "source": "Steam",
+            "ingestedAt": "2026-10-22",
+            "notes": "juego-base (XL = edición; base MKX min 36 GB / rec 44 GB)",
+            "sourceUrl": "https://store.steampowered.com/app/307780",
+            "confidence": 0.8
           }
         }
       ]
@@ -719,6 +1865,74 @@
       ]
     },
     {
+      "title": "ARK Survival Evolved Explorer's Edition",
+      "slug": "ark-survival-evolved-explorer-s-edition",
+      "description": null,
+      "releaseYear": 2017,
+      "developer": null,
+      "publisher": null,
+      "keywords": null,
+      "categorySlug": "rol",
+      "genreSlugs": [
+        "rol"
+      ],
+      "sizeValue": 60,
+      "sizeUnit": "GB",
+      "minimumRequirements": null,
+      "recommendedRequirements": null,
+      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co1v45.jpg",
+      "platformVariants": [
+        {
+          "platformSlug": "pc",
+          "sizeValue": 60,
+          "sizeUnit": "GB",
+          "minimumRequirements": null,
+          "recommendedRequirements": null,
+          "provenance": {
+            "source": "PCGamingWiki",
+            "ingestedAt": "2026-10-22",
+            "notes": "juego-base",
+            "sourceUrl": "https://www.pcgamingwiki.com/wiki/ARK:_Survival_Evolved",
+            "confidence": 0.8
+          }
+        }
+      ]
+    },
+    {
+      "title": "Dishonored Game Of The Year Edition",
+      "slug": "dishonored-game-of-the-year-edition",
+      "description": null,
+      "releaseYear": 2013,
+      "developer": null,
+      "publisher": null,
+      "keywords": null,
+      "categorySlug": "aventura",
+      "genreSlugs": [
+        "aventura"
+      ],
+      "sizeValue": 9,
+      "sizeUnit": "GB",
+      "minimumRequirements": null,
+      "recommendedRequirements": null,
+      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/coa4rb.jpg",
+      "platformVariants": [
+        {
+          "platformSlug": "pc",
+          "sizeValue": 9,
+          "sizeUnit": "GB",
+          "minimumRequirements": null,
+          "recommendedRequirements": null,
+          "provenance": {
+            "source": "PCGamingWiki",
+            "ingestedAt": "2026-10-22",
+            "notes": "juego-base (GOTY; base Dishonored 9 GB; Steam 205100 vacío)",
+            "sourceUrl": "https://www.pcgamingwiki.com/wiki/Dishonored",
+            "confidence": 0.8
+          }
+        }
+      ]
+    },
+    {
       "title": "BioShock Infinite Complete Edition",
       "slug": "bioshock-infinite-complete-edition",
       "description": "BioShock Infinite: Burial at Sea - Episode Two is an action-shooter game developed by Irrational Games. It was originally released in 2014. 2K Games published the game. On review aggregator Metacritic, BioShock Infinite: Burial at Sea - Episode Two has a score of 82. The game is rated as \"Exceptional\" on RAWG. \nYou can play BioShock Infinite: Burial at Sea - Episode Two on PC, PlayStation 4, PlayStation 3 and Xbox 360. The game is sold via Steam.",
@@ -790,6 +2004,405 @@
       ]
     },
     {
+      "title": "Assassin's Creed Syndicate The Dreadful Crimes",
+      "slug": "assassin-s-creed-syndicate-the-dreadful-crimes",
+      "description": "1868, Revolución Industrial en Londres. Una serie de acontecimientos inexplicables estremece a Londres. Usa tu ingenio para encontrar pistas y resolver estos terribles crímenes en 10 misiones repletas de emocionante investigación.",
+      "releaseYear": 2016,
+      "developer": "Ubisoft Quebec, in collaboration with Ubisoft Annecy, Bucharest, Kiev, Montreal, Montpellier, Shanghai, Singapore, Sofia, Toronto studios",
+      "publisher": null,
+      "keywords": "Action, Adventure",
+      "categorySlug": "accion",
+      "genreSlugs": [
+        "accion",
+        "aventura"
+      ],
+      "sizeValue": 50,
+      "sizeUnit": "GB",
+      "minimumRequirements": {
+        "os": "Windows 7 SP1 or Windows 8.1 or Windows 10 (64bit versions)",
+        "cpu": "Intel Core i5 2400s @ 2.5 GHz / AMD FX 6350 @ 3.9 GHz",
+        "gpu": "NVIDIA GeForce GTX 660 / AMD Radeon R9 270 (2GB VRAM with Shader Model 5.0)",
+        "ram": "6 GB de RAM"
+      },
+      "recommendedRequirements": {
+        "os": "Windows 7 SP1 or Windows 8.1 or Windows 10 (64bit versions)",
+        "cpu": "Intel Core i7 3770 @ 3.5 GHz / AMD FX 8350 @ 4.0 GHz",
+        "gpu": "NVIDIA GeForce GTX 760 (4GB) or the newer GTX 970 (4GB) / AMD Radeon R9 280X (3GB of VRAM) or better",
+        "ram": "8 GB de RAM"
+      },
+      "coverUrl": "https://cdn.akamai.steamstatic.com/steam/apps/452960/header.jpg",
+      "platformVariants": [
+        {
+          "platformSlug": "pc",
+          "sizeValue": 50,
+          "sizeUnit": "GB",
+          "minimumRequirements": {
+            "os": "Windows 7 SP1 or Windows 8.1 or Windows 10 (64bit versions)",
+            "cpu": "Intel Core i5 2400s @ 2.5 GHz / AMD FX 6350 @ 3.9 GHz",
+            "gpu": "NVIDIA GeForce GTX 660 / AMD Radeon R9 270 (2GB VRAM with Shader Model 5.0)",
+            "ram": "6 GB de RAM"
+          },
+          "recommendedRequirements": {
+            "os": "Windows 7 SP1 or Windows 8.1 or Windows 10 (64bit versions)",
+            "cpu": "Intel Core i7 3770 @ 3.5 GHz / AMD FX 8350 @ 4.0 GHz",
+            "gpu": "NVIDIA GeForce GTX 760 (4GB) or the newer GTX 970 (4GB) / AMD Radeon R9 280X (3GB of VRAM) or better",
+            "ram": "8 GB de RAM"
+          },
+          "provenance": {
+            "source": "PCGamingWiki",
+            "ingestedAt": "2026-10-22",
+            "notes": "juego-base (DLC)",
+            "sourceUrl": "https://www.pcgamingwiki.com/wiki/Assassin%27s_Creed_Syndicate",
+            "confidence": 0.8
+          }
+        }
+      ]
+    },
+    {
+      "title": "Raiders of the Broken Planet",
+      "slug": "raiders-of-the-broken-planet",
+      "description": "Embark on a grand sci-fi adventure. A band of rogues and villains drawn to a cause for money, revenge and redemption. A fight for the freedom of a broken planet. An evil Space Demon sowing discord through the ranks for its own mischievous objective...\nRaiders of the Broken Planet is a brand-new take on the shooter genre. Through its 4 vs 1 counter-operative campaign, you experience both sides of the story: In a unique twist, Raiders let’s you change sides completely and fight alongside the games many enemies and bosses to take down the Raiders instead. As a Raider, you never know when an “Antagonist” will join your game and challenge you and your teammates. Who better to screw up the Raiders game plan than one of their own? Team up alongside other Raiders or switch sides facing them as the lone Antagonist…\nYou can also play the game solo should you wish and discover the deep secret of the broken planet through the eyes of your chosen Raider.\nOnline features require an account and are subject to terms of service and applicable privacy policy (playstationnetwork.com/terms-of-service & playstationnetwork.com/privacy-policy).\n1-5 players\nNetwork Players 2-5 - Full game requires PlayStation®Plus membership to access online multiplayer\n5GB minimum save size\nDUALSHOCK®4\nOnline Play (Optional)\nSoftware subject to license (us.playstation.com/softwarelicense). Online features require an account and are subject to terms of service and applicable privacy policy (playstationnetwork.com/terms-of-service & playstationnetwork.com/privacy-policy).\n©2017. Raiders of the Broken Planet is a trademark of Mercury Steam Entertainment s.l",
+      "releaseYear": 2017,
+      "developer": "Mercury Steam Entertainment",
+      "publisher": null,
+      "keywords": null,
+      "categorySlug": "accion",
+      "genreSlugs": [
+        "disparos",
+        "estrategia",
+        "aventura",
+        "indie"
+      ],
+      "sizeValue": 10,
+      "sizeUnit": "GB",
+      "minimumRequirements": null,
+      "recommendedRequirements": null,
+      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co24pq.jpg",
+      "platformVariants": [
+        {
+          "platformSlug": "pc",
+          "sizeValue": 10,
+          "sizeUnit": "GB",
+          "minimumRequirements": null,
+          "recommendedRequirements": null,
+          "provenance": {
+            "source": "Steam",
+            "ingestedAt": "2026-10-22",
+            "notes": "misma-edicion (mismo juego rebautizado «Spacelords» en Steam)",
+            "sourceUrl": "https://store.steampowered.com/app/436180",
+            "confidence": 0.8
+          }
+        }
+      ]
+    },
+    {
+      "title": "S.T.A.L.K.E.R Call of Pripyat",
+      "slug": "s-t-a-l-k-e-r-call-of-pripyat",
+      "description": "With over 2 million copies sold, the new episode of the most internationally successful S.T.A.L.K.E.R. series seamlessly connects to the first part of the Shadow of Chernobyl.\nS.T.A.L.K.E.R.: Call of Pripyat takes PC gamers once again into the vicinity of the Chernobyl nuclear reactor that exploded in 1986. This so-called \"Zone\" is a highly contaminated area cordoned off by the military and now is combed through by the so-called stalkers, modern fortune hunters, in search of unique artifacts. In the role of Agent Alexander Degtyarev, who is dressed up as stalker, the player has to investigate the mysterious disappearance of five military helicopters and thereby stand one’s ground against the various stalker groups.\nOne of the first DirectX11 games\nStory begins where S.T.A.L.K.E.R.: Shadow of Chernobyl has ended\nPhotorealistic exclusion Zone : All locations are recreated by their true-to-life prototypes based on photographs\nNew exciting storyline with a number of unique characters\nExtended system of handmade side quests\nNew monsters: Chimera and Burer. New behavior and abilities for all monsters\nNew A-Life system, created using the players’ best-liked elements of the first two games in series\nEmissions considerably influence the world of the Zone\nSleep function added into the game\nNew player’s interface\nPossibility to continue the game after completion in a free play mode\nUp to 32 players can compete in the multiplayer part. Four different play modes and a countless amount of maps are available",
+      "releaseYear": 2009,
+      "developer": "GSC Game World",
+      "publisher": "GSC Game World",
+      "keywords": null,
+      "categorySlug": "accion",
+      "genreSlugs": [
+        "disparos",
+        "rol"
+      ],
+      "sizeValue": 10,
+      "sizeUnit": "GB",
+      "minimumRequirements": null,
+      "recommendedRequirements": null,
+      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/coa4r9.jpg",
+      "platformVariants": [
+        {
+          "platformSlug": "pc",
+          "sizeValue": 10,
+          "sizeUnit": "GB",
+          "minimumRequirements": null,
+          "recommendedRequirements": null,
+          "provenance": {
+            "source": "Steam",
+            "ingestedAt": "2026-10-22",
+            "notes": "misma-edicion («Enhanced Edition» nombre exacto)",
+            "sourceUrl": "https://store.steampowered.com/app/2427430",
+            "confidence": 0.8
+          }
+        }
+      ]
+    },
+    {
+      "title": "The Surge The Good the Bad and the Augmented",
+      "slug": "the-surge-the-good-the-bad-and-the-augmented",
+      "description": "Necesita el juego base, The Surge. Accede al corazón de CREO y lucha en las mortíferas cámaras de pruebas del chiflado Dr. Rischboter: ¡parecen sacadas de un retorcido programa del salvaje oeste! Combina hasta 4 de los 16 disparatados modificadores para obtener mejores recompensas y enfréntate a poderosos aspirantes para llevarte 30...",
+      "releaseYear": 2018,
+      "developer": "Deck13",
+      "publisher": "Focus Entertainment",
+      "keywords": "Action, RPG",
+      "categorySlug": "accion",
+      "genreSlugs": [
+        "accion",
+        "rol",
+        "aventura"
+      ],
+      "sizeValue": 15,
+      "sizeUnit": "GB",
+      "minimumRequirements": {
+        "os": "Windows 7/8/10 (64-bit)",
+        "cpu": "AMD FX-8320 (3,5 GHz) / Intel i5-4690K (3,5 GHz)",
+        "gpu": "1 GB, AMD Radeon R7 360 / NVIDIA GeForce GTX 560 Ti",
+        "ram": "8 GB de RAM"
+      },
+      "recommendedRequirements": {
+        "os": "Windows 7/8/10 (64-bit)",
+        "cpu": "AMD FX-8370 (4,0 GHz) / Intel Core i7-3820 (3,6 GHz)",
+        "gpu": "4 GB, AMD Radeon RX 480 / NVIDIA GeForce GTX 970",
+        "ram": "16 GB de RAM"
+      },
+      "coverUrl": "https://cdn.akamai.steamstatic.com/steam/apps/841250/header.jpg",
+      "platformVariants": [
+        {
+          "platformSlug": "pc",
+          "sizeValue": 15,
+          "sizeUnit": "GB",
+          "minimumRequirements": {
+            "os": "Windows 7/8/10 (64-bit)",
+            "cpu": "AMD FX-8320 (3,5 GHz) / Intel i5-4690K (3,5 GHz)",
+            "gpu": "1 GB, AMD Radeon R7 360 / NVIDIA GeForce GTX 560 Ti",
+            "ram": "8 GB de RAM"
+          },
+          "recommendedRequirements": {
+            "os": "Windows 7/8/10 (64-bit)",
+            "cpu": "AMD FX-8370 (4,0 GHz) / Intel Core i7-3820 (3,6 GHz)",
+            "gpu": "4 GB, AMD Radeon RX 480 / NVIDIA GeForce GTX 970",
+            "ram": "16 GB de RAM"
+          },
+          "provenance": {
+            "source": "PCGamingWiki",
+            "ingestedAt": "2026-10-22",
+            "notes": "juego-base (DLC)",
+            "sourceUrl": "https://www.pcgamingwiki.com/wiki/The_Surge",
+            "confidence": 0.8
+          }
+        }
+      ]
+    },
+    {
+      "title": "Far Cry Primal Apex Edition",
+      "slug": "far-cry-primal-apex-edition",
+      "description": "THE DIGITAL APEX EDITION\nTHE DIGITAL APEX EDITION\nALL ADDITIONAL DIGITAL CONTENT FOR FAR CRY PRIMAL:\nLEGEND OF THE MAMMOTH: 3 extra missions.\nDrink from the shaman's cup to play as the largest animal in Oros, the almighty mammoth. Feel your power as you stomp your enemies and defend your herd from other beasts and humans.\nA NEW WEAPON, THE BLOOD SHASTI CLUB: A bloodstained cudgel of bone and teeth wielded by Ull, the vicious leader of the Udam.\n4 ENHANCEMENT PACKS that offers early access to rare resources and unique customization options.THE SABRETOOTH PACK: early access to animal hides for crafting + change a selection of the sabretooth tigers in Oros to the ferocious Flame Fang Sabretooths.THE OWL PACK: early access to resources for crafting + decorate your arms with unique Wenja tribal paint + change the appearance of your owl companion, give him the dark feathers of a raging storm cloud.THE MAMMOTH PACK: early access to an endurance-boosting recipe + change a selection of the mammoths in Oros to the mysterious Ash Back Mammoths.THE BOMB PACK: early access to 2 extra string bags to increase your odds of survival.\nAbout the GameThe award-winning Far Cry franchise that stormed the tropics and the Himalayas now enters the original fight for humanity’s survival with its innovative open-world sandbox gameplay, bringing together massive beasts, breathtaking environments, and unpredictable savage encounters.\nWelcome to the Stone Age, a time of extreme danger and limitless adventure, when giant mammoths and sabretooth tigers ruled the Earth and humanity is at the bottom of the food chain. As the last survivor of your hunting group, you will learn to craft a deadly arsenal, fend off fierce predators, and outsmart enemy tribes to conquer the land of Oros and become the Apex Predator.\nGAME FEATURES",
+      "releaseYear": 2016,
+      "developer": "Ubisoft",
+      "publisher": "Ubisoft Entertainment",
+      "keywords": null,
+      "categorySlug": "accion",
+      "genreSlugs": [
+        "accion",
+        "disparos",
+        "aventura"
+      ],
+      "sizeValue": 20,
+      "sizeUnit": "GB",
+      "minimumRequirements": null,
+      "recommendedRequirements": null,
+      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co233v.jpg",
+      "platformVariants": [
+        {
+          "platformSlug": "pc",
+          "sizeValue": 20,
+          "sizeUnit": "GB",
+          "minimumRequirements": null,
+          "recommendedRequirements": null,
+          "provenance": {
+            "source": "PCGamingWiki",
+            "ingestedAt": "2026-10-22",
+            "notes": "juego-base",
+            "sourceUrl": "https://www.pcgamingwiki.com/wiki/Far_Cry_Primal",
+            "confidence": 0.8
+          }
+        }
+      ]
+    },
+    {
+      "title": "Pathfinder Kingmaker Imperial Edition",
+      "slug": "pathfinder-kingmaker-imperial-edition",
+      "description": "With the help of over 18,000 Kickstarter backers, Narrative Designer Chris Avellone and composer Inon Zur, Owlcat Games is proud to bring you the first isometric computer RPG set in the beloved Pathfinder tabletop universe. Enjoy a classic RPG experience inspired by games like Baldur's Gate, Fallout 1 and 2 and Arcanum. Explore and conquer the Stolen Lands and make them your kingdom!\nBased on our players' feedback and suggestions, this version of the game improves and builds upon the original. This edition includes:\n* numerous gameplay-enriching content additions and dozens of quality-of-life features\n* new abilities and ways to build your character, including a brand-new class\n* new items and weaponry\n* improved balance, especially in the beginning and last two chapters of the game\n* enhanced kingdom management system, both in terms of balance as well as usability and player comfort\n* increased variety of random encounters on the global map\n* thousands of fixes and improvements made since the game's initial release\nExplore the Stolen Lands, a region that has been contested territory for centuries: Hundreds of kingdoms have risen and fallen in these lands, and now it is time for you to make your mark—by building your own kingdom! To do so, you’ll need to survive the harsh wilderness and the threat of rival nations… as well as threats within your own court.\nCustomize your character with a wide range of classes and powers including specialized archetypes, powerful arcane and divine spells, choosing from a multitude of class abilities, skills, and feats. Pathfinder allows players to create heroes (or villains) that fit both their individual gameplay styles and their personalities.\nMeet a diverse cast of companions and NPCs, including iconic characters from the Pathfinder setting itself. You’ll need to decide who to trust and who to watch carefully, as each companion has an agenda, alignment, and goals that may differ from yours.",
+      "releaseYear": 2019,
+      "developer": "Owlcat Games",
+      "publisher": "Deep Silver",
+      "keywords": null,
+      "categorySlug": "rol",
+      "genreSlugs": [
+        "rol"
+      ],
+      "sizeValue": 30,
+      "sizeUnit": "GB",
+      "minimumRequirements": null,
+      "recommendedRequirements": null,
+      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co3t2p.jpg",
+      "platformVariants": [
+        {
+          "platformSlug": "pc",
+          "sizeValue": 30,
+          "sizeUnit": "GB",
+          "minimumRequirements": null,
+          "recommendedRequirements": null,
+          "provenance": {
+            "source": "PCGamingWiki",
+            "ingestedAt": "2026-10-22",
+            "notes": "juego-base",
+            "sourceUrl": "https://www.pcgamingwiki.com/wiki/Pathfinder:_Kingmaker",
+            "confidence": 0.8
+          }
+        }
+      ]
+    },
+    {
+      "title": "Absolver Downfall",
+      "slug": "absolver-downfall",
+      "description": null,
+      "releaseYear": 2018,
+      "developer": null,
+      "publisher": null,
+      "keywords": null,
+      "categorySlug": "accion",
+      "genreSlugs": [
+        "lucha",
+        "hack-and-slash"
+      ],
+      "sizeValue": 11,
+      "sizeUnit": "GB",
+      "minimumRequirements": null,
+      "recommendedRequirements": null,
+      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co7vdz.jpg",
+      "platformVariants": [
+        {
+          "platformSlug": "pc",
+          "sizeValue": 11,
+          "sizeUnit": "GB",
+          "minimumRequirements": null,
+          "recommendedRequirements": null,
+          "provenance": {
+            "source": "PCGamingWiki",
+            "ingestedAt": "2026-10-22",
+            "notes": "juego-base (Downfall = expansión gratis)",
+            "sourceUrl": "https://www.pcgamingwiki.com/wiki/Absolver",
+            "confidence": 0.8
+          }
+        }
+      ]
+    },
+    {
+      "title": "Burnout Paradise The Ultimate Box",
+      "slug": "burnout-paradise-the-ultimate-box",
+      "description": "Burnout Paradise: The Ultimate Box is an extended version of the original Burnout Paradise game. The game offers action racing that sometimes resembles the demolition derby in an open-world setting of Paradise City. The game has a remarkable damage system that improves the whole experience and interrupts monotonous moves across the city, which is free-to-explore for the first time in a series. With The Ultimate Box edition, developers added day/night time cycles and dynamic weather system, so graphics became much better. Changes also affected the gameplay. Now players can race and explore the entire map of the city either by car or by bike that were also added. The racing career begins at the dump, where the driver, controlled by players, gets their first car and two new bikes. Players complete races and fill the “driving license” scale to upgrade the level and to open new cars and events. The free roam mode itself is also an integral part of the gameplay: while traveling across the map drivers are able to perform various stunts and unlock special achievements for the “license” experience.",
+      "releaseYear": 2009,
+      "developer": "Criterion Games",
+      "publisher": "Electronic Arts",
+      "keywords": null,
+      "categorySlug": "carreras",
+      "genreSlugs": [
+        "carreras",
+        "arcade"
+      ],
+      "sizeValue": 4,
+      "sizeUnit": "GB",
+      "minimumRequirements": null,
+      "recommendedRequirements": null,
+      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co28fc.jpg",
+      "platformVariants": [
+        {
+          "platformSlug": "pc",
+          "sizeValue": 4,
+          "sizeUnit": "GB",
+          "minimumRequirements": null,
+          "recommendedRequirements": null,
+          "provenance": {
+            "source": "Steam",
+            "ingestedAt": "2026-10-22",
+            "notes": "misma-edicion (nombre exacto)",
+            "sourceUrl": "https://store.steampowered.com/app/24740",
+            "confidence": 0.8
+          }
+        }
+      ]
+    },
+    {
+      "title": "Dragon Age Inquisition - Deluxe Edition",
+      "slug": "dragon-age-inquisition-deluxe-edition",
+      "description": "You have to revive and lead the Inquisition, which aims to eradicate evil in the land of Thedas. War, intrigue, political strife deprived previously influential groups of Thedas the opportunity to act with the same efficiency. Players will have to respond to this threat, as well as explore a vast world, meet old and new characters and gather strength for the growing Inquisition.\r\n\r\nYou play as an inquisitor, and you can choose for your character: gender, race, voice, name and customise his look. Depending on the selected race, the player will receive specific bonuses and will be offered a choice of three classes: rogue, mage and warrior.\r\n\r\nAs in the previous parts of the series, the player controls not only his character but also a detachment of companions collected by him. In total, the game features nine companions. In battle, the player, as before, can activate a pause, during which the game stops, and at this time you can give orders to teammates. Everything is built on the dialogues between the characters, and they can directly change the ending of the game.",
+      "releaseYear": 2014,
+      "developer": "BioWare, BioWare Edmonton",
+      "publisher": "Electronic Arts",
+      "keywords": null,
+      "categorySlug": "accion",
+      "genreSlugs": [
+        "accion",
+        "rol",
+        "estrategia",
+        "tactico",
+        "aventura"
+      ],
+      "sizeValue": 26,
+      "sizeUnit": "GB",
+      "minimumRequirements": null,
+      "recommendedRequirements": null,
+      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co2mvz.jpg",
+      "platformVariants": [
+        {
+          "platformSlug": "pc",
+          "sizeValue": 26,
+          "sizeUnit": "GB",
+          "minimumRequirements": null,
+          "recommendedRequirements": null,
+          "provenance": {
+            "source": "Steam",
+            "ingestedAt": "2026-10-22",
+            "notes": "juego-base (Deluxe; base DA:I 26 GB)",
+            "sourceUrl": "https://store.steampowered.com/app/1222690",
+            "confidence": 0.8
+          }
+        }
+      ]
+    },
+    {
+      "title": "Skylar and Plux Adventure On Clover Island",
+      "slug": "skylar-and-plux-adventure-on-clover-island",
+      "description": "Are you ready to adventure like it’s 2001? Skylar & Plux: Adventure on Clover Island is a passionate revival of the legendary 3D platformer genre with classic gameplay, playful gadgets, and a lighthearted story set in a gorgeous, colorful world reminiscent of our childhood adventures.\nGo on an action-packed adventure, collect gadgets helping you explore a beautiful paradise and save it from destruction. It’s up to Skylar Lynxe, our nimble and courageous heroine, and Plux Owlsley, the trusty sidekick, to prevent the villainous CRT from conquering their newfound home and turning it into a wasteland.\nTraverse the tropical beaches, volcanic caverns, snowy mountain tops, and merciless desert of Clover Island. Fight an army of CRT’s minions, and find powerful upgrades expanding your abilities. Explore the island with the freedom-boosting Jetpack and uncover its mysterious past with the puzzling Time Orb. Are CRT’s turret bots giving you trouble? Grab their missiles and send them back, turn their gatling fire against them and send his minions flying with the powerful Magnetic Glove!KEY FEATURESWield a powerful mechanical arm and whack robots to your heart's content!\nExpand your moves with gadgets like the Jet Pack, Magnetic Glove and Time Orb!\nExplore every nook and cranny of Clover Island and rescue its natives from CRT's imprisonment!",
+      "releaseYear": 2017,
+      "developer": "Grip Digital, Right Nice Games",
+      "publisher": "Grip Digital",
+      "keywords": null,
+      "categorySlug": "accion",
+      "genreSlugs": [
+        "accion",
+        "aventura",
+        "casual",
+        "indie",
+        "plataformas"
+      ],
+      "sizeValue": 6,
+      "sizeUnit": "GB",
+      "minimumRequirements": null,
+      "recommendedRequirements": null,
+      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co27vz.jpg",
+      "platformVariants": [
+        {
+          "platformSlug": "pc",
+          "sizeValue": 6,
+          "sizeUnit": "GB",
+          "minimumRequirements": null,
+          "recommendedRequirements": null,
+          "provenance": {
+            "source": "Steam",
+            "ingestedAt": "2026-10-22",
+            "notes": "misma-edicion",
+            "sourceUrl": "https://store.steampowered.com/app/452540",
+            "confidence": 0.8
+          }
+        }
+      ]
+    },
+    {
       "title": "Hatred",
       "slug": "hatred",
       "description": "Santuario ha llegado al límite. En Diablo® IV: Lord of Hatred™, la oscura cruzada de Mefisto amenaza el corazón de Santuario. Encarna nuevos héroes, descubre qué fue de los antiguos aliados y forja tu leyenda en el siguiente capítulo de este aclamado RPG de acción.",
@@ -822,6 +2435,150 @@
             "notes": "",
             "sourceUrl": "https://www.pcgamingwiki.com/wiki/Hatred",
             "confidence": 0.9
+          }
+        }
+      ]
+    },
+    {
+      "title": "The Walking Dead Survival Instinct",
+      "slug": "the-walking-dead-survival-instinct",
+      "description": "The Walking Dead: Survival Instinct is a first-person action survival\r\ngame that brings to life the authentic, heart-stopping horrors of the\r\nAMC hit TV series The Walking Dead. In the game, players assume the role\r\nof the mysterious, crossbow-wielding survivor Daryl Dixon, brought to\r\nlife by TV series star Norman Reedus, alongside his overbearing brother\r\nMerle, voiced by series star Michael Rooker.",
+      "releaseYear": 2013,
+      "developer": "Terminal Reality",
+      "publisher": "Activision Blizzard",
+      "keywords": null,
+      "categorySlug": "accion",
+      "genreSlugs": [
+        "accion",
+        "disparos"
+      ],
+      "sizeValue": 9,
+      "sizeUnit": "GB",
+      "minimumRequirements": null,
+      "recommendedRequirements": null,
+      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/coaw9m.jpg",
+      "platformVariants": [
+        {
+          "platformSlug": "pc",
+          "sizeValue": 9,
+          "sizeUnit": "GB",
+          "minimumRequirements": null,
+          "recommendedRequirements": null,
+          "provenance": {
+            "source": "PCGamingWiki",
+            "ingestedAt": "2026-10-22",
+            "notes": "misma-edicion (página resuelta; Steam 262630 = «Tom vs. The Armies of Hell», otro juego)",
+            "sourceUrl": "https://www.pcgamingwiki.com/wiki/The_Walking_Dead:_Survival_Instinct",
+            "confidence": 0.8
+          }
+        }
+      ]
+    },
+    {
+      "title": "Surviving Mars Space Race",
+      "slug": "surviving-mars-space-race",
+      "description": "PLEASE NOTE: Surviving Mars: Space Race Plus will already be included in the Season Pass and First Colony Edition of Surviving Mars.\nSurviving Mars: Space Race Plus includes Marsvision Song Contest and Colony Design Set for the colonizer who appreciates the finer things in life on Mars.\nCitizens unite! The race to stake your place in space has begun. Surviving Mars: Space Race, the first major expansion from the survival management game Surviving Mars, is blasting off with a focus on mission sponsors and rival colonies. Pitting Earth’s greatest countries and most powerful companies against each other, Space Race encourages players to choose their sponsor wisely as each has its own benefits and objectives, and other colonies are competing for the limited resources on the red planet.\nA Challenger Appears: Compete for milestones, already limited resources, and anomalies with several other AI colonies backed by rival sponsors attempting to set roots on Mars and vie to become this planet’s superpower. You can trade with, respond to distress calls for, issue distress calls to, and even steal important colonists from these competitor colonies as you establish your territory on Mars.\nNew Money, New Problems: Meet two new players in the fight for the final frontier. Japan and Brazil are now available as brand new mission sponsors and are ready to move heaven and Mars to make their mark!\nEarth to Mars, repeat, Earth to Mars: No matter how deep in space you go, you gotta follow the money. Each sponsor comes with its own sets of Challenges to complete as you further their individual goals for colonization.\nRepresent the Home Team: Each sponsor has their own unique vehicle and building that only their colonies can construct and take advantage of in their mission. Express the individuality of your space-faring conglomerate inside and out of your domes.",
+      "releaseYear": 2018,
+      "developer": "Haemimont Games",
+      "publisher": "Paradox Interactive",
+      "keywords": null,
+      "categorySlug": "simulacion",
+      "genreSlugs": [
+        "simulacion",
+        "estrategia"
+      ],
+      "sizeValue": 6,
+      "sizeUnit": "GB",
+      "minimumRequirements": null,
+      "recommendedRequirements": null,
+      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co1j8b.jpg",
+      "platformVariants": [
+        {
+          "platformSlug": "pc",
+          "sizeValue": 6,
+          "sizeUnit": "GB",
+          "minimumRequirements": null,
+          "recommendedRequirements": null,
+          "provenance": {
+            "source": "PCGamingWiki",
+            "ingestedAt": "2026-10-22",
+            "notes": "juego-base (usar página original, NO «Relaunched» 10 GB)",
+            "sourceUrl": "https://www.pcgamingwiki.com/wiki/Surviving_Mars",
+            "confidence": 0.8
+          }
+        }
+      ]
+    },
+    {
+      "title": "Hollow Knight Godmaster",
+      "slug": "hollow-knight-godmaster",
+      "description": "Hollow Knight is a Metroidvania-type game developed by an indie studio named Team Cherry.\r\n\r\nMost of the game's story is told through the in-world items, tablets, and thoughts of other characters. Many plot aspects are told to the player indirectly or through the secret areas that provide a bit of lore in addition to an upgrade. At the beginning of the game, the player visits a town of Dirtmouth. A town built above the ruins of Hallownest. The players descend down into the ruins to find some answers to his questions.\r\n\r\nThe game revolves mainly around the exploration of the in-game world, which requires the players to have some platforming skills. The players have to find secrets that are scattered around the level and battle their enemies. There is a certain degree of backtracking in the game as some areas are locked until the player defeats a certain boss or picks up a specific item. Each area changes as the plot advances so it may be surprising to come back in a certain area. \r\n\r\nThe Protagonist uses a nail which serves as a replacement for a sword. Players can attack in four directions. The nail is upgradable.",
+      "releaseYear": 2018,
+      "developer": "Team Cherry",
+      "publisher": "Team Cherry",
+      "keywords": null,
+      "categorySlug": "accion",
+      "genreSlugs": [
+        "accion",
+        "indie",
+        "plataformas",
+        "hack-and-slash",
+        "aventura"
+      ],
+      "sizeValue": 9,
+      "sizeUnit": "GB",
+      "minimumRequirements": null,
+      "recommendedRequirements": null,
+      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co4hc2.jpg",
+      "platformVariants": [
+        {
+          "platformSlug": "pc",
+          "sizeValue": 9,
+          "sizeUnit": "GB",
+          "minimumRequirements": null,
+          "recommendedRequirements": null,
+          "provenance": {
+            "source": "PCGamingWiki",
+            "ingestedAt": "2026-10-22",
+            "notes": "juego-base (Godmaster = DLC; búsqueda daba Silksong — usar página original 9 GB)",
+            "sourceUrl": "https://www.pcgamingwiki.com/wiki/Hollow_Knight",
+            "confidence": 0.8
+          }
+        }
+      ]
+    },
+    {
+      "title": "Krai Mira Extended Cut",
+      "slug": "krai-mira-extended-cut",
+      "description": null,
+      "releaseYear": 2016,
+      "developer": null,
+      "publisher": null,
+      "keywords": null,
+      "categorySlug": "rol",
+      "genreSlugs": [
+        "rol",
+        "aventura",
+        "indie"
+      ],
+      "sizeValue": 1,
+      "sizeUnit": "GB",
+      "minimumRequirements": null,
+      "recommendedRequirements": null,
+      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/coa3tr.jpg",
+      "platformVariants": [
+        {
+          "platformSlug": "pc",
+          "sizeValue": 1,
+          "sizeUnit": "GB",
+          "minimumRequirements": null,
+          "recommendedRequirements": null,
+          "provenance": {
+            "source": "PCGamingWiki",
+            "ingestedAt": "2026-10-22",
+            "notes": "juego-base",
+            "sourceUrl": "https://www.pcgamingwiki.com/wiki/Krai_Mira",
+            "confidence": 0.8
           }
         }
       ]
