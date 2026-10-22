@@ -1,9 +1,13 @@
 # Progress
 
 ## Last Updated
-2026-10-21
+2026-10-22
 
 ## What Works
+- **2026-10-22 (Fase G1: backfill de tamaños del plan de importación):**
+  - `tasks/library-import-backfill.json` = **69 juegos VALIDO** (tamaño 69/69 al 100%, 0 avisos): 24 automáticos del motor de dos pasadas + 45 manuales con URL real (31 PCGamingWiki + 14 Steam, confidence 0.8); solo cambia `sizeValue`/`sizeUnit` + `provenance` (diff interno 0 fuera de tamaños).
+  - Scripts versionados: `scripts/backfill-tamanos.mjs` (motor, dos pasadas, reanudable, 6 tests) y `scripts/construir-backfill-import.mjs` (builder, diff solo-tamaños, manual gana, 4 tests); salidas `tasks/library-import-backfill.json` + `tasks/backfill-tamanos-notas.md` (tabla de revisión + constancia de los 27 sin fuente).
+  - **Importado por él (R5) y verificado en navegador:** dashboard **28 sin tamaño** (97 − 69), biblioteca **996** intacta, Maneater Apex Edition **20 GB** en `/admin/biblioteca`.
 - **2026-10-21 (Fase A del plan de importación del catálogo, herramientas probadas y commiteadas):**
   - Lote 1 = **943 MATCHED nuevos** (978 − 35 ya importados; 0 exclusiones cruzan) volcado en `backend/scripts/lote1-matched.csv` (local).
   - **Muestra de 60** reproducible (semilla 20261021; 40 aleatorios + 20 de riesgo de 151) → `tasks/muestra-60-matched.csv` con enlaces y columna `correcto_SI_NO` (**aún sin revisar**).
@@ -32,12 +36,12 @@
 - Documentación: `Decisiones-Arquitectonicas-v1.md`, `generador-impprtador.md`, `plan-detallado.md` (vigente), `plan.md`, `todo.md`, `dudas.md` §8/§9, memory-bank.
 
 ## In Progress
-- **Fase F cerrada (2026-10-22): los 4 lotes importados — biblioteca = 996** (53 previos + los 943 del lote 1), dashboard **97 sin tamaño** (3+23+12+24+34 + starless-abyss), todo verificado en navegador y «Operativo». El asistente dio un **409** en el lote 3 (`stateFingerprint` cambió entre validar y ejecutar → revalidar y repetir) y la pista **«No hay nada que escribir»** en el lote 4 = reejecución idempotente de un lote ya aplicado (0 escrituras, no es error). **Siguiente:** **Fase G** (completar ~97 sin tamaño, NEEDS_REVIEW/NO_MATCH, duplicados, precios).
+- **Fase G en marcha: G1 (backfill de tamaños) CERRADA el 2026-10-22** — 69/97 recuperados y verificados en navegador (dashboard = 28 sin tamaño = 27 sin fuente + starless-abyss; biblioteca 996). Resto de la Fase G pendiente: NEEDS_REVIEW 646 + NO_MATCH 99, duplicados 18+4+5, precios, RAWG→IGDB de los 9.
 - **Fase 4 sigue en checkpoint:** código 4.1/4.3/4.4 ✅; pendientes demo con revisión humana, 4.5 contract (con bake time) y decisión `publishFromLibrary`.
 
 ## What's Left To Do
 - [x] Fase 1 V2 · [x] Fase 2 V2 · [x] Fase 3 V2 · [x] Fase 4 V2 (4.1–4.4) · [x] **Fase 5** (`library-import@2`, revisar en navegador 2026-10-16) · [x] **6.1** contrato `catalog@2` · [x] **6.2-A** rechazo de `@1` · [x] **6.2-B** importador por plataforma + export `@2` (roundtrip cerrado) · [x] **6.2-C** panel + botón de importar (el usuario importó los 50).
-- [ ] **Plan del catálogo completo (~1.723):** [x] **A** cimientos (lote 1, muestra de 60, constructor/validador genéricos, mapa de géneros) · [x] **B** enriquecimiento (Steam 943 + RAWG 157 + PCGW 130; 768 ES) · [x] **C** imágenes (941/943) · [x] **D** tamaños (847/943) · [x] **JSON lote 1** (`library-import-lote1.json`, **VALIDO 943**, `7acea2f`) · [x] **E** piloto 50 importado y verificado (103 juegos, 2026-10-22) · [x] **F** lotes 2-5 importados (**996** en biblioteca, 97 sin tamaño, 2026-10-22) · [~] **G** NEEDS_REVIEW/NO_MATCH + completar ~97 tamaños + cola.
+- [ ] **Plan del catálogo completo (~1.723):** [x] **A** cimientos (lote 1, muestra de 60, constructor/validador genéricos, mapa de géneros) · [x] **B** enriquecimiento (Steam 943 + RAWG 157 + PCGW 130; 768 ES) · [x] **C** imágenes (941/943) · [x] **D** tamaños (847/943) · [x] **JSON lote 1** (`library-import-lote1.json`, **VALIDO 943**, `7acea2f`) · [x] **E** piloto 50 importado y verificado (103 juegos, 2026-10-22) · [x] **F** lotes 2-5 importados (**996** en biblioteca, 97 sin tamaño, 2026-10-22) · [~] **G** — [x] **G1 backfill tamaños** (69 recuperados + 27 sin fuente con constancia; importado y verificado, 2026-10-22) · [ ] NEEDS_REVIEW 646 + NO_MATCH 99 · [ ] duplicados 18+4+5 · [ ] precios · [ ] RAWG→IGDB 9.
 - [ ] **Fase 7** TenantPlatform + admin global · **8** tenants · **9** §14 + seguridad · **10** regenerar JSON (otra OC, último).
 - [ ] BUG-01.D (decisión) · decisión `publishFromLibrary` · demo/revisión humana de Fase 4.
 
