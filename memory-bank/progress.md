@@ -32,12 +32,12 @@
 - Documentación: `Decisiones-Arquitectonicas-v1.md`, `generador-impprtador.md`, `plan-detallado.md` (vigente), `plan.md`, `todo.md`, `dudas.md` §8/§9, memory-bank.
 
 ## In Progress
-- **Lote 1 listo para importar (2026-10-21):** `tasks/library-import-lote1.json` (**943, VALIDO**, `7acea2f`) con Steam (772 appid / 714 tamaños) + RAWG (157 sin-Steam) + PCGW (130 tamaños); cobertura 941 portadas · 847 tamaños · 931 descripciones · 764 requisitos. **Siguiente en cadena:** su revisión de `tasks/muestra-60-matched.csv` → piloto de 50 → lotes F (4×~236).
+- **Lote 1 y piloto listos para importar (2026-10-22):** `tasks/library-import-lote1.json` (**943, VALIDO**, `7acea2f`) + `tasks/library-import-piloto50.json` (**50, VALIDO**, `7542c8e`, semilla 20261022, portada 50/50 y tamaño 47/50) con Steam (772 appid / 714 tamaños) + RAWG (157) + PCGW (130). **Siguiente en cadena:** él importa el piloto → verificar en navegador → lotes F (4×~236). Muestra de 60 aprobada verbalmente y decisiones `estrategia`/reimport-50 cerradas el 2026-10-22.
 - **Fase 4 sigue en checkpoint:** código 4.1/4.3/4.4 ✅; pendientes demo con revisión humana, 4.5 contract (con bake time) y decisión `publishFromLibrary`.
 
 ## What's Left To Do
 - [x] Fase 1 V2 · [x] Fase 2 V2 · [x] Fase 3 V2 · [x] Fase 4 V2 (4.1–4.4) · [x] **Fase 5** (`library-import@2`, revisar en navegador 2026-10-16) · [x] **6.1** contrato `catalog@2` · [x] **6.2-A** rechazo de `@1` · [x] **6.2-B** importador por plataforma + export `@2` (roundtrip cerrado) · [x] **6.2-C** panel + botón de importar (el usuario importó los 50).
-- [ ] **Plan del catálogo completo (~1.723):** [x] **A** cimientos (lote 1, muestra de 60, constructor/validador genéricos, mapa de géneros) · [x] **B** enriquecimiento (Steam 943 + RAWG 157 + PCGW 130; 768 ES) · [x] **C** imágenes (941/943) · [x] **D** tamaños (847/943) · [x] **JSON lote 1** (`tasks/library-import-lote1.json`, **VALIDO 943**, `7acea2f`) · [ ] **E** piloto 50 (tras su muestra de 60) · [ ] **F** lotes grandes (4×~236) · [ ] **G** NEEDS_REVIEW/NO_MATCH + cola.
+- [ ] **Plan del catálogo completo (~1.723):** [x] **A** cimientos (lote 1, muestra de 60, constructor/validador genéricos, mapa de géneros) · [x] **B** enriquecimiento (Steam 943 + RAWG 157 + PCGW 130; 768 ES) · [x] **C** imágenes (941/943) · [x] **D** tamaños (847/943) · [x] **JSON lote 1** (`tasks/library-import-lote1.json`, **VALIDO 943**, `7acea2f`) · [~] **E** piloto 50 listo y **VALIDO** (`7542c8e`, semilla 20261022; muestra aprobada verbal 2026-10-22) — **él importa** · [ ] **F** lotes grandes (4×~236) · [ ] **G** NEEDS_REVIEW/NO_MATCH + cola.
 - [ ] **Fase 7** TenantPlatform + admin global · **8** tenants · **9** §14 + seguridad · **10** regenerar JSON (otra OC, último).
 - [ ] BUG-01.D (decisión) · decisión `publishFromLibrary` · demo/revisión humana de Fase 4.
 
