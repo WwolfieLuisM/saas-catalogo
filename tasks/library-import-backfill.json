@@ -1,0 +1,865 @@
+{
+  "schema": "library-import@2",
+  "generatedAt": "2026-10-22T10:57:42.073Z",
+  "source": "Fase G1 backfill de tamaños",
+  "games": [
+    {
+      "title": "Sword Art Online Hollow Realization Deluxe Edition",
+      "slug": "sword-art-online-hollow-realization-deluxe-edition",
+      "description": "In addition to the game, get the season pass and its bonuses (3 special costumes including a wedding dress)!\n2026, Sword Art: Origin, a new VRMMORPG has emerged. Kirito meets a mysterious NPC and receives a cryptic message. This game, though familiar to him, is not the same as the one he escaped years ago…\nORIGINAL STORYTELLING supervised by Reki Kawahara, creator of Sword Art Online.\nMASSIVE EXPANSIVE WORLD with a stronger sense of adventure.\nMULTIPLAYER MODE to enjoy the game with 3 other players.\nFEELS LIKE ITS MMORPG ORIGINS thanks to MMORPG-like interface, 16-character teams and fierce raid Boss battles.",
+      "releaseYear": 2016,
+      "developer": "AQURIA",
+      "publisher": "Bandai Namco Entertainment",
+      "keywords": null,
+      "categorySlug": "accion",
+      "genreSlugs": [
+        "accion",
+        "aventura",
+        "rol",
+        "casual"
+      ],
+      "sizeValue": 40,
+      "sizeUnit": "GB",
+      "minimumRequirements": null,
+      "recommendedRequirements": null,
+      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co20rt.jpg",
+      "platformVariants": [
+        {
+          "platformSlug": "pc",
+          "sizeValue": 40,
+          "sizeUnit": "GB",
+          "minimumRequirements": null,
+          "recommendedRequirements": null,
+          "provenance": {
+            "source": "Steam",
+            "ingestedAt": "2026-10-22",
+            "notes": "",
+            "sourceUrl": "https://store.steampowered.com/app/607890",
+            "confidence": 0.9
+          }
+        }
+      ]
+    },
+    {
+      "title": "Strange Brigade Deluxe Edition",
+      "slug": "strange-brigade-deluxe-edition",
+      "description": "There are remote corners of the British Empire where the shadows linger at their deepest. The servants of The Crown know about these places and the supernatural beings that sometimes lurk there.\nIntroducing the fearless and unflinching STRANGE BRIGADE!\nEmbark on an exotic safari into DANGER where few dare go and fewer return! Encounter FANTASTIC and forgotten civilizations shrouded in MYSTERY! Uncover TREACHEROUS tombs and unfathomable EVIL, never-before-seen by any human now living!\nThis pulse-pounding adventure will rivet you to your game controller!\nDon’t fail to play: STRANGE BRIGADE!\nFOUR FEARLESS ADVENTURERS!\nExplore the ancient world as one of four dashing explorers, each with their own special powers, weapons and tactics.\nA THRILLING 1930’s CAMPAIGN!\nExperience a rip-roaring new adventure for 1-4 players filled with pulse-pounding action, treacherous traps and tales of derring-do!\nLEGIONS OF BEASTIES!\nFight-back-to-back against an army of mythological menaces unleashed by an ancient Egyptian ruler so nefarious she was wiped from the hieroglyphs: Seteki the Witch Queen!\nHIDDEN TREASURES!\nStay on the lookout for secret caves and buried riches. Get off the beaten track and keep those peepers peeled … what with all those dastardly traps about!",
+      "releaseYear": 2018,
+      "developer": "Rebellion",
+      "publisher": "Rebellion",
+      "keywords": null,
+      "categorySlug": "accion",
+      "genreSlugs": [
+        "accion",
+        "aventura",
+        "puzzle"
+      ],
+      "sizeValue": 35,
+      "sizeUnit": "GB",
+      "minimumRequirements": null,
+      "recommendedRequirements": null,
+      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co4pe5.jpg",
+      "platformVariants": [
+        {
+          "platformSlug": "pc",
+          "sizeValue": 35,
+          "sizeUnit": "GB",
+          "minimumRequirements": null,
+          "recommendedRequirements": null,
+          "provenance": {
+            "source": "PCGamingWiki",
+            "ingestedAt": "2026-10-22",
+            "notes": "tamaño publicado en la edición base «Strange Brigade»",
+            "sourceUrl": "https://www.pcgamingwiki.com/wiki/Strange_Brigade",
+            "confidence": 0.6
+          }
+        }
+      ]
+    },
+    {
+      "title": "Outlast 2",
+      "slug": "outlast-2",
+      "description": "Outlast 2 is a first-person survival horror game developed by Red Barrels. While continuing the ideas of the first Outlast, the game's story does not continue the plot of the first title in the series. \n###Plot\nBlake and his wife Lynn are journalists that investigate a case involving the murder of a pregnant woman. The set out to visit the crime scene in the remote Arizona village by a helicopter that breaks down mid-air and crashes. Blake has to find his wife and figure out what is going on in the village.\n###Gameplay\nAs the first game in the series and it's expansion pack, Outlast 2 is a single-player survival horror experience. The main protagonist is unable to fight his enemies, so stealth is used to avoid confrontation. Unlike the previous titles, Outlast 2 features a stamina bar and new additions to the movement system, such as sliding and going prone. \nBlake has a camera with him at all times. This camera is used for activating night vision, eavesdropping to distant conversations with its microphone. The camera requires batteries for it to work, so the players have to look for them on the levels. \nThere is no automatic health regeneration present in the game. So when the player suffers some damage, they need to find a medkit in order to restore their agility and health.",
+      "releaseYear": 2017,
+      "developer": "Red Barrels",
+      "publisher": "Red Barrels",
+      "keywords": null,
+      "categorySlug": "accion",
+      "genreSlugs": [
+        "accion",
+        "aventura",
+        "indie"
+      ],
+      "sizeValue": 30,
+      "sizeUnit": "GB",
+      "minimumRequirements": null,
+      "recommendedRequirements": null,
+      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co20x8.jpg",
+      "platformVariants": [
+        {
+          "platformSlug": "pc",
+          "sizeValue": 30,
+          "sizeUnit": "GB",
+          "minimumRequirements": null,
+          "recommendedRequirements": null,
+          "provenance": {
+            "source": "Steam",
+            "ingestedAt": "2026-10-22",
+            "notes": "",
+            "sourceUrl": "https://store.steampowered.com/app/414700",
+            "confidence": 0.9
+          }
+        }
+      ]
+    },
+    {
+      "title": "Age of Empires III Complete Collection",
+      "slug": "age-of-empires-iii-complete-collection",
+      "description": "Age of Empires 3 Complete Collection is a real-time strategy, a sequel to Age of Empires II: The Age of Kings. It includes the original game and two expansions: The Warchiefs and The Asian Dynasties, that add new playable civilizations.\nLike in previous titles in the series, in Age of Empires 3 you choose and develop a civilization through ages. To progress you gather and manage resources, explore the world, upgrade the technology and units. The series’ new feature is the Home City, a separate powerhouse that provides additional options for your development, including unique upgrades you can use during the match. The goal of the game is to overcome AI or online opponents.\nAge of Empires 3 features a political system. With each new age you choose politicians you want to support. They give you a certain bonus, for example, extra supplies or military units.\nBesides a free mode, the game has a campaign divided into three acts. Instead of step-by-step development you take control of a civilization at the set time period and complete tasks.",
+      "releaseYear": 2012,
+      "developer": "Ensemble Studios",
+      "publisher": "Microsoft Studios",
+      "keywords": null,
+      "categorySlug": "simulacion",
+      "genreSlugs": [
+        "estrategia",
+        "simulacion",
+        "estrategia-en-tiempo-real"
+      ],
+      "sizeValue": 42,
+      "sizeUnit": "GB",
+      "minimumRequirements": null,
+      "recommendedRequirements": null,
+      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co1s8r.jpg",
+      "platformVariants": [
+        {
+          "platformSlug": "pc",
+          "sizeValue": 42,
+          "sizeUnit": "GB",
+          "minimumRequirements": null,
+          "recommendedRequirements": null,
+          "provenance": {
+            "source": "Steam",
+            "ingestedAt": "2026-10-22",
+            "notes": "tamaño publicado en la edición base «Age of Empires III: Definitive Edition»",
+            "sourceUrl": "https://store.steampowered.com/app/933110",
+            "confidence": 0.6
+          }
+        }
+      ]
+    },
+    {
+      "title": "Sniper Elite 4 Deluxe Edition",
+      "slug": "sniper-elite-4-deluxe-edition",
+      "description": "\"Sniper Elite 4 is a smart, strategic shooter that empowers you to make your own path\"\nIGN, 8.3/10 \"A riotously entertaining WW2 stealth adventure\"\nEurogamer, Recommended \"An ambitious stealth game that handily outperforms its predecessors\"\nPC World, 4/5\nDiscover unrivalled sniping freedom in the largest and most advanced World War 2 shooter ever built. Experience tactical third-person combat, gameplay choice and epic longshots across gigantic levels as you liberate wartime Italy from the grip of Fascism.\nSet in the aftermath of its award-winning predecessor, Sniper Elite 4 transports players across the beautiful Italian peninsula, from sun-drenched Mediterranean coastal towns, to ancient forests, mountain valleys and colossal Nazi megastructures.\nCovert agent and elite marksman Karl Fairburne must fight alongside the brave men and women of the Italian Resistance and defeat a terrifying new threat with the potential to halt the Allied fightback in Europe before it’s even begun.EXPANSIVE CAMPAIGNEncounter hours of gripping gameplay in huge campaign levels with hundreds of enemies, vehicles and high-ranking Nazi officers to hunt. Forge your own path to your objectives, uncover new sniper nests, find secret side missions, collectibles and more!AWARD-WINNING SNIPINGExperience genre-defining rifle ballistics where snipers must take account of wind, gravity and heart rate to land satisfying shots over hundreds of meters.EXTENSIVE ARSENALAdapt seamlessly to any combat situation with an impressive array of iconic World War 2 sniper rifles, pistols, submachine guns, heavy weapons, traps, grenades and explosives.DEEP CUSTOMISATIONHone your combat effectiveness by upgrading skills and tweaking key weapon traits such as scope magnification, muzzle velocity and stability.",
+      "releaseYear": 2017,
+      "developer": "Rebellion",
+      "publisher": "Rebellion",
+      "keywords": null,
+      "categorySlug": "accion",
+      "genreSlugs": [
+        "accion",
+        "disparos",
+        "aventura",
+        "tactico"
+      ],
+      "sizeValue": 55,
+      "sizeUnit": "GB",
+      "minimumRequirements": null,
+      "recommendedRequirements": null,
+      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/cockq0.jpg",
+      "platformVariants": [
+        {
+          "platformSlug": "pc",
+          "sizeValue": 55,
+          "sizeUnit": "GB",
+          "minimumRequirements": null,
+          "recommendedRequirements": null,
+          "provenance": {
+            "source": "PCGamingWiki",
+            "ingestedAt": "2026-10-22",
+            "notes": "tamaño publicado en la edición base «Sniper Elite 4»",
+            "sourceUrl": "https://www.pcgamingwiki.com/wiki/Sniper_Elite_4",
+            "confidence": 0.6
+          }
+        }
+      ]
+    },
+    {
+      "title": "Wo Long Fallen Dynasty Deluxe Edition",
+      "slug": "wo-long-fallen-dynasty-deluxe-edition",
+      "description": "Wo Long: Fallen Dynasty follows the dramatic, action-packed story of a nameless militia soldier fighting for survival in a dark fantasy version of the Later Han Dynasty where demons plague the Three Kingdoms. \nPlayers fight off deadly creatures and enemy soldiers using swordplay based on the Chinese martial arts, attempting to overcome the odds by awakening the true power from within.",
+      "releaseYear": 2023,
+      "developer": "Team NINJA, KOEI TECMO GAMES CO",
+      "publisher": "Koei Tecmo Games",
+      "keywords": null,
+      "categorySlug": "accion",
+      "genreSlugs": [
+        "accion",
+        "rol",
+        "aventura"
+      ],
+      "sizeValue": 60,
+      "sizeUnit": "GB",
+      "minimumRequirements": null,
+      "recommendedRequirements": null,
+      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co68xh.jpg",
+      "platformVariants": [
+        {
+          "platformSlug": "pc",
+          "sizeValue": 60,
+          "sizeUnit": "GB",
+          "minimumRequirements": null,
+          "recommendedRequirements": null,
+          "provenance": {
+            "source": "PCGamingWiki",
+            "ingestedAt": "2026-10-22",
+            "notes": "tamaño publicado en la edición base «Wo Long: Fallen Dynasty»",
+            "sourceUrl": "https://www.pcgamingwiki.com/wiki/Wo_Long%3A_Fallen_Dynasty",
+            "confidence": 0.6
+          }
+        }
+      ]
+    },
+    {
+      "title": "Alien Isolation Collection",
+      "slug": "alien-isolation-collection",
+      "description": "Winner of over 50 Game Of The Year awards.\nContains the full game and seven packs of additional content:\n- Last Survivor and Crew Expendable (featuring the original AlienTM cast)\n- All five Survivor mode packs, including Corporate Lockdown, Trauma, Safe Haven, Lost Contact and The Trigger\nCreated using the CATHODE (TM) engine.\nDiscover the true meaning of fear in Alien: Isolation, a survival horror set in an atmosphere of constant dread and mortal danger. Fifteen years after the events of Alien™, Ellen Ripley’s daughter, Amanda enters a desperate battle for survival, on a mission to unravel the truth behind her mother's disappearance.\nAs Amanda, you will navigate through an increasingly volatile world as you find yourself confronted on all sides by a panicked, desperate population and an unpredictable, ruthless Alien.\nUnderpowered and underprepared, you must scavenge resources, improvise solutions and use your wits, not just to succeed in your mission, but to simply stay alive.\n1 player\n1080i\nSoftware subject to license (us.playstation.com/softwarelicense). Online activity subject to Terms of Services and User Agreement (www.playstationnetwork.com/terms-of-service). One-time license fee for play on account’s designated primary PS4™ system and other PS4™ systems when signed in with that account.\nAlien: Isolation, Alien, Aliens, Alien 3 TM & © 2014 Twentieth Century Fox Film Corporation.\nAll rights reserved. Twentieth Century Fox, Alien, Aliens, Alien 3 and their associated logos are registered trademarks or trademarks of Twentieth Century Fox Film Corporation. Alien: Isolation game software, excluding Twentieth Century Fox elements © SEGA. Developed by The Creative Assembly Limited. Creative Assembly and the Creative Assembly logo are either registered trademarks or trademarks of The Creative Assembly Limited. SEGA and the SEGA logo are either registered trademarks or trademarks of SEGA Corporation. All rights reserved.",
+      "releaseYear": 2015,
+      "developer": "Feral Interactive, SEGA, Creative Assembly",
+      "publisher": "SEGA, Feral Interactive",
+      "keywords": null,
+      "categorySlug": "accion",
+      "genreSlugs": [
+        "accion",
+        "aventura"
+      ],
+      "sizeValue": 35,
+      "sizeUnit": "GB",
+      "minimumRequirements": null,
+      "recommendedRequirements": null,
+      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co8i6f.jpg",
+      "platformVariants": [
+        {
+          "platformSlug": "pc",
+          "sizeValue": 35,
+          "sizeUnit": "GB",
+          "minimumRequirements": null,
+          "recommendedRequirements": null,
+          "provenance": {
+            "source": "PCGamingWiki",
+            "ingestedAt": "2026-10-22",
+            "notes": "tamaño publicado en la edición base «Alien: Isolation»",
+            "sourceUrl": "https://www.pcgamingwiki.com/wiki/Alien%3A_Isolation",
+            "confidence": 0.6
+          }
+        }
+      ]
+    },
+    {
+      "title": "Max Payne 3 Complete Edition",
+      "slug": "max-payne-3-complete-edition",
+      "description": "Max Payne 3: The Complete Edition is a shooter game developed by Rockstar Games. It was originally released in 2013. Rockstar Games published the game. Most rawgers rated the game as \"Recommended\". \nYou can play Max Payne 3: The Complete Edition on PC, PlayStation 3 and Xbox 360.",
+      "releaseYear": 2012,
+      "developer": "Rockstar Games",
+      "publisher": "Rockstar Games",
+      "keywords": null,
+      "categorySlug": "accion",
+      "genreSlugs": [
+        "disparos",
+        "aventura"
+      ],
+      "sizeValue": 35,
+      "sizeUnit": "GB",
+      "minimumRequirements": null,
+      "recommendedRequirements": null,
+      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co2mju.jpg",
+      "platformVariants": [
+        {
+          "platformSlug": "pc",
+          "sizeValue": 35,
+          "sizeUnit": "GB",
+          "minimumRequirements": null,
+          "recommendedRequirements": null,
+          "provenance": {
+            "source": "PCGamingWiki",
+            "ingestedAt": "2026-10-22",
+            "notes": "tamaño publicado en la edición base «Max Payne 3»",
+            "sourceUrl": "https://www.pcgamingwiki.com/wiki/Max_Payne_3",
+            "confidence": 0.6
+          }
+        }
+      ]
+    },
+    {
+      "title": "Sea Dogs To Each His Own Flying the Jolly Roger",
+      "slug": "sea-dogs-to-each-his-own-flying-the-jolly-roger",
+      "description": "1654 AC. The Caribbean. A place of opportunities and mysteries. Take a role of Charles de Maure - a young French noble who arrived to the New World to assist his brother. What seemed to be a simple family matter, turned into a lifelong adventure. This is a story of the noble idler who became the most powerful man of the Caribbean. Riches, titles, power, romance - the ultimate booty awaits, it is up to you how to get it all. Become a pirate and terrorize the archipelago, take prizes in the sea and plunder cities. Or try to keep hands mostly clean - trade both goods and information, work for the state and help the folk. Get a ship, arm yourself, gather a crew of your dream and find love. The New World is way too vast, too dangerous to explore it alone and there are always consequences for the choices you make!\nKey Features:\n- Naval warfare, both challenging and rewarding\n- Self-reliant and replayable story mode (over 70 hours of gameplay)\n- Remastered in-game art and improved visuals (textures, models etc.)\n- Challenging AI, crafting, trading, fighting, gambling\n- Freeplay mode, endless as an ocean\n- Hundreds of items and weapons",
+      "releaseYear": 2016,
+      "developer": "BlackMark Studio",
+      "publisher": "Akella",
+      "keywords": null,
+      "categorySlug": "rol",
+      "genreSlugs": [
+        "rol"
+      ],
+      "sizeValue": 12,
+      "sizeUnit": "GB",
+      "minimumRequirements": null,
+      "recommendedRequirements": null,
+      "coverUrl": null,
+      "platformVariants": [
+        {
+          "platformSlug": "pc",
+          "sizeValue": 12,
+          "sizeUnit": "GB",
+          "minimumRequirements": null,
+          "recommendedRequirements": null,
+          "provenance": {
+            "source": "Steam",
+            "ingestedAt": "2026-10-22",
+            "notes": "",
+            "sourceUrl": "https://store.steampowered.com/app/452521",
+            "confidence": 0.9
+          }
+        }
+      ]
+    },
+    {
+      "title": "Wargame Red Dragon Nation Pack Israel",
+      "slug": "wargame-red-dragon-nation-pack-israel",
+      "description": null,
+      "releaseYear": 2016,
+      "developer": null,
+      "publisher": null,
+      "keywords": null,
+      "categorySlug": "simulacion",
+      "genreSlugs": [
+        "simulacion",
+        "estrategia"
+      ],
+      "sizeValue": 20,
+      "sizeUnit": "GB",
+      "minimumRequirements": null,
+      "recommendedRequirements": null,
+      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co5t6a.jpg",
+      "platformVariants": [
+        {
+          "platformSlug": "pc",
+          "sizeValue": 20,
+          "sizeUnit": "GB",
+          "minimumRequirements": null,
+          "recommendedRequirements": null,
+          "provenance": {
+            "source": "Steam",
+            "ingestedAt": "2026-10-22",
+            "notes": "",
+            "sourceUrl": "https://store.steampowered.com/app/529390",
+            "confidence": 0.9
+          }
+        }
+      ]
+    },
+    {
+      "title": "Blasphemous 2",
+      "slug": "blasphemous-2",
+      "description": null,
+      "releaseYear": 2023,
+      "developer": null,
+      "publisher": null,
+      "keywords": null,
+      "categorySlug": "aventura",
+      "genreSlugs": [
+        "plataformas",
+        "rol",
+        "hack-and-slash",
+        "aventura",
+        "indie"
+      ],
+      "sizeValue": 4,
+      "sizeUnit": "GB",
+      "minimumRequirements": null,
+      "recommendedRequirements": null,
+      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co6ej3.jpg",
+      "platformVariants": [
+        {
+          "platformSlug": "pc",
+          "sizeValue": 4,
+          "sizeUnit": "GB",
+          "minimumRequirements": null,
+          "recommendedRequirements": null,
+          "provenance": {
+            "source": "Steam",
+            "ingestedAt": "2026-10-22",
+            "notes": "",
+            "sourceUrl": "https://store.steampowered.com/app/2114740",
+            "confidence": 0.9
+          }
+        }
+      ]
+    },
+    {
+      "title": "Crusader Kings III Royal Edition",
+      "slug": "crusader-kings-iii-royal-edition",
+      "description": "The Dark Ages might be drawing to a close, but Europe is still in turmoil. Petty lords vie against beleaguered kings who struggle to assert control over their fragmented realms. The Pope calls for a Crusade to protect the Christians in the Holy Land even as he refuses to relinquish control over the investiture of bishops - and their riches. Now is the time for greatness. Expand your demesne and secure the future of your dynasty. Fill your coffers, appoint vassals, root out traitors and heretics, introduce laws and interact with hundreds of nobles, each with their own agenda.\nA good lord will always need friends to support him. But beware, as loyal vassals can quickly turn to bitter rivals, and some might not be as reliable as they seem... Stand ready, and increase your prestige until the world whispers your name in awe. Do you have what it takes to become a Crusader King?\nCrusader Kings II explores one of the defining periods in world history in an experience crafted by the masters of Grand Strategy. Medieval Europe is brought to life in this epic game of knights, schemes, and thrones...\nSystem requirements, bonus goodies, and features may vary between games - please check individual product pages for details.",
+      "releaseYear": 2022,
+      "developer": "Paradox Development Studio",
+      "publisher": "Paradox Interactive",
+      "keywords": null,
+      "categorySlug": "otros",
+      "genreSlugs": [
+        "estrategia"
+      ],
+      "sizeValue": 8,
+      "sizeUnit": "GB",
+      "minimumRequirements": null,
+      "recommendedRequirements": null,
+      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co9i63.jpg",
+      "platformVariants": [
+        {
+          "platformSlug": "pc",
+          "sizeValue": 8,
+          "sizeUnit": "GB",
+          "minimumRequirements": null,
+          "recommendedRequirements": null,
+          "provenance": {
+            "source": "Steam",
+            "ingestedAt": "2026-10-22",
+            "notes": "tamaño publicado en la edición base «Crusader Kings III: Royal Court»",
+            "sourceUrl": "https://store.steampowered.com/app/1303182",
+            "confidence": 0.6
+          }
+        }
+      ]
+    },
+    {
+      "title": "DiRT 3 Complete Edition",
+      "slug": "dirt-3-complete-edition",
+      "description": "DiRT 3 is a racing simulator that differs from its rivals because of unusual races and a huge variety of cars that includes modern sports models along with retro cars. Instead of fancy stadiums, the game offers you to drive through snowy landscapes of Finland and dirty roads of London's suburbs. In the career mode, you need to compete with other racers to gain the interest of sponsors. The higher your rank becomes, the more cars become available.  \nWhile DiRT 3 and the series in general is famous for its responsive controls and simple physics that make these games easy to master for newcomers, DiRT 3 features a quite challenging new mode - gymkhana. In this mode, you need to perform different tricks in a limited time period, such as drifting, jumping or spinning around. Gymkhana rounds are unskippable to progress in the career mode. Another key feature that highlights DiRT 3 is flashbacks - the mechanics that allows turning back time if you made a mistake during the race and driving a certain piece of the track again.",
+      "releaseYear": 2012,
+      "developer": "Codemasters",
+      "publisher": "Codemasters",
+      "keywords": null,
+      "categorySlug": "deportes",
+      "genreSlugs": [
+        "deportes",
+        "carreras",
+        "arcade"
+      ],
+      "sizeValue": 2,
+      "sizeUnit": "GB",
+      "minimumRequirements": null,
+      "recommendedRequirements": null,
+      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co2f5z.jpg",
+      "platformVariants": [
+        {
+          "platformSlug": "pc",
+          "sizeValue": 2,
+          "sizeUnit": "GB",
+          "minimumRequirements": null,
+          "recommendedRequirements": null,
+          "provenance": {
+            "source": "Steam",
+            "ingestedAt": "2026-10-22",
+            "notes": "tamaño publicado en la edición base «VRC PRO Dirt pack (3)»",
+            "sourceUrl": "https://store.steampowered.com/app/678736",
+            "confidence": 0.6
+          }
+        }
+      ]
+    },
+    {
+      "title": "Deus Ex Mankind Divided A Criminal Past",
+      "slug": "deus-ex-mankind-divided-a-criminal-past",
+      "description": null,
+      "releaseYear": 2017,
+      "developer": null,
+      "publisher": null,
+      "keywords": null,
+      "categorySlug": "rol",
+      "genreSlugs": [
+        "rol"
+      ],
+      "sizeValue": 45,
+      "sizeUnit": "GB",
+      "minimumRequirements": null,
+      "recommendedRequirements": null,
+      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co25kw.jpg",
+      "platformVariants": [
+        {
+          "platformSlug": "pc",
+          "sizeValue": 45,
+          "sizeUnit": "GB",
+          "minimumRequirements": null,
+          "recommendedRequirements": null,
+          "provenance": {
+            "source": "Steam",
+            "ingestedAt": "2026-10-22",
+            "notes": "",
+            "sourceUrl": "https://store.steampowered.com/app/413370",
+            "confidence": 0.9
+          }
+        }
+      ]
+    },
+    {
+      "title": "GRID Ultimate Edition",
+      "slug": "grid-ultimate-edition",
+      "description": "Take your place in the GRID World Series and fight in thrilling wheel-to-wheel battles with the most iconic and desirable race cars – current and classic, from GT through Touring and Muscle to Stock and Super Modifieds – and in some of the world’s most iconic locations. GRID captures every moment of the race, from the adrenaline rush of lights-out to the elation at the chequered flag – and in-between, it’s all action too.\r\n\r\nIncidents come one right after the other – tight overtakes, bumper-to bumper scrapes and competitive collisions – all heightened by rivalries, team-mates and a nemesis driver who will all either try to help or hinder your progress.",
+      "releaseYear": 2019,
+      "developer": "Codemasters",
+      "publisher": "Codemasters",
+      "keywords": null,
+      "categorySlug": "accion",
+      "genreSlugs": [
+        "accion",
+        "deportes",
+        "carreras",
+        "arcade",
+        "casual"
+      ],
+      "sizeValue": 28,
+      "sizeUnit": "GB",
+      "minimumRequirements": null,
+      "recommendedRequirements": null,
+      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co2cqu.jpg",
+      "platformVariants": [
+        {
+          "platformSlug": "pc",
+          "sizeValue": 28,
+          "sizeUnit": "GB",
+          "minimumRequirements": null,
+          "recommendedRequirements": null,
+          "provenance": {
+            "source": "Steam",
+            "ingestedAt": "2026-10-22",
+            "notes": "tamaño publicado en la edición base «Off The Grid»",
+            "sourceUrl": "https://store.steampowered.com/app/3659280",
+            "confidence": 0.6
+          }
+        }
+      ]
+    },
+    {
+      "title": "Wild Hearts Karakuri Edition",
+      "slug": "wild-hearts-karakuri-edition",
+      "description": "Master ancient tech to hunt down giant beasts. WILD HEARTS™ is a unique twist on the hunting genre where technology gives you a fighting chance against fearsome beasts infused with the ferocious power of nature itself. Take on these creatures alone or hunt with friends in seamless co-op.",
+      "releaseYear": 2023,
+      "developer": "Omega Force, KOEI TECMO GAMES CO",
+      "publisher": "Electronic Arts, EA Originals",
+      "keywords": null,
+      "categorySlug": "accion",
+      "genreSlugs": [
+        "accion",
+        "aventura"
+      ],
+      "sizeValue": 80,
+      "sizeUnit": "GB",
+      "minimumRequirements": null,
+      "recommendedRequirements": null,
+      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co5zmt.jpg",
+      "platformVariants": [
+        {
+          "platformSlug": "pc",
+          "sizeValue": 80,
+          "sizeUnit": "GB",
+          "minimumRequirements": null,
+          "recommendedRequirements": null,
+          "provenance": {
+            "source": "Steam",
+            "ingestedAt": "2026-10-22",
+            "notes": "tamaño publicado en la edición base «WILD HEARTS™ Karakuri Upgrade»",
+            "sourceUrl": "https://store.steampowered.com/app/2092830",
+            "confidence": 0.6
+          }
+        }
+      ]
+    },
+    {
+      "title": "R.B.I Baseball",
+      "slug": "r-b-i-baseball",
+      "description": "PLAY YOUR WAY. Create a legacy and make a statement. The world of MLB awaits in R.B.I. Baseball 21. R.B.I. is the fast-paced, easy-to-learn baseball franchise perfect for anyone who wants to pick up and play, and R.B.I. Baseball 21 brings new features including create-a-player, play-by-play commentary, immersive time-of-day, and incredible visual improvements. Step up to the plate, crush home runs, and take your club to a World Series title in R.B.I. Baseball 21.",
+      "releaseYear": 2021,
+      "developer": "MLB, MLB Advanced Media, L.P.",
+      "publisher": "Major League Baseball Advanced Media, MLB Advanced Media, MLB",
+      "keywords": null,
+      "categorySlug": "simulacion",
+      "genreSlugs": [
+        "simulacion",
+        "deportes",
+        "arcade"
+      ],
+      "sizeValue": 5,
+      "sizeUnit": "GB",
+      "minimumRequirements": null,
+      "recommendedRequirements": null,
+      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co2oz9.jpg",
+      "platformVariants": [
+        {
+          "platformSlug": "pc",
+          "sizeValue": 5,
+          "sizeUnit": "GB",
+          "minimumRequirements": null,
+          "recommendedRequirements": null,
+          "provenance": {
+            "source": "PCGamingWiki",
+            "ingestedAt": "2026-10-22",
+            "notes": "",
+            "sourceUrl": "https://www.pcgamingwiki.com/wiki/R.B.I._Baseball_16",
+            "confidence": 0.9
+          }
+        }
+      ]
+    },
+    {
+      "title": "Iron Harvest Deluxe Edition",
+      "slug": "iron-harvest-deluxe-edition",
+      "description": "Iron Harvest is now available on Kickstarter, you can read more about it here\n“After World War 1 farmers found a plethora of unexploded ordnance, barbed wire, weapons, shrapnel and bullets while ploughing their fields. They called it the Iron Harvest.”\nThe Game\nIron Harvest is a real-time strategy game (RTS) for Playstation 4, Xbox One and PC, set in the alternate reality of 1920+.\nYou lead hero characters, mechs, and soldiers into battle. Cover mechanics and dynamic destruction play a major role in combat. Your squads take cover automatically, but a simple brick wall will only offer protection against small calibers, not against mech-mounted cannons.\nThroughout its open sandbox levels you have to find your own way to reach the goals set by the dynamic story line.\n1920+ was developed by Polish artist Jakub Różalski and earned him a cult-following because of his beautiful artworks painted in the style of the old masters.\n“We love games like Company of Heroes or Men at War and want to bring a similar gameplay experience to this fantastic world Jakub created.” Jan Theysen, Project Lead at KING Art Games.\nThe game is in its early development phase and is scheduled to launch 2019.\nThe World\nThe game takes place in the world of 1920+, an alternate version of our own world where mankind, fascinated by technology, engines and iron, invented powerful walking machines. Once mighty weapons on the battlefields of the Great War, they are now part of everyday life.\nMighty factions fight for influence, while hidden forces are working towards the destabilization of Europe, determined to set the world on fire once again.\nThe Saxony Empire is one of the most influential countries in Europe, with powerful industry, developed cities, modern factories and a strong military tradition. After the unfavorable conditions of surrender in the Great War, the current mood in the Empire is bad, and proud elites and humiliated aristocrats secretly oppose the Emperor’s appeasement policies.",
+      "releaseYear": 2020,
+      "developer": "KING Art",
+      "publisher": "Deep Silver, KING Art Games",
+      "keywords": null,
+      "categorySlug": "accion",
+      "genreSlugs": [
+        "accion",
+        "estrategia",
+        "estrategia-en-tiempo-real"
+      ],
+      "sizeValue": 30,
+      "sizeUnit": "GB",
+      "minimumRequirements": null,
+      "recommendedRequirements": null,
+      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co3cq9.jpg",
+      "platformVariants": [
+        {
+          "platformSlug": "pc",
+          "sizeValue": 30,
+          "sizeUnit": "GB",
+          "minimumRequirements": null,
+          "recommendedRequirements": null,
+          "provenance": {
+            "source": "Steam",
+            "ingestedAt": "2026-10-22",
+            "notes": "tamaño publicado en la edición base «Iron Harvest»",
+            "sourceUrl": "https://store.steampowered.com/app/826630",
+            "confidence": 0.6
+          }
+        }
+      ]
+    },
+    {
+      "title": "Cities Skylines Natural Disasters",
+      "slug": "cities-skylines-natural-disasters",
+      "description": "Natural Disasters features a catalog of catastrophes to challenge mayor-players everywhere, including planning with early warning systems and emergency routes, devastating and destructive disaster effects, and caring for the populace as they struggle to rebuild. The expansion will also update Cities: Skylines with a new scenario editor and gameplay mode, allowing players to finally win  or lose  the game on their own terms.Key Features Deep, Impactful Gameplay: Keep your city going through the devastation of several possible doomsday scenarios, from towering infernos to the day the sky exploded With Great Power Comes Great Response Abilities: Plan for, and respond to, disasters using early warning systems, countermeasures, and new disaster responses such as helicopters and evacuations  finally, a Paradox game where Comet Sighted actually means something An Objectively Good Feature: Scenario Mode - Natural Disasters expansion includes 5 pre-made scenarios to challenge disaster masters, with custom game objectives such as starting cities, win conditions, time limits, losing conditions and more! The Natural Disasters Scenarios expands on the Scenario Editor, which is a free update for all players that allows them to create and share their own custom made scenarios Chirpocalypse Now: Heck yeah, new hats for Chirper Radio Saved the Video Game: A new broadcast network is introduced, helping to rapidly spread evacuation warnings and emergency alerts",
+      "releaseYear": 2016,
+      "developer": null,
+      "publisher": "Paradox Interactive",
+      "keywords": null,
+      "categorySlug": "simulacion",
+      "genreSlugs": [
+        "simulacion",
+        "estrategia"
+      ],
+      "sizeValue": 4,
+      "sizeUnit": "GB",
+      "minimumRequirements": null,
+      "recommendedRequirements": null,
+      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co8icg.jpg",
+      "platformVariants": [
+        {
+          "platformSlug": "pc",
+          "sizeValue": 4,
+          "sizeUnit": "GB",
+          "minimumRequirements": null,
+          "recommendedRequirements": null,
+          "provenance": {
+            "source": "Steam",
+            "ingestedAt": "2026-10-22",
+            "notes": "",
+            "sourceUrl": "https://store.steampowered.com/app/515191",
+            "confidence": 0.9
+          }
+        }
+      ]
+    },
+    {
+      "title": "Dying Light The Following Enhanced Edition",
+      "slug": "dying-light-the-following-enhanced-edition",
+      "description": "Dying Light series introduces a world that was hit by a zombie virus outbreak. Under the daylight, zombies are weak and slow, but after the sunset, they become fast, strong and hungry for human flesh. You play as Kyle Crane, a special operative sent to the Harran city, which became a quarantined zone after the outbreak. In the expansion pack The Following, he learns about a cure for the plague, supposedly invented by a sect, and sets off to find out more about it. Crane will travel the countryside open world that is twice the size of the original game’s map. To fight off zombies, Crane will use not only a variety of weapons but also parkour movements, which are the definitive feature in Dying Light gameplay.\nThe Following introduces new weapons, several new game modes, such as bounty hunting which gives the player a new mission every day. The expansion allows the player to drive a buggy to run zombies over. There is a four-person multiplayer mode, and also the “Be the Zombie” mode, in which players can assume the role of a huge, powerful zombie. The Enhanced Edition includes the original game, the expansion pack, and all the available DLCs, such as Cuisine & Cargo and The Bozak Horde.",
+      "releaseYear": 2016,
+      "developer": "Techland",
+      "publisher": "Techland Publishing, Techland",
+      "keywords": null,
+      "categorySlug": "accion",
+      "genreSlugs": [
+        "accion",
+        "rol",
+        "aventura"
+      ],
+      "sizeValue": 40,
+      "sizeUnit": "GB",
+      "minimumRequirements": null,
+      "recommendedRequirements": null,
+      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co6619.jpg",
+      "platformVariants": [
+        {
+          "platformSlug": "pc",
+          "sizeValue": 40,
+          "sizeUnit": "GB",
+          "minimumRequirements": null,
+          "recommendedRequirements": null,
+          "provenance": {
+            "source": "Steam",
+            "ingestedAt": "2026-10-22",
+            "notes": "tamaño publicado en la edición base «Dying Light: The Following»",
+            "sourceUrl": "https://store.steampowered.com/app/325724",
+            "confidence": 0.6
+          }
+        }
+      ]
+    },
+    {
+      "title": "BioShock Infinite Complete Edition",
+      "slug": "bioshock-infinite-complete-edition",
+      "description": "BioShock Infinite: Burial at Sea - Episode Two is an action-shooter game developed by Irrational Games. It was originally released in 2014. 2K Games published the game. On review aggregator Metacritic, BioShock Infinite: Burial at Sea - Episode Two has a score of 82. The game is rated as \"Exceptional\" on RAWG. \nYou can play BioShock Infinite: Burial at Sea - Episode Two on PC, PlayStation 4, PlayStation 3 and Xbox 360. The game is sold via Steam.",
+      "releaseYear": 2014,
+      "developer": "Irrational Games",
+      "publisher": "2K Games, Aspyr",
+      "keywords": null,
+      "categorySlug": "accion",
+      "genreSlugs": [
+        "accion",
+        "disparos",
+        "aventura"
+      ],
+      "sizeValue": 20,
+      "sizeUnit": "GB",
+      "minimumRequirements": null,
+      "recommendedRequirements": null,
+      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co50k0.jpg",
+      "platformVariants": [
+        {
+          "platformSlug": "pc",
+          "sizeValue": 20,
+          "sizeUnit": "GB",
+          "minimumRequirements": null,
+          "recommendedRequirements": null,
+          "provenance": {
+            "source": "PCGamingWiki",
+            "ingestedAt": "2026-10-22",
+            "notes": "tamaño publicado en la edición base «BioShock Infinite»",
+            "sourceUrl": "https://www.pcgamingwiki.com/wiki/BioShock_Infinite",
+            "confidence": 0.6
+          }
+        }
+      ]
+    },
+    {
+      "title": "Monster Energy Supercross",
+      "slug": "monster-energy-supercross",
+      "description": "Monster Energy Supercross - The Official Videogame\nLive the adrenaline and the excitement of the 2017 Monster Energy Supercross Championship with MONSTER ENERGY SUPERCROSS - THE OFFICIAL VIDEOGAME!\nRace with the official riders from 250SX and 450SX on the official tracks, Daytona included, to experience one of the most spectacular and entertaining racing competition ever!\nDiscover the Track Editor feature for endless gameplay possibilities: select your stadium, create your own track and share it online with your friends.\nCustomize your rider and bike as you like, with countless possibilities, with more than 80 official brands and 300 items available, and challenge yourself in conquering the top of the leaderboard.\nRace alone or against players from all over the world thought different offline and online game modes!\nFeel the rush of adrenaline, enter the arena and be the King of Supercross!\nKEY FEATURE POINTS:\nThe official 2017 Monster Energy Supercross Season.\nOfficial bikes, iconic tracks, like the legendary Daytona, and athletes from both 250SX and 450SX Classes.\nA powerful track editor, for endless gameplay possibilities: create, customize and share online your own tracks.\nAn exciting career mode with extreme customization options for both riders and bikes.\nTop notch graphics for a world-class game quality and a next-level immersive experience with an accurate reproduction of tracks, accessories and athletes’ aspects.",
+      "releaseYear": 2018,
+      "developer": "Milestone",
+      "publisher": "Milestone",
+      "keywords": null,
+      "categorySlug": "deportes",
+      "genreSlugs": [
+        "deportes",
+        "carreras"
+      ],
+      "sizeValue": 18,
+      "sizeUnit": "GB",
+      "minimumRequirements": null,
+      "recommendedRequirements": null,
+      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co3xzz.jpg",
+      "platformVariants": [
+        {
+          "platformSlug": "pc",
+          "sizeValue": 18,
+          "sizeUnit": "GB",
+          "minimumRequirements": null,
+          "recommendedRequirements": null,
+          "provenance": {
+            "source": "PCGamingWiki",
+            "ingestedAt": "2026-10-22",
+            "notes": "",
+            "sourceUrl": "https://www.pcgamingwiki.com/wiki/Monster_Energy_Supercross_6",
+            "confidence": 0.9
+          }
+        }
+      ]
+    },
+    {
+      "title": "Hatred",
+      "slug": "hatred",
+      "description": "Santuario ha llegado al límite. En Diablo® IV: Lord of Hatred™, la oscura cruzada de Mefisto amenaza el corazón de Santuario. Encarna nuevos héroes, descubre qué fue de los antiguos aliados y forja tu leyenda en el siguiente capítulo de este aclamado RPG de acción.",
+      "releaseYear": 2015,
+      "developer": "Blizzard Entertainment, Inc.",
+      "publisher": "Blizzard Entertainment, Inc.",
+      "keywords": "Action, RPG",
+      "categorySlug": "accion",
+      "genreSlugs": [
+        "accion",
+        "rol",
+        "disparos",
+        "indie"
+      ],
+      "sizeValue": 4,
+      "sizeUnit": "GB",
+      "minimumRequirements": null,
+      "recommendedRequirements": null,
+      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co1mqh.jpg",
+      "platformVariants": [
+        {
+          "platformSlug": "pc",
+          "sizeValue": 4,
+          "sizeUnit": "GB",
+          "minimumRequirements": null,
+          "recommendedRequirements": null,
+          "provenance": {
+            "source": "PCGamingWiki",
+            "ingestedAt": "2026-10-22",
+            "notes": "",
+            "sourceUrl": "https://www.pcgamingwiki.com/wiki/Hatred",
+            "confidence": 0.9
+          }
+        }
+      ]
+    },
+    {
+      "title": "Endless Legend Inferno",
+      "slug": "endless-legend-inferno",
+      "description": "This is a 4X turn-based strategy from the Endless series from developers who previously worked on the projects of the French publisher Ubisoft. Endless Legend unlike other games of the series uses a fantasy setting, many fans of the genre named the game fantasy-world Civilization.\nPlayers will have to lead one of the factions and through exploration, battles and diplomacy gain control over the game’s world. The action takes place in the fictional kingdom of Auriga, with each playthrough, data on ecosystems and landscapes are created randomly, assuming each new take on the game is not similar to the previous one. The seizure of territory and its development occurs with the help of cities.\nFor development, it is necessary to collect the resources that are used to construct and recruit the army. In total there are five such resources: food, industry, unique for the series of play dust, science and influence, and 13 factions with unique units and gameplay.",
+      "releaseYear": 2018,
+      "developer": "Amplitude Studios",
+      "publisher": "SEGA",
+      "keywords": null,
+      "categorySlug": "rol",
+      "genreSlugs": [
+        "rol",
+        "estrategia"
+      ],
+      "sizeValue": 7,
+      "sizeUnit": "GB",
+      "minimumRequirements": null,
+      "recommendedRequirements": null,
+      "coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co2ttg.jpg",
+      "platformVariants": [
+        {
+          "platformSlug": "pc",
+          "sizeValue": 7,
+          "sizeUnit": "GB",
+          "minimumRequirements": null,
+          "recommendedRequirements": null,
+          "provenance": {
+            "source": "Steam",
+            "ingestedAt": "2026-10-22",
+            "notes": "",
+            "sourceUrl": "https://store.steampowered.com/app/854750",
+            "confidence": 0.9
+          }
+        }
+      ]
+    }
+  ]
+}
