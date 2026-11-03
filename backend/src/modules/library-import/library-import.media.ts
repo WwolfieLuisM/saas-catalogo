@@ -12,6 +12,7 @@ export const COVER_ALLOWED_HOSTS = [
   'shared.akamai.steamstatic.com',
   'store.playstation.com',
   'media.xbox.com',
+  'pcgamingwiki.com',
 ];
 
 const COVER_MAX_BYTES = 5 * 1024 * 1024;
